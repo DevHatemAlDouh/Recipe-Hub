@@ -1,0 +1,11 @@
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\API.exe
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\appsettings.Development.json
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\appsettings.json
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\API.dll
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\API.deps.json
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\API.runtimeconfig.json
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\API.pdb
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\Microsoft.OpenApi.dll
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
