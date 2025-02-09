@@ -2,9 +2,13 @@
 {
     public class CommentRate
     {
-        public int ID { get; set; }
-        public int RecipeID { get; set; }
+        public int Id { get; set; }
         public int CommentID { get; set; }
-        public int Rate { get; set; }
+        public int UserID { get; set; }
+        public bool Rate { get; set; }
+
+        // Optional: Navigation properties
+        public Comment Comment { get; set; } // Include if you need it
+        public User User { get; set; } // Include if you need it
     }
 }

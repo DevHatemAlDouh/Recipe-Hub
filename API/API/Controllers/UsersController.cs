@@ -1,32 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using API.Models;
-using API.Service; // Ensure this includes your UserService namespace
+using API.Service;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ICRUD<User> _userService;
+        private readonly ICRUD<UserInfo> _userService;
 
-        public UsersController(ICRUD<User> userService)
+        public UsersController(ICRUD<UserInfo> userService)
         {
             _userService = userService;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        // GET: api/users
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<UserInfo>>> GetUsers()
         {
-            return Ok(await Task.FromResult(_userService.GetAll()));
+            var users = await Task.FromResult(_userService.GetAll());
+            return Ok(users);
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        // GET: api/users/{userId}
+        [HttpGet("GetById{userId}")]
+        public async Task<ActionResult<UserInfo>> GetUser(int userId)
         {
-            var user = _userService.GetById(id);
+            var user = _userService.GetById(userId);
 
             if (user == null)
             {
@@ -36,39 +39,38 @@ namespace API.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        // PUT: api/users/{userId}
+        [HttpPut("Update{userId}")]
+        public async Task<IActionResult> PutUser(int userId, UserInfo userInfo)
         {
-            if (id != user.ID)
+            if (userId != userInfo.Id)
             {
                 return BadRequest();
             }
 
-            _userService.Update(user);
-
+            _userService.Update(userInfo);
             return NoContent();
         }
 
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        // POST: api/users
+        [HttpPost("Add")]
+        public async Task<ActionResult<UserInfo>> PostUser(UserInfo userInfo)
         {
-            _userService.Add(user);
-            return CreatedAtAction("GetUser", new { id = user.ID }, user);
+            _userService.Add(userInfo);
+            return CreatedAtAction(nameof(GetUser), new { userId = userInfo.Id }, userInfo);
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        // DELETE: api/users/{userId}
+        [HttpDelete("Delete{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
         {
-            var user = _userService.GetById(id);
+            var user = _userService.GetById(userId);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _userService.Delete(id);
+            _userService.Delete(userId);
             return NoContent();
         }
     }

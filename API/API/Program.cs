@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICRUD<User>, UserService>();
+builder.Services.AddScoped<ICRUD<UserInfo>, UserService>();
 
 builder.Services.AddDbContext<APIContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -1,15 +1,21 @@
 [
   {
     "ContainingType": "API.Controllers.UsersController",
-    "Method": "GetUsers",
-    "RelativePath": "api/Users",
-    "HttpMethod": "GET",
+    "Method": "PostUser",
+    "RelativePath": "api/users/Add",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "userInfo",
+        "Type": "API.Models.UserInfo",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.User, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "API.Models.UserInfo",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -21,21 +27,31 @@
   },
   {
     "ContainingType": "API.Controllers.UsersController",
-    "Method": "PostUser",
-    "RelativePath": "api/Users",
-    "HttpMethod": "POST",
+    "Method": "DeleteUser",
+    "RelativePath": "api/users/Delete{userId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "API.Models.User",
+        "Name": "userId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "GetUsers",
+    "RelativePath": "api/users/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "API.Models.User",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -48,20 +64,20 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "GetUser",
-    "RelativePath": "api/Users/{id}",
+    "RelativePath": "api/users/GetById{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "API.Models.User",
+        "Type": "API.Models.UserInfo",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -74,35 +90,19 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "PutUser",
-    "RelativePath": "api/Users/{id}",
+    "RelativePath": "api/users/Update{userId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
       },
       {
-        "Name": "user",
-        "Type": "API.Models.User",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "DeleteUser",
-    "RelativePath": "api/Users/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "userInfo",
+        "Type": "API.Models.UserInfo",
         "IsRequired": true
       }
     ],
