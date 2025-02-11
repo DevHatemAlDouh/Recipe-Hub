@@ -428,6 +428,8 @@ namespace API.Migrations
 
                     b.HasKey("UserID", "PermissionID");
 
+                    b.HasIndex("PermissionID");
+
                     b.ToTable("UserPermissions");
                 });
 
@@ -541,6 +543,25 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Models.UserPermission", b =>
+                {
+                    b.HasOne("API.Models.Permission", "Permission")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("PermissionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Models.Comment", b =>
                 {
                     b.Navigation("CommentRates");
@@ -554,6 +575,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Penalty", b =>
                 {
                     b.Navigation("UserPenalties");
+                });
+
+            modelBuilder.Entity("API.Models.Permission", b =>
+                {
+                    b.Navigation("UserPermissions");
                 });
 
             modelBuilder.Entity("API.Models.Recipe", b =>
@@ -581,6 +607,8 @@ namespace API.Migrations
                     b.Navigation("RecipeRates");
 
                     b.Navigation("UserPenalties");
+
+                    b.Navigation("UserPermissions");
                 });
 #pragma warning restore 612, 618
         }

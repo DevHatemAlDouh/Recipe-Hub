@@ -111,6 +111,22 @@ namespace API.Data
                 .HasForeignKey(up => up.PenaltyID)
                 .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
 
+            // Configure UserPermission relationship
+            modelBuilder.Entity<UserPermission>()
+                .HasKey(up => new { up.UserID, up.PermissionID });
+
+            modelBuilder.Entity<UserPermission>()
+                .HasOne(up => up.User)
+                .WithMany(u => u.UserPermissions) // Ensure User has a collection of UserPermissions
+                .HasForeignKey(up => up.UserID)
+                .OnDelete(DeleteBehavior.Cascade); // Choose delete behavior
+
+            modelBuilder.Entity<UserPermission>()
+                .HasOne(up => up.Permission)
+                .WithMany(p => p.UserPermissions) // Ensure Permission has a collection of UserPermissions
+                .HasForeignKey(up => up.PermissionID)
+                .OnDelete(DeleteBehavior.Cascade); // Choose delete behavior
+
             // Additional configurations can be added as needed
         }
     }

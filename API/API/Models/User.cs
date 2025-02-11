@@ -13,5 +13,6 @@
         public ICollection<CommentRate> CommentRates { get; set; } // Collection of CommentRates
         public ICollection<RecipeRate> RecipeRates { get; set; } // If you have recipe ratings
         public ICollection<UserPenalty> UserPenalties { get; set; } // If you have user penalties
+        public ICollection<UserPermission> UserPermissions { get; set; }
     }
 }
