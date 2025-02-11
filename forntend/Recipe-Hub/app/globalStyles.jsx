@@ -62,6 +62,9 @@ const globalStyles = StyleSheet.create({
 
   /////////////////////////////////////////////////////////     Inputs & Icons     //////////////////////////////////////////////////////////////
 
+
+  
+  
   inputContainer: {
     flexDirection: "row", // ترتيب العناصر بشكل أفقي
     alignItems: "center", // محاذاة العناصر عمودياً
@@ -85,14 +88,42 @@ const globalStyles = StyleSheet.create({
     color:"white",
     marginRight: 10, // المسافة بين الأيقونة والنص
     paddingLeft: 5, // إضافة padding داخلي إلى الأيقونة لجعلها داخل الحقل
+ 
+  },
+  
 
-},
-
-
-
-
+ 
+  
     /////////////////////////////////////////////////////////     Buttons     //////////////////////////////////////////////////////////////
-
+    backButton: {
+      position: 'absolute',
+      top: 50, // تعديل حسب الحاجة
+      left: 20,
+      zIndex: 10,
+      padding: 10,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // خلفية شفافة لتمييز الزر
+      borderRadius: 50,
+    },
+    
+    
+    
+    button: {
+    backgroundColor: '#007BFF', // لون الخلفية
+    paddingVertical: 12, // التباعد العلوي والسفلي
+    paddingHorizontal: 20, // التباعد الجانبي
+    borderRadius: 10, // الحواف الدائرية
+    marginTop: 20, // المسافة العلوية
+  },
+  buttonText: {
+    color: '#fff', // لون النص
+    fontSize: 21, // حجم الخط
+    fontWeight: 'bold', // الخط عريض
+    textAlign: 'center', // النص في المنتصف
+  },
+    
+    
+    
+    
     signInButton: {
       backgroundColor: "rgba(0,0,0,0.5)", // تحديد لون خلفية الزر
       marginBottom: 29, // إضافة هامش أسفل الزر
@@ -112,7 +143,7 @@ const globalStyles = StyleSheet.create({
       textAlign: "center", // توسيط النص داخل الزر
       padding: 15, // زيادة الحواف داخل الزر
       borderRadius: 50, // جعل الزر مستدير الحواف
-      width: "90%", // جعل الزر أكبر (90% بدلاً من 80%)
+      width: 270, // جعل الزر أكبر (90% بدلاً من 80%)
       height: 60, // زيادة ارتفاع الزر
       borderColor: 'white', // تحديد لون حافة الزر
       borderWidth: 0.7, // تحديد سمك حافة الزر
@@ -133,13 +164,13 @@ const globalStyles = StyleSheet.create({
     ///////////////////////////////////////////////////////////  errorText  ///////////////////////////////////////////////////////////
 
     errorText: {
-    color: 'red',
-    fontSize: 14,
-    marginTop: -1,
-    marginBottom: 10
+      color: 'red',
+      fontSize: 14,
+      marginTop: -1,
+      marginBottom: 10
     },
 
 
-});
-
+  });
+  
 export default globalStyles;

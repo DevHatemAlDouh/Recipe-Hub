@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import BottomSheet from 'reanimated-bottom-sheet';
-import { View, Text, ImageBackground, TextInput, ScrollView, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
-import {create} from "@/app/Create_account"
-import globalStyles from './globalStyles'; // تحديث المسار ليشير إلى ملف التنسيقات
-import Icon from 'react-native-vector-icons/FontAwesome'; // مكتبة الأيقونات
+import globalStyles from './globalStyles';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const router = useRouter();
 
   const validateEmail = (text) => {
     setEmail(text);
@@ -22,7 +23,6 @@ const SignIn = () => {
   };
 
   const handleSignIn = () => {
-    // تحقق من صحة البريد الإلكتروني
     if (!email) {
       setEmailError('Email is required');
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -31,7 +31,6 @@ const SignIn = () => {
       setEmailError('');
     }
 
-    // تحقق من صحة كلمة المرور
     if (!password) {
       setPasswordError('Password is required');
     } else if (password.length < 6) {
@@ -40,18 +39,35 @@ const SignIn = () => {
       setPasswordError('');
     }
 
-    // إذا لم تكن هناك أخطاء، تنفيذ عملية تسجيل الدخول
     if (!emailError && !passwordError && email && password) {
-      // Perform sign-in action here
+      // تنفيذ عملية تسجيل الدخول هنا
     }
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      router.replace('/open'); // العودة للصفحة الرئيسية عند الضغط على زر الرجوع
+      return true; // منع التطبيق من الإغلاق
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove(); // إزالة المستمع عند مغادرة الصفحة
+  }, []);
 
   return (
     <ImageBackground source={icen_img} resizeMode="cover" style={globalStyles.image}>
       <View style={globalStyles.overlay} />
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+        
+        {/* زر الرجوع */}
+        <TouchableOpacity onPress={() => router.replace('/')} style={globalStyles.backButton}>
+          <Icon name="arrow-left" size={24} color="white" />
+        </TouchableOpacity>
+
         <View style={globalStyles.content}>
           <Text style={[globalStyles.title, globalStyles.sign_In_Up_title]}>Sign in</Text>
+
           {/* Email Input */}
           <View style={globalStyles.inputContainer}>
             <Icon name="envelope" style={globalStyles.icon} />
@@ -64,6 +80,7 @@ const SignIn = () => {
             />
           </View>
           {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
+
           {/* Password Input */}
           <View style={globalStyles.inputContainer}>
             <Icon name="lock" style={globalStyles.icon} />
@@ -77,8 +94,18 @@ const SignIn = () => {
             />
           </View>
           {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
-          <Button href={"/create"} title="Sign in" onPress={handleSignIn} style={globalStyles.createSignInButton} />
+
+          {/* زر تسجيل الدخول */}
+          <TouchableOpacity
+            style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
+            onPress={handleSignIn}
+          >
+            <Text style={globalStyles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        
         </View>
+
+        {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
           Don't have an account? <Link href="/Create_account">Create account</Link>
         </Text>
