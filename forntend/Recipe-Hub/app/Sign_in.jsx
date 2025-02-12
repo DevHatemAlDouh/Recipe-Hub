@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BottomSheet from 'reanimated-bottom-sheet';
+// import BottomSheet from 'reanimated-bottom-sheet';
 import { View, Text, ImageBackground, TextInput, ScrollView, Button } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
