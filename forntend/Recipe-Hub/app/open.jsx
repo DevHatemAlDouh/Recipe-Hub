@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { View, Text, ImageBackground, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import icen_img from "@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg";
 import { Link } from 'expo-router';
+=======
+import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { useRouter } from 'expo-router';
+import icen_img from "@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg";
+>>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
 import globalStyles from './globalStyles';
 
 const Home = () => {
@@ -17,6 +24,7 @@ const Home = () => {
           <Text style={globalStyles.subtitle}>
             Welcome to Recipe Hub, the top platform for recipes
           </Text>
+<<<<<<< HEAD
           
           {/* زر مخصص */}
           <TouchableOpacity
@@ -39,12 +47,30 @@ const Home = () => {
           {/* <Link href="/Create_account" style={[globalStyles.createAccountButton, globalStyles.createSignIn]}>
             Create account
           </Link> */}
+=======
+
+          {/* زر مخصص */}
+          <TouchableOpacity
+            style={[globalStyles.signInButton, globalStyles.createSignIn]}
+            onPress={() => router.replace('/Sign_in')} // الانتقال إلى صفحة Sign_in عند الضغط
+          >
+            <Text style={globalStyles.buttonText}>Go to Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
+            onPress={() => router.replace('/Create_account')} // الانتقال إلى صفحة Create_account عند الضغط
+          >
+            <Text style={globalStyles.buttonText}>Go to Create Account</Text>
+          </TouchableOpacity>
+>>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
         </View>
       </ImageBackground>
     </View>
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007BFF', // لون الخلفية
@@ -61,4 +87,6 @@ const styles = StyleSheet.create({
   },
 });
 
+=======
+>>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
 export default Home;

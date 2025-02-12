@@ -8,7 +8,6 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -23,19 +22,27 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+<<<<<<< HEAD
         {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
         <Stack.Screen name='index' options={{headerShown : false}}/>
         <Stack.Screen name='Sign_in' options={{headerShown : false}}/>
         <Stack.Screen name='Create_account' options={{headerShown : false}}/>
         <Stack.Screen name='open' options={{headerShown : false}}/>
         <Stack.Screen name="+not-found" />
+=======
+        <Stack.Screen name="open" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false,animation:'simple_push' }} />
+        <Stack.Screen name="Sign_in" options={{ headerShown: false, animation: 'simple_push' }} />
+        <Stack.Screen name="Create_account" options={{ headerShown: false, animation: 'simple_push' }} />
+       
+
+        <Stack.Screen name="+not-found" options={{ title: '404' }} />
+>>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

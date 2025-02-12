@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, ImageBackground, TextInput, Button , StyleSheet} from 'react-native';
+import { View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link, useRouter } from 'expo-router'; // استيراد useRouter
 import globalStyles from './globalStyles'; // تحديث المسار ليشير إلى ملف التنسيقات
 import Icon from 'react-native-vector-icons/FontAwesome'; // مكتبة الأيقونات
 // import PhoneInput from 
+
+
 
 const CreateAccount = () => {
   const [name, setName] = useState('');
@@ -16,6 +18,7 @@ const CreateAccount = () => {
   const [passwordError, setPasswordError] = useState('');
   const [rePasswordError, setRePasswordError] = useState('');
   const router = useRouter(); // استخدام useRouter للانتقال
+  const [phone, setPhone] = useState('');
 
   const handleSignUp = () => {
     // تحقق من صحة الاسم
@@ -41,6 +44,14 @@ const CreateAccount = () => {
       setPasswordError('Password must be at least 6 characters');
     } else {
       setPasswordError('');
+    }
+
+    if (!phone) {
+      setPhoneError('Phone number is required');
+    } else if (!/^\d{10}$/.test(phone)) {
+      setPhoneError('Invalid phone number format');
+    } else {
+      setPhoneError('');
     }
 
     // تحقق من مطابقة كلمة المرور المعاد إدخالها
@@ -86,6 +97,16 @@ const CreateAccount = () => {
             onChangeText={setEmail}
           />
         </View>
+        <View style={globalStyles.inputContainer}>
+            <Icon name="phone" style={globalStyles.icon} />
+            <TextInput
+              placeholder="Phone number"
+              placeholderTextColor="#ccc"
+              style={globalStyles.input}
+              value={phone}
+              onChangeText={setPhone}
+            />
+          </View>
         {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
         <View style={globalStyles.inputContainer}>
           <Icon name="lock" style={globalStyles.icon} />
@@ -98,9 +119,7 @@ const CreateAccount = () => {
             onChangeText={setPassword}
           />
         </View>
-
         {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
-        
         <View style={globalStyles.inputContainer}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
@@ -113,7 +132,15 @@ const CreateAccount = () => {
           />
         </View>
         {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
-        <Button title="Add account" onPress={handleSignUp} style={[globalStyles.createAccountButton, globalStyles.createSignIn]} />
+        <TouchableOpacity
+            style={ [globalStyles.createAccountButton, globalStyles.createSignIn]}
+            onPress={handleSignUp} 
+          >
+            <Text style={globalStyles.buttonText}>Create Account</Text>
+          </TouchableOpacity>
+
+        {/* <Button title="Add account" onPress={handleSignUp} style={[globalStyles.createAccountButton, globalStyles.createSignIn]} /> */}
+      
       </View>
     </ImageBackground>
   );
