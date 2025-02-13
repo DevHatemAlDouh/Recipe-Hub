@@ -9,6 +9,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         // Add this collection property
+        public ICollection<Recipe> Recipes { get; set; } // Navigation property for Comments
         public ICollection<Comment> Comments { get; set; } // Navigation property for Comments
         public ICollection<CommentRate> CommentRates { get; set; } // Collection of CommentRates
         public ICollection<RecipeRate> RecipeRates { get; set; } // If you have recipe ratings

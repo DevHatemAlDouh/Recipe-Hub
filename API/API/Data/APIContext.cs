@@ -31,6 +31,13 @@ namespace API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure relationships for Recipe
+            modelBuilder.Entity<Recipe>()
+                .HasOne(r => r.User) // Ensure Recipe has a navigation property to User
+                .WithMany(u => u.Recipes) // Ensure User has a collection of Recipes
+                .HasForeignKey(r => r.UserID)
+                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict to prevent cycles
+
             modelBuilder.Entity<CommentRate>()
                 .HasOne(cr => cr.User) // Assuming you have a navigation property for User
                 .WithMany(u => u.CommentRates) // Assuming User has a collection of CommentRates
@@ -129,6 +136,5 @@ namespace API.Data
 
             // Additional configurations can be added as needed
         }
-        public DbSet<API.Models.PenaltyInfo> PenaltyInfo { get; set; } = default!;
     }
 }

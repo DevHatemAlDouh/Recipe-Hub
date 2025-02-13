@@ -201,7 +201,12 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Recipes");
                 });
@@ -475,6 +480,17 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Models.Recipe", b =>
+                {
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Models.RecipeRate", b =>
                 {
                     b.HasOne("API.Models.Recipe", "Recipe")
@@ -605,6 +621,8 @@ namespace API.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("RecipeRates");
+
+                    b.Navigation("Recipes");
 
                     b.Navigation("UserPenalties");
 

@@ -286,6 +286,115 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PostRecipeInfo",
+    "RelativePath": "api/Recipes/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeInfo",
+        "Type": "API.Models.RecipeInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.RecipeInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "DeleteRecipe",
+    "RelativePath": "api/Recipes/Delete/{recipeId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "GetRecips",
+    "RelativePath": "api/Recipes/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "GetRecipe",
+    "RelativePath": "api/Recipes/GetById/{recipeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.RecipeInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PutRecipe",
+    "RelativePath": "api/Recipes/Update/{recipeId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "recipeInfo",
+        "Type": "API.Models.RecipeInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "PostUser",
     "RelativePath": "api/users/Add",
@@ -335,6 +444,32 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "GetMyRecipes",
+    "RelativePath": "api/users/GetAllMyRecipes{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",

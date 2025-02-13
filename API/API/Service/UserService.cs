@@ -25,6 +25,7 @@ namespace API.Service
                 Email = entity.Email,
                 Password = entity.Password,
                 // Initialize collections if necessary
+                Recipes = new List<Recipe>(),
                 Comments = new List<Comment>(),
                 CommentRates = new List<CommentRate>(),
                 RecipeRates = new List<RecipeRate>(),

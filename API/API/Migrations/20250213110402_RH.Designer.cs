@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20250209102958_RH")]
+    [Migration("20250213110402_RH")]
     partial class RH
     {
         /// <inheritdoc />
@@ -204,7 +204,12 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Recipes");
                 });
@@ -431,6 +436,8 @@ namespace API.Migrations
 
                     b.HasKey("UserID", "PermissionID");
 
+                    b.HasIndex("PermissionID");
+
                     b.ToTable("UserPermissions");
                 });
 
@@ -472,6 +479,17 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Models.Recipe", b =>
+                {
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -544,6 +562,25 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Models.UserPermission", b =>
+                {
+                    b.HasOne("API.Models.Permission", "Permission")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("PermissionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Models.Comment", b =>
                 {
                     b.Navigation("CommentRates");
@@ -557,6 +594,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Penalty", b =>
                 {
                     b.Navigation("UserPenalties");
+                });
+
+            modelBuilder.Entity("API.Models.Permission", b =>
+                {
+                    b.Navigation("UserPermissions");
                 });
 
             modelBuilder.Entity("API.Models.Recipe", b =>
@@ -583,7 +625,11 @@ namespace API.Migrations
 
                     b.Navigation("RecipeRates");
 
+                    b.Navigation("Recipes");
+
                     b.Navigation("UserPenalties");
+
+                    b.Navigation("UserPermissions");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,6 +22,7 @@ builder.Services.AddScoped<ICRUD<PenaltyInfo>, PenaltyService>();
 builder.Services.AddScoped<ICRUD<PermissionInfo>, PermissionService>();
 builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
+builder.Services.AddScoped<UserRecipes>();
 
 var app = builder.Build();
 

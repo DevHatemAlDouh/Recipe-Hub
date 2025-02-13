@@ -506,10 +506,250 @@
         }
       }
     },
+    "/api/Recipes/GetAll": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recipes/GetById/{recipeId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recipes/Update/{recipeId}": {
+      "put": {
+        "tags": [
+          "Recipes"
+        ],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Recipes/Add": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recipes/Delete/{recipeId}": {
+      "delete": {
+        "tags": [
+          "Recipes"
+        ],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/users/GetAll": {
       "get": {
         "tags": [
           "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/GetAllMyRecipes{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -867,6 +1107,33 @@
             "format": "int32"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecipeInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundImage": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           }

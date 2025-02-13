@@ -13,12 +13,14 @@ namespace API.Controllers
         private readonly ICRUD<UserInfo> _userService;
         private readonly UserPenalties _userPenalties;
         private readonly UsePermissions _usePermissions;
+        private readonly UserRecipes _userRecipes;
 
-        public UsersController(ICRUD<UserInfo> userService, UsePermissions usePermissions, UserPenalties userPenalties)
+        public UsersController(ICRUD<UserInfo> userService, UsePermissions usePermissions, UserPenalties userPenalties, UserRecipes userRecipes)
         {
             _userService = userService;
             _usePermissions = usePermissions;
             _userPenalties = userPenalties;
+            _userRecipes = userRecipes;
         }
 
         // GET: api/users
@@ -26,6 +28,14 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetUsers()
         {
             var users = await Task.FromResult(_userService.GetAll());
+            return Ok(users);
+        }
+
+        // GET: api/users/{userId}
+        [HttpGet("GetAllMyRecipes{userId}")]
+        public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyRecipes(int userId)
+        {
+            var users = await Task.FromResult(_userRecipes.GetAll(userId));
             return Ok(users);
         }
 

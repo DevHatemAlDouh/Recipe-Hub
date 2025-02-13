@@ -94,21 +94,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recipes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Recipes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -141,19 +126,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPermissions",
-                columns: table => new
-                {
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    PermissionID = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPermissions", x => new { x.UserID, x.PermissionID });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -171,23 +143,74 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Steps",
+                name: "Recipes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipeID = table.Column<int>(type: "int", nullable: false),
-                    StepNumber = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Steps", x => x.Id);
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Steps_Recipes_RecipeID",
-                        column: x => x.RecipeID,
-                        principalTable: "Recipes",
+                        name: "FK_Recipes_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPenalties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    PenaltyID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPenalties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPenalties_Penalties_PenaltyID",
+                        column: x => x.PenaltyID,
+                        principalTable: "Penalties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPenalties_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPermissions",
+                columns: table => new
+                {
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    PermissionID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPermissions", x => new { x.UserID, x.PermissionID });
+                    table.ForeignKey(
+                        name: "FK_UserPermissions_Permissions_PermissionID",
+                        column: x => x.PermissionID,
+                        principalTable: "Permissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPermissions_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -248,55 +271,23 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPenalties",
+                name: "Steps",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    PenaltyID = table.Column<int>(type: "int", nullable: false)
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    StepNumber = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPenalties", x => x.Id);
+                    table.PrimaryKey("PK_Steps", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserPenalties_Penalties_PenaltyID",
-                        column: x => x.PenaltyID,
-                        principalTable: "Penalties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserPenalties_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StepIngredients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IngredientID = table.Column<int>(type: "int", nullable: false),
-                    StepID = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<float>(type: "real", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StepIngredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StepIngredients_Ingredients_IngredientID",
-                        column: x => x.IngredientID,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StepIngredients_Steps_StepID",
-                        column: x => x.StepID,
-                        principalTable: "Steps",
+                        name: "FK_Steps_Recipes_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -332,6 +323,34 @@ namespace API.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StepIngredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientID = table.Column<int>(type: "int", nullable: false),
+                    StepID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<float>(type: "real", nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StepIngredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StepIngredients_Ingredients_IngredientID",
+                        column: x => x.IngredientID,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StepIngredients_Steps_StepID",
+                        column: x => x.StepID,
+                        principalTable: "Steps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -370,6 +389,11 @@ namespace API.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Recipes_UserID",
+                table: "Recipes",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StepIngredients_IngredientID",
                 table: "StepIngredients",
                 column: "IngredientID");
@@ -393,6 +417,11 @@ namespace API.Migrations
                 name: "IX_UserPenalties_UserID",
                 table: "UserPenalties",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPermissions_PermissionID",
+                table: "UserPermissions",
+                column: "PermissionID");
         }
 
         /// <inheritdoc />
@@ -406,9 +435,6 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Favorites");
-
-            migrationBuilder.DropTable(
-                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "RecipeCategories");
@@ -444,10 +470,13 @@ namespace API.Migrations
                 name: "Penalties");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "Recipes");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
