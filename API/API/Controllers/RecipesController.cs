@@ -17,11 +17,13 @@ namespace API.Controllers
     {
         private readonly ICRUDService<RecipeInfo> _recipeService;
         private readonly UserRecipes _userRecipes;
+        private readonly RecipeSteps _recipeSteps;
 
-        public RecipesController(ICRUDService<RecipeInfo> recipeService, UserRecipes userRecipes)
+        public RecipesController(ICRUDService<RecipeInfo> recipeService, UserRecipes userRecipes, RecipeSteps recipeSteps)
         {
             _recipeService = recipeService;
             _userRecipes = userRecipes;
+            _recipeSteps = recipeSteps;
         }
 
         // GET: api/Recipes
@@ -30,6 +32,14 @@ namespace API.Controllers
         {
             var recipes = await Task.FromResult(_recipeService.GetAll());
             return Ok(recipes);
+        }
+
+        // GET: api/Steps
+        [HttpGet("GetAllSteps/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<StepInfo>>> GetSteps(int recipeid)
+        {
+            var steps = await _recipeSteps.GetAll(recipeid);
+            return Ok(steps);
         }
 
         // GET: api/Recipes/5
@@ -45,6 +55,7 @@ namespace API.Controllers
 
             return Ok(recipe);
         }
+
 
         // PUT: api/Recipes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

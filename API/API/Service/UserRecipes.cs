@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
@@ -11,16 +12,16 @@ namespace API.Service
         {
             _context = context;
         }
-        public IEnumerable<RecipeInfo> GetAll(int ID)
+        public async Task<IEnumerable<RecipeInfo>> GetAll(int ID)
         {
-            return _context.Recipes.Select(r => new RecipeInfo
+            return await _context.Recipes.Select(r => new RecipeInfo
             {
                 Id = r.Id,
                 UserID = r.UserID,
                 Description = r.Description,
                 BackgroundImage = r.BackgroundImage,
                 Title = r.Title
-            }).Where(r => r.UserID == ID).ToList();
+            }).Where(r => r.UserID == ID).ToListAsync();
         }
     }
 }

@@ -25,6 +25,7 @@ builder.Services.AddScoped<ICRUDService<StepInfo>, StepService>();
 builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
+builder.Services.AddScoped<RecipeSteps>();
 
 var app = builder.Build();
 
