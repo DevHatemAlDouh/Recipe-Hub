@@ -1,9 +1,11 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace API.Service
 {
-    public class PermissionService : ICRUD<PermissionInfo>
+    public class PermissionService : ICRUDService<PermissionInfo>
     {
         private readonly APIContext _context;
 
@@ -12,7 +14,7 @@ namespace API.Service
             _context = context;
         }
 
-        public void Add(PermissionInfo entity)
+        public async Task Add(PermissionInfo entity)
         {
             var permission = new Permission
             {
@@ -21,37 +23,32 @@ namespace API.Service
                 UserPermissions = new List<UserPermission>()
 
             };
-            _context.Permissions.Add(permission);
-            _context.SaveChanges();
+            await _context.Permissions.AddAsync(permission);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            // Start by retrieving the user directly from the context
-            var permission = _context.Permissions.FirstOrDefault(p => p.Id == id);
-
-            // Check if the user exists
-            if (permission != null)
+            var entity = await _context.Permissions.FindAsync(id);
+            if (entity != null)
             {
-                // Remove the user from the context
-                _context.Permissions.Remove(permission);
-                // Save changes to the database
-                _context.SaveChanges();
+                _context.Permissions.Remove(entity);
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<PermissionInfo> GetAll()
+        public async Task<IEnumerable<PermissionInfo>> GetAll()
         {
-            return _context.Permissions.Select(u => new PermissionInfo
+            return await _context.Permissions.Select(u => new PermissionInfo
             {
                 Id = u.Id,
                 Title = u.Title
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public PermissionInfo GetById(int id)
+        public async Task<PermissionInfo> GetById(int id)
         {
-            var permission = _context.Permissions.FirstOrDefault(p => p.Id == id);
+            var permission = await _context.Permissions.FirstOrDefaultAsync(p => p.Id == id);
             if (permission == null) return null;
 
             return new PermissionInfo
@@ -61,17 +58,16 @@ namespace API.Service
             };
         }
 
-        public void Update(PermissionInfo entity)
+        public async Task Update(PermissionInfo entity)
         {
-            var permission = _context.Permissions.FirstOrDefault(u => u.Id == entity.Id);
+            var permission = await _context.Permissions.FirstOrDefaultAsync(u => u.Id == entity.Id);
             if (permission != null)
             {
                 permission.Title = entity.Title;
+
                 _context.Permissions.Update(permission);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
-
-        
     }
 }

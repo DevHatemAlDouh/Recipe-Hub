@@ -10,12 +10,12 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ICRUD<UserInfo> _userService;
+        private readonly ICRUDService<UserInfo> _userService;
         private readonly UserPenalties _userPenalties;
         private readonly UsePermissions _usePermissions;
         private readonly UserRecipes _userRecipes;
 
-        public UsersController(ICRUD<UserInfo> userService, UsePermissions usePermissions, UserPenalties userPenalties, UserRecipes userRecipes)
+        public UsersController(ICRUDService<UserInfo> userService, UsePermissions usePermissions, UserPenalties userPenalties, UserRecipes userRecipes)
         {
             _userService = userService;
             _usePermissions = usePermissions;
@@ -43,7 +43,7 @@ namespace API.Controllers
         [HttpGet("GetById{userId}")]
         public async Task<ActionResult<UserInfo>> GetUser(int userId)
         {
-            var user = _userService.GetById(userId);
+            var user = await _userService.GetById(userId);
 
             if (user == null)
             {
@@ -92,7 +92,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            _userService.Update(userInfo);
+            await _userService.Update(userInfo);
             return NoContent();
         }
 
@@ -100,7 +100,7 @@ namespace API.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<UserInfo>> PostUser(UserInfo userInfo)
         {
-            _userService.Add(userInfo);
+            await _userService.Add(userInfo);
             return CreatedAtAction(nameof(GetUser), new { userId = userInfo.Id }, userInfo);
         }
 
@@ -108,13 +108,13 @@ namespace API.Controllers
         [HttpDelete("Delete{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            var user = _userService.GetById(userId);
+            var user = await _userService.GetById(userId);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _userService.Delete(userId);
+            await _userService.Delete(userId);
             return NoContent();
         }
     }

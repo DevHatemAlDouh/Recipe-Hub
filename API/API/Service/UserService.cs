@@ -1,11 +1,10 @@
 ﻿using API.Data;
 using API.Models;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
-    public class UserService : ICRUD<UserInfo>
+    public class UserService : ICRUDService<UserInfo>
     {
         private readonly APIContext _context;
 
@@ -14,7 +13,7 @@ namespace API.Service
             _context = context;
         }
 
-        public void Add(UserInfo entity)
+        public async Task Add(UserInfo entity)
         {
             var user = new User
             {
@@ -32,14 +31,14 @@ namespace API.Service
                 UserPenalties = new List<UserPenalty>()
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             // Start by retrieving the user directly from the context
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             // Check if the user exists
             if (user != null)
@@ -47,13 +46,13 @@ namespace API.Service
                 // Remove the user from the context
                 _context.Users.Remove(user);
                 // Save changes to the database
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<UserInfo> GetAll()
+        public async Task<IEnumerable<UserInfo>> GetAll()
         {
-            return _context.Users.Select(u => new UserInfo
+            return await _context.Users.Select(u => new UserInfo
             {
                 Id = u.Id,
                 UserName = u.UserName,
@@ -61,12 +60,12 @@ namespace API.Service
                 CountryCode = u.CountryCode,
                 Email = u.Email,
                 Password = u.Password
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public UserInfo GetById(int id)
+        public async Task<UserInfo> GetById(int id)
         {
-            var user = _context.Users.FirstOrDefault(p => p.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == id);
             if (user == null) return null;
 
             return new UserInfo
@@ -80,9 +79,9 @@ namespace API.Service
             };
         }
 
-        public void Update(UserInfo entity)
+        public async Task Update(UserInfo entity)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == entity.Id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.Id);
             if (user != null)
             {
                 user.UserName = entity.UserName;
@@ -92,7 +91,7 @@ namespace API.Service
                 user.Password = entity.Password;
 
                 _context.Users.Update(user);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 

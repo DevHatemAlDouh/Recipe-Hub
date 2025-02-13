@@ -10,10 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class PermissionsController : ControllerBase
     {
-        private readonly ICRUD<PermissionInfo> _permissionService;
+        private readonly ICRUDService<PermissionInfo> _permissionService;
         private readonly UsePermissions _usePermissions;
 
-        public PermissionsController(ICRUD<PermissionInfo> permissionService, UsePermissions usePermissions)
+        public PermissionsController(ICRUDService<PermissionInfo> permissionService, UsePermissions usePermissions)
         {
             _permissionService = permissionService;
             _usePermissions = usePermissions;
@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpGet("GetById/{permissionId}")]
         public async Task<ActionResult<PermissionInfo>> GetPermission(int permissionId)
         {
-            var permission = _permissionService.GetById(permissionId);
+            var permission = await _permissionService.GetById(permissionId);
 
             if (permission == null)
             {
@@ -50,7 +50,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            _permissionService.Update(permission);
+            await _permissionService.Update(permission);
             return NoContent();
         }
 
@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<PermissionInfo>> PostPermission(PermissionInfo permission)
         {
-            _permissionService.Add(permission);
+            await _permissionService.Add(permission);
             return CreatedAtAction(nameof(GetPermission), new { permissionId = permission.Id }, permission);
         }
 
@@ -67,7 +67,7 @@ namespace API.Controllers
         [HttpPost("GrantPermission")]
         public async Task<ActionResult<UserPermissionInfo>> Grant(UserPermissionInfo userpermission)
         {
-            _usePermissions.Grant(userpermission);
+            await _usePermissions.Grant(userpermission);
             return NoContent();
         }
 
@@ -75,13 +75,13 @@ namespace API.Controllers
         [HttpDelete("Revoke/{userpermissionId}")]
         public async Task<IActionResult> Revoke(int userpermissionId)
         {
-            var userpermission = _usePermissions.GetById(userpermissionId);
+            var userpermission = await _usePermissions.GetById(userpermissionId);
             if (userpermission == null)
             {
                 return NotFound();
             }
 
-            _usePermissions.Revoke(userpermissionId);
+            await _usePermissions.Revoke(userpermissionId);
             return NoContent();
         }
 
@@ -89,13 +89,13 @@ namespace API.Controllers
         [HttpDelete("Delete/{permissionId}")]
         public async Task<IActionResult> DeletePermission(int permissionId)
         {
-            var permission = _permissionService.GetById(permissionId);
+            var permission = await _permissionService.GetById(permissionId);
             if (permission == null)
             {
                 return NotFound();
             }
 
-            _permissionService.Delete(permissionId);
+            await _permissionService.Delete(permissionId);
             return NoContent();
         }
     }

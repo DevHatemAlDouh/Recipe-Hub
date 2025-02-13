@@ -16,10 +16,10 @@ namespace API.Controllers
     [ApiController]
     public class PenaltiesController : ControllerBase
     {
-        private readonly ICRUD<PenaltyInfo> _penaltyService;
+        private readonly ICRUDService<PenaltyInfo> _penaltyService;
         private readonly UserPenalties _userPenalties;
 
-        public PenaltiesController(ICRUD<PenaltyInfo> penaltyService, UserPenalties userPenalties)
+        public PenaltiesController(ICRUDService<PenaltyInfo> penaltyService, UserPenalties userPenalties)
         {
             _penaltyService = penaltyService;
             _userPenalties = userPenalties;
@@ -37,7 +37,7 @@ namespace API.Controllers
         [HttpGet("GetById/{penaltyId}")]
         public async Task<ActionResult<PenaltyInfo>> GetPenalty(int penaltyId)
         {
-            var penalty = _penaltyService.GetById(penaltyId);
+            var penalty = await _penaltyService.GetById(penaltyId);
 
             if (penalty == null)
             {
@@ -57,7 +57,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            _penaltyService.Update(penaltyInfo);
+            await _penaltyService.Update(penaltyInfo);
             return NoContent();
         }
 
@@ -66,7 +66,7 @@ namespace API.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<PenaltyInfo>> PostPenalty(PenaltyInfo penaltyInfo)
         {
-            _penaltyService.Add(penaltyInfo);
+            await _penaltyService.Add(penaltyInfo);
             return CreatedAtAction(nameof(GetPenalty), new { permissionId = penaltyInfo.Id }, penaltyInfo);
         }
 
@@ -74,7 +74,7 @@ namespace API.Controllers
         [HttpPost("GrantPenalties")]
         public async Task<ActionResult<UserPenaltyInfo>> Grant(UserPenaltyInfo userpenalty)
         {
-            _userPenalties.Grant(userpenalty);
+            await _userPenalties.Grant(userpenalty);
             return NoContent();
         }
 
@@ -88,7 +88,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            _penaltyService.Delete(penaltyId);
+             await _penaltyService.Delete(penaltyId);
             return NoContent();
         }
     }

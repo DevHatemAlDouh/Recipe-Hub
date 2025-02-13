@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
@@ -12,9 +13,9 @@ namespace API.Service
             _context = context;
         }
 
-        public UserPenaltyInfo GetById(int id)
+        public async Task<UserPenaltyInfo> GetById(int id)
         {
-            var penalty = _context.UserPenalties.FirstOrDefault(p => p.Id == id);
+            var penalty = await _context.UserPenalties.FirstOrDefaultAsync(p => p.Id == id);
             if (penalty == null) return null;
 
             return new UserPenaltyInfo
@@ -25,7 +26,7 @@ namespace API.Service
             };
         }
 
-        public void Grant(UserPenaltyInfo entity)
+        public async Task Grant(UserPenaltyInfo entity)
         {
             var userpenalty = new UserPenalty
             {
@@ -33,22 +34,22 @@ namespace API.Service
                 UserID = entity.UserID,
                 PenaltyID = entity.PenaltyID,
 
-                Penalty = _context.Penalties.FirstOrDefault(p => p.Id == entity.PenaltyID),
-                User = _context.Users.FirstOrDefault(u => u.Id == entity.UserID)
+                Penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID),
+                User = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID)
 
             };
-            _context.UserPenalties.Add(userpenalty);
-            _context.SaveChanges();
+            await _context.UserPenalties.AddAsync(userpenalty);
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<UserPenaltyInfo> GetAllpenalty(int id)
+        public async Task<IEnumerable<UserPenaltyInfo>> GetAllpenalty(int id)
         {
-            return _context.UserPenalties.Select(u => new UserPenaltyInfo
+            return await _context.UserPenalties.Select(u => new UserPenaltyInfo
             {
                 Id = u.Id,
                 UserID = u.UserID,
                 PenaltyID = u.PenaltyID
-            }).Where(u => u.UserID == id).ToList();
+            }).Where(u => u.UserID == id).ToListAsync();
         }
     }
 }

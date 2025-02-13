@@ -13,9 +13,9 @@ namespace API.Service
             _context = context;
         }
 
-        public UserPermissionInfo GetById(int id)
+        public async Task<UserPermissionInfo> GetById(int id)
         {
-            var permission = _context.UserPermissions.FirstOrDefault(p => p.Id == id);
+            var permission = await _context.UserPermissions.FirstOrDefaultAsync(p => p.Id == id);
             if (permission == null) return null;
 
             return new UserPermissionInfo
@@ -26,7 +26,7 @@ namespace API.Service
             };
         }
 
-        public void Grant(UserPermissionInfo entity)
+        public async Task Grant(UserPermissionInfo entity)
         {
             var usarpermission = new UserPermission
             {
@@ -34,32 +34,32 @@ namespace API.Service
                 UserID = entity.UserID,
                 PermissionID = entity.PermissionID,
 
-                Permission = _context.Permissions.FirstOrDefault(p => p.Id == entity.PermissionID),
-                User = _context.Users.FirstOrDefault(u => u.Id == entity.UserID)
+                Permission = await _context.Permissions.FirstOrDefaultAsync(p => p.Id == entity.PermissionID),
+                User = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID)
 
             };
-            _context.UserPermissions.Add(usarpermission);
-            _context.SaveChanges();
+            await _context.UserPermissions.AddAsync(usarpermission);
+            await _context.SaveChangesAsync();
         }
 
-        public void Revoke(int id)
+        public async Task Revoke(int id)
         {
-            var userpermission = _context.UserPermissions.FirstOrDefault(p => p.Id == id);
+            var userpermission = await _context.UserPermissions.FirstOrDefaultAsync(p => p.Id == id);
             if (userpermission != null)
             {
                 _context.UserPermissions.Remove(userpermission);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<UserPermissionInfo> GetAllPermation(int id)
+        public async Task<IEnumerable<UserPermissionInfo>> GetAllPermation(int id)
         {
-            return _context.UserPermissions.Select(u => new UserPermissionInfo
+            return await _context.UserPermissions.Select(u => new UserPermissionInfo
             {
                 Id = u.Id,
                 UserID = u.UserID,
                 PermissionID = u.PermissionID,
-            }).Where(u => u.UserID == id).ToList();
+            }).Where(u => u.UserID == id).ToListAsync();
         }
     }
 }

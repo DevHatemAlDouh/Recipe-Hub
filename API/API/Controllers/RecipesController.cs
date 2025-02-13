@@ -15,10 +15,10 @@ namespace API.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        private readonly ICRUD<RecipeInfo> _recipeService;
+        private readonly ICRUDService<RecipeInfo> _recipeService;
         private readonly UserRecipes _userRecipes;
 
-        public RecipesController(ICRUD<RecipeInfo> recipeService, UserRecipes userRecipes)
+        public RecipesController(ICRUDService<RecipeInfo> recipeService, UserRecipes userRecipes)
         {
             _recipeService = recipeService;
             _userRecipes = userRecipes;
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("GetById/{recipeId}")]
         public async Task<ActionResult<RecipeInfo>> GetRecipe(int recipeId)
         {
-            var recipe = _recipeService.GetById(recipeId);
+            var recipe = await _recipeService.GetById(recipeId);
 
             if (recipe == null)
             {
@@ -56,7 +56,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            _recipeService.Update(recipeInfo);
+            await _recipeService.Update(recipeInfo);
             return NoContent();
         }
 
@@ -65,7 +65,7 @@ namespace API.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<RecipeInfo>> PostRecipeInfo(RecipeInfo recipeInfo)
         {
-            _recipeService.Add(recipeInfo);
+            await _recipeService.Add(recipeInfo);
             return CreatedAtAction(nameof(GetRecipe), new { permissionId = recipeInfo.Id }, recipeInfo);
         }
 
@@ -79,7 +79,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            _recipeService.Delete(recipeId);
+            await _recipeService.Delete(recipeId);
             return NoContent();
         }
     }

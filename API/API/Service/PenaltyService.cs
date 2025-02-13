@@ -1,9 +1,10 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
-    public class PenaltyService : ICRUD<PenaltyInfo>
+    public class PenaltyService : ICRUDService<PenaltyInfo>
     {
         private readonly APIContext _context;
 
@@ -12,72 +13,65 @@ namespace API.Service
             _context = context;
         }
 
-        public void Add(PenaltyInfo entity)
+        public async Task Add(PenaltyInfo entity)
         {
-            var Penalty = new Penalty
+            var penalty = new Penalty
             {
                 Id = entity.Id,
                 Description = entity.Description,
                 TimeOut = entity.TimeOut,
                 Type = entity.Type,
                 UserPenalties = new List<UserPenalty>()
-
-
             };
-            _context.Penalties.Add(Penalty);
-            _context.SaveChanges();
+            await _context.Penalties.AddAsync(penalty);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            // Start by retrieving the user directly from the context
-            var Penalty = _context.Penalties.FirstOrDefault(p => p.Id == id);
-
-            // Check if the user exists
-            if (Penalty != null)
+            var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == id);
+            if (penalty != null)
             {
-                // Remove the user from the context
-                _context.Penalties.Remove(Penalty);
-                // Save changes to the database
-                _context.SaveChanges();
+                _context.Penalties.Remove(penalty);
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<PenaltyInfo> GetAll()
+        public async Task<IEnumerable<PenaltyInfo>> GetAll()
         {
-            return _context.Penalties.Select(u => new PenaltyInfo
+            return await _context.Penalties.Select(u => new PenaltyInfo
             {
                 Id = u.Id,
                 Type = u.Type,
                 Description = u.Description,
                 TimeOut = u.TimeOut
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public PenaltyInfo GetById(int id)
+        public async Task<PenaltyInfo> GetById(int id)
         {
-            var Penalty = _context.Penalties.FirstOrDefault(p => p.Id == id);
-            if (Penalty == null) return null;
+            var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == id);
+            if (penalty == null) return null;
 
             return new PenaltyInfo
             {
-                Id = Penalty.Id,
-                Type = Penalty.Type,
-                Description = Penalty.Description,
-                TimeOut = Penalty.TimeOut
+                Id = penalty.Id,
+                Type = penalty.Type,
+                Description = penalty.Description,
+                TimeOut = penalty.TimeOut
             };
         }
 
-        public void Update(PenaltyInfo entity)
+        public async Task Update(PenaltyInfo entity)
         {
-            var Penalty = _context.Penalties.FirstOrDefault(u => u.Id == entity.Id);
-            if (Penalty != null)
+            var penalty = await _context.Penalties.FirstOrDefaultAsync(u => u.Id == entity.Id);
+            if (penalty != null)
             {
-                Penalty.TimeOut = entity.TimeOut;
-                Penalty.Description = entity.Description;
-                Penalty.Type = entity.Type;
-                _context.Penalties.Update(Penalty);
-                _context.SaveChanges();
+                penalty.TimeOut = entity.TimeOut;
+                penalty.Description = entity.Description;
+                penalty.Type = entity.Type;
+                _context.Penalties.Update(penalty);
+                await _context.SaveChangesAsync();
             }
         }
     }

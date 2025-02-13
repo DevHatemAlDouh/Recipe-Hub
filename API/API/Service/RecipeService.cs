@@ -1,9 +1,10 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
-    public class RecipeService : ICRUD<RecipeInfo>
+    public class RecipeService : ICRUDService<RecipeInfo>
     {
         private readonly APIContext _context;
 
@@ -12,7 +13,7 @@ namespace API.Service
             _context = context;
         }
 
-        public void Add(RecipeInfo entity)
+        public async Task Add(RecipeInfo entity)
         {
             var recipe = new Recipe
             {
@@ -26,16 +27,15 @@ namespace API.Service
                 CommentRates = new List<CommentRate>(),
                 RecipeRates = new List<RecipeRate>(),
                 Steps = new List<Step>()
-
             };
-            _context.Recipes.Add(recipe);
-            _context.SaveChanges();
+            await _context.Recipes.AddAsync(recipe);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             // Start by retrieving the user directly from the context
-            var recipe = _context.Recipes.FirstOrDefault(r => r.Id == id);
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == id);
 
             // Check if the user exists
             if (recipe != null)
@@ -43,25 +43,25 @@ namespace API.Service
                 // Remove the user from the context
                 _context.Recipes.Remove(recipe);
                 // Save changes to the database
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<RecipeInfo> GetAll()
+        public async Task<IEnumerable<RecipeInfo>> GetAll()
         {
-            return _context.Recipes.Select(u => new RecipeInfo
+            return await _context.Recipes.Select(u => new RecipeInfo
             {
                 Id = u.Id,
                 UserID = u.UserID,
                 Description = u.Description,
                 BackgroundImage = u.BackgroundImage,
                 Title = u.Title
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public RecipeInfo GetById(int id)
+        public async Task<RecipeInfo> GetById(int id)
         {
-            var recipe = _context.Recipes.FirstOrDefault(r => r.Id == id);
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == id);
             if (recipe == null) return null;
 
             return new RecipeInfo
@@ -74,9 +74,9 @@ namespace API.Service
             };
         }
 
-        public void Update(RecipeInfo entity)
+        public async Task Update(RecipeInfo entity)
         {
-            var recipe = _context.Recipes.FirstOrDefault(r => r.Id == entity.Id);
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == entity.Id);
 
             if (recipe != null)
             {
@@ -85,7 +85,7 @@ namespace API.Service
                 recipe.BackgroundImage = entity.BackgroundImage;
 
                 _context.Recipes.Update(recipe);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

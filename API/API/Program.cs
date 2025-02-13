@@ -17,9 +17,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<APIContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ICRUD<UserInfo>, UserService>();
-builder.Services.AddScoped<ICRUD<PenaltyInfo>, PenaltyService>();
-builder.Services.AddScoped<ICRUD<PermissionInfo>, PermissionService>();
+builder.Services.AddScoped<ICRUDService<UserInfo>, UserService>();
+builder.Services.AddScoped<ICRUDService<PenaltyInfo>, PenaltyService>();
+builder.Services.AddScoped<ICRUDService<PermissionInfo>, PermissionService>();
+builder.Services.AddScoped<ICRUDService<IngredientInfo>, IngredientService>();
+builder.Services.AddScoped<ICRUDService<StepInfo>, StepService>();
 builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
