@@ -11,12 +11,14 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ICRUD<UserInfo> _userService;
+        private readonly UserPenalties _userPenalties;
         private readonly UsePermissions _usePermissions;
 
-        public UsersController(ICRUD<UserInfo> userService, UsePermissions usePermissions)
+        public UsersController(ICRUD<UserInfo> userService, UsePermissions usePermissions, UserPenalties userPenalties)
         {
             _userService = userService;
             _usePermissions = usePermissions;
+            _userPenalties = userPenalties;
         }
 
         // GET: api/users
@@ -42,8 +44,23 @@ namespace API.Controllers
         }
 
         // GET: api/UserPermissions/{userId}
-        [HttpGet("GetPermissionById{userId}")]
+        [HttpGet("GetPenaltyById{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
+        {
+            var user = _userService.GetById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var Penalties = await Task.FromResult(_userPenalties.GetAllpenalty(userId));
+            return Ok(Penalties);
+        }
+
+        // GET: api/UserPermissions/{userId}
+        [HttpGet("GetPermissionById{userId}")]
+        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
         {
             var user = _userService.GetById(userId);
 

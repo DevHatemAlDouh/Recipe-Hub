@@ -18,8 +18,10 @@ builder.Services.AddDbContext<APIContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICRUD<UserInfo>, UserService>();
+builder.Services.AddScoped<ICRUD<PenaltyInfo>, PenaltyService>();
 builder.Services.AddScoped<ICRUD<PermissionInfo>, PermissionService>();
 builder.Services.AddScoped<UsePermissions>();
+builder.Services.AddScoped<UserPenalties>();
 
 var app = builder.Build();
 

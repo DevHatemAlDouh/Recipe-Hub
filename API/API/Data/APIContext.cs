@@ -129,5 +129,6 @@ namespace API.Data
 
             // Additional configurations can be added as needed
         }
+        public DbSet<API.Models.PenaltyInfo> PenaltyInfo { get; set; } = default!;
     }
 }

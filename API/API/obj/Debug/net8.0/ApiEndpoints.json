@@ -1,5 +1,140 @@
 [
   {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "PostPenalty",
+    "RelativePath": "api/Penalties/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "penaltyInfo",
+        "Type": "API.Models.PenaltyInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.PenaltyInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "DeletePenalty",
+    "RelativePath": "api/Penalties/Delete/{penaltyId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "penaltyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "GetPenaltys",
+    "RelativePath": "api/Penalties/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.PenaltyInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "GetPenalty",
+    "RelativePath": "api/Penalties/GetById/{penaltyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "penaltyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.PenaltyInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "Grant",
+    "RelativePath": "api/Penalties/GrantPenalties",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userpenalty",
+        "Type": "API.Models.UserPenaltyInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.UserPenaltyInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "PutPenalty",
+    "RelativePath": "api/Penalties/Update/{penaltyId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "penaltyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "penaltyInfo",
+        "Type": "API.Models.PenaltyInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.PermissionsController",
     "Method": "PostPermission",
     "RelativePath": "api/Permissions/Add",
@@ -241,6 +376,32 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPermissions",
+    "RelativePath": "api/users/GetPenaltyById{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserPermissionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "UserPenalties",
     "RelativePath": "api/users/GetPermissionById{userId}",
     "HttpMethod": "GET",
     "IsController": true,
