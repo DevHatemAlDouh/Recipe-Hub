@@ -9,22 +9,25 @@ namespace API.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly ICRUDService<RecipeInfo> _recipeService;
-        private readonly RecipeAndCategory _recipeAndCategory;
+        private readonly RecipeAndCategoryAndComment _recipeAndCategory;
         private readonly UserRecipes _userRecipes;
         private readonly RecipeSteps _recipeSteps;
         private readonly RecipeSuggestions _recipeSuggestions;
+        private readonly RecipeRateService _recipeRateService;
 
         public RecipesController(
             ICRUDService<RecipeInfo> recipeService,
             UserRecipes userRecipes, RecipeSteps recipeSteps,
-            RecipeAndCategory recipeAndCategory,
-            RecipeSuggestions recipeSuggestions)
+            RecipeAndCategoryAndComment recipeAndCategory,
+            RecipeSuggestions recipeSuggestions,
+            RecipeRateService recipeRateService)
         {
             _recipeService = recipeService;
             _userRecipes = userRecipes;
             _recipeSteps = recipeSteps;
             _recipeAndCategory = recipeAndCategory;
             _recipeSuggestions = recipeSuggestions;
+            _recipeRateService = recipeRateService;
         }
 
         // GET: api/Recipes
@@ -42,8 +45,15 @@ namespace API.Controllers
             return Ok(recipes);
         }
 
+        [HttpGet("GetAllComments/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<CommentInfo>>> GetComments(int recipeId)
+        {
+            var recipes = await Task.FromResult(_recipeAndCategory.GetAllCommentsInRecipe(recipeId));
+            return Ok(recipes);
+        }
+
         [HttpGet("GetAllSuggestions/{recipeId}")]
-        public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetSuggestions(int recipeId)
+        public async Task<ActionResult<IEnumerable<SuggestionInfo>>> GetSuggestions(int recipeId)
         {
             var recipes = await Task.FromResult(_recipeSuggestions.GetAll(recipeId));
             return Ok(recipes);
@@ -86,13 +96,28 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpPut("UpdateRate/{recipeId}")]
+        public async Task<IActionResult> PutRecipeRate(int recipeId)
+        {
+            
+            await _recipeRateService.Update(recipeId);
+            return NoContent();
+        }
+
         // POST: api/Recipes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Add")]
-        public async Task<ActionResult<RecipeInfo>> PostRecipeInfo(RecipeInfo recipeInfo)
+        public async Task<ActionResult<RecipeInfo>> PostRecipe(RecipeInfo recipeInfo)
         {
             await _recipeService.Add(recipeInfo);
             return CreatedAtAction(nameof(GetRecipe), new { permissionId = recipeInfo.Id }, recipeInfo);
+        }
+
+        [HttpPost("AddRate")]
+        public async Task<ActionResult<RecipeRateInfo>> PostRecipeRate(RecipeRateInfo recipeRateInfo)
+        {
+            await _recipeRateService.Add(recipeRateInfo);
+            return NoContent();
         }
 
         // DELETE: api/Recipes/5
@@ -101,6 +126,19 @@ namespace API.Controllers
         {
             var recipe = _recipeService.GetById(recipeId);
             if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            await _recipeService.Delete(recipeId);
+            return NoContent();
+        }
+
+        [HttpDelete("DeleteRate/{recipeId}")]
+        public async Task<IActionResult> DeleteRecipeRate(int recipeId)
+        {
+            var Rate = _recipeRateService.GetById(recipeId);
+            if (Rate == null)
             {
                 return NotFound();
             }

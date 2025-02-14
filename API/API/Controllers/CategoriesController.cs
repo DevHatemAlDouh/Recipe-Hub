@@ -16,9 +16,9 @@ namespace API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICRUDService<CategoryInfo> _categoryService;
-        private readonly RecipeAndCategory _recipeAndCategory;
+        private readonly RecipeAndCategoryAndComment _recipeAndCategory;
 
-        public CategoriesController(ICRUDService<CategoryInfo> categoryService, RecipeAndCategory recipeAndCategory)
+        public CategoriesController(ICRUDService<CategoryInfo> categoryService, RecipeAndCategoryAndComment recipeAndCategory)
         {
             _categoryService = categoryService;
             _recipeAndCategory = recipeAndCategory;

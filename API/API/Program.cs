@@ -24,13 +24,17 @@ builder.Services.AddScoped<ICRUDService<IngredientInfo>, IngredientService>();
 builder.Services.AddScoped<ICRUDService<StepInfo>, StepService>();
 builder.Services.AddScoped<ICRUDService<CategoryInfo>, CategoryService>();
 builder.Services.AddScoped<ICRUDService<SuggestionInfo>, SuggestionService>();
+builder.Services.AddScoped<ICRUDService<CommentInfo>, CommentService>();
 builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
 builder.Services.AddScoped<RecipeSteps>();
-builder.Services.AddScoped<RecipeAndCategory>();
+builder.Services.AddScoped<RecipeAndCategoryAndComment>();
 builder.Services.AddScoped<RecipeSuggestions>();
 builder.Services.AddScoped<FavoriteService>();
+builder.Services.AddScoped<RecipeRateService>();
+builder.Services.AddScoped<CommentRateService>();
+builder.Services.AddScoped<ReportService>();
 
 var app = builder.Build();
 

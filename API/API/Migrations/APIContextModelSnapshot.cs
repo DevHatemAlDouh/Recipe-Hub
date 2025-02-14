@@ -51,7 +51,7 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rate")
+                    b.Property<int?>("Rate")
                         .HasColumnType("int");
 
                     b.Property<int>("RecipeID")
@@ -82,9 +82,6 @@ namespace API.Migrations
 
                     b.Property<int>("CommentID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Rate")
-                        .HasColumnType("bit");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -202,7 +199,7 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rate")
+                    b.Property<int?>("Rate")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -249,9 +246,6 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Rate")
-                        .HasColumnType("bit");
 
                     b.Property<int>("RecipeID")
                         .HasColumnType("int");
