@@ -39,12 +39,20 @@ namespace API.Service
 
         public async Task<IEnumerable<PermissionInfo>> GetAll()
         {
-            return await _context.Permissions.Select(u => new PermissionInfo
+            var permissions = await _context.Permissions.Select(u => new PermissionInfo
             {
                 Id = u.Id,
                 Title = u.Title
             }).ToListAsync();
+
+            if (!permissions.Any())
+            {
+                return new List<PermissionInfo>();
+            }
+
+            return permissions;
         }
+
 
         public async Task<PermissionInfo> GetById(int id)
         {

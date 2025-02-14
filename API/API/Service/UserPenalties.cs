@@ -28,28 +28,44 @@ namespace API.Service
 
         public async Task Grant(UserPenaltyInfo entity)
         {
+            var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID);
+
+            if (penalty == null || user == null)
+            {
+                throw new InvalidOperationException("Penalty or User not found.");
+            }
+
             var userpenalty = new UserPenalty
             {
                 Id = entity.Id,
                 UserID = entity.UserID,
                 PenaltyID = entity.PenaltyID,
-
-                Penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID),
-                User = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID)
-
+                Penalty = penalty,
+                User = user
             };
+
             await _context.UserPenalties.AddAsync(userpenalty);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<UserPenaltyInfo>> GetAllpenalty(int id)
         {
-            return await _context.UserPenalties.Select(u => new UserPenaltyInfo
+            var userPenalties = await _context.UserPenalties
+                .Where(u => u.UserID == id)
+                .Select(u => new UserPenaltyInfo
+                {
+                    Id = u.Id,
+                    UserID = u.UserID,
+                    PenaltyID = u.PenaltyID
+                }).ToListAsync();
+
+            if (!userPenalties.Any())
             {
-                Id = u.Id,
-                UserID = u.UserID,
-                PenaltyID = u.PenaltyID
-            }).Where(u => u.UserID == id).ToListAsync();
+                return new List<UserPenaltyInfo>();
+            }
+
+            return userPenalties;
         }
     }
 }

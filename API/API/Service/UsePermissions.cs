@@ -28,17 +28,24 @@ namespace API.Service
 
         public async Task Grant(UserPermissionInfo entity)
         {
-            var usarpermission = new UserPermission
+            var permission = await _context.Permissions.FirstOrDefaultAsync(p => p.Id == entity.PermissionID);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID);
+
+            if (permission == null || user == null)
+            {
+                throw new InvalidOperationException("Permission or User not found.");
+            }
+
+            var userPermission = new UserPermission
             {
                 Id = entity.Id,
                 UserID = entity.UserID,
                 PermissionID = entity.PermissionID,
-
-                Permission = await _context.Permissions.FirstOrDefaultAsync(p => p.Id == entity.PermissionID),
-                User = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID)
-
+                Permission = permission,
+                User = user
             };
-            await _context.UserPermissions.AddAsync(usarpermission);
+
+            await _context.UserPermissions.AddAsync(userPermission);
             await _context.SaveChangesAsync();
         }
 
@@ -54,12 +61,21 @@ namespace API.Service
 
         public async Task<IEnumerable<UserPermissionInfo>> GetAllPermation(int id)
         {
-            return await _context.UserPermissions.Select(u => new UserPermissionInfo
+            var userPermissions = await _context.UserPermissions
+                .Where(u => u.UserID == id)
+                .Select(u => new UserPermissionInfo
+                {
+                    Id = u.Id,
+                    UserID = u.UserID,
+                    PermissionID = u.PermissionID,
+                }).ToListAsync();
+
+            if (!userPermissions.Any())
             {
-                Id = u.Id,
-                UserID = u.UserID,
-                PermissionID = u.PermissionID,
-            }).Where(u => u.UserID == id).ToListAsync();
+                return new List<UserPermissionInfo>();
+            }
+
+            return userPermissions;
         }
     }
 }

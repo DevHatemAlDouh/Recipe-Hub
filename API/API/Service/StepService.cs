@@ -47,7 +47,7 @@ namespace API.Service
 
         public async Task<IEnumerable<StepInfo>> GetAll()
         {
-            return await _context.Steps.Select(u => new StepInfo
+            var steps = await _context.Steps.Select(u => new StepInfo
             {
                 Id = u.Id,
                 Description = u.Description,
@@ -55,6 +55,13 @@ namespace API.Service
                 StepNumber = u.StepNumber,
                 BackgroundImage = u.BackgroundImage
             }).ToListAsync();
+
+            if (!steps.Any())
+            {
+                return new List<StepInfo>();
+            }
+
+            return steps;
         }
 
         public async Task<StepInfo> GetById(int id)

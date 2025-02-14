@@ -24,7 +24,6 @@ namespace API.Service
                 Title = entity.Title,
 
                 Comments = new List<Comment>(),
-                CommentRates = new List<CommentRate>(),
                 RecipeRates = new List<RecipeRate>(),
                 Steps = new List<Step>()
             };
@@ -49,7 +48,7 @@ namespace API.Service
 
         public async Task<IEnumerable<RecipeInfo>> GetAll()
         {
-            return await _context.Recipes.Select(u => new RecipeInfo
+            var recipes = await _context.Recipes.Select(u => new RecipeInfo
             {
                 Id = u.Id,
                 UserID = u.UserID,
@@ -57,6 +56,13 @@ namespace API.Service
                 BackgroundImage = u.BackgroundImage,
                 Title = u.Title
             }).ToListAsync();
+
+            if (!recipes.Any())
+            {
+                return new List<RecipeInfo>();
+            }
+
+            return recipes;
         }
 
         public async Task<RecipeInfo> GetById(int id)

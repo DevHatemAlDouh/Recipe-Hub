@@ -14,14 +14,23 @@ namespace API.Service
         }
         public async Task<IEnumerable<RecipeInfo>> GetAll(int ID)
         {
-            return await _context.Recipes.Select(r => new RecipeInfo
+            var recipes = await _context.Recipes
+                .Where(r => r.UserID == ID)
+                .Select(r => new RecipeInfo
+                {
+                    Id = r.Id,
+                    UserID = r.UserID,
+                    Description = r.Description,
+                    BackgroundImage = r.BackgroundImage,
+                    Title = r.Title
+                }).ToListAsync();
+
+            if (!recipes.Any())
             {
-                Id = r.Id,
-                UserID = r.UserID,
-                Description = r.Description,
-                BackgroundImage = r.BackgroundImage,
-                Title = r.Title
-            }).Where(r => r.UserID == ID).ToListAsync();
+                return new List<RecipeInfo>();
+            }
+
+            return recipes;
         }
     }
 }

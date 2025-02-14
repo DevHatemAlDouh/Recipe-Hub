@@ -32,7 +32,7 @@ namespace API.Controllers
         }
 
         // GET: api/users/{userId}
-        [HttpGet("GetAllMyRecipes{userId}")]
+        [HttpGet("GetAllMyRecipes/{userId}")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyRecipes(int userId)
         {
             var users = await Task.FromResult(_userRecipes.GetAll(userId));
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         // GET: api/users/{userId}
-        [HttpGet("GetById{userId}")]
+        [HttpGet("GetById/{userId}")]
         public async Task<ActionResult<UserInfo>> GetUser(int userId)
         {
             var user = await _userService.GetById(userId);
@@ -54,7 +54,7 @@ namespace API.Controllers
         }
 
         // GET: api/UserPermissions/{userId}
-        [HttpGet("GetPenaltyById{userId}")]
+        [HttpGet("GetPenaltyById/{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
         {
             var user = _userService.GetById(userId);
@@ -69,7 +69,7 @@ namespace API.Controllers
         }
 
         // GET: api/UserPermissions/{userId}
-        [HttpGet("GetPermissionById{userId}")]
+        [HttpGet("GetPermissionById/{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
         {
             var user = _userService.GetById(userId);
@@ -84,7 +84,7 @@ namespace API.Controllers
         }
 
         // PUT: api/users/{userId}
-        [HttpPut("Update{userId}")]
+        [HttpPut("Update/{userId}")]
         public async Task<IActionResult> PutUser(int userId, UserInfo userInfo)
         {
             if (userId != userInfo.Id)
@@ -105,7 +105,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/users/{userId}
-        [HttpDelete("Delete{userId}")]
+        [HttpDelete("Delete/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
             var user = await _userService.GetById(userId);

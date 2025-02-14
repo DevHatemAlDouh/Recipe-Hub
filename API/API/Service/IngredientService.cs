@@ -45,13 +45,21 @@ namespace API.Service
 
         public async Task<IEnumerable<IngredientInfo>> GetAll()
         {
-            return await _context.Ingredients.Select(u => new IngredientInfo
+            var ingredients = await _context.Ingredients.Select(u => new IngredientInfo
             {
                 Id = u.Id,
                 Description = u.Description,
                 Name = u.Name
             }).ToListAsync();
+
+            if (!ingredients.Any())
+            {
+                return new List<IngredientInfo>();
+            }
+
+            return ingredients;
         }
+
 
         public async Task<IngredientInfo> GetById(int id)
         {

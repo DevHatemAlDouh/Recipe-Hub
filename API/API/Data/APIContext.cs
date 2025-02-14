@@ -31,6 +31,12 @@ namespace API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.User) // Ensure Recipe has a navigation property to User
+                .WithMany(u => u.Reports) // Ensure User has a collection of Recipes
+                .HasForeignKey(r => r.FromUserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Configure relationships for Recipe
             modelBuilder.Entity<Recipe>()
                 .HasOne(r => r.User) // Ensure Recipe has a navigation property to User
@@ -137,5 +143,6 @@ namespace API.Data
             // Additional configurations can be added as needed
         }
         public DbSet<API.Models.StepInfo> StepInfo { get; set; } = default!;
+        public DbSet<API.Models.CategoryInfo> CategoryInfo { get; set; } = default!;
     }
 }

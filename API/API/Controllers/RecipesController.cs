@@ -16,14 +16,16 @@ namespace API.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly ICRUDService<RecipeInfo> _recipeService;
+        private readonly RecipeAndCategory _recipeAndCategory;
         private readonly UserRecipes _userRecipes;
         private readonly RecipeSteps _recipeSteps;
 
-        public RecipesController(ICRUDService<RecipeInfo> recipeService, UserRecipes userRecipes, RecipeSteps recipeSteps)
+        public RecipesController(ICRUDService<RecipeInfo> recipeService, UserRecipes userRecipes, RecipeSteps recipeSteps, RecipeAndCategory recipeAndCategory)
         {
             _recipeService = recipeService;
             _userRecipes = userRecipes;
             _recipeSteps = recipeSteps;
+            _recipeAndCategory = recipeAndCategory;
         }
 
         // GET: api/Recipes
@@ -31,6 +33,13 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<RecipeInfo>>> GetRecips()
         {
             var recipes = await Task.FromResult(_recipeService.GetAll());
+            return Ok(recipes);
+        }
+
+        [HttpGet("GetAllCategories/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetCategories(int recipeId)
+        {
+            var recipes = await Task.FromResult(_recipeAndCategory.GetAllCategoriesInRecipe(recipeId));
             return Ok(recipes);
         }
 

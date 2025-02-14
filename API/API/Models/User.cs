@@ -8,12 +8,12 @@
         public string CountryCode { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        // Add this collection property
-        public ICollection<Recipe> Recipes { get; set; } // Navigation property for Comments
-        public ICollection<Comment> Comments { get; set; } // Navigation property for Comments
-        public ICollection<CommentRate> CommentRates { get; set; } // Collection of CommentRates
-        public ICollection<RecipeRate> RecipeRates { get; set; } // If you have recipe ratings
-        public ICollection<UserPenalty> UserPenalties { get; set; } // If you have user penalties
+        public ICollection<Recipe> Recipes { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<CommentRate> CommentRates { get; set; }
+        public ICollection<RecipeRate> RecipeRates { get; set; }
+        public ICollection<UserPenalty> UserPenalties { get; set; }
         public ICollection<UserPermission> UserPermissions { get; set; }
+        public ICollection<Report> Reports { get; set; } // Add this line to fix the error
     }
 }

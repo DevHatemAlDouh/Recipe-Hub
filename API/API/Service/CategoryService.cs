@@ -1,0 +1,79 @@
+﻿using API.Data;
+using API.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Service
+{
+    public class CategoryService : ICRUDService<CategoryInfo>
+    {
+        private readonly APIContext _context;
+
+        public CategoryService(APIContext context)
+        {
+            _context = context;
+        }
+
+        public async Task Add(CategoryInfo entity)
+        {
+            var Category = new Category
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                RecipeCategorys = new List<RecipeCategory>()
+            };
+
+            await _context.Categories.AddAsync(Category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<CategoryInfo> GetById(int id)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            if (category == null) return null;
+
+            return new CategoryInfo
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+        }
+
+        public async Task Update(CategoryInfo entity)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == entity.Id);
+            if (category != null)
+            {
+                category.Name = entity.Name;
+
+                _context.Categories.Update(category);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == id);
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<CategoryInfo>> GetAll()
+        {
+            var categories = await _context.Categories.Select(c => new CategoryInfo
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToListAsync();
+
+            if (!categories.Any())
+            {
+                return new List<CategoryInfo>();
+            }
+
+            return categories;
+        }
+    }
+}

@@ -39,14 +39,22 @@ namespace API.Service
 
         public async Task<IEnumerable<PenaltyInfo>> GetAll()
         {
-            return await _context.Penalties.Select(u => new PenaltyInfo
+            var penalties = await _context.Penalties.Select(u => new PenaltyInfo
             {
                 Id = u.Id,
                 Type = u.Type,
                 Description = u.Description,
                 TimeOut = u.TimeOut
             }).ToListAsync();
+
+            if (!penalties.Any())
+            {
+                return new List<PenaltyInfo>();
+            }
+
+            return penalties;
         }
+
 
         public async Task<PenaltyInfo> GetById(int id)
         {

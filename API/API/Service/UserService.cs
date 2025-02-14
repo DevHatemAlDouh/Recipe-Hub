@@ -52,7 +52,7 @@ namespace API.Service
 
         public async Task<IEnumerable<UserInfo>> GetAll()
         {
-            return await _context.Users.Select(u => new UserInfo
+            var users = await _context.Users.Select(u => new UserInfo
             {
                 Id = u.Id,
                 UserName = u.UserName,
@@ -61,6 +61,13 @@ namespace API.Service
                 Email = u.Email,
                 Password = u.Password
             }).ToListAsync();
+
+            if (!users.Any())
+            {
+                return new List<UserInfo>();
+            }
+
+            return users;
         }
 
         public async Task<UserInfo> GetById(int id)

@@ -81,19 +81,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecipeCategories",
-                columns: table => new
-                {
-                    RecipeID = table.Column<int>(type: "int", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeCategories", x => new { x.RecipeID, x.CategoryID });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -108,6 +95,22 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StepInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    StepNumber = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StepInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,7 +154,8 @@ namespace API.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -224,7 +228,8 @@ namespace API.Migrations
                     RecipeID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SupCommentID = table.Column<int>(type: "int", nullable: true)
+                    SupCommentID = table.Column<int>(type: "int", nullable: true),
+                    Rate = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,6 +249,31 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RecipeCategories",
+                columns: table => new
+                {
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeCategories", x => new { x.RecipeID, x.CategoryID });
+                    table.ForeignKey(
+                        name: "FK_RecipeCategories_Categories_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeCategories_Recipes_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RecipeRates",
                 columns: table => new
                 {
@@ -251,7 +281,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<int>(type: "int", nullable: false)
+                    Rate = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -300,8 +330,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CommentID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<bool>(type: "bit", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    Rate = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -312,11 +341,6 @@ namespace API.Migrations
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CommentRates_Recipes_RecipeId",
-                        column: x => x.RecipeId,
-                        principalTable: "Recipes",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CommentRates_Users_UserID",
                         column: x => x.UserID,
@@ -359,11 +383,6 @@ namespace API.Migrations
                 column: "CommentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommentRates_RecipeId",
-                table: "CommentRates",
-                column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CommentRates_UserID",
                 table: "CommentRates",
                 column: "UserID");
@@ -377,6 +396,11 @@ namespace API.Migrations
                 name: "IX_Comments_UserID",
                 table: "Comments",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeCategories_CategoryID",
+                table: "RecipeCategories",
+                column: "CategoryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeRates_RecipeID",
@@ -428,9 +452,6 @@ namespace API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "CommentRates");
 
             migrationBuilder.DropTable(
@@ -446,6 +467,9 @@ namespace API.Migrations
                 name: "Reports");
 
             migrationBuilder.DropTable(
+                name: "StepInfo");
+
+            migrationBuilder.DropTable(
                 name: "StepIngredients");
 
             migrationBuilder.DropTable(
@@ -459,6 +483,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Ingredients");

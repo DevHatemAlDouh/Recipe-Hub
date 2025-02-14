@@ -22,10 +22,12 @@ builder.Services.AddScoped<ICRUDService<PenaltyInfo>, PenaltyService>();
 builder.Services.AddScoped<ICRUDService<PermissionInfo>, PermissionService>();
 builder.Services.AddScoped<ICRUDService<IngredientInfo>, IngredientService>();
 builder.Services.AddScoped<ICRUDService<StepInfo>, StepService>();
+builder.Services.AddScoped<ICRUDService<CategoryInfo>, CategoryService>();
 builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
 builder.Services.AddScoped<RecipeSteps>();
+builder.Services.AddScoped<RecipeAndCategory>();
 
 var app = builder.Build();
 

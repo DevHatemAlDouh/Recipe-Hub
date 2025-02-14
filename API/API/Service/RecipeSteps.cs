@@ -15,14 +15,23 @@ namespace API.Service
 
         public async Task<IEnumerable<StepInfo>> GetAll(int ID)
         {
-            return await _context.Steps.Select(r => new StepInfo
+            var steps = await _context.Steps
+                .Where(r => r.RecipeID == ID)
+                .Select(r => new StepInfo
+                {
+                    Id = r.Id,
+                    RecipeID = r.RecipeID,
+                    Description = r.Description,
+                    BackgroundImage = r.BackgroundImage,
+                    StepNumber = r.StepNumber
+                }).ToListAsync();
+
+            if (!steps.Any())
             {
-                Id = r.Id,
-                RecipeID = r.RecipeID,
-                Description = r.Description,
-                BackgroundImage = r.BackgroundImage,
-                StepNumber = r.StepNumber
-            }).Where(r => r.RecipeID == ID).ToListAsync();
+                return new List<StepInfo>();
+            }
+
+            return steps;
         }
     }
 }
