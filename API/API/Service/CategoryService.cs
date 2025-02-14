@@ -15,15 +15,15 @@ namespace API.Service
 
         public async Task Add(CategoryInfo entity)
         {
-            var Category = new Category
+            var category = new Category
             {
-                Id = entity.Id,
                 Name = entity.Name,
-                RecipeCategorys = new List<RecipeCategory>()
+                RecipeCategories = new List<RecipeCategory>()
             };
 
-            await _context.Categories.AddAsync(Category);
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
+            entity.Id = category.Id; // Update the entity with the generated Id
         }
 
         public async Task<CategoryInfo> GetById(int id)

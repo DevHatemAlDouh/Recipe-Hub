@@ -18,13 +18,12 @@ namespace API.Service
         {
             var permission = new Permission
             {
-                Id = entity.Id,
                 Title = entity.Title,
                 UserPermissions = new List<UserPermission>()
-
             };
             await _context.Permissions.AddAsync(permission);
             await _context.SaveChangesAsync();
+            entity.Id = permission.Id; // Update the entity with the generated Id
         }
 
         public async Task Delete(int id)

@@ -38,7 +38,6 @@ namespace API.Service
 
             var userPermission = new UserPermission
             {
-                Id = entity.Id,
                 UserID = entity.UserID,
                 PermissionID = entity.PermissionID,
                 Permission = permission,
@@ -47,6 +46,7 @@ namespace API.Service
 
             await _context.UserPermissions.AddAsync(userPermission);
             await _context.SaveChangesAsync();
+            entity.Id = userPermission.Id; // Update the entity with the generated Id
         }
 
         public async Task Revoke(int id)

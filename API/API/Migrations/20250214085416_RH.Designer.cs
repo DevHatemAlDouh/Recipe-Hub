@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20250213165848_RH")]
+    [Migration("20250214085416_RH")]
     partial class RH
     {
         /// <inheritdoc />
@@ -103,20 +103,27 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Favorite", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IngredientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserID", "IngredientID");
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Favorites");
                 });
@@ -217,18 +224,23 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.RecipeCategory", b =>
                 {
-                    b.Property<int>("RecipeID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("RecipeID")
                         .HasColumnType("int");
 
-                    b.HasKey("RecipeID", "CategoryID");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("RecipeID");
 
                     b.ToTable("RecipeCategories");
                 });
@@ -285,6 +297,8 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FromUserID");
+
                     b.ToTable("Reports");
                 });
 
@@ -315,33 +329,6 @@ namespace API.Migrations
                     b.HasIndex("RecipeID");
 
                     b.ToTable("Steps");
-                });
-
-            modelBuilder.Entity("API.Models.StepInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("BackgroundImage")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RecipeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StepInfo");
                 });
 
             modelBuilder.Entity("API.Models.StepIngredient", b =>
@@ -393,6 +380,10 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StepID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Suggestions");
                 });
@@ -455,18 +446,23 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.UserPermission", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PermissionID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserID", "PermissionID");
+                    b.HasKey("Id");
 
                     b.HasIndex("PermissionID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("UserPermissions");
                 });
@@ -509,6 +505,25 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Models.Favorite", b =>
+                {
+                    b.HasOne("API.Models.Ingredient", "Ingredient")
+                        .WithMany("Favorites")
+                        .HasForeignKey("IngredientID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Models.Recipe", b =>
                 {
                     b.HasOne("API.Models.User", "User")
@@ -523,13 +538,13 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.RecipeCategory", b =>
                 {
                     b.HasOne("API.Models.Category", "Category")
-                        .WithMany("RecipeCategorys")
+                        .WithMany("RecipeCategories")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Models.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("RecipeCategories")
                         .HasForeignKey("RecipeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -554,6 +569,17 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Recipe");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Models.Report", b =>
+                {
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Reports")
+                        .HasForeignKey("FromUserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -586,6 +612,25 @@ namespace API.Migrations
                     b.Navigation("Ingredient");
 
                     b.Navigation("Step");
+                });
+
+            modelBuilder.Entity("API.Models.Suggestion", b =>
+                {
+                    b.HasOne("API.Models.Step", "Step")
+                        .WithMany("Suggestions")
+                        .HasForeignKey("StepID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Suggestions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Step");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.UserPenalty", b =>
@@ -628,7 +673,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Category", b =>
                 {
-                    b.Navigation("RecipeCategorys");
+                    b.Navigation("RecipeCategories");
                 });
 
             modelBuilder.Entity("API.Models.Comment", b =>
@@ -638,6 +683,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Ingredient", b =>
                 {
+                    b.Navigation("Favorites");
+
                     b.Navigation("StepIngredients");
                 });
 
@@ -655,6 +702,8 @@ namespace API.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("RecipeCategories");
+
                     b.Navigation("RecipeRates");
 
                     b.Navigation("Steps");
@@ -663,6 +712,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Step", b =>
                 {
                     b.Navigation("StepIngredients");
+
+                    b.Navigation("Suggestions");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -671,9 +722,15 @@ namespace API.Migrations
 
                     b.Navigation("Comments");
 
+                    b.Navigation("Favorites");
+
                     b.Navigation("RecipeRates");
 
                     b.Navigation("Recipes");
+
+                    b.Navigation("Reports");
+
+                    b.Navigation("Suggestions");
 
                     b.Navigation("UserPenalties");
 

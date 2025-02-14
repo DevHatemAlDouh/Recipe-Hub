@@ -13,6 +13,7 @@ namespace API.Models
 
         // Navigation property
         public Recipe Recipe { get; set; } // Navigation to Recipe
+        public ICollection<Suggestion> Suggestions { get; set; } // Collection of Suggestions
         public ICollection<StepIngredient> StepIngredients { get; set; } // Collection of StepIngredients
     }
 }

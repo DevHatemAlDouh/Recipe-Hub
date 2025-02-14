@@ -17,7 +17,6 @@ namespace API.Service
         {
             var user = new User
             {
-                Id = entity.Id,
                 UserName = entity.UserName,
                 PhoneNumber = entity.PhoneNumber,
                 CountryCode = entity.CountryCode,
@@ -33,6 +32,7 @@ namespace API.Service
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+            entity.Id = user.Id; // Update the entity with the generated Id
         }
 
         public async Task Delete(int id)

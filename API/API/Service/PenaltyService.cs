@@ -17,7 +17,6 @@ namespace API.Service
         {
             var penalty = new Penalty
             {
-                Id = entity.Id,
                 Description = entity.Description,
                 TimeOut = entity.TimeOut,
                 Type = entity.Type,
@@ -25,6 +24,7 @@ namespace API.Service
             };
             await _context.Penalties.AddAsync(penalty);
             await _context.SaveChangesAsync();
+            entity.Id = penalty.Id; // Update the entity with the generated Id
         }
 
         public async Task Delete(int id)

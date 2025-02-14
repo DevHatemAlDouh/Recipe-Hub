@@ -17,18 +17,17 @@ namespace API.Service
         {
             var recipe = new Recipe
             {
-                Id = entity.Id,
                 UserID = entity.UserID,
                 Description = entity.Description,
                 BackgroundImage = entity.BackgroundImage,
                 Title = entity.Title,
-
                 Comments = new List<Comment>(),
                 RecipeRates = new List<RecipeRate>(),
                 Steps = new List<Step>()
             };
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
+            entity.Id = recipe.Id; // Update the entity with the generated Id
         }
 
         public async Task Delete(int id)

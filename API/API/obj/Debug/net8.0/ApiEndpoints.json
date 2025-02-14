@@ -1,5 +1,140 @@
 [
   {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "PostCategory",
+    "RelativePath": "api/Categories/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryInfo",
+        "Type": "API.Models.CategoryInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.CategoryInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "DeleteCategory",
+    "RelativePath": "api/Categories/Delete/{categoryId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "GetCategories",
+    "RelativePath": "api/Categories/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "GetRecipes",
+    "RelativePath": "api/Categories/GetAllRecipes/{categoryId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "GetCategory",
+    "RelativePath": "api/Categories/GetById/{categoryId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.CategoryInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.CategoriesController",
+    "Method": "PutCategory",
+    "RelativePath": "api/Categories/Update/{categoryId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "categoryInfo",
+        "Type": "API.Models.CategoryInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.IngredientsController",
     "Method": "PostIngredient",
     "RelativePath": "api/Ingredients/Add",
@@ -458,6 +593,32 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
+    "Method": "GetCategories",
+    "RelativePath": "api/Recipes/GetAllCategories/{recipeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
     "Method": "GetSteps",
     "RelativePath": "api/Recipes/GetAllSteps/{recipeId}",
     "HttpMethod": "GET",
@@ -473,6 +634,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.StepInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "GetSuggestions",
+    "RelativePath": "api/Recipes/GetAllSuggestions/{recipeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -639,6 +826,115 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.SuggestionsController",
+    "Method": "PostSuggestion",
+    "RelativePath": "api/Suggestions/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "suggestionInfo",
+        "Type": "API.Models.SuggestionInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.SuggestionInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.SuggestionsController",
+    "Method": "DeleteSuggestion",
+    "RelativePath": "api/Suggestions/Delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.SuggestionsController",
+    "Method": "GetSuggestions",
+    "RelativePath": "api/Suggestions/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.SuggestionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.SuggestionsController",
+    "Method": "GetSuggestion",
+    "RelativePath": "api/Suggestions/GetById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.SuggestionInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.SuggestionsController",
+    "Method": "PutSuggestion",
+    "RelativePath": "api/Suggestions/Update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "suggestionInfo",
+        "Type": "API.Models.SuggestionInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "PostUser",
     "RelativePath": "api/users/Add",
@@ -667,7 +963,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "DeleteUser",
-    "RelativePath": "api/users/Delete{userId}",
+    "RelativePath": "api/users/Delete/{userId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -703,7 +999,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "GetMyRecipes",
-    "RelativePath": "api/users/GetAllMyRecipes{userId}",
+    "RelativePath": "api/users/GetAllMyRecipes/{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -729,7 +1025,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "GetUser",
-    "RelativePath": "api/users/GetById{userId}",
+    "RelativePath": "api/users/GetById/{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -755,7 +1051,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPermissions",
-    "RelativePath": "api/users/GetPenaltyById{userId}",
+    "RelativePath": "api/users/GetPenaltyById/{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -781,7 +1077,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPenalties",
-    "RelativePath": "api/users/GetPermissionById{userId}",
+    "RelativePath": "api/users/GetPermissionById/{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -807,7 +1103,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "PutUser",
-    "RelativePath": "api/users/Update{userId}",
+    "RelativePath": "api/users/Update/{userId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,

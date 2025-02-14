@@ -18,7 +18,6 @@ namespace API.Service
         {
             var step = new Step
             {
-                Id = entity.Id,
                 Description = entity.Description,
                 RecipeID = entity.RecipeID,
                 StepNumber = entity.StepNumber,
@@ -28,6 +27,7 @@ namespace API.Service
 
             await _context.Steps.AddAsync(step);
             await _context.SaveChangesAsync();
+            entity.Id = step.Id; // Update the entity with the generated Id
         }
 
         public async Task Delete(int id)

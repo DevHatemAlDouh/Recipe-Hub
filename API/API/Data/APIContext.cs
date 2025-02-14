@@ -27,122 +27,147 @@ namespace API.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Penalty> Penalties { get; set; }
         public DbSet<Step> Steps { get; set; }
-        public DbSet<UserPenalty> UserPenalties { get; set; } // Added UserPenalty DbSet
+        public DbSet<UserPenalty> UserPenalties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure relationships for Favorite
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Favorites)
+                .HasForeignKey(f => f.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.Ingredient)
+                .WithMany(i => i.Favorites)
+                .HasForeignKey(f => f.IngredientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure relationships for Report
             modelBuilder.Entity<Report>()
-                .HasOne(r => r.User) // Ensure Recipe has a navigation property to User
-                .WithMany(u => u.Reports) // Ensure User has a collection of Recipes
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reports)
                 .HasForeignKey(r => r.FromUserID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure relationships for Recipe
             modelBuilder.Entity<Recipe>()
-                .HasOne(r => r.User) // Ensure Recipe has a navigation property to User
-                .WithMany(u => u.Recipes) // Ensure User has a collection of Recipes
+                .HasOne(r => r.User)
+                .WithMany(u => u.Recipes)
                 .HasForeignKey(r => r.UserID)
-                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict to prevent cycles
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // Configure relationships for CommentRate
             modelBuilder.Entity<CommentRate>()
-                .HasOne(cr => cr.User) // Assuming you have a navigation property for User
-                .WithMany(u => u.CommentRates) // Assuming User has a collection of CommentRates
+                .HasOne(cr => cr.User)
+                .WithMany(u => u.CommentRates)
                 .HasForeignKey(cr => cr.UserID)
-                .OnDelete(DeleteBehavior.Restrict); // Change to Restrict or SetNull if appropriate
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<CommentRate>()
                 .HasOne(cr => cr.Comment)
-                .WithMany(c => c.CommentRates) // Assuming Comment has a collection of CommentRates
+                .WithMany(c => c.CommentRates)
                 .HasForeignKey(cr => cr.CommentID)
-                .OnDelete(DeleteBehavior.Cascade); // Keep Cascade if desired
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<UserPermission>()
-                .HasKey(up => new { up.UserID, up.PermissionID });
-
-            modelBuilder.Entity<Favorite>()
-                .HasKey(f => new { f.UserID, f.IngredientID });
+            // Configure relationships for RecipeCategory
+            modelBuilder.Entity<RecipeCategory>()
+                .HasOne(rc => rc.Recipe)
+                .WithMany(r => r.RecipeCategories)
+                .HasForeignKey(rc => rc.RecipeID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<RecipeCategory>()
-                .HasKey(rc => new { rc.RecipeID, rc.CategoryID });
+                .HasOne(rc => rc.Category)
+                .WithMany(c => c.RecipeCategories)
+                .HasForeignKey(rc => rc.CategoryID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for StepIngredient
             modelBuilder.Entity<StepIngredient>()
                 .HasOne(si => si.Ingredient)
-                .WithMany(i => i.StepIngredients) // Ensure Ingredient has a collection of StepIngredients
+                .WithMany(i => i.StepIngredients)
                 .HasForeignKey(si => si.IngredientID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StepIngredient>()
                 .HasOne(si => si.Step)
-                .WithMany(s => s.StepIngredients) // Ensure Step has a collection of StepIngredients
+                .WithMany(s => s.StepIngredients)
                 .HasForeignKey(si => si.StepID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for Comment
             modelBuilder.Entity<Comment>()
-                .HasOne(c => c.Recipe) // Ensure Comment has a navigation property to Recipe
-                .WithMany(r => r.Comments) // Ensure Recipe has a collection of Comments
+                .HasOne(c => c.Recipe)
+                .WithMany(r => r.Comments)
                 .HasForeignKey(c => c.RecipeID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
-                .HasOne(c => c.User) // Ensure Comment has a navigation property to User
-                .WithMany(u => u.Comments) // Ensure User has a collection of Comments
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for RecipeRate
             modelBuilder.Entity<RecipeRate>()
-                .HasOne(rr => rr.Recipe) // Ensure RecipeRate has a navigation property to Recipe
-                .WithMany(r => r.RecipeRates) // Ensure Recipe has a collection of RecipeRates
+                .HasOne(rr => rr.Recipe)
+                .WithMany(r => r.RecipeRates)
                 .HasForeignKey(rr => rr.RecipeID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<RecipeRate>()
-                .HasOne(rr => rr.User) // Ensure RecipeRate has a navigation property to User
-                .WithMany(u => u.RecipeRates) // Ensure User has a collection of RecipeRates
+                .HasOne(rr => rr.User)
+                .WithMany(u => u.RecipeRates)
                 .HasForeignKey(rr => rr.UserID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for Step
             modelBuilder.Entity<Step>()
-                .HasOne(s => s.Recipe) // Ensure Step has a navigation property to Recipe
-                .WithMany(r => r.Steps) // Ensure Recipe has a collection of Steps
+                .HasOne(s => s.Recipe)
+                .WithMany(r => r.Steps)
                 .HasForeignKey(s => s.RecipeID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for UserPenalty
             modelBuilder.Entity<UserPenalty>()
-                .HasOne(up => up.User) // Ensure UserPenalty has a navigation property to User
-                .WithMany(u => u.UserPenalties) // Ensure User has a collection of UserPenalties
+                .HasOne(up => up.User)
+                .WithMany(u => u.UserPenalties)
                 .HasForeignKey(up => up.UserID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserPenalty>()
-                .HasOne(up => up.Penalty) // Ensure UserPenalty has a navigation property to Penalty
-                .WithMany(p => p.UserPenalties) // Ensure Penalty has a collection of UserPenalties
+                .HasOne(up => up.Penalty)
+                .WithMany(p => p.UserPenalties)
                 .HasForeignKey(up => up.PenaltyID)
-                .OnDelete(DeleteBehavior.Cascade); // Optional: define delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure UserPermission relationship
-            modelBuilder.Entity<UserPermission>()
-                .HasKey(up => new { up.UserID, up.PermissionID });
-
+            // Configure relationships for UserPermission
             modelBuilder.Entity<UserPermission>()
                 .HasOne(up => up.User)
-                .WithMany(u => u.UserPermissions) // Ensure User has a collection of UserPermissions
+                .WithMany(u => u.UserPermissions)
                 .HasForeignKey(up => up.UserID)
-                .OnDelete(DeleteBehavior.Cascade); // Choose delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserPermission>()
                 .HasOne(up => up.Permission)
-                .WithMany(p => p.UserPermissions) // Ensure Permission has a collection of UserPermissions
+                .WithMany(p => p.UserPermissions)
                 .HasForeignKey(up => up.PermissionID)
-                .OnDelete(DeleteBehavior.Cascade); // Choose delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Additional configurations can be added as needed
+            // Configure relationships for Suggestion
+            modelBuilder.Entity<Suggestion>()
+                .HasOne(s => s.User)
+                .WithMany(u => u.Suggestions)
+                .HasForeignKey(s => s.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Suggestion>()
+                .HasOne(s => s.Step)
+                .WithMany(s => s.Suggestions)
+                .HasForeignKey(s => s.StepID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
-        public DbSet<API.Models.StepInfo> StepInfo { get; set; } = default!;
-        public DbSet<API.Models.CategoryInfo> CategoryInfo { get; set; } = default!;
     }
 }

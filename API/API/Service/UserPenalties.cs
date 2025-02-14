@@ -31,22 +31,22 @@ namespace API.Service
             var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == entity.UserID);
 
-            if (penalty == null || user == null)
+            if (penalty != null || user != null)
             {
-                throw new InvalidOperationException("Penalty or User not found.");
+                var userPenalty = new UserPenalty
+                {
+                    UserID = entity.UserID,
+                    PenaltyID = entity.PenaltyID,
+                    Penalty = penalty,
+                    User = user
+                };
+
+                await _context.UserPenalties.AddAsync(userPenalty);
+                await _context.SaveChangesAsync();
+                entity.Id = userPenalty.Id; // Update the entity with the generated Id
             }
 
-            var userpenalty = new UserPenalty
-            {
-                Id = entity.Id,
-                UserID = entity.UserID,
-                PenaltyID = entity.PenaltyID,
-                Penalty = penalty,
-                User = user
-            };
-
-            await _context.UserPenalties.AddAsync(userpenalty);
-            await _context.SaveChangesAsync();
+            
         }
 
         public async Task<IEnumerable<UserPenaltyInfo>> GetAllpenalty(int id)
