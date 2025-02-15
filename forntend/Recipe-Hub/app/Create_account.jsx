@@ -4,26 +4,39 @@ import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link, useRouter } from 'expo-router'; // استيراد useRouter
 import globalStyles from './globalStyles'; // تحديث المسار ليشير إلى ملف التنسيقات
 import Icon from 'react-native-vector-icons/FontAwesome'; // مكتبة الأيقونات
-// import PhoneInput from 
-
-
+import PhoneInput from 'react-native-phone-input';
+import { parsePhoneNumberFromString } from 'libphonenumber-js'; // استيراد المكتبة للتحقق من صحة رقم الهاتف
 
 const CreateAccount = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rePasswordError, setRePasswordError] = useState('');
   const router = useRouter(); // استخدام useRouter للانتقال
-  const [phone, setPhone] = useState('');
+
+  const handlePhoneChange = (value) => {
+    setPhone(value);
+  };
+
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneNumberObj = parsePhoneNumberFromString(phoneNumber);
+    return phoneNumberObj && phoneNumberObj.isValid();
+  };
 
   const handleSignUp = () => {
     // تحقق من صحة الاسم
+    let valid = true;
+
+    // التحقق من الاسم
     if (!name) {
       setNameError('Name is required');
+      valid = false;
     } else {
       setNameError('');
     }
@@ -31,41 +44,50 @@ const CreateAccount = () => {
     // تحقق من صحة البريد الإلكتروني
     if (!email) {
       setEmailError('Email is required');
+      valid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       setEmailError('Invalid email format');
+      valid = false;
     } else {
       setEmailError('');
+    }
+
+    // تحقق من صحة رقم الهاتف
+    if (!phone) {
+      setPhoneError('Phone number is required');
+      valid = false;
+    } else if (!validatePhoneNumber(phone)) {
+      setPhoneError('Invalid phone number');
+      valid = false;
+    } else {
+      setPhoneError('');
     }
 
     // تحقق من صحة كلمة المرور
     if (!password) {
       setPasswordError('Password is required');
+      valid = false;
     } else if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters');
+      valid = false;
     } else {
       setPasswordError('');
-    }
-
-    if (!phone) {
-      setPhoneError('Phone number is required');
-    } else if (!/^\d{10}$/.test(phone)) {
-      setPhoneError('Invalid phone number format');
-    } else {
-      setPhoneError('');
     }
 
     // تحقق من مطابقة كلمة المرور المعاد إدخالها
     if (!rePassword) {
       setRePasswordError('Re-enter password is required');
+      valid = false;
     } else if (rePassword !== password) {
       setRePasswordError('Passwords do not match');
+      valid = false;
     } else {
       setRePasswordError('');
     }
 
     // إذا لم تكن هناك أخطاء، الانتقال إلى صفحة تسجيل الدخول
-    if (!nameError && !emailError && !passwordError && !rePasswordError && name && email && password && rePassword) {
-      router.push('/Sign_in'); // الانتقال إلى صفحة تسجيل الدخول
+    if (valid) {
+      router.push('/Sign_in');
     }
   };
 
@@ -97,17 +119,18 @@ const CreateAccount = () => {
             onChangeText={setEmail}
           />
         </View>
-        <View style={globalStyles.inputContainer}>
-            <Icon name="phone" style={globalStyles.icon} />
-            <TextInput
-              placeholder="Phone number"
-              placeholderTextColor="#ccc"
-              style={globalStyles.input}
-              value={phone}
-              onChangeText={setPhone}
-            />
-          </View>
         {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
+        <View style={globalStyles.inputContainer}>
+        <PhoneInput
+        ref={(ref) => { this.phone = ref; }} // حفظ المرجع للمكون
+        initialCountry="ye" // البلد الافتراضي (اليمن)
+        value={phone} // القيمة الحالية لرقم الهاتف
+        onChangePhoneNumber={handlePhoneChange} // تحديث القيمة عند التغيير
+        textStyle={{ color: 'black' }} // تنسيق النص
+        textProps={{ placeholder: 'Phone number' }} // النص البديل
+/>  
+        </View>
+        {phoneError ? <Text style={globalStyles.errorText}>{phoneError}</Text> : null}
         <View style={globalStyles.inputContainer}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
@@ -133,14 +156,11 @@ const CreateAccount = () => {
         </View>
         {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
         <TouchableOpacity
-            style={ [globalStyles.createAccountButton, globalStyles.createSignIn]}
-            onPress={handleSignUp} 
-          >
-            <Text style={globalStyles.buttonText}>Create Account</Text>
-          </TouchableOpacity>
-
-        {/* <Button title="Add account" onPress={handleSignUp} style={[globalStyles.createAccountButton, globalStyles.createSignIn]} /> */}
-      
+          style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
+          onPress={handleSignUp}
+        >
+          <Text style={globalStyles.buttonText}>Create Account</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

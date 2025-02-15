@@ -14,14 +14,10 @@
     "**/*.jsx",
     "**/*.js",
     ".expo/types/**/*.ts",
-<<<<<<< HEAD
-    "expo-env.d.ts"
-, "app/index.jsx", "app/Sign_in.jsx"  ]
-=======
     "expo-env.d.ts",
-   "app/index.js",
+    "app/index.js",
     "app/(tabs)/App.js",
-
+    "app/index.jsx",
+    "app/Sign_in.jsx"
   ]
->>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
 }

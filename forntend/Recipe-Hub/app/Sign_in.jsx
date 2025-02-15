@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-// import BottomSheet from 'reanimated-bottom-sheet';
-import { View, Text, ImageBackground, TextInput, ScrollView, Button } from 'react-native';
-=======
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
->>>>>>> 08b19c66b146f08122454c1f8499c95cff25cad2
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
 import globalStyles from './globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
