@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link, useRouter } from 'expo-router'; // استيراد useRouter
@@ -18,7 +18,9 @@ const CreateAccount = () => {
   const [phoneError, setPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rePasswordError, setRePasswordError] = useState('');
+  
   const router = useRouter(); // استخدام useRouter للانتقال
+  const phoneRef = useRef(null); // إنشاء المرجع لـ PhoneInput
 
   const handlePhoneChange = (value) => {
     setPhone(value);
@@ -41,7 +43,6 @@ const CreateAccount = () => {
       setNameError('');
     }
 
-    // تحقق من صحة البريد الإلكتروني
     if (!email) {
       setEmailError('Email is required');
       valid = false;
@@ -98,6 +99,7 @@ const CreateAccount = () => {
         <Text style={[globalStyles.title, globalStyles.sign_In_Up_titl]}>
           Create account
         </Text>
+        
         <View style={globalStyles.inputContainer}>
           <Icon name="user" style={globalStyles.icon} />
           <TextInput
@@ -109,6 +111,7 @@ const CreateAccount = () => {
           />
         </View>
         {nameError ? <Text style={globalStyles.errorText}>{nameError}</Text> : null}
+
         <View style={globalStyles.inputContainer}>
           <Icon name="envelope" style={globalStyles.icon} />
           <TextInput
@@ -120,17 +123,19 @@ const CreateAccount = () => {
           />
         </View>
         {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
+
         <View style={globalStyles.inputContainer}>
-        <PhoneInput
-        ref={(ref) => { this.phone = ref; }} // حفظ المرجع للمكون
-        initialCountry="ye" // البلد الافتراضي (اليمن)
-        value={phone} // القيمة الحالية لرقم الهاتف
-        onChangePhoneNumber={handlePhoneChange} // تحديث القيمة عند التغيير
-        textStyle={{ color: 'black' }} // تنسيق النص
-        textProps={{ placeholder: 'Phone number' }} // النص البديل
-/>  
+          <PhoneInput
+            ref={phoneRef} // استخدام useRef بدلاً من this
+            initialCountry="jp" // البلد الافتراضي (اليمن)
+            value={phone} // القيمة الحالية لرقم الهاتف
+            onChangePhoneNumber={handlePhoneChange} // تحديث القيمة عند التغيير
+            textStyle={{ color: 'black' }} // تنسيق النص
+            textProps={{ placeholder: 'Phone number' }} // النص البديل
+          />
         </View>
         {phoneError ? <Text style={globalStyles.errorText}>{phoneError}</Text> : null}
+
         <View style={globalStyles.inputContainer}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
@@ -143,6 +148,7 @@ const CreateAccount = () => {
           />
         </View>
         {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
+
         <View style={globalStyles.inputContainer}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
@@ -155,6 +161,7 @@ const CreateAccount = () => {
           />
         </View>
         {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
+
         <TouchableOpacity
           style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
           onPress={handleSignUp}
