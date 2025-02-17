@@ -31,6 +31,8 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false,animation:'simple_push' }} />
         <Stack.Screen name="Sign_in" options={{ headerShown: false, animation: 'simple_push' }} />
         <Stack.Screen name="Create_account" options={{ headerShown: false, animation: 'simple_push' }} />
+        <Stack.Screen name="Navbar" options={{ headerShown: false, animation: 'simple_push' }} />
+
        
 
         <Stack.Screen name="+not-found" options={{ title: '404' }} />

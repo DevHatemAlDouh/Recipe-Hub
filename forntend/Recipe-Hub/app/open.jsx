@@ -31,6 +31,14 @@ const Home = () => {
           >
             <Text style={globalStyles.buttonText}>Go to Create Account</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[globalStyles.signInButton, globalStyles.createSignIn]}
+            onPress={() => router.replace('/Navbar')} // الانتقال إلى صفحة Sign_in عند الضغط
+          >
+            <Text style={globalStyles.buttonText}>Go to Navigation Bar</Text>
+          </TouchableOpacity>
+
         </View>
       </ImageBackground>
     </View>
