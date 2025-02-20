@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
-import { Link, useRouter } from 'expo-router'; // استيراد useRouter
+import { useRouter } from 'expo-router'; // استيراد useRouter
 import globalStyles from './globalStyles'; // تحديث المسار ليشير إلى ملف التنسيقات
 import Icon from 'react-native-vector-icons/FontAwesome'; // مكتبة الأيقونات
 import PhoneInput from 'react-native-phone-input';
