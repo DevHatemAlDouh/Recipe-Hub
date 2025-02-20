@@ -127,7 +127,7 @@ const CreateAccount = () => {
         <View style={globalStyles.inputContainer}>
           <PhoneInput
             ref={phoneRef} // استخدام useRef بدلاً من this
-            initialCountry="jp" // البلد الافتراضي (اليمن)
+            initialCountry="ye" // البلد الافتراضي (اليمن)
             value={phone} // القيمة الحالية لرقم الهاتف
             onChangePhoneNumber={handlePhoneChange} // تحديث القيمة عند التغيير
             textStyle={{ color: 'black' }} // تنسيق النص
@@ -168,6 +168,9 @@ const CreateAccount = () => {
         >
           <Text style={globalStyles.buttonText}>Create Account</Text>
         </TouchableOpacity>
+        <Text style={[globalStyles.subtitle]}>
+          I have an account? <Link href="/Sign_in">Sing in to an account</Link>
+        </Text>
       </View>
     </ImageBackground>
   );

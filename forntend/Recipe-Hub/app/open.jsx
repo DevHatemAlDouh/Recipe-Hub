@@ -2,7 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import icen_img from "@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg";
-import globalStyles from './globalStyles';
+import globalStyles from '@/app/globalStyles';
 
 const Home = () => {
   const router = useRouter();
