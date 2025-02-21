@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Comment = () => {
@@ -9,14 +9,20 @@ const Comment = () => {
   const [comment, setComment] = useState('');
   const [commentsList, setCommentsList] = useState([]);
 
+  // Callback for handling sheet changes
   const handleSheetChanges = useCallback((index) => {
-    console.log("BottomSheet Index:", index);
+    console.log('Sheet index:', index); // Debugging purposes
+    if (index === -1) {
+      console.log('Sheet closed');
+    }
   }, []);
 
+  // Open the BottomSheet
   const openBottomSheet = () => {
     bottomSheetRef.current?.expand();
   };
 
+  // Send a new comment
   const handleSendComment = () => {
     if (comment.trim()) {
       const newComment = {
@@ -24,13 +30,25 @@ const Comment = () => {
         text: comment,
         timestamp: new Date().toLocaleString(),
       };
-      setCommentsList((prevComments) => [...prevComments, newComment]); // استخدام الشكل الوظيفي
+      console.log('New Comment:', newComment);
+      setCommentsList((prevComments) => [...prevComments, newComment]);
       setComment('');
     }
   };
 
+  // Custom handle component for better UX
+  const renderHandle = useCallback(() => (
+    <View style={styles.handleContainer}>
+      <View style={styles.handleBar} />
+    </View>
+  ), []);
+
+  // Gesture handler for simultaneous gestures
+  const flatListRef = useRef(null);
+
   return (
     <GestureHandlerRootView style={styles.container}>
+      {/* أيقونة التعليقات مع العداد */}
       <TouchableOpacity style={styles.commentsButton} onPress={openBottomSheet}>
         <Icon name="comment" size={30} color="#007AFF" />
         <View style={styles.badge}>
@@ -38,19 +56,24 @@ const Comment = () => {
         </View>
       </TouchableOpacity>
 
+      {/* البوتن شيت */}
       <BottomSheet
         ref={bottomSheetRef}
-        index={-1}
-        snapPoints={["40%", "70%", "90%"]}
+        index={-1} // Start closed
+        snapPoints={['40%', '70%', '90%']} // Flexible snap points
         onChange={handleSheetChanges}
-        key={commentsList.length} // إضافة key لتحديث البوتن شيت
+        enablePanDownToClose={true} // Enable closing with one finger swipe down
+        handleComponent={renderHandle} // Add a custom handle bar
+        gestureHandlerProps={{
+          simultaneousHandlers: flatListRef, // Allow simultaneous gestures with FlatList
+        }}
       >
         <BottomSheetView style={styles.contentContainer}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.keyboardAvoidingView}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
           >
+            {/* حقل الإدخال وزر الإرسال */}
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -67,17 +90,20 @@ const Comment = () => {
               </TouchableOpacity>
             </View>
 
-            <ScrollView
-              style={styles.commentsContainer}
-              key={commentsList.length} // إضافة key لتحديث ScrollView
-            >
-              {commentsList.map((comment) => (
-                <View key={comment.id} style={styles.commentBubble}>
-                  <Text style={styles.commentText}>{comment.text}</Text>
-                  <Text style={styles.timestamp}>{comment.timestamp}</Text>
+            {/* قائمة التعليقات */}
+            <FlatList
+              ref={flatListRef} // Reference to FlatList for simultaneous gestures
+              data={commentsList}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.flatListContent}
+              renderItem={({ item }) => (
+                <View style={styles.commentBubble}>
+                  <Text style={styles.commentText}>{item.text}</Text>
+                  <Text style={styles.timestamp}>{item.timestamp}</Text>
                 </View>
-              ))}
-            </ScrollView>
+              )}
+              ListEmptyComponent={<Text style={styles.noCommentsText}>لا توجد تعليقات</Text>}
+            />
           </KeyboardAvoidingView>
         </BottomSheetView>
       </BottomSheet>
@@ -116,24 +142,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  commentsContainer: {
-    flex: 1,
-    marginTop: 10,
-  },
-  commentBubble: {
-    backgroundColor: '#e3e3e3',
-    borderRadius: 12,
-    padding: 10,
-    marginBottom: 8,
-  },
-  commentText: {
-    fontSize: 16,
-  },
-  timestamp: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4,
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -157,6 +165,41 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flatListContent: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+  commentBubble: {
+    backgroundColor: '#e3e3e3',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 8,
+  },
+  commentText: {
+    fontSize: 16,
+  },
+  timestamp: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
+  },
+  noCommentsText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  handleContainer: {
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  handleBar: {
+    width: 40,
+    height: 5,
+    backgroundColor: '#ccc',
+    borderRadius: 2.5,
   },
 });
 
