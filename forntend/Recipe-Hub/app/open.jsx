@@ -2,7 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import icen_img from "@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg";
-import globalStyles from './globalStyles';
+import globalStyles from '@/app/globalStyles';
 
 const Home = () => {
   const router = useRouter();
@@ -27,18 +27,10 @@ const Home = () => {
 
           <TouchableOpacity
             style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
-            onPress={() => router.replace('/Create_account')} // الانتقال إلى صفحة Create_account عند الضغط
+            onPress={() => router.replace('/Navbar')} // الانتقال إلى صفحة Create_account عند الضغط
           >
             <Text style={globalStyles.buttonText}>Go to Create Account</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[globalStyles.signInButton, globalStyles.createSignIn]}
-            onPress={() => router.replace('/Navbar')} // الانتقال إلى صفحة Sign_in عند الضغط
-          >
-            <Text style={globalStyles.buttonText}>Go to Navigation Bar</Text>
-          </TouchableOpacity>
-
         </View>
       </ImageBackground>
     </View>

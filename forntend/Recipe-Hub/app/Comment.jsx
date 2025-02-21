@@ -5,39 +5,34 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Comment = () => {
-  // ref
   const bottomSheetRef = useRef(null);
-
-  // state
   const [comment, setComment] = useState('');
-  const [commentsList, setCommentsList] = useState([]); // قائمة التعليقات
+  const [commentsList, setCommentsList] = useState([]);
 
-  // callbacks
   const handleSheetChanges = useCallback((index) => {
     if (index === 0) bottomSheetRef.current?.close();
   }, []);
 
-  // فتح البوتن شيت
   const openBottomSheet = () => {
     bottomSheetRef.current?.expand();
   };
 
-  // إرسال التعليق
   const handleSendComment = () => {
     if (comment.trim()) {
       const newComment = {
-        id: Date.now().toString(), // معرف فريد
+        id: Date.now().toString(),
         text: comment,
-        timestamp: new Date().toLocaleString(), // تاريخ إرسال التعليق
+        timestamp: new Date().toLocaleString(),
       };
-      setCommentsList([...commentsList, newComment]); // إضافة التعليق الجديد
-      setComment(''); // مسح حقل الإدخال
+      setCommentsList([...commentsList, newComment]);
+      console.log("New Comment Added:", newComment);
+      console.log("Updated Comments List:", commentsList);
+      setComment('');
     }
   };
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {/* أيقونة التعليقات مع العداد */}
       <TouchableOpacity style={styles.commentsButton} onPress={openBottomSheet}>
         <Icon name="comment" size={30} color="#007AFF" />
         <View style={styles.badge}>
@@ -45,7 +40,6 @@ const Comment = () => {
         </View>
       </TouchableOpacity>
 
-      {/* البوتن شيت */}
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
@@ -57,7 +51,6 @@ const Comment = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.keyboardAvoidingView}
           >
-            {/* حقل الإدخال وزر الإرسال */}
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -74,14 +67,16 @@ const Comment = () => {
               </TouchableOpacity>
             </View>
 
-            {/* قائمة التعليقات */}
             <ScrollView style={styles.commentsContainer}>
-              {commentsList.map((comment) => (
-                <View key={comment.id} style={styles.commentBubble}>
-                  <Text style={styles.commentText}>{comment.text}</Text>
-                  <Text style={styles.timestamp}>{comment.timestamp}</Text>
-                </View>
-              ))}
+              {commentsList.map((comment) => {
+                console.log("Rendering Comment:", comment);
+                return (
+                  <View key={comment.id} style={styles.commentBubble}>
+                    <Text style={styles.commentText}>{comment.text}</Text>
+                    <Text style={styles.timestamp}>{comment.timestamp}</Text>
+                  </View>
+                );
+              })}
             </ScrollView>
           </KeyboardAvoidingView>
         </BottomSheetView>
@@ -123,7 +118,7 @@ const styles = StyleSheet.create({
   },
   commentsContainer: {
     flex: 1,
-    marginTop: 10, // مسافة بين حقل الإدخال وقائمة التعليقات
+    marginTop: 10,
   },
   commentBubble: {
     backgroundColor: '#e3e3e3',

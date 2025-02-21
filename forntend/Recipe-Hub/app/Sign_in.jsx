@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
-import globalStyles from './globalStyles';
+import globalStyles from '@/app/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SignIn = () => {
@@ -106,7 +106,7 @@ const SignIn = () => {
 
         {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
-          Don't have an account? <Link href="/Create_account">Create account</Link>
+          Don't have an account? <Link href="/Comment">Create account</Link>
         </Text>
       </ScrollView>
     </ImageBackground>
