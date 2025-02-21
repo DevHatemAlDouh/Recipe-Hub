@@ -10,7 +10,7 @@ const Comment = () => {
   const [commentsList, setCommentsList] = useState([]);
 
   const handleSheetChanges = useCallback((index) => {
-    if (index === 0) bottomSheetRef.current?.close();
+    console.log("BottomSheet Index:", index);
   }, []);
 
   const openBottomSheet = () => {
@@ -27,6 +27,7 @@ const Comment = () => {
       setCommentsList([...commentsList, newComment]);
       console.log("New Comment Added:", newComment);
       console.log("Updated Comments List:", commentsList);
+      setCommentsList((prevComments) => [...prevComments, newComment]); // استخدام الشكل الوظيفي
       setComment('');
     }
   };
@@ -45,11 +46,13 @@ const Comment = () => {
         index={-1}
         snapPoints={["40%", "70%", "90%"]}
         onChange={handleSheetChanges}
+        key={commentsList.length} // إضافة key لتحديث البوتن شيت
       >
         <BottomSheetView style={styles.contentContainer}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.keyboardAvoidingView}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
           >
             <View style={styles.inputContainer}>
               <TextInput
@@ -77,6 +80,17 @@ const Comment = () => {
                   </View>
                 );
               })}
+
+            <ScrollView
+              style={styles.commentsContainer}
+              key={commentsList.length} // إضافة key لتحديث ScrollView
+            >
+              {commentsList.map((comment) => (
+                <View key={comment.id} style={styles.commentBubble}>
+                  <Text style={styles.commentText}>{comment.text}</Text>
+                  <Text style={styles.timestamp}>{comment.timestamp}</Text>
+                </View>
+              ))}
             </ScrollView>
           </KeyboardAvoidingView>
         </BottomSheetView>
