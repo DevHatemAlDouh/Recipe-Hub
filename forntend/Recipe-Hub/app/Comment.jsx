@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,TextInput,KeyboardAvoidingView,Platform,ScrollView,} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,13 +8,17 @@ const Comment = () => {
   const bottomSheetRef = useRef(null);
   const [comment, setComment] = useState('');
   const [commentsList, setCommentsList] = useState([]);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false); // حالة لتتبع فتح/إغلاق البوتن شيت
 
   const handleSheetChanges = useCallback((index) => {
-    console.log("BottomSheet Index:", index);
+    console.log('BottomSheet Index:', index);
+    // تحديث الحالة بناءً على مؤشر البوتن شيت
+    setIsBottomSheetOpen(index !== -1); // إذا كان المؤشر ليس -1، البوتن شيت مفتوح
   }, []);
 
   const openBottomSheet = () => {
     bottomSheetRef.current?.expand();
+    setIsBottomSheetOpen(true); // تحديث الحالة عند فتح البوتن شيت
   };
 
   const handleSendComment = () => {
@@ -24,29 +28,29 @@ const Comment = () => {
         text: comment,
         timestamp: new Date().toLocaleString(),
       };
-      setCommentsList([...commentsList, newComment]);
-      console.log("New Comment Added:", newComment);
-      console.log("Updated Comments List:", commentsList);
-      setCommentsList((prevComments) => [...prevComments, newComment]); // استخدام الشكل الوظيفي
+      setCommentsList((prevComments) => [...prevComments, newComment]);
       setComment('');
     }
   };
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <TouchableOpacity style={styles.commentsButton} onPress={openBottomSheet}>
-        <Icon name="comment" size={30} color="#007AFF" />
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{commentsList.length}</Text>
-        </View>
-      </TouchableOpacity>
+      {/* إخفاء الأيقونة إذا كان البوتن شيت مفتوحًا */}
+      {!isBottomSheetOpen && (
+        <TouchableOpacity style={styles.commentsButton} onPress={openBottomSheet}>
+          <Icon name="comment" size={30} color="#007AFF" />
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{commentsList.length}</Text>
+          </View>
+        </TouchableOpacity>
+      )}
 
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
-        snapPoints={["40%", "70%", "90%"]}
+        snapPoints={['40%', '70%', '90%']}
         onChange={handleSheetChanges}
-        key={commentsList.length} // إضافة key لتحديث البوتن شيت
+        enablePanDownToClose={true} // تفعيل إمكانية الإغلاق بالسحب إلى الأسفل
       >
         <BottomSheetView style={styles.contentContainer}>
           <KeyboardAvoidingView
@@ -54,6 +58,15 @@ const Comment = () => {
             style={styles.keyboardAvoidingView}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
           >
+            <ScrollView style={styles.commentsContainer}>
+              {commentsList.map((comment) => (
+                <View key={comment.id} style={styles.commentBubble}>
+                  <Text style={styles.commentText}>{comment.text}</Text>
+                  <Text style={styles.timestamp}>{comment.timestamp}</Text>
+                </View>
+              ))}
+            </ScrollView>
+
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -69,29 +82,6 @@ const Comment = () => {
                 <Icon name="send" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
-
-            <ScrollView style={styles.commentsContainer}>
-              {commentsList.map((comment) => {
-                console.log("Rendering Comment:", comment);
-                return (
-                  <View key={comment.id} style={styles.commentBubble}>
-                    <Text style={styles.commentText}>{comment.text}</Text>
-                    <Text style={styles.timestamp}>{comment.timestamp}</Text>
-                  </View>
-                );
-              })}
-
-            <ScrollView
-              style={styles.commentsContainer}
-              key={commentsList.length} // إضافة key لتحديث ScrollView
-            >
-              {commentsList.map((comment) => (
-                <View key={comment.id} style={styles.commentBubble}>
-                  <Text style={styles.commentText}>{comment.text}</Text>
-                  <Text style={styles.timestamp}>{comment.timestamp}</Text>
-                </View>
-              ))}
-            </ScrollView>
           </KeyboardAvoidingView>
         </BottomSheetView>
       </BottomSheet>
@@ -132,7 +122,7 @@ const styles = StyleSheet.create({
   },
   commentsContainer: {
     flex: 1,
-    marginTop: 10,
+    marginBottom: 10,
   },
   commentBubble: {
     backgroundColor: '#e3e3e3',
@@ -152,6 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+    marginBottom: Platform.OS === 'ios' ? 20 : 10,
   },
   input: {
     flex: 1,
@@ -162,6 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
     minHeight: 50,
+    backgroundColor: '#fff',
   },
   sendButton: {
     backgroundColor: '#007AFF',
