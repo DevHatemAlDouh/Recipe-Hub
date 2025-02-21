@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Comment = () => {
@@ -43,9 +43,6 @@ const Comment = () => {
     </View>
   ), []);
 
-  // Gesture handler for simultaneous gestures
-  const flatListRef = useRef(null);
-
   return (
     <GestureHandlerRootView style={styles.container}>
       {/* أيقونة التعليقات مع العداد */}
@@ -60,13 +57,12 @@ const Comment = () => {
       <BottomSheet
         ref={bottomSheetRef}
         index={-1} // Start closed
-        snapPoints={['40%', '70%', '90%']} // Flexible snap points
+        snapPoints={['40%', '70%', '90%']} // Fixed snap points
         onChange={handleSheetChanges}
         enablePanDownToClose={true} // Enable closing with one finger swipe down
         handleComponent={renderHandle} // Add a custom handle bar
-        gestureHandlerProps={{
-          simultaneousHandlers: flatListRef, // Allow simultaneous gestures with FlatList
-        }}
+        enableContentPanningGesture={false} // تعطيل التمرير من المحتوى الداخلي
+        enableHandlePanningGesture={true} // تمكين التمرير من الشريط العلوي فقط
       >
         <BottomSheetView style={styles.contentContainer}>
           <KeyboardAvoidingView
@@ -81,6 +77,8 @@ const Comment = () => {
                 value={comment}
                 onChangeText={setComment}
                 multiline
+                textAlignVertical="top"
+                maxLength={500} // تحديد حد أقصى للنص
               />
               <TouchableOpacity
                 style={styles.sendButton}
@@ -92,7 +90,6 @@ const Comment = () => {
 
             {/* قائمة التعليقات */}
             <FlatList
-              ref={flatListRef} // Reference to FlatList for simultaneous gestures
               data={commentsList}
               keyExtractor={(item) => item.id}
               contentContainerStyle={styles.flatListContent}
@@ -103,6 +100,10 @@ const Comment = () => {
                 </View>
               )}
               ListEmptyComponent={<Text style={styles.noCommentsText}>لا توجد تعليقات</Text>}
+              initialNumToRender={5} // عدد العناصر المرسومة في البداية
+              maxToRenderPerBatch={10} // عدد العناصر المرسومة لكل دفعة
+              windowSize={5} // تحسين أداء التمرير
+              removeClippedSubviews={true} // إزالة العناصر غير المرئية مؤقتًا
             />
           </KeyboardAvoidingView>
         </BottomSheetView>
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start', // لتجنب التداخل
     gap: 10,
   },
   input: {
@@ -154,8 +155,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     fontSize: 16,
-    textAlignVertical: 'top',
-    minHeight: 50,
+    textAlignVertical: 'top', // النص يبدأ من الأعلى
+    minHeight: 50, // ارتفاع الحد الأدنى
+    maxHeight: 150, // ارتفاع الحد الأقصى
   },
   sendButton: {
     backgroundColor: '#007AFF',
@@ -178,6 +180,7 @@ const styles = StyleSheet.create({
   },
   commentText: {
     fontSize: 16,
+    lineHeight: 22, // تحسين قابلية القراءة للنصوص الطويلة
   },
   timestamp: {
     fontSize: 12,
