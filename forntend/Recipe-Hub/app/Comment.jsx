@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList, ScrollView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -7,22 +7,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const Comment = () => {
   const bottomSheetRef = useRef(null);
   const [comment, setComment] = useState('');
-  const [commentsList, setCommentsList] = useState([]);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false); // تعقب حالة الـ BottomSheet
 
-  // Callback for handling sheet changes
-  const handleSheetChanges = useCallback((index) => {
-    console.log('Sheet index:', index); // Debugging purposes
-    if (index === -1) {
-      console.log('Sheet closed');
-    }
-  }, []);
+  // بيانات محلية (Mock Data)
+  const initialComments = [
+    { id: '1', text: 'تعليق تجريبي 1', timestamp: '2023-10-01 10:00 AM' },
+    { id: '2', text: 'تعليق تجريبي 2', timestamp: '2023-10-01 10:05 AM' },
+  ];
 
-  // Open the BottomSheet
-  const openBottomSheet = () => {
-    bottomSheetRef.current?.expand();
-  };
+  const [commentsList, setCommentsList] = useState(initialComments);
 
-  // Send a new comment
+  // إضافة تعليق جديد
   const handleSendComment = () => {
     if (comment.trim()) {
       const newComment = {
@@ -30,43 +25,46 @@ const Comment = () => {
         text: comment,
         timestamp: new Date().toLocaleString(),
       };
-      console.log('New Comment:', newComment);
       setCommentsList((prevComments) => [...prevComments, newComment]);
       setComment('');
     }
   };
 
-  // Custom handle component for better UX
-  const renderHandle = useCallback(() => (
-    <View style={styles.handleContainer}>
-      <View style={styles.handleBar} />
-    </View>
-  ), []);
+  // تتبع حالة الـ BottomSheet
+  const handleSheetChanges = useCallback((index) => {
+    if (index === -1) {
+      setIsBottomSheetOpen(false); // BottomSheet مغلق
+    } else {
+      setIsBottomSheetOpen(true); // BottomSheet مفتوح
+    }
+  }, []);
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {/* أيقونة التعليقات مع العداد */}
-      <TouchableOpacity style={styles.commentsButton} onPress={openBottomSheet}>
-        <Icon name="comment" size={30} color="#007AFF" />
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{commentsList.length}</Text>
-        </View>
-      </TouchableOpacity>
+      {/* أيقونة التعليقات */}
+      {!isBottomSheetOpen && ( // إظهار الأيقونة فقط إذا كان الـ BottomSheet مغلقًا
+        <TouchableOpacity style={styles.commentsButton} onPress={() => bottomSheetRef.current?.expand()}>
+          <Icon name="comment" size={30} color="#007AFF" />
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{commentsList.length}</Text>
+          </View>
+        </TouchableOpacity>
+      )}
 
-      {/* البوتن شيت */}
+      {/* Bottom Sheet */}
       <BottomSheet
         ref={bottomSheetRef}
-        index={-1} // Start closed
-        snapPoints={['40%', '70%', '90%']} // Fixed snap points
-        onChange={handleSheetChanges}
-        enablePanDownToClose={true} // Enable closing with one finger swipe down
-        handleComponent={renderHandle} // Add a custom handle bar
-        enableContentPanningGesture={false} // تعطيل التمرير من المحتوى الداخلي
-        enableHandlePanningGesture={true} // تمكين التمرير من الشريط العلوي فقط
+        index={-1} // يبدأ مغلقًا
+        snapPoints={['40%', '70%', '90%']} // نقاط التوقف
+        enablePanDownToClose={true} // السماح بالإغلاق بالسحب لأسفل
+        enableContentPanningGesture={false} // تعطيل السحب من المحتوى الداخلي
+        enableHandlePanningGesture={true} // تمكين السحب فقط من الشريط العلوي
+        onChange={handleSheetChanges} // تتبع حالة الـ BottomSheet
       >
         <BottomSheetView style={styles.contentContainer}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // تهيئة خاصة بنظام التشغيل
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0} // تعويض لوحة المفاتيح لنظام iOS
             style={styles.keyboardAvoidingView}
           >
             {/* حقل الإدخال وزر الإرسال */}
@@ -77,34 +75,30 @@ const Comment = () => {
                 value={comment}
                 onChangeText={setComment}
                 multiline
+                scrollEnabled={true} // تمكين التمرير داخل الحقل
                 textAlignVertical="top"
-                maxLength={500} // تحديد حد أقصى للنص
+                maxLength={500}
+                minHeight={80} // ارتفاع ثابت
+                maxHeight={150} // ارتفاع أقصى
               />
-              <TouchableOpacity
-                style={styles.sendButton}
-                onPress={handleSendComment}
-              >
+              {/* زر الإرسال */}
+              <TouchableOpacity style={styles.sendButton} onPress={handleSendComment}>
                 <Icon name="send" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
 
-            {/* قائمة التعليقات */}
-            <FlatList
-              data={commentsList}
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={styles.flatListContent}
-              renderItem={({ item }) => (
-                <View style={styles.commentBubble}>
+            {/* محتوى قابل للتمرير */}
+            <ScrollView style={styles.scrollView}>
+              {commentsList.map((item) => (
+                <View key={item.id} style={styles.commentBubble}>
                   <Text style={styles.commentText}>{item.text}</Text>
                   <Text style={styles.timestamp}>{item.timestamp}</Text>
                 </View>
+              ))}
+              {commentsList.length === 0 && (
+                <Text style={styles.noCommentsText}>لا توجد تعليقات</Text>
               )}
-              ListEmptyComponent={<Text style={styles.noCommentsText}>لا توجد تعليقات</Text>}
-              initialNumToRender={5} // عدد العناصر المرسومة في البداية
-              maxToRenderPerBatch={10} // عدد العناصر المرسومة لكل دفعة
-              windowSize={5} // تحسين أداء التمرير
-              removeClippedSubviews={true} // إزالة العناصر غير المرئية مؤقتًا
-            />
+            </ScrollView>
           </KeyboardAvoidingView>
         </BottomSheetView>
       </BottomSheet>
@@ -112,6 +106,7 @@ const Comment = () => {
   );
 };
 
+// الأنماط
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -144,20 +139,21 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start', // لتجنب التداخل
-    gap: 10,
+    flexDirection: 'row', // ترتيب أفقي
+    alignItems: 'flex-end', // محاذاة العناصر أسفلًا
+    gap: 10, // مسافة بين الحقل والزر
+    marginBottom: 20,
   },
   input: {
-    flex: 1,
+    flex: 1, // أخذ المساحة المتبقية
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 20,
     padding: 10,
     fontSize: 16,
-    textAlignVertical: 'top', // النص يبدأ من الأعلى
-    minHeight: 50, // ارتفاع الحد الأدنى
-    maxHeight: 150, // ارتفاع الحد الأقصى
+    textAlignVertical: 'top',
+    minHeight: 80, // ارتفاع ثابت
+    maxHeight: 150, // ارتفاع أقصى
   },
   sendButton: {
     backgroundColor: '#007AFF',
@@ -168,9 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  flatListContent: {
-    flexGrow: 1,
-    paddingBottom: 20,
+  scrollView: {
+    flex: 1,
   },
   commentBubble: {
     backgroundColor: '#e3e3e3',
@@ -180,7 +175,7 @@ const styles = StyleSheet.create({
   },
   commentText: {
     fontSize: 16,
-    lineHeight: 22, // تحسين قابلية القراءة للنصوص الطويلة
+    lineHeight: 22,
   },
   timestamp: {
     fontSize: 12,
@@ -193,16 +188,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  handleContainer: {
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  handleBar: {
-    width: 40,
-    height: 5,
-    backgroundColor: '#ccc',
-    borderRadius: 2.5,
+  keyboardAvoidingView: {
+    flex: 1,
   },
 });
 
