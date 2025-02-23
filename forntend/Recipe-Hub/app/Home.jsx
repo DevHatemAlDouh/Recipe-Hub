@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList, ScrollView, Keyboard } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Avatar, Card, IconButton } from "react-native-paper";
@@ -28,14 +28,15 @@ const recipes = [
 
 // المكون الرئيسي
 const Home = () => {
-  const bottomSheetRef = useRef(null); // مرجع الـ BottomSheet هنا
-  const [selectedRecipeId, setSelectedRecipeId] = useState(null); // تخزين معرف الوصفة المختارة
-  const [comments, setComments] = useState({}); // تخزين التعليقات لكل وصفة
+  const bottomSheetRef = useRef(null);
+  const [selectedRecipeId, setSelectedRecipeId] = useState(null);
+  const [comments, setComments] = useState({});
+  const [favorites, setFavorites] = useState({});
 
   // فتح BottomSheet وتحديد الوصفة المختارة
   const handleCommentPress = (recipeId) => {
-    setSelectedRecipeId(recipeId); // تحديد الوصفة المختارة
-    bottomSheetRef.current?.expand(); // فتح BottomSheet
+    setSelectedRecipeId(recipeId);
+    bottomSheetRef.current?.expand();
   };
 
   // إضافة تعليق جديد للوصفة المختارة
@@ -53,6 +54,14 @@ const Home = () => {
     }
   };
 
+  // تغيير حالة الإعجاب للوصفة
+  const toggleFavorite = (recipeId) => {
+    setFavorites((prevFavorites) => ({
+      ...prevFavorites,
+      [recipeId]: prevFavorites[recipeId] === "heart" ? "heart-outline" : "heart",
+    }));
+  };
+
   return (
     <GestureHandlerRootView style={styles.container}>
       {/* قائمة الوصفات */}
@@ -60,7 +69,12 @@ const Home = () => {
         data={recipes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <RecipeCard item={item} onCommentPress={() => handleCommentPress(item.id)} />
+          <RecipeCard
+            item={item}
+            onCommentPress={() => handleCommentPress(item.id)}
+            onFavoritePress={() => toggleFavorite(item.id)}
+            isFavorite={favorites[item.id] === "heart"}
+          />
         )}
       />
 
@@ -76,7 +90,7 @@ const Home = () => {
 };
 
 // مكون بطاقة الوصفة
-const RecipeCard = ({ item, onCommentPress }) => {
+const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
   return (
     <Card style={{ margin: 10 }}>
       <Card.Title
@@ -91,7 +105,9 @@ const RecipeCard = ({ item, onCommentPress }) => {
         <Text variant="bodyMedium">{item.description}</Text>
       </Card.Content>
       <Card.Actions>
-        <IconButton icon="heart-outline" />
+        {/* أيقونة الإعجاب */}
+        <IconButton icon={isFavorite ? "heart" : "heart-outline"} iconColor="red" onPress={onFavoritePress} />
+        {/* أيقونة التعليقات */}
         <IconButton icon="comment-outline" onPress={onCommentPress} />
       </Card.Actions>
     </Card>
@@ -102,26 +118,33 @@ const RecipeCard = ({ item, onCommentPress }) => {
 const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) => {
   const [comment, setComment] = useState("");
 
+  // إغلاق الكيبورد عند إغلاق الـ BottomSheet
+  const handleSheetChanges = (index) => {
+    if (index === -1) {
+      Keyboard.dismiss();
+    }
+  };
+
   // إضافة تعليق جديد
   const handleSend = () => {
-    onSendComment(comment);
-    setComment("");
+    if (comment.trim()) {
+      onSendComment(comment);
+      setComment("");
+    }
   };
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={-1} // البداية من الأسفل
-      snapPoints={["50%", "60%"]} // نقاط التوقف: النصف السفلي وما فوقه قليلاً
+      index={-1}
+      snapPoints={["50%", "60%"]}
       enablePanDownToClose={true}
       enableContentPanningGesture={false}
       enableHandlePanningGesture={true}
+      onChange={handleSheetChanges}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardAvoidingView}
-        >
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.keyboardAvoidingView}>
           {/* حقل الإدخال وزر الإرسال */}
           <View style={styles.inputContainer}>
             <TextInput
@@ -148,9 +171,7 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
                 <Text style={styles.timestamp}>{item.timestamp}</Text>
               </View>
             ))}
-            {comments.length === 0 && (
-              <Text style={styles.noCommentsText}>لا توجد تعليقات</Text>
-            )}
+            {comments.length === 0 && <Text style={styles.noCommentsText}>لا توجد تعليقات</Text>}
           </ScrollView>
         </KeyboardAvoidingView>
       </BottomSheetView>
