@@ -13,44 +13,55 @@ const SignIn = () => {
   const [passwordError, setPasswordError] = useState('');
   const router = useRouter();
 
+  // التحقق من صحة البريد الإلكتروني
   const validateEmail = (text) => {
     setEmail(text);
   };
 
+  // التحقق من صحة كلمة المرور
   const validatePassword = (text) => {
     setPassword(text);
   };
 
+  // معالجة تسجيل الدخول
   const handleSignIn = () => {
+    let isValid = true;
+
+    // التحقق من البريد الإلكتروني
     if (!email) {
       setEmailError('Email is required');
+      isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       setEmailError('Invalid email format');
+      isValid = false;
     } else {
       setEmailError('');
     }
 
+    // التحقق من كلمة المرور
     if (!password) {
       setPasswordError('Password is required');
+      isValid = false;
     } else if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters');
+      isValid = false;
     } else {
       setPasswordError('');
     }
 
-    if (!emailError && !passwordError && email && password) {
-      // تنفيذ عملية تسجيل الدخول هنا
+    // إذا كانت جميع البيانات صحيحة، انتقل إلى الصفحة الرئيسية
+    if (isValid) {
+      router.replace('/Home'); // الانتقال إلى صفحة Home
     }
   };
 
+  // التعامل مع زر الرجوع
   useEffect(() => {
     const backAction = () => {
       router.replace('/open'); // العودة للصفحة الرئيسية عند الضغط على زر الرجوع
       return true; // منع التطبيق من الإغلاق
     };
-
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
     return () => backHandler.remove(); // إزالة المستمع عند مغادرة الصفحة
   }, []);
 
@@ -58,16 +69,14 @@ const SignIn = () => {
     <ImageBackground source={icen_img} resizeMode="cover" style={globalStyles.image}>
       <View style={globalStyles.overlay} />
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
-        
         {/* زر الرجوع */}
         <TouchableOpacity onPress={() => router.replace('/')} style={globalStyles.backButton}>
           <Icon name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
-
         <View style={globalStyles.content}>
           <Text style={[globalStyles.title, globalStyles.sign_In_Up_title]}>Sign in</Text>
 
-          {/* Email Input */}
+          {/* حقل البريد الإلكتروني */}
           <View style={globalStyles.inputContainer}>
             <Icon name="envelope" style={globalStyles.icon} />
             <TextInput
@@ -80,7 +89,7 @@ const SignIn = () => {
           </View>
           {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
 
-          {/* Password Input */}
+          {/* حقل كلمة المرور */}
           <View style={globalStyles.inputContainer}>
             <Icon name="lock" style={globalStyles.icon} />
             <TextInput
@@ -101,12 +110,11 @@ const SignIn = () => {
           >
             <Text style={globalStyles.buttonText}>Sign In</Text>
           </TouchableOpacity>
-        
         </View>
 
         {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
-          Don't have an account? <Link href="/Home">Create account</Link>
+          Don't have an account? <Link href="/Create_account">Create account</Link>
         </Text>
       </ScrollView>
     </ImageBackground>
