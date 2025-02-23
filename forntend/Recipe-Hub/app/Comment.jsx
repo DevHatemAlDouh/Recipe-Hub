@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingVi
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {IconButton } from "react-native-paper";
 
 const Comment = () => {
   const bottomSheetRef = useRef(null);
@@ -49,12 +50,13 @@ const Comment = () => {
       
       {/* أيقونة التعليقات */}
       {!isBottomSheetOpen && ( // إظهار الأيقونة فقط إذا كان الـ BottomSheet مغلقًا
-        <TouchableOpacity style={styles.commentsButton} onPress={() => bottomSheetRef.current?.expand()}>
-          <Icon name="comment" size={30} color="#007AFF" />
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{commentsList.length}</Text>
-          </View>
-        </TouchableOpacity>
+        <IconButton name="comment" size={30} color="#007AFF" onPress={() => bottomSheetRef.current?.expand()}/>
+        // <TouchableOpacity style={styles.commentsButton} >
+        //   <Icon name="comment" size={30} color="#007AFF" />
+        //   <View style={styles.badge}>
+        //     <Text style={styles.badgeText}>{commentsList.length}</Text>
+        //   </View>
+        // </TouchableOpacity>
       )}
 
       {/* Bottom Sheet */}
