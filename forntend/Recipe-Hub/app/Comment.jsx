@@ -10,11 +10,14 @@ const Comment = () => {
   const [comment, setComment] = useState('');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false); // تعقب حالة الـ BottomSheet
 
+
+  
   // بيانات محلية (Mock Data)
   const initialComments = [
     { id: '1', text: 'تعليق تجريبي 1', timestamp: '2023-10-01 10:00 AM' },
     { id: '2', text: 'تعليق تجريبي 2', timestamp: '2023-10-01 10:05 AM' },
   ];
+
 
   const [commentsList, setCommentsList] = useState(initialComments);
 
@@ -23,6 +26,7 @@ const Comment = () => {
     if (comment.trim()) {
       const newComment = {
         id: Date.now().toString(),
+
         text: comment,
         timestamp: new Date().toLocaleString(),
       };
@@ -31,6 +35,7 @@ const Comment = () => {
     }
   };
 
+  
   // تتبع حالة الـ BottomSheet
   const handleSheetChanges = useCallback((index) => {
     if (index === -1) {
@@ -42,6 +47,7 @@ const Comment = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
+      
       {/* أيقونة التعليقات */}
       {!isBottomSheetOpen && ( // إظهار الأيقونة فقط إذا كان الـ BottomSheet مغلقًا
         <IconButton name="comment" size={30} color="#007AFF" onPress={() => bottomSheetRef.current?.expand()}/>
@@ -83,11 +89,13 @@ const Comment = () => {
                 minHeight={80} // ارتفاع ثابت
                 maxHeight={150} // ارتفاع أقصى
               />
+
               {/* زر الإرسال */}
               <TouchableOpacity style={styles.sendButton} onPress={handleSendComment}>
                 <Icon name="send" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
+
 
             {/* محتوى قابل للتمرير */}
             <ScrollView style={styles.scrollView}>
@@ -100,11 +108,14 @@ const Comment = () => {
               {commentsList.length === 0 && (
                 <Text style={styles.noCommentsText}>لا توجد تعليقات</Text>
               )}
+
             </ScrollView>
           </KeyboardAvoidingView>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
+
+
   );
 };
 
@@ -138,9 +149,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+
+
     padding: 16,
   },
   inputContainer: {
+
     flexDirection: 'row', // ترتيب أفقي
     alignItems: 'flex-end', // محاذاة العناصر أسفلًا
     gap: 10, // مسافة بين الحقل والزر
@@ -153,6 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     fontSize: 16,
+    
     textAlignVertical: 'top',
     minHeight: 80, // ارتفاع ثابت
     maxHeight: 150, // ارتفاع أقصى
@@ -163,9 +178,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 50,
     height: 50,
+
     justifyContent: 'center',
     alignItems: 'center',
   },
+ 
   scrollView: {
     flex: 1,
   },
@@ -174,6 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 10,
     marginBottom: 8,
+
   },
   commentText: {
     fontSize: 16,
@@ -187,9 +205,11 @@ const styles = StyleSheet.create({
   noCommentsText: {
     fontSize: 16,
     color: '#666',
+
     textAlign: 'center',
     marginTop: 20,
   },
+
   keyboardAvoidingView: {
     flex: 1,
   },
