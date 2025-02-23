@@ -106,7 +106,7 @@ const SignIn = () => {
 
         {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
-          Don't have an account? <Link href="/Comment">Create account</Link>
+          Don't have an account? <Link href="/Home">Create account</Link>
         </Text>
       </ScrollView>
     </ImageBackground>
