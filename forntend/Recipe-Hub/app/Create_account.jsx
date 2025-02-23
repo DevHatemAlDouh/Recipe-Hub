@@ -24,6 +24,11 @@ const CreateAccount = () => {
 
   const handlePhoneChange = (value) => {
     setPhone(value);
+    if (value && !validatePhoneNumber(value)) {
+      setPhoneError('Invalid phone number');
+    } else {
+      setPhoneError('');
+    }
   };
 
   const validatePhoneNumber = (phoneNumber) => {
@@ -38,6 +43,9 @@ const CreateAccount = () => {
     // التحقق من الاسم
     if (!name) {
       setNameError('Name is required');
+      valid = false;
+    } else if (name.length < 3) { // تصحيح: يجب أن يكون الاسم 3 أحرف على الأقل
+      setNameError('Name must be at least 3 characters'); // تصحيح: استخدام setNameError بدلاً من setName
       valid = false;
     } else {
       setNameError('');
@@ -100,7 +108,11 @@ const CreateAccount = () => {
           Create account
         </Text>
         
-        <View style={globalStyles.inputContainer}>
+        {/* حقل الاسم */}
+        <View style={[
+          globalStyles.inputContainer,
+          { borderColor: nameError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+        ]}>
           <Icon name="user" style={globalStyles.icon} />
           <TextInput
             placeholder="User Name"
@@ -112,7 +124,11 @@ const CreateAccount = () => {
         </View>
         {nameError ? <Text style={globalStyles.errorText}>{nameError}</Text> : null}
 
-        <View style={globalStyles.inputContainer}>
+        {/* حقل البريد الإلكتروني */}
+        <View style={[
+          globalStyles.inputContainer,
+          { borderColor: emailError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+        ]}>
           <Icon name="envelope" style={globalStyles.icon} />
           <TextInput
             placeholder="Email address"
@@ -124,7 +140,11 @@ const CreateAccount = () => {
         </View>
         {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
 
-        <View style={globalStyles.inputContainer}>
+        {/* حقل رقم الهاتف */}
+        <View style={[
+          globalStyles.inputContainer,
+          { borderColor: phoneError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+        ]}>
           <PhoneInput
             ref={phoneRef} // استخدام useRef بدلاً من this
             initialCountry="ye" // البلد الافتراضي (اليمن)
@@ -136,7 +156,11 @@ const CreateAccount = () => {
         </View>
         {phoneError ? <Text style={globalStyles.errorText}>{phoneError}</Text> : null}
 
-        <View style={globalStyles.inputContainer}>
+        {/* حقل كلمة المرور */}
+        <View style={[
+          globalStyles.inputContainer,
+          { borderColor: passwordError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+        ]}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
             placeholder="Password"
@@ -149,7 +173,11 @@ const CreateAccount = () => {
         </View>
         {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
 
-        <View style={globalStyles.inputContainer}>
+        {/* حقل إعادة إدخال كلمة المرور */}
+        <View style={[
+          globalStyles.inputContainer,
+          { borderColor: rePasswordError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+        ]}>
           <Icon name="lock" style={globalStyles.icon} />
           <TextInput
             placeholder="Re-enter Password"
@@ -162,14 +190,17 @@ const CreateAccount = () => {
         </View>
         {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
 
+        {/* زر إنشاء الحساب */}
         <TouchableOpacity
           style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
           onPress={handleSignUp}
         >
           <Text style={globalStyles.buttonText}>Create Account</Text>
         </TouchableOpacity>
+
+        {/* رابط تسجيل الدخول */}
         <Text style={[globalStyles.subtitle]}>
-          I have an account? <Link href="/Sign_in">Sing in to an account</Link>
+          I have an account? <Link href="/Sign_in">Sign in to an account</Link>
         </Text>
       </View>
     </ImageBackground>

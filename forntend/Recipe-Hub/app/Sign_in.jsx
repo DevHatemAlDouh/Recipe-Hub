@@ -16,11 +16,21 @@ const SignIn = () => {
   // التحقق من صحة البريد الإلكتروني
   const validateEmail = (text) => {
     setEmail(text);
+    if (text && !/\S+@\S+\.\S+/.test(text)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
   };
 
   // التحقق من صحة كلمة المرور
   const validatePassword = (text) => {
     setPassword(text);
+    if (text && text.length < 6) {
+      setPasswordError('Password must be at least 6 characters');
+    } else {
+      setPasswordError('');
+    }
   };
 
   // معالجة تسجيل الدخول
@@ -77,7 +87,10 @@ const SignIn = () => {
           <Text style={[globalStyles.title, globalStyles.sign_In_Up_title]}>Sign in</Text>
 
           {/* حقل البريد الإلكتروني */}
-          <View style={globalStyles.inputContainer}>
+          <View style={[
+            globalStyles.inputContainer,
+            { borderColor: emailError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+          ]}>
             <Icon name="envelope" style={globalStyles.icon} />
             <TextInput
               placeholder="Email address"
@@ -90,7 +103,10 @@ const SignIn = () => {
           {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
 
           {/* حقل كلمة المرور */}
-          <View style={globalStyles.inputContainer}>
+          <View style={[
+            globalStyles.inputContainer,
+            { borderColor: passwordError ? 'red' : 'white' } // تغيير لون الحدود بناءً على وجود خطأ
+          ]}>
             <Icon name="lock" style={globalStyles.icon} />
             <TextInput
               placeholder="Password"
