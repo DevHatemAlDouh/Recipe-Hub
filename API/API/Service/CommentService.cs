@@ -21,6 +21,8 @@ namespace API.Service
                 UserID = entity.UserID,
                 Description = entity.Description,
                 SupCommentID = entity.SupCommentID,
+                Rate = entity.Rate,
+                CreatedAt = DateTime.Now,
                 CommentRates = new List<CommentRate>()
             };
             await _context.Comments.AddAsync(comment);
@@ -47,7 +49,9 @@ namespace API.Service
                 UserID = c.UserID,
                 Description = c.Description,
                 SupCommentID = c.SupCommentID,
-                Rate = c.Rate
+                Rate = c.Rate,
+                CreatedAt = c.CreatedAt,
+                UpdatedAt = c.UpdatedAt
             }).ToListAsync();
         }
 
@@ -63,7 +67,9 @@ namespace API.Service
                 UserID = comment.UserID,
                 Description = comment.Description,
                 SupCommentID = comment.SupCommentID,
-                Rate = comment.Rate
+                Rate = comment.Rate,
+                CreatedAt = comment.CreatedAt,
+                UpdatedAt = comment.UpdatedAt
             };
         }
 
@@ -74,6 +80,9 @@ namespace API.Service
             {
                 comment.Description = entity.Description;
                 comment.SupCommentID = entity.SupCommentID;
+                comment.Rate = entity.Rate;
+                comment.CreatedAt = entity.CreatedAt;
+                comment.UpdatedAt = DateTime.Now;
 
                 _context.Comments.Update(comment);
                 await _context.SaveChangesAsync();

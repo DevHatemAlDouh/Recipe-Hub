@@ -18,6 +18,7 @@ namespace API.Service
             var category = new Category
             {
                 Name = entity.Name,
+                CreatedAt = DateTime.Now,
                 RecipeCategories = new List<RecipeCategory>()
             };
 
@@ -34,7 +35,9 @@ namespace API.Service
             return new CategoryInfo
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                CreatedAt = category.CreatedAt,
+                UpdatedAt = category.UpdatedAt
             };
         }
 
@@ -44,6 +47,8 @@ namespace API.Service
             if (category != null)
             {
                 category.Name = entity.Name;
+                category.CreatedAt = entity.CreatedAt;
+                category.UpdatedAt = DateTime.Now;
 
                 _context.Categories.Update(category);
                 await _context.SaveChangesAsync();
@@ -65,7 +70,9 @@ namespace API.Service
             var categories = await _context.Categories.Select(c => new CategoryInfo
             {
                 Id = c.Id,
-                Name = c.Name
+                Name = c.Name,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             }).ToListAsync();
 
             if (!categories.Any())

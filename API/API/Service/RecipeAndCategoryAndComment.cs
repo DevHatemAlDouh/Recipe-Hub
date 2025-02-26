@@ -29,7 +29,9 @@ namespace API.Service
                         .Select(c => new CategoryInfo
                         {
                             Id = c.Id,
-                            Name = c.Name
+                            Name = c.Name,
+                            CreatedAt = c.CreatedAt,
+                            UpdatedAt = c.UpdatedAt
                         }).ToListAsync();
 
                     categories.AddRange(categoryInfo);
@@ -55,6 +57,11 @@ namespace API.Service
                             Id = c.Id,
                             RecipeID = c.RecipeID,
                             UserID = c.UserID,
+                            Description = c.Description,
+                            SupCommentID = c.SupCommentID,
+                            Rate = c.Rate,
+                            CreatedAt = c.CreatedAt,
+                            UpdatedAt = c.UpdatedAt
                         }).ToListAsync();
 
                     comments.AddRange(commentInfo);
@@ -82,6 +89,9 @@ namespace API.Service
                             Title = c.Title,
                             BackgroundImage = c.BackgroundImage,
                             Description = c.Description,
+                            Rate = c.Rate,
+                            CreatedAt = c.CreatedAt,
+                            UpdatedAt = c.UpdatedAt
                         }).ToListAsync();
 
                     recipes.AddRange(recipeInfo);

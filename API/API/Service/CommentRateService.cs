@@ -21,7 +21,9 @@ namespace API.Service
             {
                 Id = commentRate.Id,
                 UserID = commentRate.UserID,
-                CommentID = commentRate.CommentID
+                CommentID = commentRate.CommentID,
+                CreatedAt = commentRate.CreatedAt,
+                UpdatedAt = commentRate.UpdatedAt
             };
         }
 
@@ -31,6 +33,7 @@ namespace API.Service
             {
                 UserID = entity.UserID,
                 CommentID = entity.CommentID,
+                CreatedAt = DateTime.Now
             };
             await _context.CommentRates.AddAsync(commentRate);
             await _context.SaveChangesAsync();
@@ -54,6 +57,15 @@ namespace API.Service
             var Count = commentRate.Count;
             var comment = await _context.Comments.FirstOrDefaultAsync(r => r.Id == commentID);
             comment.Rate = Count;
+            if(comment.CreatedAt != null)
+            {
+                comment.CreatedAt = DateTime.Now;
+            }
+            else
+            {
+                comment.UpdatedAt = DateTime.Now;
+            }
+            await _context.SaveChangesAsync();
             _context.Comments.Update(comment);
         }
     }

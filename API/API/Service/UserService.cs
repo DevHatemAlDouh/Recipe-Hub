@@ -22,6 +22,9 @@ namespace API.Service
                 CountryCode = entity.CountryCode,
                 Email = entity.Email,
                 Password = entity.Password,
+                UserImage = entity.UserImage,
+                CreatedAt = DateTime.Now,
+
                 // Initialize collections if necessary
                 Recipes = new List<Recipe>(),
                 Comments = new List<Comment>(),
@@ -59,7 +62,10 @@ namespace API.Service
                 PhoneNumber = u.PhoneNumber,
                 CountryCode = u.CountryCode,
                 Email = u.Email,
-                Password = u.Password
+                Password = u.Password,
+                UserImage = u.UserImage,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!users.Any())
@@ -82,7 +88,10 @@ namespace API.Service
                 PhoneNumber = user.PhoneNumber,
                 CountryCode = user.CountryCode,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                UserImage = user.UserImage,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
             };
         }
 
@@ -96,6 +105,8 @@ namespace API.Service
                 user.CountryCode = entity.CountryCode;
                 user.Email = entity.Email;
                 user.Password = entity.Password;
+                user.UserImage = entity.UserImage;
+                user.UpdatedAt = DateTime.Now;
 
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();

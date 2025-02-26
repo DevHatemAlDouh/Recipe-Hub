@@ -23,7 +23,9 @@ namespace API.Service
                     RecipeID = r.RecipeID,
                     Description = r.Description,
                     BackgroundImage = r.BackgroundImage,
-                    StepNumber = r.StepNumber
+                    StepNumber = r.StepNumber,
+                    CreatedAt = r.CreatedAt,
+                    UpdatedAt = r.UpdatedAt
                 }).ToListAsync();
 
             if (!steps.Any())

@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<StepInfo>>> GetStepInfo()
         {
-            var steps = await Task.FromResult(_stepService.GetAll());
+            var steps = await _stepService.GetAll();
             return Ok(steps);
         }
 

@@ -23,6 +23,8 @@ namespace API.Service
                 Id = penalty.Id,
                 UserID = penalty.UserID,
                 PenaltyID = penalty.PenaltyID,
+                CreatedAt = penalty.CreatedAt,
+                UpdatedAt = penalty.UpdatedAt
             };
         }
 
@@ -38,6 +40,7 @@ namespace API.Service
                     UserID = entity.UserID,
                     PenaltyID = entity.PenaltyID,
                     Penalty = penalty,
+                    CreatedAt = DateTime.Now,
                     User = user
                 };
 
@@ -57,7 +60,9 @@ namespace API.Service
                 {
                     Id = u.Id,
                     UserID = u.UserID,
-                    PenaltyID = u.PenaltyID
+                    PenaltyID = u.PenaltyID,
+                    CreatedAt = u.CreatedAt,
+                    UpdatedAt = u.UpdatedAt
                 }).ToListAsync();
 
             if (!userPenalties.Any())

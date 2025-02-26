@@ -20,6 +20,8 @@ namespace API.Service
                 Description = entity.Description,
                 TimeOut = entity.TimeOut,
                 Type = entity.Type,
+                CreatedAt = DateTime.Now,
+
                 UserPenalties = new List<UserPenalty>()
             };
             await _context.Penalties.AddAsync(penalty);
@@ -44,7 +46,9 @@ namespace API.Service
                 Id = u.Id,
                 Type = u.Type,
                 Description = u.Description,
-                TimeOut = u.TimeOut
+                TimeOut = u.TimeOut,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!penalties.Any())
@@ -66,7 +70,9 @@ namespace API.Service
                 Id = penalty.Id,
                 Type = penalty.Type,
                 Description = penalty.Description,
-                TimeOut = penalty.TimeOut
+                TimeOut = penalty.TimeOut,
+                CreatedAt = penalty.CreatedAt,
+                UpdatedAt = penalty.UpdatedAt
             };
         }
 
@@ -78,6 +84,9 @@ namespace API.Service
                 penalty.TimeOut = entity.TimeOut;
                 penalty.Description = entity.Description;
                 penalty.Type = entity.Type;
+                penalty.CreatedAt = entity.CreatedAt;
+                penalty.UpdatedAt = DateTime.Now;
+
                 _context.Penalties.Update(penalty);
                 await _context.SaveChangesAsync();
             }

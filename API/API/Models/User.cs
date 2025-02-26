@@ -8,6 +8,10 @@
         public string CountryCode { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public byte[] UserImage { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
         public ICollection<Suggestion> Suggestions { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
         public ICollection<Comment> Comments { get; set; }

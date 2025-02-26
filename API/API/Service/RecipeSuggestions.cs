@@ -22,7 +22,9 @@ namespace API.Service
                     Id = s.Id,
                     UserID = s.UserID,
                     StepID = s.StepID,
-                    Description = s.Description
+                    Description = s.Description,
+                    CreatedAt = s.CreatedAt,
+                    UpdatedAt = s.UpdatedAt
                 }).ToListAsync();
 
             if (!suggestions.Any())

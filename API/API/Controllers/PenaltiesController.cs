@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<PenaltyInfo>>> GetPenaltys()
         {
-            var penalties = await Task.FromResult(_penaltyService.GetAll());
+            var penalties = await _penaltyService.GetAll();
             return Ok(penalties);
         }
 

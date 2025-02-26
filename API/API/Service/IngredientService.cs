@@ -19,6 +19,8 @@ namespace API.Service
             {
                 Name = entity.Name,
                 Description = entity.Description,
+                CreatedAt = DateTime.Now,
+                
                 StepIngredients = new List<StepIngredient>()
             };
 
@@ -48,7 +50,9 @@ namespace API.Service
             {
                 Id = u.Id,
                 Description = u.Description,
-                Name = u.Name
+                Name = u.Name,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!ingredients.Any())
@@ -69,7 +73,9 @@ namespace API.Service
             {
                 Id = ingredient.Id,
                 Description = ingredient.Description,
-                Name = ingredient.Name
+                Name = ingredient.Name,
+                CreatedAt = ingredient.CreatedAt,
+                UpdatedAt = ingredient.UpdatedAt
             };
         }
 
@@ -80,6 +86,8 @@ namespace API.Service
             {
                 ingredient.Name = entity.Name;
                 ingredient.Description = entity.Description;
+                ingredient.CreatedAt = entity.CreatedAt;
+                ingredient.UpdatedAt = DateTime.Now;
 
                 _context.Ingredients.Update(ingredient);
                 await _context.SaveChangesAsync();

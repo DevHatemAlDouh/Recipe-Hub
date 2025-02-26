@@ -19,6 +19,8 @@ namespace API.Service
             var permission = new Permission
             {
                 Title = entity.Title,
+                CreatedAt = DateTime.Now,
+
                 UserPermissions = new List<UserPermission>()
             };
             await _context.Permissions.AddAsync(permission);
@@ -41,7 +43,9 @@ namespace API.Service
             var permissions = await _context.Permissions.Select(u => new PermissionInfo
             {
                 Id = u.Id,
-                Title = u.Title
+                Title = u.Title,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!permissions.Any())
@@ -61,7 +65,9 @@ namespace API.Service
             return new PermissionInfo
             {
                 Id = permission.Id,
-                Title = permission.Title
+                Title = permission.Title,
+                CreatedAt = permission.CreatedAt,
+                UpdatedAt = permission.UpdatedAt
             };
         }
 
@@ -71,6 +77,8 @@ namespace API.Service
             if (permission != null)
             {
                 permission.Title = entity.Title;
+                permission.CreatedAt = entity.CreatedAt;
+                permission.UpdatedAt = DateTime.Now;
 
                 _context.Permissions.Update(permission);
                 await _context.SaveChangesAsync();

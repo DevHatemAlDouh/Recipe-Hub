@@ -22,6 +22,7 @@ namespace API.Service
                 Type = entity.Type,
                 Description = entity.Description,
                 Resolved = entity.Resolved,
+                CreatedAt = DateTime.Now
 
             };
             await _context.Reports.AddAsync(report);
@@ -53,7 +54,9 @@ namespace API.Service
                 AtUserID = u.AtUserID,
                 Type = u.Type,
                 Description = u.Description,
-                Resolved = u.Resolved
+                Resolved = u.Resolved,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!reports.Any())
@@ -75,7 +78,9 @@ namespace API.Service
                     AtUserID = u.AtUserID,
                     Type = u.Type,
                     Description = u.Description,
-                    Resolved = u.Resolved
+                    Resolved = u.Resolved,
+                    CreatedAt = u.CreatedAt,
+                    UpdatedAt = u.UpdatedAt
                 }).ToListAsync();
 
             if (!reports.Any())
@@ -98,7 +103,9 @@ namespace API.Service
                 Description = report.Description,
                 FromUserID = report.FromUserID,
                 Resolved = report.Resolved,
-                Type = report.Type
+                Type = report.Type,
+                CreatedAt = report.CreatedAt,
+                UpdatedAt = report.UpdatedAt
             };
         }
     }

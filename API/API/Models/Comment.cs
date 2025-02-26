@@ -10,6 +10,8 @@ namespace API.Models
         public string Description { get; set; }
         public int? SupCommentID { get; set; }
         public int? Rate { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public Recipe Recipe { get; set; } // Link back to Recipe
         public User User { get; set; } // Link back to User

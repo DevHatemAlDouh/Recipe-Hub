@@ -8,6 +8,9 @@
         public byte[] BackgroundImage { get; set; }
         public string Description { get; set; }
         public int? Rate { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
         public User User { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<RecipeRate> RecipeRates { get; set; }

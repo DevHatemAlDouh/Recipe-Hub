@@ -18,7 +18,8 @@ namespace API.Service
             {
                 UserID = entity.UserID,
                 IngredientID = entity.IngredientID,
-                Type = entity.Type
+                Type = entity.Type,
+                CreatedAt = DateTime.Now
             };
             await _context.Favorites.AddAsync(favorite);
             await _context.SaveChangesAsync();
@@ -43,7 +44,9 @@ namespace API.Service
                 Id = f.Id,
                 UserID = f.UserID,
                 IngredientID = f.IngredientID,
-                Type = f.Type
+                Type = f.Type,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToListAsync();
         }
 
@@ -54,7 +57,9 @@ namespace API.Service
                 Id = f.Id,
                 UserID = f.UserID,
                 IngredientID = f.IngredientID,
-                Type = f.Type
+                Type = f.Type,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToListAsync();
         }
 
@@ -68,7 +73,9 @@ namespace API.Service
                 Id = favorite.Id,
                 UserID = favorite.UserID,
                 IngredientID = favorite.IngredientID,
-                Type = favorite.Type
+                Type = favorite.Type,
+                CreatedAt = favorite.CreatedAt,
+                UpdatedAt = favorite.UpdatedAt
             };
         }
     }

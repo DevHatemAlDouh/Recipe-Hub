@@ -1358,6 +1358,32 @@
   },
   {
     "ContainingType": "API.Controllers.UsersController",
+    "Method": "GetMyFavorites",
+    "RelativePath": "api/users/GetAllMyFavorites/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
     "Method": "GetMyRecipes",
     "RelativePath": "api/users/GetAllMyRecipes/{userId}",
     "HttpMethod": "GET",

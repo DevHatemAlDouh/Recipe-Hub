@@ -22,7 +22,9 @@ namespace API.Service
                     UserID = r.UserID,
                     Description = r.Description,
                     BackgroundImage = r.BackgroundImage,
-                    Title = r.Title
+                    Title = r.Title,
+                    CreatedAt = r.CreatedAt,
+                    UpdatedAt = r.UpdatedAt
                 }).ToListAsync();
 
             if (!recipes.Any())

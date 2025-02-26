@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<PermissionInfo>>> GetPermissions()
         {
-            var permissions = await Task.FromResult(_permissionService.GetAll());
+            var permissions = await _permissionService.GetAll();
             return Ok(permissions);
         }
 

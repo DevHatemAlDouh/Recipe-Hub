@@ -37,14 +37,14 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetUsers()
         {
-            var users = await Task.FromResult(_userService.GetAll());
+            var users = await _userService.GetAll();
             return Ok(users);
         }
 
         [HttpGet("GetAllReports")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetReports()
         {
-            var users = await Task.FromResult(_reportService.GetAll());
+            var users = await _reportService.GetAll();
             return Ok(users);
         }
 
@@ -52,14 +52,22 @@ namespace API.Controllers
         [HttpGet("GetAllFavorite")]
         public async Task<ActionResult<IEnumerable<FavoriteInfo>>> GetFavorites()
         {
-            var favorites = await Task.FromResult(_favoriteService.GetAll());
+            var favorites = await _favoriteService.GetAll();
             return Ok(favorites);
+        }
+
+        // GET: api/users/GetAllMyRecipes/{userId}
+        [HttpGet("GetAllMyFavorites/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyFavorites(int userId)
+        {
+            var users = await _favoriteService.GetAllMy(userId);
+            return Ok(users);
         }
 
         [HttpGet("GetAllNonResolvedReports")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetNonResolvedReports()
         {
-            var users = await Task.FromResult(_reportService.GetAllnonResolved());
+            var users = await _reportService.GetAllnonResolved();
             return Ok(users);
         }
 
@@ -67,7 +75,7 @@ namespace API.Controllers
         [HttpGet("GetAllMyRecipes/{userId}")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyRecipes(int userId)
         {
-            var users = await Task.FromResult(_userRecipes.GetAll(userId));
+            var users = await _userRecipes.GetAll(userId);
             return Ok(users);
         }
 
@@ -110,7 +118,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            var Penalties = await Task.FromResult(_userPenalties.GetAllpenalty(userId));
+            var Penalties = await (_userPenalties.GetAllpenalty(userId));
             return Ok(Penalties);
         }
 
@@ -125,7 +133,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            var Permissions = await Task.FromResult(_usePermissions.GetAllPermation(userId));
+            var Permissions = await (_usePermissions.GetAllPermation(userId));
             return Ok(Permissions);
         }
 

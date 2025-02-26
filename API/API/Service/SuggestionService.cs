@@ -19,7 +19,8 @@ namespace API.Service
             {
                 UserID = entity.UserID,
                 StepID = entity.StepID,
-                Description = entity.Description
+                Description = entity.Description,
+                CreatedAt = DateTime.Now
             };
 
             await _context.Suggestions.AddAsync(suggestion);
@@ -37,7 +38,9 @@ namespace API.Service
                 Id = suggestion.Id,
                 UserID = suggestion.UserID,
                 StepID = suggestion.StepID,
-                Description = suggestion.Description
+                Description = suggestion.Description,
+                CreatedAt = suggestion.CreatedAt,
+                UpdatedAt = suggestion.UpdatedAt
             };
         }
 
@@ -49,6 +52,8 @@ namespace API.Service
                 suggestion.UserID = entity.UserID;
                 suggestion.StepID = entity.StepID;
                 suggestion.Description = entity.Description;
+                suggestion.CreatedAt = entity.CreatedAt;
+                suggestion.UpdatedAt = DateTime.Now;
 
                 _context.Suggestions.Update(suggestion);
                 await _context.SaveChangesAsync();
@@ -72,7 +77,9 @@ namespace API.Service
                 Id = s.Id,
                 UserID = s.UserID,
                 StepID = s.StepID,
-                Description = s.Description
+                Description = s.Description,
+                CreatedAt = s.CreatedAt,
+                UpdatedAt = s.UpdatedAt
             }).ToListAsync();
 
             if (!suggestions.Any())

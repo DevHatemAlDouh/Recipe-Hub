@@ -34,28 +34,28 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<RecipeInfo>>> GetRecips()
         {
-            var recipes = await Task.FromResult(_recipeService.GetAll());
+            var recipes = await _recipeService.GetAll();
             return Ok(recipes);
         }
 
         [HttpGet("GetAllCategories/{recipeId}")]
         public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetCategories(int recipeId)
         {
-            var recipes = await Task.FromResult(_recipeAndCategory.GetAllCategoriesInRecipe(recipeId));
+            var recipes = await _recipeAndCategory.GetAllCategoriesInRecipe(recipeId);
             return Ok(recipes);
         }
 
         [HttpGet("GetAllComments/{recipeId}")]
         public async Task<ActionResult<IEnumerable<CommentInfo>>> GetComments(int recipeId)
         {
-            var recipes = await Task.FromResult(_recipeAndCategory.GetAllCommentsInRecipe(recipeId));
+            var recipes = await _recipeAndCategory.GetAllCommentsInRecipe(recipeId);
             return Ok(recipes);
         }
 
         [HttpGet("GetAllSuggestions/{recipeId}")]
         public async Task<ActionResult<IEnumerable<SuggestionInfo>>> GetSuggestions(int recipeId)
         {
-            var recipes = await Task.FromResult(_recipeSuggestions.GetAll(recipeId));
+            var recipes = await _recipeSuggestions.GetAll(recipeId);
             return Ok(recipes);
         }
 

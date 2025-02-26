@@ -19,7 +19,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<IngredientInfo>>> GetIngredients()
         {
-            var ingrediens = await Task.FromResult(_ingredienService.GetAll());
+            var ingrediens = await _ingredienService.GetAll();
             return Ok(ingrediens);
         }
 

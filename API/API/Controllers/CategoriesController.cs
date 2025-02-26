@@ -28,7 +28,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetCategories()
         {
-            var Categories = await Task.FromResult(_categoryService.GetAll());
+            var Categories = await _categoryService.GetAll();
             return Ok(Categories);
         }
 
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("GetAllRecipes/{categoryId}")]
         public async Task<ActionResult<IEnumerable<RecipeInfo>>> GetRecipes(int categoryId)
         {
-            var Recipes = await Task.FromResult(_recipeAndCategory.GetAllRecipeWithCategory(categoryId));
+            var Recipes = await _recipeAndCategory.GetAllRecipeWithCategory(categoryId);
             return Ok(Recipes);
         }
 

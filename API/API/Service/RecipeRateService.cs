@@ -22,7 +22,9 @@ namespace API.Service
             {
                 Id = recipe.Id,
                 UserID = recipe.UserID,
-                RecipeID = recipe.RecipeID
+                RecipeID = recipe.RecipeID,
+                CreatedAt = recipe.CreatedAt,
+                UpdatedAt = recipe.UpdatedAt
             };
         }
 
@@ -32,6 +34,7 @@ namespace API.Service
             {
                 UserID = entity.UserID,
                 RecipeID = entity.RecipeID,
+                CreatedAt = DateTime.Now
             };
             await _context.RecipeRates.AddAsync(recipeRate);
             await _context.SaveChangesAsync();
@@ -55,6 +58,14 @@ namespace API.Service
             var Count = recipeRates.Count;
             var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeID);
             recipe.Rate = Count;
+            if (recipe.CreatedAt != null)
+            {
+                recipe.UpdatedAt = DateTime.Now;
+            }
+            else
+            {
+                recipe.CreatedAt = DateTime.Now;
+            }
             _context.Recipes.Update(recipe);
         }
     }

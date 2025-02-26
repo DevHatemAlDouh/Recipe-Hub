@@ -22,6 +22,9 @@ namespace API.Service
                 RecipeID = entity.RecipeID,
                 StepNumber = entity.StepNumber,
                 BackgroundImage = entity.BackgroundImage,
+                CreatedAt = DateTime.Now,
+                
+                Suggestions = new List<Suggestion>(),
                 StepIngredients = new List<StepIngredient>()
             };
 
@@ -53,7 +56,9 @@ namespace API.Service
                 Description = u.Description,
                 RecipeID = u.RecipeID,
                 StepNumber = u.StepNumber,
-                BackgroundImage = u.BackgroundImage
+                BackgroundImage = u.BackgroundImage,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
             if (!steps.Any())
@@ -75,7 +80,9 @@ namespace API.Service
                 Description = step.Description,
                 RecipeID = step.RecipeID,
                 StepNumber = step.StepNumber,
-                BackgroundImage = step.BackgroundImage
+                BackgroundImage = step.BackgroundImage,
+                CreatedAt = step.CreatedAt,
+                UpdatedAt = step.UpdatedAt
             };
         }
 
@@ -88,6 +95,8 @@ namespace API.Service
                 step.RecipeID = entity.RecipeID;
                 step.StepNumber = entity.StepNumber;
                 step.BackgroundImage = entity.BackgroundImage;
+                step.CreatedAt = entity.CreatedAt;
+                step.UpdatedAt = DateTime.Now;
 
                 _context.Steps.Update(step);
                 await _context.SaveChangesAsync();

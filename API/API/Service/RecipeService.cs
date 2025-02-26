@@ -21,6 +21,7 @@ namespace API.Service
                 Description = entity.Description,
                 BackgroundImage = entity.BackgroundImage,
                 Title = entity.Title,
+                CreatedAt = DateTime.Now,
                 Comments = new List<Comment>(),
                 RecipeRates = new List<RecipeRate>(),
                 Steps = new List<Step>()
