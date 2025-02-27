@@ -9,6 +9,7 @@ const screens = [
   { name: "Sign_in",        options: { headerShown: false } },
   { name: "Create_account", options: { headerShown: false } },
   { name: "Comment",        options: { headerShown: false } },
+  { name: "Home",           options: { headerShown: true, title: "Recipe Hub" } },
   { name: "not-found",      options: { title: "Page Not Found" } },
 ];
 

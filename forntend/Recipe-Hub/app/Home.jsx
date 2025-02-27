@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { Avatar, Card, IconButton, Menu } from "react-native-paper";
+import { Avatar, Card, IconButton, Menu, Icon, Dialog, Button, Portal } from "react-native-paper";
 
 const recipes = [
   {
@@ -94,44 +94,83 @@ const Home = () => {
 
 const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleReport = () => {
+    console.log("Reported recipe:", item.id);
+    setShowDialog(false);
+    setMenuVisible(false);
+  };
 
   return (
-    <Card style={{ margin: 10 }}>
+    <Card style={styles.card}>
       <Card.Title
         title={item.author}
         subtitle={item.time}
         left={(props) => <Avatar.Image {...props} source={{ uri: item.avatar }} />}
         right={(props) => (
-          <Menu
-            visible={menuVisible}
-            onDismiss={() => setMenuVisible(false)}
-            anchor={
-              <IconButton
-                {...props}
-                icon="dots-vertical"
-                onPress={() => setMenuVisible(true)}
-              />
-            }
-          >
-            <Menu.Item
-              leadingIcon={() => (
-                <IconButton 
-                  icon="alert" 
-                  iconColor="red"
-                  size={24}
-                  // لمنع تفاعل الزر
+          <View style={styles.menuContainer}>
+            <Menu
+              visible={menuVisible}
+              onDismiss={() => setMenuVisible(false)}
+              anchor={
+                <IconButton
+                  {...props}
+                  icon="dots-vertical"
+                  onPress={() => setMenuVisible(true)}
+                  style={styles.menuButton}
                 />
-              )} // إضافة اللون الأحمر للأيقونة
-              titleStyle={{ color: 'red',margin:8 }} // إضافة اللون الأحمر للنص
-              onPress={() => {
-                console.log("Reported recipe:", item.id);
-                setMenuVisible(false);
-              }}
-              title="Report"
-            />
-          </Menu>
+              }
+              contentStyle={styles.menuContent}
+            >
+              <Menu.Item
+                leadingIcon={() => <Icon source="flag" color="red" size={24} />}
+                titleStyle={styles.menuItemText}
+                onPress={() => {
+                  setMenuVisible(false);
+                  setShowDialog(true);
+                }}
+                title="Report"
+              />
+            </Menu>
+          </View>
         )}
       />
+
+      <Portal>
+        <Dialog 
+          visible={showDialog} 
+          onDismiss={() => setShowDialog(false)}
+          style={styles.dialogContainer}
+        >
+          <View style={styles.dialogContent}>
+            <Dialog.Title>Confirm Report</Dialog.Title>
+            <Dialog.Content>
+              <Text style={styles.dialogText}>
+                Are you sure you want to report this recipe?
+              </Text>
+            </Dialog.Content>
+            <Dialog.Actions style={styles.dialogActions}>
+              <Button 
+                mode="outlined" 
+                onPress={() => setShowDialog(false)}
+                style={[styles.cancelButton,{color: 'black'}]}
+              >
+                Cancel
+              </Button>
+              <Button 
+                mode="contained" 
+                onPress={handleReport}
+                style={styles.confirmButton}
+                labelStyle={styles.buttonLabel}
+              >
+                Confirm
+              </Button>
+            </Dialog.Actions>
+          </View>
+        </Dialog>
+      </Portal>
+
       <Card.Cover source={{ uri: item.image }} />
       <Card.Content>
         <Text variant="titleMedium">{item.title}</Text>
@@ -217,6 +256,58 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  card: {
+    margin: 10,
+    position: 'relative',
+  },
+  menuContainer: {
+    position: 'absolute',
+    right: 10,
+    top: 0,
+    zIndex: 1,
+  },
+  menuButton: {
+    margin: 0,
+    padding: 0,
+  },
+  menuContent: {
+    marginLeft: -15,
+    marginTop: -20,
+  },
+  menuItemText: {
+    color: 'red',
+    marginLeft: 8,
+  },
+  dialogContainer: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialogContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 8,
+    width: '90%',
+  },
+  dialogText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  dialogActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 10,
+  },
+  cancelButton: {
+    borderColor: '#999',
+    marginRight: 10,
+  },
+  confirmButton: {
+    backgroundColor: '#ff4444',
+  },
+  buttonLabel: {
+    color: 'white',
   },
   contentContainer: {
     flex: 1,
