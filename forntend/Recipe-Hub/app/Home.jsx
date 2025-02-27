@@ -1,10 +1,20 @@
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, FlatList, ScrollView, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+  ScrollView,
+  Keyboard,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { Avatar, Card, IconButton } from "react-native-paper";
+import { Avatar, Card, IconButton, Menu } from "react-native-paper";
 
-// بيانات الوصفات
 const recipes = [
   {
     id: "1",
@@ -26,20 +36,17 @@ const recipes = [
   },
 ];
 
-// المكون الرئيسي
 const Home = () => {
   const bottomSheetRef = useRef(null);
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [comments, setComments] = useState({});
   const [favorites, setFavorites] = useState({});
 
-  // فتح BottomSheet وتحديد الوصفة المختارة
   const handleCommentPress = (recipeId) => {
     setSelectedRecipeId(recipeId);
     bottomSheetRef.current?.expand();
   };
 
-  // إضافة تعليق جديد للوصفة المختارة
   const handleSendComment = (commentText) => {
     if (commentText.trim()) {
       const newComment = {
@@ -54,7 +61,6 @@ const Home = () => {
     }
   };
 
-  // تغيير حالة الإعجاب للوصفة
   const toggleFavorite = (recipeId) => {
     setFavorites((prevFavorites) => ({
       ...prevFavorites,
@@ -64,7 +70,6 @@ const Home = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {/* قائمة الوصفات */}
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.id}
@@ -77,8 +82,6 @@ const Home = () => {
           />
         )}
       />
-
-      {/* مكون التعليقات */}
       <Comment
         bottomSheetRef={bottomSheetRef}
         selectedRecipeId={selectedRecipeId}
@@ -89,15 +92,45 @@ const Home = () => {
   );
 };
 
-// مكون بطاقة الوصفة
 const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
+  const [menuVisible, setMenuVisible] = useState(false);
+
   return (
     <Card style={{ margin: 10 }}>
       <Card.Title
         title={item.author}
         subtitle={item.time}
         left={(props) => <Avatar.Image {...props} source={{ uri: item.avatar }} />}
-        right={(props) => <IconButton {...props} icon="dots-vertical" />}
+        right={(props) => (
+          <Menu
+            visible={menuVisible}
+            onDismiss={() => setMenuVisible(false)}
+            anchor={
+              <IconButton
+                {...props}
+                icon="dots-vertical"
+                onPress={() => setMenuVisible(true)}
+              />
+            }
+          >
+            <Menu.Item
+              leadingIcon={() => (
+                <IconButton 
+                  icon="alert" 
+                  iconColor="red"
+                  size={24}
+                  // لمنع تفاعل الزر
+                />
+              )} // إضافة اللون الأحمر للأيقونة
+              titleStyle={{ color: 'red',margin:8 }} // إضافة اللون الأحمر للنص
+              onPress={() => {
+                console.log("Reported recipe:", item.id);
+                setMenuVisible(false);
+              }}
+              title="Report"
+            />
+          </Menu>
+        )}
       />
       <Card.Cover source={{ uri: item.image }} />
       <Card.Content>
@@ -105,27 +138,26 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
         <Text variant="bodyMedium">{item.description}</Text>
       </Card.Content>
       <Card.Actions>
-        {/* أيقونة الإعجاب */}
-        <IconButton icon={isFavorite ? "heart" : "heart-outline"} iconColor="red" onPress={onFavoritePress} />
-        {/* أيقونة التعليقات */}
+        <IconButton
+          icon={isFavorite ? "heart" : "heart-outline"}
+          iconColor="red"
+          onPress={onFavoritePress}
+        />
         <IconButton icon="comment-outline" onPress={onCommentPress} />
       </Card.Actions>
     </Card>
   );
 };
 
-// مكون التعليقات
 const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) => {
   const [comment, setComment] = useState("");
 
-  // إغلاق الكيبورد عند إغلاق الـ BottomSheet
   const handleSheetChanges = (index) => {
     if (index === -1) {
       Keyboard.dismiss();
     }
   };
 
-  // إضافة تعليق جديد
   const handleSend = () => {
     if (comment.trim()) {
       onSendComment(comment);
@@ -144,12 +176,14 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
       onChange={handleSheetChanges}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.keyboardAvoidingView}>
-          {/* حقل الإدخال وزر الإرسال */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardAvoidingView}
+        >
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="اكتب تعليقك هنا..."
+              placeholder="Write your comment..."
               value={comment}
               onChangeText={setComment}
               multiline
@@ -162,8 +196,6 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
               <IconButton icon="send" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
-
-          {/* عرض التعليقات */}
           <ScrollView style={styles.scrollView}>
             {comments.map((item) => (
               <View key={item.id} style={styles.commentBubble}>
@@ -171,7 +203,9 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
                 <Text style={styles.timestamp}>{item.timestamp}</Text>
               </View>
             ))}
-            {comments.length === 0 && <Text style={styles.noCommentsText}>لا توجد تعليقات</Text>}
+            {comments.length === 0 && (
+              <Text style={styles.noCommentsText}>No comments yet</Text>
+            )}
           </ScrollView>
         </KeyboardAvoidingView>
       </BottomSheetView>
@@ -179,7 +213,6 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
   );
 };
 
-// الأنماط
 const styles = StyleSheet.create({
   container: {
     flex: 1,
