@@ -1,36 +1,48 @@
 import { Tabs } from "expo-router";
+import { MaterialCommunityIcons } from "@expo/vector-icons"; // استخدام @expo/vector-icons
 
 export default function TabsLayout() {
-return (
+  return (
     <Tabs
-    screenOptions={{
+      screenOptions={{
         tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "gray",
         tabBarLabelStyle: { fontSize: 12 },
         tabBarStyle: { backgroundColor: "white" },
-    }}
+      }}
     >
-    <Tabs.Screen
-        name="home"
+      {/* الصفحة الرئيسية */}
+      <Tabs.Screen
+        name="Home"
         options={{
-        title: "الرئيسية",
-        tabBarIcon: ({ color }) => "🏠",
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home-outline" size={size} color={color} />
+          ),
         }}
-    />
-    <Tabs.Screen
-        name="search"
+      />
+
+      {/* صفحة البحث */}
+      <Tabs.Screen
+        name="Search"
         options={{
-        title: "بحث",
-        tabBarIcon: ({ color }) => "🔍",
+          title: "Search",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="magnify" size={size} color={color} />
+          ),
         }}
-    />
-    <Tabs.Screen
-        name="profile"
+      />
+
+      {/* صفحة الملف الشخصي */}
+      <Tabs.Screen
+        name="Profile"
         options={{
-        title: "حسابي",
-        tabBarIcon: ({ color }) => "👤",
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-circle-outline" size={size} color={color} />
+          ),
         }}
-    />
+      />
     </Tabs>
-);
+  );
 }

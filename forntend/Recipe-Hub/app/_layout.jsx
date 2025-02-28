@@ -2,6 +2,12 @@ import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from 'react-native-paper';
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+
+// منع إغلاق شاشة التحميل تلقائيًا
+SplashScreen.preventAutoHideAsync();
 
 const screens = [
   { name: "open", options: { headerShown: false } },
@@ -13,6 +19,21 @@ const screens = [
 ];
 
 export default function RootLayout() {
+  // تحميل الخطوط
+  const [fontsLoaded] = useFonts({
+    // تحميل خطوط MaterialCommunityIcons تلقائيًا عبر @expo/vector-icons
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <SafeAreaProvider>
       <PaperProvider>
@@ -21,7 +42,6 @@ export default function RootLayout() {
           {screens.map((screen, index) => (
             <Stack.Screen key={index} name={screen.name} options={screen.options} />
           ))}
-          {/* تأكد من أن هذا السطر موجود بدون children */}
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </PaperProvider>
