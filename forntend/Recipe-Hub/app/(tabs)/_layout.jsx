@@ -1,45 +1,36 @@
-import { Tabs } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
-  return (
+return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: {
-          height: 60,
-          paddingBottom: 5,
-        },
-      }}
+    screenOptions={{
+        tabBarActiveTintColor: "#007AFF",
+        tabBarInactiveTintColor: "gray",
+        tabBarLabelStyle: { fontSize: 12 },
+        tabBarStyle: { backgroundColor: "white" },
+    }}
     >
-      <Tabs.Screen
-        name="Home"
+    <Tabs.Screen
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="home" size={24} color={color} />
-          ),
+        title: "الرئيسية",
+        tabBarIcon: ({ color }) => "🏠",
         }}
-      />
-      <Tabs.Screen
-        name="Search"
+    />
+    <Tabs.Screen
+        name="search"
         options={{
-          title: 'Search',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="search" size={24} color={color} />
-          ),
+        title: "بحث",
+        tabBarIcon: ({ color }) => "🔍",
         }}
-      />
-      <Tabs.Screen
-        name="Profile"
+    />
+    <Tabs.Screen
+        name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="person" size={24} color={color} />
-          ),
+        title: "حسابي",
+        tabBarIcon: ({ color }) => "👤",
         }}
-      />
+    />
     </Tabs>
-  );
+);
 }
