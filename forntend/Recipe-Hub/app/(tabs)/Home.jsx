@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   FlatList,
   ScrollView,
   Keyboard,
+  RefreshControl,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -50,6 +51,16 @@ const Home = () => {
       return acc;
     }, {})
   );
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setLastUpdated(new Date());
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const handleCommentPress = (recipeId) => {
     setSelectedRecipeId(recipeId);
@@ -94,7 +105,7 @@ const Home = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <RecipeCard
-            item={item}
+            item={{...item, lastUpdated}}
             onCommentPress={() => handleCommentPress(item.id)}
             onFavoritePress={() => toggleFavorite(item.id)}
             isFavorite={favorites[item.id] === "heart"}
@@ -102,6 +113,19 @@ const Home = () => {
             commentsCount={comments[item.id]?.length || 0}
           />
         )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#FF6B6B']}
+            tintColor="#FF6B6B"
+          />
+        }
+        ListHeaderComponent={
+          <Text style={styles.lastUpdateText}>
+            Last updated: {lastUpdated.toLocaleTimeString()}
+          </Text>
+        }
       />
       <Comment
         bottomSheetRef={bottomSheetRef}
@@ -205,6 +229,9 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCo
       <Card.Content>
         <Text variant="titleMedium">{item.title}</Text>
         <Text variant="bodyMedium">{item.description}</Text>
+        <Text style={styles.updateTime}>
+          Updated: {item.lastUpdated.toLocaleTimeString()}
+        </Text>
       </Card.Content>
       <Card.Actions>
         <View style={styles.actionContainer}>
@@ -416,6 +443,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 4,
     color: '#666',
+  },
+  lastUpdateText: {
+    textAlign: 'center',
+    color: '#666',
+    paddingVertical: 8,
+    fontSize: 12,
+  },
+  updateTime: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 4,
   },
 });
 
