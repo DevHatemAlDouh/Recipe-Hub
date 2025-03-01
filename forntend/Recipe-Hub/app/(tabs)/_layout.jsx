@@ -39,9 +39,11 @@ return (
         options={{
         title: "Add",
         tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="plus-box" size={size} color={color} />
+            <MaterialCommunityIcons name="card-plus-outline " size={size} color={color} />
         ),
         }}
+        // plus-box
+        
     />
 
       {/* صفحة الملف الشخصي */}
