@@ -16,6 +16,7 @@ return (
         name="Home"
         options={{
         title: "Home",
+        unmountOnBlur: false,
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home-outline" size={size} color={color} />
         ),
@@ -27,6 +28,7 @@ return (
         name="Search"
         options={{
         title: "Search",
+        unmountOnBlur: false,
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="magnify" size={size} color={color} />
         ),
@@ -38,8 +40,9 @@ return (
         name="Add"
         options={{
         title: "Add",
+        unmountOnBlur: false,
         tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="card-plus-outline " size={size} color={color} />
+            <MaterialCommunityIcons name="plus-box" size={size} color={color} />
         ),
         }}
         // plus-box
@@ -51,6 +54,7 @@ return (
         name="Profile"
         options={{
         title: "Profile",
+        unmountOnBlur: false,
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle-outline" size={size} color={color} />
         ),

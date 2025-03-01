@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
+import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler, Button } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
 import globalStyles from '@/app/globalStyles';
@@ -86,7 +86,7 @@ const SignIn = () => {
             // التحقق من صحة كلمة المرور (هذا مثال بسيط، يجب استخدام مكتبة مثل bcrypt لمقارنة كلمات المرور)
             if (userData.password === password) {
               // توجيه المستخدم إلى الصفحة الرئيسية
-              router.push('/');
+              router.push('/(tabs)/Home');
             } else {
               setLoginError('Invalid email or password');
             }
@@ -170,8 +170,9 @@ const SignIn = () => {
 
         {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
-          Don't have an account? <Link href="/Home">Create account</Link>
+          Don't have an account? <Link href="/Create_account">Create account</Link>
         </Text>
+        <Button title="Go to Home" onPress={() => router.replace('/(tabs)/Home')} />
       </ScrollView>
     </ImageBackground>
   );

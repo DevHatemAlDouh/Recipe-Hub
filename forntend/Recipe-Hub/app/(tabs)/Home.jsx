@@ -14,6 +14,7 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Avatar, Card, IconButton, Menu, Icon, Dialog, Button, Portal } from "react-native-paper";
+import { router } from "expo-router";
 
 const recipes = [
   {
@@ -177,7 +178,13 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
         </Dialog>
       </Portal>
 
-      <Card.Cover source={{ uri: item.image }} />
+      {/* التعديل الرئيسي هنا */}
+      <TouchableOpacity 
+  onPress={() => router.push(`/RecipeDetails?recipe=${encodeURIComponent(JSON.stringify(item))}`)}
+>
+  <Card.Cover source={{ uri: item.image }} style={styles.coverImage} />
+</TouchableOpacity>
+
       <Card.Content>
         <Text variant="titleMedium">{item.title}</Text>
         <Text variant="bodyMedium">{item.description}</Text>
@@ -268,6 +275,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'visible',
   },
+  // أضفنا ستايل للصورة
+  coverImage: {
+    // يمكنك إضافة خصائص إضافية مثل:
+    // height: 200,
+    // borderRadius: 10,
+  },
   menuContainer: {
     position: 'relative',
     zIndex: 9999,
@@ -283,6 +296,8 @@ const styles = StyleSheet.create({
   menuItemText: {
     color: 'red',
     marginLeft: 8,
+    position: 'relative',
+    top: 2,
   },
   dialogContainer: {
     backgroundColor: 'rgba(0,0,0,0.5)',
