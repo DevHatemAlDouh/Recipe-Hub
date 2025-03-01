@@ -30,13 +30,13 @@ const RecipeDetails = () => {
     return (
       <View style={styles.errorContainer}>
         <Ionicons name="sad-outline" size={48} color="#888" />
-        <Text style={styles.errorText}>الوصفة غير موجودة</Text>
+        <Text style={styles.errorText}>Recipe Not Found </Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: "rgba(255, 182, 93, 0.47)" }]}>
       {/* قسم الصورة */}
       <View style={styles.header}>
         {parsedRecipe.image ? (

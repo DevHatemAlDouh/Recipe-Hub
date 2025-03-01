@@ -25,6 +25,7 @@ const recipes = [
     title: "Pasta",
     description: "Pasta with tomato sauce",
     time: "30 minutes ago",
+    initialLikes: 15,
   },
   {
     id: "2",
@@ -34,6 +35,7 @@ const recipes = [
     title: "Pastries",
     description: "Cheesecake recipe",
     time: "30 minutes ago",
+    initialLikes: 8,
   },
 ];
 
@@ -42,6 +44,12 @@ const Home = () => {
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [comments, setComments] = useState({});
   const [favorites, setFavorites] = useState({});
+  const [likesCount, setLikesCount] = useState(
+    recipes.reduce((acc, recipe) => {
+      acc[recipe.id] = recipe.initialLikes;
+      return acc;
+    }, {})
+  );
 
   const handleCommentPress = (recipeId) => {
     setSelectedRecipeId(recipeId);
@@ -63,10 +71,20 @@ const Home = () => {
   };
 
   const toggleFavorite = (recipeId) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [recipeId]: prevFavorites[recipeId] === "heart" ? "heart-outline" : "heart",
-    }));
+    setFavorites((prevFavorites) => {
+      const isLiked = prevFavorites[recipeId] === "heart";
+      const newIcon = isLiked ? "heart-outline" : "heart";
+      
+      setLikesCount((prevLikes) => ({
+        ...prevLikes,
+        [recipeId]: prevLikes[recipeId] + (isLiked ? -1 : 1),
+      }));
+      
+      return {
+        ...prevFavorites,
+        [recipeId]: newIcon,
+      };
+    });
   };
 
   return (
@@ -80,6 +98,8 @@ const Home = () => {
             onCommentPress={() => handleCommentPress(item.id)}
             onFavoritePress={() => toggleFavorite(item.id)}
             isFavorite={favorites[item.id] === "heart"}
+            likesCount={likesCount[item.id] || 0}
+            commentsCount={comments[item.id]?.length || 0}
           />
         )}
       />
@@ -93,7 +113,7 @@ const Home = () => {
   );
 };
 
-const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
+const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCount, commentsCount }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
@@ -178,24 +198,28 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
         </Dialog>
       </Portal>
 
-      {/* التعديل الرئيسي هنا */}
-      <TouchableOpacity 
-  onPress={() => router.push(`/RecipeDetails?recipe=${encodeURIComponent(JSON.stringify(item))}`)}
->
-  <Card.Cover source={{ uri: item.image }} style={styles.coverImage} />
-</TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push(`/RecipeDetails?recipe=${encodeURIComponent(JSON.stringify(item))}`)}>
+        <Card.Cover source={{ uri: item.image }} style={styles.coverImage} />
+      </TouchableOpacity>
 
       <Card.Content>
         <Text variant="titleMedium">{item.title}</Text>
         <Text variant="bodyMedium">{item.description}</Text>
       </Card.Content>
       <Card.Actions>
-        <IconButton
-          icon={isFavorite ? "heart" : "heart-outline"}
-          iconColor="red"
-          onPress={onFavoritePress}
-        />
-        <IconButton icon="comment-outline" onPress={onCommentPress} />
+        <View style={styles.actionContainer}>
+          <IconButton
+            icon={isFavorite ? "heart" : "heart-outline"}
+            iconColor="red"
+            onPress={onFavoritePress}
+          />
+          <Text style={styles.countText}>{likesCount}</Text>
+        </View>
+        
+        <View style={styles.actionContainer}>
+          <IconButton icon="comment-outline" onPress={onCommentPress} />
+          <Text style={styles.countText}>{commentsCount}</Text>
+        </View>
       </Card.Actions>
     </Card>
   );
@@ -275,11 +299,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'visible',
   },
-  // أضفنا ستايل للصورة
   coverImage: {
-    // يمكنك إضافة خصائص إضافية مثل:
-    // height: 200,
-    // borderRadius: 10,
+    height: 200,
   },
   menuContainer: {
     position: 'relative',
@@ -385,6 +406,16 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 4,
+  },
+  countText: {
+    fontSize: 16,
+    marginLeft: 4,
+    color: '#666',
   },
 });
 
