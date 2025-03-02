@@ -110,17 +110,23 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
         left={(props) => <Avatar.Image {...props} source={{ uri: item.avatar }} />}
         right={(props) => (
           <View style={styles.menuContainer}>
+            <IconButton
+              {...props}
+              icon="dots-vertical"
+              onPress={() => setMenuVisible(true)}
+              style={styles.menuButton}
+            />
             <Menu
               visible={menuVisible}
               onDismiss={() => setMenuVisible(false)}
               anchor={
                 <IconButton
-                  {...props}
                   icon="dots-vertical"
                   onPress={() => setMenuVisible(true)}
-                  style={styles.menuButton}
+                  style={{ opacity: 0 }}
                 />
               }
+              anchorPosition="bottom"
               contentStyle={styles.menuContent}
             >
               <Menu.Item
@@ -138,8 +144,8 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
       />
 
       <Portal>
-        <Dialog 
-          visible={showDialog} 
+        <Dialog
+          visible={showDialog}
           onDismiss={() => setShowDialog(false)}
           style={styles.dialogContainer}
         >
@@ -151,15 +157,15 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
               </Text>
             </Dialog.Content>
             <Dialog.Actions style={styles.dialogActions}>
-              <Button 
-                mode="outlined" 
+              <Button
+                mode="outlined"
                 onPress={() => setShowDialog(false)}
-                style={[styles.cancelButton,{color: 'black'}]}
+                style={styles.cancelButton}
               >
                 Cancel
               </Button>
-              <Button 
-                mode="contained" 
+              <Button
+                mode="contained"
                 onPress={handleReport}
                 style={styles.confirmButton}
                 labelStyle={styles.buttonLabel}
@@ -260,20 +266,19 @@ const styles = StyleSheet.create({
   card: {
     margin: 10,
     position: 'relative',
+    overflow: 'visible',
   },
   menuContainer: {
-    position: 'absolute',
-    right: 10,
-    top: 0,
-    zIndex: 1,
+    position: 'relative',
+    zIndex: 9999,
   },
   menuButton: {
     margin: 0,
     padding: 0,
   },
   menuContent: {
-    marginLeft: -15,
-    marginTop: -20,
+    marginLeft: 0,
+    marginTop: 0,
   },
   menuItemText: {
     color: 'red',
