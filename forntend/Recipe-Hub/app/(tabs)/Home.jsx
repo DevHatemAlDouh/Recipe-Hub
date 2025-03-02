@@ -277,6 +277,7 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
       enableContentPanningGesture={false}
       enableHandlePanningGesture={true}
       onChange={handleSheetChanges}
+      
     >
       <BottomSheetView style={styles.contentContainer}>
         <KeyboardAvoidingView

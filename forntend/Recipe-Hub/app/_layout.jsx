@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -38,16 +39,18 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <PaperProvider>
-        <StatusBar style="auto" />
-        <Stack>
-          {screens.map((screen, index) => (
-            <Stack.Screen key={index} name={screen.name} options={screen.options} />
-          ))}
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </PaperProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <PaperProvider>
+            <StatusBar style="auto"  />
+            <Stack>
+              {screens.map((screen, index) => (
+                <Stack.Screen key={index} name={screen.name} options={screen.options} />
+              ))}
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </PaperProvider>
+        </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

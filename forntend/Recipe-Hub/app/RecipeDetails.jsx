@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { BackHandler } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
@@ -36,90 +36,93 @@ const RecipeDetails = () => {
   }
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: "rgba(255, 182, 93, 0.47)" }]}>
-      {/* قسم الصورة */}
-      <View style={styles.header}>
-        {parsedRecipe.image ? (
-          <Image 
-            source={require('@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg')} 
-            style={styles.image}
-            resizeMode="cover"
-            onError={() => console.log("خطأ في تحميل الصورة")}
-          />
-        ) : (
-          <View style={styles.imagePlaceholder}>
-            <Ionicons name="image-outline" size={50} color="#ced6e0" />
-            <Text style={styles.placeholderText}>لا توجد صورة متاحة</Text>
-          </View>
-        )}
-        
-        <View style={styles.actionsRow}>
-          <TouchableOpacity onPress={handleFavorite} style={styles.iconButton}>
-            <Ionicons name="heart-outline" size={28} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleShare} style={styles.iconButton}>
-            <Ionicons name="share-social-outline" size={28} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* معلومات الوصفة الأساسية */}
-      <View style={styles.recipeMeta}>
-        <View style={styles.metaItem}>
-          <Ionicons name="people-outline" size={28} color="#e17055" />
-          <Text style={styles.metaValue}>{parsedRecipe.serves || 4}</Text>
-          <Text style={styles.metaLabel}>أفراد</Text>
-        </View>
-
-        <View style={styles.metaItem}>
-          <Ionicons name="time-outline" size={28} color="#e17055" />
-          <Text style={styles.metaValue}>{parsedRecipe.cookingTime || 30}</Text>
-          <Text style={styles.metaLabel}>دقيقة</Text>
-        </View>
-
-        <View style={styles.metaItem}>
-          <Ionicons name="flame-outline" size={28} color="#e17055" />
-          <Text style={styles.metaValue}>{parsedRecipe.difficulty || 'متوسط'}</Text>
-          <Text style={styles.metaLabel}>الصعوبة</Text>
-        </View>
-      </View>
-
-      {/* محتوى الوصفة */}
-      <View style={styles.content}>
-        <Text style={styles.title}>{parsedRecipe.title}</Text>
-        
-        <View style={styles.authorContainer}>
-          <Ionicons name="person-circle-outline" size={20} color="#636e72" />
-          <Text style={styles.authorText}>{parsedRecipe.author}</Text>
-        </View>
-
-        {/* قسم المكونات */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>المكونات</Text>
-          <View style={styles.ingredientsGrid}>
-            {parsedRecipe.ingredients?.map((ingredient, index) => (
-              <View key={index} style={styles.ingredientItem}>
-                <View style={styles.bullet} />
-                <Text style={styles.ingredientText}>{ingredient}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* خطوات التحضير */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>طريقة التحضير</Text>
-          {parsedRecipe.steps?.map((step, index) => (
-            <View key={index} style={styles.stepContainer}>
-              <View style={styles.stepNumber}>
-                <Text style={styles.stepNumberText}>{index + 1}</Text>
-              </View>
-              <Text style={styles.stepText}>{step}</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView style={[styles.container, { backgroundColor: "rgba(255, 182, 93, 0.47)" }, ]}>
+            {/* قسم الصورة */}
+            <View style={styles.header}>
+                {parsedRecipe.image ? (
+                <Image 
+                    source={require('@/assets/images/alyona-yankovska-AlrHfEvOexw-unsplash.jpg')} 
+                    style={styles.image}
+                    resizeMode="cover"
+                    onError={() => console.log("خطأ في تحميل الصورة")}
+                />
+                ) : (
+                <View style={styles.imagePlaceholder}>
+                    <Ionicons name="image-outline" size={50} color="#ced6e0" />
+                    <Text style={styles.placeholderText}>لا توجد صورة متاحة</Text>
+                </View>
+                )}
+                
+                <View style={styles.actionsRow}>
+                <TouchableOpacity onPress={handleFavorite} style={styles.iconButton}>
+                    <Ionicons name="heart-outline" size={28} color="#fff" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleShare} style={styles.iconButton}>
+                    <Ionicons name="share-social-outline" size={28} color="#fff" />
+                </TouchableOpacity>
+                </View>
             </View>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+
+            {/* معلومات الوصفة الأساسية */}
+            <View style={styles.recipeMeta}>
+                <View style={styles.metaItem}>
+                <Ionicons name="people-outline" size={28} color="#e17055" />
+                <Text style={styles.metaValue}>{parsedRecipe.serves || 4}</Text>
+                <Text style={styles.metaLabel}>أفراد</Text>
+                </View>
+
+                <View style={styles.metaItem}>
+                <Ionicons name="time-outline" size={28} color="#e17055" />
+                <Text style={styles.metaValue}>{parsedRecipe.cookingTime || 30}</Text>
+                <Text style={styles.metaLabel}>دقيقة</Text>
+                </View>
+
+                <View style={styles.metaItem}>
+                <Ionicons name="flame-outline" size={28} color="#e17055" />
+                <Text style={styles.metaValue}>{parsedRecipe.difficulty || 'متوسط'}</Text>
+                <Text style={styles.metaLabel}>الصعوبة</Text>
+                </View>
+            </View>
+
+            {/* محتوى الوصفة */}
+            <View style={styles.content}>
+                <Text style={styles.title}>{parsedRecipe.title}</Text>
+                
+                <View style={styles.authorContainer}>
+                <Ionicons name="person-circle-outline" size={20} color="#636e72" />
+                <Text style={styles.authorText}>{parsedRecipe.author}</Text>
+                </View>
+
+                {/* قسم المكونات */}
+                <View style={styles.section}>
+                <Text style={styles.sectionTitle}>المكونات</Text>
+                <View style={styles.ingredientsGrid}>
+                    {parsedRecipe.ingredients?.map((ingredient, index) => (
+                    <View key={index} style={styles.ingredientItem}>
+                        <View style={styles.bullet} />
+                        <Text style={styles.ingredientText}>{ingredient}</Text>
+                    </View>
+                    ))}
+                </View>
+                </View>
+
+                {/* خطوات التحضير */}
+                <View style={styles.section}>
+                <Text style={styles.sectionTitle}>طريقة التحضير</Text>
+                {parsedRecipe.steps?.map((step, index) => (
+                    <View key={index} style={styles.stepContainer}>
+                    <View style={styles.stepNumber}>
+                        <Text style={styles.stepNumberText}>{index + 1}</Text>
+                    </View>
+                    <Text style={styles.stepText}>{step}</Text>
+                    </View>
+                ))}
+                </View>
+            </View>
+        </ScrollView>
+    </SafeAreaView>
+    
   );
 };
 
