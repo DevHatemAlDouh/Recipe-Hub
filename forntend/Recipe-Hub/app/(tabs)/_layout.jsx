@@ -37,9 +37,9 @@ return (
 
             {/* صفحة إضافة وصفة */}
 <Tabs.Screen
-        name="Add"
+        name="Add_Reciepe"
         options={{
-        title: "Add",
+        title: "Add Reciepe",
         unmountOnBlur: false,
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="plus-box" size={size} color={color} />
