@@ -1,18 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  StyleSheet,
-  Image,
-  Alert,
-} from 'react-native';
+import {View,Text,ImageBackground,TextInput,TouchableOpacity,ActivityIndicator,KeyboardAvoidingView,ScrollView,Platform,StyleSheet,Image,Alert,} from 'react-native';
 import icen_img from '@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg';
 import { Link, useRouter } from 'expo-router';
 import globalStyles from './globalStyles';

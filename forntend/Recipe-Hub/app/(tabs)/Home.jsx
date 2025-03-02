@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,12 @@ import {
   FlatList,
   ScrollView,
   Keyboard,
+  RefreshControl,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Avatar, Card, IconButton, Menu, Icon, Dialog, Button, Portal } from "react-native-paper";
+import { router } from "expo-router";
 
 const recipes = [
   {
@@ -24,6 +26,7 @@ const recipes = [
     title: "Pasta",
     description: "Pasta with tomato sauce",
     time: "30 minutes ago",
+    initialLikes: 15,
   },
   {
     id: "2",
@@ -33,6 +36,7 @@ const recipes = [
     title: "Pastries",
     description: "Cheesecake recipe",
     time: "30 minutes ago",
+    initialLikes: 8,
   },
 ];
 
@@ -41,6 +45,22 @@ const Home = () => {
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [comments, setComments] = useState({});
   const [favorites, setFavorites] = useState({});
+  const [likesCount, setLikesCount] = useState(
+    recipes.reduce((acc, recipe) => {
+      acc[recipe.id] = recipe.initialLikes;
+      return acc;
+    }, {})
+  );
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setLastUpdated(new Date());
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const handleCommentPress = (recipeId) => {
     setSelectedRecipeId(recipeId);
@@ -62,10 +82,20 @@ const Home = () => {
   };
 
   const toggleFavorite = (recipeId) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [recipeId]: prevFavorites[recipeId] === "heart" ? "heart-outline" : "heart",
-    }));
+    setFavorites((prevFavorites) => {
+      const isLiked = prevFavorites[recipeId] === "heart";
+      const newIcon = isLiked ? "heart-outline" : "heart";
+      
+      setLikesCount((prevLikes) => ({
+        ...prevLikes,
+        [recipeId]: prevLikes[recipeId] + (isLiked ? -1 : 1),
+      }));
+      
+      return {
+        ...prevFavorites,
+        [recipeId]: newIcon,
+      };
+    });
   };
 
   return (
@@ -75,12 +105,27 @@ const Home = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <RecipeCard
-            item={item}
+            item={{...item, lastUpdated}}
             onCommentPress={() => handleCommentPress(item.id)}
             onFavoritePress={() => toggleFavorite(item.id)}
             isFavorite={favorites[item.id] === "heart"}
+            likesCount={likesCount[item.id] || 0}
+            commentsCount={comments[item.id]?.length || 0}
           />
         )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#FF6B6B']}
+            tintColor="#FF6B6B"
+          />
+        }
+        ListHeaderComponent={
+          <Text style={styles.lastUpdateText}>
+            Last updated: {lastUpdated.toLocaleTimeString()}
+          </Text>
+        }
       />
       <Comment
         bottomSheetRef={bottomSheetRef}
@@ -92,7 +137,7 @@ const Home = () => {
   );
 };
 
-const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
+const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCount, commentsCount }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
@@ -177,18 +222,31 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite }) => {
         </Dialog>
       </Portal>
 
-      <Card.Cover source={{ uri: item.image }} />
+      <TouchableOpacity onPress={() => router.push(`/RecipeDetails?recipe=${encodeURIComponent(JSON.stringify(item))}`)}>
+        <Card.Cover source={{ uri: item.image }} style={styles.coverImage} />
+      </TouchableOpacity>
+
       <Card.Content>
         <Text variant="titleMedium">{item.title}</Text>
         <Text variant="bodyMedium">{item.description}</Text>
+        <Text style={styles.updateTime}>
+          Updated: {item.lastUpdated.toLocaleTimeString()}
+        </Text>
       </Card.Content>
       <Card.Actions>
-        <IconButton
-          icon={isFavorite ? "heart" : "heart-outline"}
-          iconColor="red"
-          onPress={onFavoritePress}
-        />
-        <IconButton icon="comment-outline" onPress={onCommentPress} />
+        <View style={styles.actionContainer}>
+          <IconButton
+            icon={isFavorite ? "heart" : "heart-outline"}
+            iconColor="red"
+            onPress={onFavoritePress}
+          />
+          <Text style={styles.countText}>{likesCount}</Text>
+        </View>
+        
+        <View style={styles.actionContainer}>
+          <IconButton icon="comment-outline" onPress={onCommentPress} />
+          <Text style={styles.countText}>{commentsCount}</Text>
+        </View>
       </Card.Actions>
     </Card>
   );
@@ -219,6 +277,7 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
       enableContentPanningGesture={false}
       enableHandlePanningGesture={true}
       onChange={handleSheetChanges}
+      
     >
       <BottomSheetView style={styles.contentContainer}>
         <KeyboardAvoidingView
@@ -268,6 +327,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'visible',
   },
+  coverImage: {
+    height: 200,
+  },
   menuContainer: {
     position: 'relative',
     zIndex: 9999,
@@ -283,6 +345,8 @@ const styles = StyleSheet.create({
   menuItemText: {
     color: 'red',
     marginLeft: 8,
+    position: 'relative',
+    top: 2,
   },
   dialogContainer: {
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -370,6 +434,27 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 4,
+  },
+  countText: {
+    fontSize: 16,
+    marginLeft: 4,
+    color: '#666',
+  },
+  lastUpdateText: {
+    textAlign: 'center',
+    color: '#666',
+    paddingVertical: 8,
+    fontSize: 12,
+  },
+  updateTime: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 4,
   },
 });
 
