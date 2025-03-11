@@ -1,5 +1,18 @@
 import React, { useState, useRef } from 'react';
-import {View,Text,ImageBackground,TextInput,TouchableOpacity,ActivityIndicator,KeyboardAvoidingView,ScrollView,Platform,StyleSheet,Image,Alert,} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  StyleSheet,
+  Image,
+  Alert,
+} from 'react-native';
 import icen_img from '@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg';
 import { Link, useRouter } from 'expo-router';
 import globalStyles from './globalStyles';
@@ -25,12 +38,16 @@ const CreateAccount = () => {
   const [loading, setLoading] = useState(false);
   const [userImage, setUserImage] = useState(null); // حالة لتخزين رابط الصورة
   const [b_userImage, b_setUserImage] = useState(null); // حالة لتخزين الصورة كـ base64
+  const [showPassword, setShowPassword] = useState(false); // حالة إظهار/إخفاء كلمة المرور
+  const [showRePassword, setShowRePassword] = useState(false); // حالة إظهار/إخفاء إعادة كلمة المرور
 
   const router = useRouter();
   const phoneRef = useRef(null);
 
   const handlePhoneChange = (value) => {
     setPhone(value);
+
+    // الحصول على رمز الدولة باستخدام react-native-phone-input
     const countryCode = phoneRef.current?.getCountryCode() || '';
     setCountryCode(countryCode);
   };
@@ -113,7 +130,7 @@ const CreateAccount = () => {
 
         // البحث عن المستخدم باستخدام البريد الإلكتروني
         const user = usersResponse.data.find(u => u.email === email);
-        if(!user){
+        if (!user) {
           const response = await axios.post('http://recipe-hub.runasp.net/api/users/Add', {
             userName: name,
             phoneNumber: phone.replace('+', ''),
@@ -126,22 +143,16 @@ const CreateAccount = () => {
               bio: 'New user',
               joinDate: new Date().toISOString(),
             },
-
-           }
-          );
+          });
           if (response.status === 201) {
             router.push('/Sign_in');
           } else {
             console.error('Error:', response.data);
             Alert.alert('Error', response.data.message || 'There was an error with your registration');
           }
-        
+        } else {
+          Alert.alert('Error', 'This email is already registered.');
         }
-        else{
-          Alert.alert( 'This email is already registered.');
-        }
-
-
       } catch (error) {
         console.error('Error during registration:', error.response?.data || error.message);
         Alert.alert('Error', error.response?.data?.message || error.message);
@@ -154,6 +165,7 @@ const CreateAccount = () => {
   return (
     <ImageBackground source={icen_img} resizeMode="cover" style={globalStyles.image}>
       <View style={globalStyles.overlay} />
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -209,11 +221,22 @@ const CreateAccount = () => {
               <TextInput
                 placeholder="Password"
                 placeholderTextColor="#ccc"
-                secureTextEntry
+                secureTextEntry={!showPassword} // إظهار/إخفاء كلمة المرور بناءً على الحالة
                 style={globalStyles.input}
                 value={password}
                 onChangeText={setPassword}
               />
+              {/* أيقونة العين لكلمة المرور */}
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={{ position: 'absolute', right: 10 }}
+              >
+                <Icon
+                  name={showPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                  color="#ccc"
+                />
+              </TouchableOpacity>
             </View>
             {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
 
@@ -222,18 +245,29 @@ const CreateAccount = () => {
               <TextInput
                 placeholder="Re-enter Password"
                 placeholderTextColor="#ccc"
-                secureTextEntry
+                secureTextEntry={!showRePassword} // إظهار/إخفاء إعادة كلمة المرور بناءً على الحالة
                 style={globalStyles.input}
                 value={rePassword}
                 onChangeText={setRePassword}
               />
+              {/* أيقونة العين لإعادة كلمة المرور */}
+              <TouchableOpacity
+                onPress={() => setShowRePassword(!showRePassword)}
+                style={{ position: 'absolute', right: 10 }}
+              >
+                <Icon
+                  name={showRePassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                  color="#ccc"
+                />
+              </TouchableOpacity>
             </View>
             {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
 
             {/* زر اختيار الصورة */}
             <View style={styles.photoContainer}>
               <TouchableOpacity style={styles.button} onPress={pickImage}>
-                <Text style={styles.buttonText}>اختر صورة</Text>
+                <Text style={styles.buttonText}>Choose picture</Text>
               </TouchableOpacity>
 
               {userImage && (
@@ -278,9 +312,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#6B8E23',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 16,
     marginBottom: 10,
   },
   buttonText: {

@@ -14,10 +14,13 @@ import { useRouter } from 'expo-router';
 import axios from 'axios';
 
 const AddRecipe = () => {
-  const [recipeName, setRecipeName] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [steps, setSteps] = useState([{ text: '', image: null }]); // خطوات مع نص وصورة
-  const [recipeImage, setRecipeImage] = useState(null);
+  const [title, setTitle] = useState(''); // اسم الوصفة
+  const [description, setDescription] = useState(''); // وصف الوصفة
+  const [ingredients, setIngredients] = useState(''); // المكونات
+  const [steps, setSteps] = useState([{ text: '', image: null }]); // الخطوات
+  const [backgroundImage, setBackgroundImage] = useState(null); // صورة الوصفة
+  const [rate, setRate] = useState(0); // تقييم الوصفة (يمكن تعيينه افتراضيًا)
+  const [userID, setUserID] = useState('user123'); // معرف المستخدم (يمكن استرداده من حالة المستخدم)
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -32,7 +35,7 @@ const AddRecipe = () => {
     });
 
     if (!result.canceled) {
-      setRecipeImage(result.assets[0].uri);
+      setBackgroundImage(result.assets[0].uri);
     }
   };
 
@@ -66,13 +69,13 @@ const AddRecipe = () => {
 
   // حذف خطوة معينة
   const deleteStep = (index) => {
-    const updatedSteps = steps.filter((_, i) => i !== index); // حذف الخطوة المحددة
+    const updatedSteps = steps.filter((_, i) => i !== index);
     setSteps(updatedSteps);
   };
 
   // إرسال الوصفة إلى الخادم
   const handleAddRecipe = async () => {
-    if (!recipeName || !ingredients || steps.some(step => !step.text) || !recipeImage) {
+    if (!title || !description || !ingredients || steps.some(step => !step.text) || !backgroundImage) {
       Alert.alert('Error', 'Please fill all fields, add steps, and select an image.');
       return;
     }
@@ -80,19 +83,38 @@ const AddRecipe = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://recipe-hub.runasp.net/api/recipes/Add', {
-        recipeName,
-        ingredients: ingredients.split('\n').filter(line => line.trim() !== ''), // تحويل المكونات إلى مصفوفة
-        steps: steps.map(step => ({
-          text: step.text,
-          image: step.image, // إرسال صورة الخطوة
-        })),
-        recipeImage, // إرسال صورة الوصفة الرئيسية
+      // إرسال الوصفة
+      const recipeResponse = await axios.post('http://recipe-hub.runasp.net/api/Recipes/Add', {
+        title:title,
+        userID:'2',
+        backgroundImage,
+        description:description,
       });
 
-      if (response.status === 201) {
+      if (recipeResponse.status === 201) {
+        const recipeID = recipeResponse.data.id; // الحصول على معرف الوصفة
+
+        // إرسال المكونات
+        const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+        await axios.post(`http://recipe-hub.runasp.net/api/Ingredients/Add`, {
+          ingredients: ingredientsArray.map((ingredient, index) => ({
+            name: ingredient,
+            description: `Ingredient ${index + 1}`,
+          })),
+        });
+
+        // إرسال الخطوات
+        await axios.post(`http://recipe-hub.runasp.net/api/Steps/Add`, {
+          recipeID, // ربط الخطوات بالوصفة
+          steps: steps.map((step, index) => ({
+            stepNumber: index + 1,
+            description: step.text,
+            backgroundImage: step.image,
+          })),
+        });
+
         Alert.alert('Success', 'Recipe added successfully!');
-        router.push('/Home'); // توجيه المستخدم إلى الصفحة الرئيسية
+        router.push('/Home');
       } else {
         Alert.alert('Error', 'Failed to add recipe.');
       }
@@ -112,8 +134,17 @@ const AddRecipe = () => {
       <TextInput
         style={styles.input}
         placeholder="Recipe Name"
-        value={recipeName}
-        onChangeText={setRecipeName}
+        value={title}
+        onChangeText={setTitle}
+      />
+
+      {/* وصف الوصفة */}
+      <TextInput
+        style={[styles.input, styles.multilineInput]}
+        placeholder="Description"
+        value={description}
+        onChangeText={setDescription}
+        multiline
       />
 
       {/* المكونات */}
@@ -180,8 +211,8 @@ const AddRecipe = () => {
       </TouchableOpacity>
 
       {/* عرض صورة الوصفة الرئيسية */}
-      {recipeImage && (
-        <Image source={{ uri: recipeImage }} style={styles.recipeImage} />
+      {backgroundImage && (
+        <Image source={{ uri: backgroundImage }} style={styles.recipeImage} />
       )}
 
       {/* زر إضافة الوصفة */}

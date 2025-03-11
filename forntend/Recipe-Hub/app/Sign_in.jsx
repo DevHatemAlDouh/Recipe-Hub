@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler, Button } from 'react-native';
+import { View, Text, ImageBackground, TextInput, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from 'expo-router';
 import globalStyles from '@/app/globalStyles';
@@ -12,7 +12,8 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [loginError, setLoginError] = useState(''); // رسالة خطأ لتسجيل الدخول
+  const [loginError, setLoginError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // حالة إظهار/إخفاء كلمة المرور
   const router = useRouter();
 
   // التحقق من صحة البريد الإلكتروني
@@ -42,9 +43,8 @@ const SignIn = () => {
   // معالجة تسجيل الدخول
   const handleSignIn = async () => {
     let valid = true;
-    setLoginError(''); // إعادة تعيين رسالة الخطأ
+    setLoginError('');
 
-    // التحقق من صحة البريد الإلكتروني
     if (!email) {
       setEmailError('Email is required');
       valid = false;
@@ -55,7 +55,6 @@ const SignIn = () => {
       setEmailError('');
     }
 
-    // التحقق من صحة كلمة المرور
     if (!password) {
       setPasswordError('Password is required');
       valid = false;
@@ -66,26 +65,16 @@ const SignIn = () => {
       setPasswordError('');
     }
 
-    // إذا كانت البيانات صحيحة، قم بإرسالها إلى الخادم
     if (valid) {
       try {
-        // الخطوة 1: استرجاع جميع المستخدمين
         const usersResponse = await axios.get('http://recipe-hub.runasp.net/api/users/GetAll');
-
-        // البحث عن المستخدم باستخدام البريد الإلكتروني
         const user = usersResponse.data.find(u => u.email === email);
 
         if (user) {
-          // الخطوة 2: استرجاع بيانات المستخدم باستخدام الـ ID
           const userResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${user.id}`);
-
-          // إذا تم العثور على المستخدم
           if (userResponse.status === 200 && userResponse.data) {
             const userData = userResponse.data;
-
-            // التحقق من صحة كلمة المرور (هذا مثال بسيط، يجب استخدام مكتبة مثل bcrypt لمقارنة كلمات المرور)
             if (userData.password === password) {
-              // توجيه المستخدم إلى الصفحة الرئيسية
               router.push('/(tabs)/Home');
             } else {
               setLoginError('Invalid email or password');
@@ -106,20 +95,18 @@ const SignIn = () => {
   // منع العودة إلى الشاشة السابقة
   useEffect(() => {
     const backAction = () => {
-      router.replace('/open'); // العودة للصفحة الرئيسية عند الضغط على زر الرجوع
-      return true; // منع التطبيق من الإغلاق
+      router.replace('/open');
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-    return () => backHandler.remove(); // إزالة المستمع عند مغادرة الصفحة
+    return () => backHandler.remove();
   }, []);
 
   return (
     <ImageBackground source={icen_img} resizeMode="cover" style={globalStyles.image}>
       <View style={globalStyles.overlay} />
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
-        
         {/* زر الرجوع */}
         <TouchableOpacity onPress={() => router.replace('/')} style={globalStyles.backButton}>
           <Icon name="arrow-left" size={24} color="white" />
@@ -139,19 +126,32 @@ const SignIn = () => {
               onChangeText={validateEmail}
             />
           </View>
+          <Link href={'/Forgot_Password'}>for get</Link>
           {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
 
           {/* Password Input */}
           <View style={globalStyles.inputContainer}>
+            
             <Icon name="lock" style={globalStyles.icon} />
             <TextInput
               placeholder="Password"
               placeholderTextColor="#ccc"
-              secureTextEntry
+              secureTextEntry={!showPassword} // إظهار/إخفاء كلمة المرور بناءً على الحالة
               style={globalStyles.input}
               value={password}
               onChangeText={validatePassword}
             />
+            {/* أيقونة العين */}
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)} // تبديل الحالة
+              style={{ position: 'absolute', right: 10 }}
+            >
+              <Icon
+                name={showPassword ? 'eye-slash' : 'eye'} // تغيير الأيقونة بناءً على الحالة
+                size={20}
+                color="#ccc"
+              />
+            </TouchableOpacity>
           </View>
           {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
 
@@ -165,14 +165,12 @@ const SignIn = () => {
 
           {/* رسالة الخطأ في حالة فشل تسجيل الدخول */}
           {loginError ? <Text style={globalStyles.errorText}>{loginError}</Text> : null}
-        
         </View>
 
         {/* رابط إنشاء حساب */}
         <Text style={globalStyles.subtitle}>
           Don't have an account? <Link href="/Create_account">Create account</Link>
         </Text>
-        <Button title="Go to Home" onPress={() => router.replace('/(tabs)/Home')} />
       </ScrollView>
     </ImageBackground>
   );
