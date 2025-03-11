@@ -27,7 +27,7 @@ const Home = () => {
 
           <TouchableOpacity
             style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
-            onPress={() => router.replace('/Add_reciepe')} // الانتقال إلى صفحة Create_account عند الضغط
+            onPress={() => router.replace('/Create_account')} // الانتقال إلى صفحة Create_account عند الضغط
           >
             <Text style={globalStyles.buttonText}>Go to Create Account</Text>
           </TouchableOpacity>
