@@ -1,6 +1,7 @@
 {
   "version": 2,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "dgSpecHash": "TaH3bfRSzvk=",
   "success": true,
   "projectFilePath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Dashboard.csproj",
@@ -140,6 +141,11 @@
   "dgSpecHash": "BJQnCejzHiY=",
   "success": true,
   "projectFilePath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Dashboard.csproj",
+=======
+  "dgSpecHash": "BJQnCejzHiY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Dashboard.csproj",
+>>>>>>> Stashed changes
   "expectedPackageFiles": [],
 >>>>>>> Stashed changes
   "logs": []
