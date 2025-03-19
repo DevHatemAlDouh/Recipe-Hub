@@ -3,20 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Migrations\\20250226121003_RH.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:API\\Migrations\\20250226121003_RH.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\models\\userinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\models\\userinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,53 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20250226121003_RH.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Migrations\\20250226121003_RH.cs",
-              "RelativeDocumentMoniker": "API\\Migrations\\20250226121003_RH.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Migrations\\20250226121003_RH.cs",
-              "RelativeToolTip": "API\\Migrations\\20250226121003_RH.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "API\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAADwvyYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T12:10:03.729Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\UserService.cs",
-              "RelativeDocumentMoniker": "API\\Service\\UserService.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\UserService.cs",
-              "RelativeToolTip": "API\\Service\\UserService.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAGsAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T12:08:22.208Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserInfo.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\UserInfo.cs",
-              "RelativeDocumentMoniker": "API\\Models\\UserInfo.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\UserInfo.cs",
-              "RelativeToolTip": "API\\Models\\UserInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T12:08:03.507Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\User.cs",
-              "RelativeDocumentMoniker": "API\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\User.cs",
-              "RelativeToolTip": "API\\Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T12:07:44.625Z",
+              "WhenOpened": "2025-03-06T21:39:28.46Z",
               "EditorCaption": ""
             }
           ]
