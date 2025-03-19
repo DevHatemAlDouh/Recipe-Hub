@@ -12,8 +12,13 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ita0i2kauy</Fingerprint>
-      <Integrity>xpDELtdQlVRSYGSB8ATeIRBzRgDLh66XNMNzUgcBgkQ=</Integrity>
+<<<<<<< Updated upstream
+      <Fingerprint>br5d6i41j5</Fingerprint>
+      <Integrity>Zyw0fQv2+L810qP480BnlsqNCo2YL0VM9rZoyZ5AxXg=</Integrity>
+=======
+      <Fingerprint>c2tiyv64ts</Fingerprint>
+      <Integrity>pAGv4ietcJNk/EwsQZ5BN9+K4MuNYS2a9wl4Jw+q9D0=</Integrity>
+>>>>>>> Stashed changes
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>

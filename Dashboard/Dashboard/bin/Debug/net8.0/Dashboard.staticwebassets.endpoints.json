@@ -85,7 +85,11 @@
       ]
     },
     {
+<<<<<<< Updated upstream
       "Route": "css/site.br5d6i41j5.css",
+=======
+      "Route": "css/site.c2tiyv64ts.css",
+>>>>>>> Stashed changes
       "AssetFile": "css/site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -99,7 +103,11 @@
         },
         {
           "Name": "Content-Length",
+<<<<<<< Updated upstream
           "Value": "3125"
+=======
+          "Value": "362"
+>>>>>>> Stashed changes
         },
         {
           "Name": "Content-Type",
@@ -107,21 +115,37 @@
         },
         {
           "Name": "ETag",
+<<<<<<< Updated upstream
           "Value": "\"Zyw0fQv2+L810qP480BnlsqNCo2YL0VM9rZoyZ5AxXg=\""
         },
         {
           "Name": "Last-Modified",
           "Value": "Wed, 19 Mar 2025 11:33:42 GMT"
+=======
+          "Value": "\"pAGv4ietcJNk/EwsQZ5BN9+K4MuNYS2a9wl4Jw+q9D0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 19 Mar 2025 11:26:05 GMT"
+>>>>>>> Stashed changes
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
+<<<<<<< Updated upstream
           "Value": "br5d6i41j5"
         },
         {
           "Name": "integrity",
           "Value": "sha256-Zyw0fQv2+L810qP480BnlsqNCo2YL0VM9rZoyZ5AxXg="
+=======
+          "Value": "c2tiyv64ts"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-pAGv4ietcJNk/EwsQZ5BN9+K4MuNYS2a9wl4Jw+q9D0="
+>>>>>>> Stashed changes
         },
         {
           "Name": "label",
@@ -144,7 +168,11 @@
         },
         {
           "Name": "Content-Length",
+<<<<<<< Updated upstream
           "Value": "3125"
+=======
+          "Value": "362"
+>>>>>>> Stashed changes
         },
         {
           "Name": "Content-Type",
@@ -152,17 +180,29 @@
         },
         {
           "Name": "ETag",
+<<<<<<< Updated upstream
           "Value": "\"Zyw0fQv2+L810qP480BnlsqNCo2YL0VM9rZoyZ5AxXg=\""
         },
         {
           "Name": "Last-Modified",
           "Value": "Wed, 19 Mar 2025 11:33:42 GMT"
+=======
+          "Value": "\"pAGv4ietcJNk/EwsQZ5BN9+K4MuNYS2a9wl4Jw+q9D0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 19 Mar 2025 11:26:05 GMT"
+>>>>>>> Stashed changes
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
+<<<<<<< Updated upstream
           "Value": "sha256-Zyw0fQv2+L810qP480BnlsqNCo2YL0VM9rZoyZ5AxXg="
+=======
+          "Value": "sha256-pAGv4ietcJNk/EwsQZ5BN9+K4MuNYS2a9wl4Jw+q9D0="
+>>>>>>> Stashed changes
         }
       ]
     },

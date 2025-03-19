@@ -64,6 +64,7 @@ C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\obj\Debug\net8.0\
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\obj\Debug\net8.0\Dashboard.pdb
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\obj\Debug\net8.0\Dashboard.genruntimeconfig.cache
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\obj\Debug\net8.0\ref\Dashboard.dll
+<<<<<<< Updated upstream
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\bin\Debug\net8.0\Humanizer.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\Dashboard\Dashboard\bin\Debug\net8.0\Microsoft.Build.Locator.dll
