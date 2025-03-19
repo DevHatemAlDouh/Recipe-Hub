@@ -9,41 +9,7 @@ namespace Dashboard.Service
     {
         private string baseURL = "http://recipe-hub.runasp.net/swagger";
 
-        public async Task<bool> CreateUserAsync(User user)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseURL);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var jsonContent = JsonConvert.SerializeObject(user);
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = await client.PostAsync("/api/users/Add", content);
-                return response.IsSuccessStatusCode;
-            }
-        }
-
-        public async Task<User> GetUserByIdAsync(string userId)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseURL);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                HttpResponseMessage response = await client.GetAsync($"/api/users/GetById/{userId}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var userResponse = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<User>(userResponse);
-                }
-                return null;
-            }
-        }
-
-        public async Task<bool> LoginAsync(User user)
+        public async Task<bool> LoginAsync(Login user)
         {
             using (var client = new HttpClient())
             {
@@ -55,7 +21,7 @@ namespace Dashboard.Service
                 if (response.IsSuccessStatusCode)
                 {
                     var usersResponse = await response.Content.ReadAsStringAsync();
-                    var users = JsonConvert.DeserializeObject<List<User>>(usersResponse);
+                    var users = JsonConvert.DeserializeObject<List<Login>>(usersResponse);
 
                     return users.Any(u => u.UserName == user.UserName && u.Password == user.Password);
                 }

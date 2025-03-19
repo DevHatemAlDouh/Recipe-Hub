@@ -23,7 +23,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(User model)
+        public async Task<IActionResult> Login(Login model)
         {
             if (ModelState.IsValid)
             {
