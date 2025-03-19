@@ -1,8 +1,37 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using System.Data
+@model DataTable
+
+@{
+    ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayName("userName")</th>
+                <th>@Html.DisplayName("phoneNumber")</th>
+                <th>@Html.DisplayName("email")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Rows.Count > 0)
+            {
+                foreach (DataRow row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row["userName"]</td>
+                        <td>@row["phoneNumber"]</td>
+                        <td>@row["email"]</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">No data available</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

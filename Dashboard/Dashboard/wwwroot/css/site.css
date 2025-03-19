@@ -1,22 +1,97 @@
+:root {
+    --background-color: #f8f9fa; /* Light mode background */
+    --text-color: #000000; /* Light mode text */
+    --sidebar-background: #343a40; /* Sidebar background */
+    --sidebar-link-color: #ffffff; /* Sidebar link color */
+    --sidebar-link-hover: #575d63; /* Sidebar link hover color */
+    --card-background: #ffffff; /* Card background */
+    --card-header-background: #007bff; /* Card header background */
+    --btn-primary-background: #007bff; /* Button background */
+    --btn-primary-hover-background: #0056b3; /* Button hover background */
+}
+
+[data-theme='dark'] {
+    --background-color: #212529; /* Dark mode background */
+    --text-color: #ffffff; /* Dark mode text */
+    --sidebar-background: #1c1e22; /* Dark sidebar background */
+    --sidebar-link-color: #ffffff; /* Dark sidebar link color */
+    --sidebar-link-hover: #575d63; /* Dark sidebar link hover color */
+    --card-background: #343a40; /* Dark card background */
+    --card-header-background: #007bff; /* Card header background */
+    --btn-primary-background: #0056b3; /* Dark button background */
+    --btn-primary-hover-background: #00408b; /* Dark button hover background */
+}
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    display: flex;
+    margin-bottom: 60px;
+    background-color: var(--background-color); /* Background color based on theme */
+    color: var(--text-color); /* Text color based on theme */
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--sidebar-background); /* Sidebar background */
+    padding-top: 20px;
+}
+
+    .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: var(--sidebar-link-color); /* Sidebar link color */
+        display: block;
+    }
+
+        .sidebar a:hover {
+            background-color: var(--sidebar-link-hover); /* Sidebar link hover color */
+        }
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    width: 100%;
+}
+
+.card {
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
+    background-color: var(--card-background); /* Card background */
+}
+
+.card-header {
+    background-color: var(--card-header-background); /* Card header background */
+    color: #ffffff; /* White text */
+    border-top-left-radius: 10px; /* Rounded corners */
+    border-top-right-radius: 10px; /* Rounded corners */
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-background); /* Button background */
+    border: none; /* No border */
+}
+
+    .btn-primary:hover {
+        background-color: var(--btn-primary-hover-background); /* Button hover background */
+    }
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Focus styles */
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
 }

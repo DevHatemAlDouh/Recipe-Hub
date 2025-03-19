@@ -1,20 +1,23 @@
 using Dashboard.Models;
+using Dashboard.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace Dashboard.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private Config config = new Config();
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewData.Model = await config.get_allAsync("/api/users/GetAll");
             return View();
         }
 
