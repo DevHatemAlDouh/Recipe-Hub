@@ -1,12 +1,165 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\service\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\service\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 1,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Dashboard\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T11:10:25.616Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Dashboard\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Dashboard\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-19T11:03:11.725Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Dashboard\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Dashboard\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAQAAAAAAAAAAADwvxAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-19T10:59:36.515Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Models\\User.cs",
+              "RelativeToolTip": "Dashboard\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T10:50:18.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "Dashboard\\wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "Dashboard\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAADoAAAAAAAAAAAAAwGEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-03-19T10:22:03.122Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Program.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Program.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Program.cs",
+              "RelativeToolTip": "Dashboard\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T03:13:56.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Dashboard\\Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Dashboard\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-19T03:08:13.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Dashboard\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAADgvyEAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T02:53:45.334Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Service\\AccountService.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Service\\AccountService.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Service\\AccountService.cs",
+              "RelativeToolTip": "Dashboard\\Service\\AccountService.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAADgvz8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T02:49:21.524Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

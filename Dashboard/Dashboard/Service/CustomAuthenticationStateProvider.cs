@@ -1,4 +1,4 @@
-﻿using Dashboard.Models;
+using Dashboard.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Buffers.Text;
