@@ -6,6 +6,7 @@ import { Link } from 'expo-router';
 import globalStyles from '@/app/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -75,7 +76,12 @@ const SignIn = () => {
           if (userResponse.status === 200 && userResponse.data) {
             const userData = userResponse.data;
             if (userData.password === password) {
-              router.push('/(tabs)/Home');
+              // حفظ بيانات المستخدم في AsyncStorage
+              await AsyncStorage.setItem('userData', JSON.stringify(userData));
+              await AsyncStorage.setItem('lastLoginTime', new Date().toISOString());
+
+              // توجيه المستخدم إلى الصفحة الرئيسية
+              router.replace('/(tabs)/Home');
             } else {
               setLoginError('Invalid email or password');
             }
@@ -131,7 +137,6 @@ const SignIn = () => {
 
           {/* Password Input */}
           <View style={globalStyles.inputContainer}>
-            
             <Icon name="lock" style={globalStyles.icon} />
             <TextInput
               placeholder="Password"
