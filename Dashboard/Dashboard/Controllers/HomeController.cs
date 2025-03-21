@@ -13,11 +13,8 @@ namespace Dashboard.Controllers
     public class HomeController : Controller
     {
 
-        private Config config = new Config();
-
         public async Task<IActionResult> Index()
         {
-            ViewData.Model = await config.get_allAsync("/api/users/GetAll");
             return View();
         }
 

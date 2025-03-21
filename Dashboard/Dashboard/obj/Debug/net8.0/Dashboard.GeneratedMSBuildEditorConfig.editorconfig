@@ -40,6 +40,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Permissions/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzc2lvbnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Permissions/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzc2lvbnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Permissions/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzc2lvbnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Permissions/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzc2lvbnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Permissions/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzc2lvbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
