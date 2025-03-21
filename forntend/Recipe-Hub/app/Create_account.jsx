@@ -21,7 +21,8 @@ import PhoneInput from 'react-native-phone-input';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system'; // استيراد FileSystem
+import * as FileSystem from 'expo-file-system';
+import * as Crypto from 'expo-crypto'; // استيراد expo-crypto
 
 const CreateAccount = () => {
   const [name, setName] = useState('');
@@ -36,20 +37,17 @@ const CreateAccount = () => {
   const [rePasswordError, setRePasswordError] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userImage, setUserImage] = useState(null); // حالة لتخزين رابط الصورة
-  const [b_userImage, b_setUserImage] = useState(null); // حالة لتخزين الصورة كـ base64
-  const [showPassword, setShowPassword] = useState(false); // حالة إظهار/إخفاء كلمة المرور
-  const [showRePassword, setShowRePassword] = useState(false); // حالة إظهار/إخفاء إعادة كلمة المرور
-
+  const [userImage, setUserImage] = useState(null);
+  const [b_userImage, b_setUserImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
   const router = useRouter();
   const phoneRef = useRef(null);
 
   const handlePhoneChange = (value) => {
     setPhone(value);
-
-    // الحصول على رمز الدولة باستخدام react-native-phone-input
     const countryCode = phoneRef.current?.getCountryCode() || '';
-    setCountryCode(countryCode);
+    setCountryCode(`+${countryCode}`);
   };
 
   const validatePhoneNumber = (phoneNumber) => {
@@ -64,28 +62,23 @@ const CreateAccount = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
-      setUserImage(result.assets[0].uri); // تعيين رابط الصورة
-
+      setUserImage(result.assets[0].uri);
       const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, {
         encoding: FileSystem.EncodingType.Base64,
       });
-      b_setUserImage(base64); // تخزين الصورة كـ base64
+      b_setUserImage(base64);
     }
   };
 
   const handleSignUp = async () => {
     let valid = true;
-
-    // التحقق من الحقول المطلوبة
     if (!name) {
       setNameError('Name is required');
       valid = false;
     } else {
       setNameError('');
     }
-
     if (!email) {
       setEmailError('Email is required');
       valid = false;
@@ -95,51 +88,51 @@ const CreateAccount = () => {
     } else {
       setEmailError('');
     }
-
     if (!phone || !validatePhoneNumber(phone)) {
       setPhoneError('Invalid phone number');
       valid = false;
     } else {
       setPhoneError('');
     }
-
     if (!password || password.length < 6) {
       setPasswordError('Password must be at least 6 characters');
       valid = false;
     } else {
       setPasswordError('');
     }
-
     if (rePassword !== password) {
       setRePasswordError('Passwords do not match');
       valid = false;
     } else {
       setRePasswordError('');
     }
-
-    // التحقق من وجود صورة
     if (!userImage) {
       Alert.alert('Error', 'Please select a profile image.');
       valid = false;
     }
-
     if (valid) {
       setLoading(true);
       try {
         const usersResponse = await axios.get('http://recipe-hub.runasp.net/api/users/GetAll');
-
-        // البحث عن المستخدم باستخدام البريد الإلكتروني
         const user = usersResponse.data.find(u => u.email === email);
         if (!user) {
+          // تشفير كلمة المرور باستخدام expo-crypto
+          const encryptedPassword = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            password
+          );
+
+          // استخراج رقم الهاتف بدون مفتاح الدولة
+          const phoneNumberWithoutCountryCode = phone.replace(countryCode, '');
+
           const response = await axios.post('http://recipe-hub.runasp.net/api/users/Add', {
             userName: name,
-            phoneNumber: phone.replace('+', ''),
-            countryCode: countryCode,
+            phoneNumber: phoneNumberWithoutCountryCode, // إرسال رقم الهاتف بدون مفتاح الدولة
             email: email,
-            password: password,
-            userImage: b_userImage, // إرسال الصورة كـ base64
+            countryCode: countryCode, // إرسال رمز الدولة فقط
+            password: encryptedPassword, // إرسال كلمة المرور المشفرة
+            userImage: b_userImage,
             userInfo: {
-              // إضافة معلومات إضافية إذا كان الخادم يتطلبها
               bio: 'New user',
               joinDate: new Date().toISOString(),
             },
@@ -165,21 +158,14 @@ const CreateAccount = () => {
   return (
     <ImageBackground source={icen_img} resizeMode="cover" style={globalStyles.image}>
       <View style={globalStyles.overlay} />
-
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} // ضبط الإزاحة لنظام iOS
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled" // يمنع إخفاء الكيبورد عند النقر خارج الحقول
-        >
+        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
           <View style={[globalStyles.container, globalStyles.content]}>
-            <Text style={[globalStyles.title, globalStyles.sign_In_Up_titl]}>
-              Create account
-            </Text>
-
+            <Text style={[globalStyles.title, globalStyles.sign_In_Up_titl]}>Create account</Text>
             <View style={globalStyles.inputContainer}>
               <Icon name="user" style={globalStyles.icon} />
               <TextInput
@@ -191,7 +177,6 @@ const CreateAccount = () => {
               />
             </View>
             {nameError ? <Text style={globalStyles.errorText}>{nameError}</Text> : null}
-
             <View style={globalStyles.inputContainer}>
               <Icon name="envelope" style={globalStyles.icon} />
               <TextInput
@@ -203,7 +188,6 @@ const CreateAccount = () => {
               />
             </View>
             {emailError ? <Text style={globalStyles.errorText}>{emailError}</Text> : null}
-
             <View style={globalStyles.inputContainer}>
               <PhoneInput
                 ref={phoneRef}
@@ -215,81 +199,45 @@ const CreateAccount = () => {
               />
             </View>
             {phoneError ? <Text style={globalStyles.errorText}>{phoneError}</Text> : null}
-
             <View style={globalStyles.inputContainer}>
               <Icon name="lock" style={globalStyles.icon} />
               <TextInput
                 placeholder="Password"
                 placeholderTextColor="#ccc"
-                secureTextEntry={!showPassword} // إظهار/إخفاء كلمة المرور بناءً على الحالة
+                secureTextEntry={!showPassword}
                 style={globalStyles.input}
                 value={password}
                 onChangeText={setPassword}
               />
-              {/* أيقونة العين لكلمة المرور */}
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: 10 }}
-              >
-                <Icon
-                  name={showPassword ? 'eye-slash' : 'eye'}
-                  size={20}
-                  color="#ccc"
-                />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: 10 }}>
+                <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="#ccc" />
               </TouchableOpacity>
             </View>
             {passwordError ? <Text style={globalStyles.errorText}>{passwordError}</Text> : null}
-
             <View style={globalStyles.inputContainer}>
               <Icon name="lock" style={globalStyles.icon} />
               <TextInput
                 placeholder="Re-enter Password"
                 placeholderTextColor="#ccc"
-                secureTextEntry={!showRePassword} // إظهار/إخفاء إعادة كلمة المرور بناءً على الحالة
+                secureTextEntry={!showRePassword}
                 style={globalStyles.input}
                 value={rePassword}
                 onChangeText={setRePassword}
               />
-              {/* أيقونة العين لإعادة كلمة المرور */}
-              <TouchableOpacity
-                onPress={() => setShowRePassword(!showRePassword)}
-                style={{ position: 'absolute', right: 10 }}
-              >
-                <Icon
-                  name={showRePassword ? 'eye-slash' : 'eye'}
-                  size={20}
-                  color="#ccc"
-                />
+              <TouchableOpacity onPress={() => setShowRePassword(!showRePassword)} style={{ position: 'absolute', right: 10 }}>
+                <Icon name={showRePassword ? 'eye-slash' : 'eye'} size={20} color="#ccc" />
               </TouchableOpacity>
             </View>
             {rePasswordError ? <Text style={globalStyles.errorText}>{rePasswordError}</Text> : null}
-
-            {/* زر اختيار الصورة */}
             <View style={styles.photoContainer}>
               <TouchableOpacity style={styles.button} onPress={pickImage}>
                 <Text style={styles.buttonText}>Choose picture</Text>
               </TouchableOpacity>
-
-              {userImage && (
-                <Image
-                  source={{ uri: userImage }}
-                  style={styles.image}
-                />
-              )}
+              {userImage && <Image source={{ uri: userImage }} style={styles.image} />}
             </View>
-
-            <TouchableOpacity
-              style={[globalStyles.createAccountButton, globalStyles.createSignIn]}
-              onPress={handleSignUp}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={globalStyles.buttonText}>Create Account</Text>
-              )}
+            <TouchableOpacity style={[globalStyles.createAccountButton, globalStyles.createSignIn]} onPress={handleSignUp} disabled={loading}>
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={globalStyles.buttonText}>Create Account</Text>}
             </TouchableOpacity>
-
             <Text style={[globalStyles.subtitle]}>
               I have an account? <Link href="/Sign_in">Sign in to an account</Link>
             </Text>
@@ -304,7 +252,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingBottom: 20, // إضافة مسافة أسفل الصفحة
+    paddingBottom: 20,
   },
   photoContainer: {
     marginVertical: 20,

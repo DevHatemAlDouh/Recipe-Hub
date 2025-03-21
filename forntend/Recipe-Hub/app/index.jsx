@@ -40,9 +40,9 @@ const Open = () => {
             }
           }
 
-          // تحديث وقت آخر دخول
+          // تحديث وقت آخر دخول في كل مرة يفتح فيها التطبيق
           await AsyncStorage.setItem('lastLoginTime', currentTime.toISOString());
-          setLastLoginTime(storedLastLoginTime || currentTime.toISOString());
+          setLastLoginTime(currentTime.toISOString());
         }
 
         // توجيه المستخدم إلى الصفحة الرئيسية بعد 15 ثانية إذا كان مسجل دخول
@@ -50,7 +50,7 @@ const Open = () => {
           if (storedUserData) {
             router.replace('/(tabs)/Home'); // الانتقال إلى الصفحة الرئيسية إذا كان مسجل دخول
           } else {
-            router.replace('/(tabs)/Profile'); // الانتقال إلى صفحة تسجيل الدخول إذا لم يكن مسجل دخول
+            router.replace('/Sign_in'); // الانتقال إلى صفحة تسجيل الدخول إذا لم يكن مسجل دخول
           }
         }, 15000);
       } catch (error) {
