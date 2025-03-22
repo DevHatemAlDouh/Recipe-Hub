@@ -79,6 +79,30 @@ namespace API.Controllers
             return Ok(users);
         }
 
+        // GET: api/users/CheckUserEmail/{Email}
+        [HttpGet("CheckUserEmail/{Email}")]
+        public async Task<bool> CheckUserEmail(String Email)
+        {
+            var users = await _userService.GetAll();
+            foreach (var user in users)
+            {
+                if (user.Email == Email) { return true; }
+            }
+            return false;
+        }
+
+        // GET: api/users/CheckUserEmail/{Username}
+        [HttpGet("CheckUserUsername/{Username}")]
+        public async Task<bool> CheckUserUsername(String Username)
+        {
+            var users = await _userService.GetAll();
+            foreach (var user in users)
+            {
+                if (user.UserName == Username) { return true; }
+            }
+            return false;
+        }
+
         // GET: api/users/GetById/{userId}
         [HttpGet("GetById/{userId}")]
         public async Task<ActionResult<UserInfo>> GetUser(int userId)

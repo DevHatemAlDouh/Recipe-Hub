@@ -14,8 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< Updated upstream:API/API/obj/Debug/net8.0/API.AssemblyInfo.cs
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15f489f36e33a7fbd5e87d1fd0f453c905d81361")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b31c91378399d081c0f3160e6c45249c0fbeade0")]
 [assembly: System.Reflection.AssemblyProductAttribute("API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("API")]
 =======
