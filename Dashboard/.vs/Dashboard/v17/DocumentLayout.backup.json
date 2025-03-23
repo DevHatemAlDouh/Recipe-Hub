@@ -30,9 +30,9 @@
               "Title": "UsersController.cs",
               "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Dashboard\\Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Dashboard\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAC8BAAAAAAAAAADwv0wBAACPAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\UsersController.cs*",
+              "RelativeToolTip": "Dashboard\\Controllers\\UsersController.cs*",
+              "ViewState": "AgIAADABAAAAAAAAAAAAwD4BAABpAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-23T12:56:50.707Z",
               "EditorCaption": ""
@@ -47,8 +47,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Users\\Index.cshtml",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-03-23T12:55:47.746Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:55:47.746Z"
             },
             {
               "$type": "Document",
@@ -60,8 +59,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Users\\Permissions.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-03-23T12:55:44.189Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:55:44.189Z"
             }
           ]
         }

@@ -281,7 +281,7 @@ namespace Dashboard.Controllers
                     user_All_Permissions.user = JsonConvert.DeserializeObject<User>(userApiResponse);
                 }
 
-                HttpResponseMessage userPermissionResponse = await API.GetAsync($"/api/users/GetPermissionById/{id}");
+                HttpResponseMessage userPermissionResponse = await API.GetAsync($"/api/users/GetUserPermissionsById/{id}");
                 if (userPermissionResponse.IsSuccessStatusCode)
                 {
                     var apiResponse = await userPermissionResponse.Content.ReadAsStringAsync();
@@ -316,7 +316,7 @@ namespace Dashboard.Controllers
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage userpermissionRes = await API.GetAsync($"/api/users/GetPermissionById/{id}");
+                HttpResponseMessage userpermissionRes = await API.GetAsync($"/api/users/GetUserPermissionById/{id}");
                 if (userpermissionRes.IsSuccessStatusCode)
                 {
                     var APIResponse = userpermissionRes.Content.ReadAsStringAsync().Result;
@@ -330,7 +330,7 @@ namespace Dashboard.Controllers
                     userRevokePermission.user = JsonConvert.DeserializeObject<User>(APIResponse);
                 }
 
-                HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{userRevokePermission.permission.Id}");
+                HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{userRevokePermission.user_permission.PermissionID}");
                 if (permissionsResponse.IsSuccessStatusCode)
                 {
                     var apiResponse = await permissionsResponse.Content.ReadAsStringAsync();
