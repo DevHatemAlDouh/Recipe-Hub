@@ -30,8 +30,7 @@
               "RelativeToolTip": "API\\Middlewares\\SwaggerRedirectMiddleware.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-06T21:45:26.41Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-06T21:45:26.41Z"
             },
             {
               "$type": "Document",
@@ -41,14 +40,10 @@
               "RelativeDocumentMoniker": "API\\Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\UsersController.cs",
               "RelativeToolTip": "API\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAIAwwFEAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAjwJUAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T10:43:40.386Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

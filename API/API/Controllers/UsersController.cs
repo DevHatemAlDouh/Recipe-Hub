@@ -133,8 +133,9 @@ namespace API.Controllers
             return Ok(penalty);
         }
 
-        [HttpGet("GetPermissionById/{permissionId}")]
-        public async Task<ActionResult<UserInfo>> GetPermission(int permissionId)
+        // GET: api/users/UserPermissions/{userId}
+        [HttpGet("GetPermissionById/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
         {
             var permission = await _usePermissions.GetById(permissionId);
 
