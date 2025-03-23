@@ -135,13 +135,6 @@ namespace API.Controllers
         [HttpGet("GetPenaltyById/{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
         {
-            var user = _userService.GetById(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var Penalties = await (_userPenalties.GetAllpenalty(userId));
             return Ok(Penalties);
         }
@@ -150,13 +143,6 @@ namespace API.Controllers
         [HttpGet("GetPermissionById/{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
         {
-            var user = _userService.GetById(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var Permissions = await (_usePermissions.GetAllPermation(userId));
             return Ok(Permissions);
         }
