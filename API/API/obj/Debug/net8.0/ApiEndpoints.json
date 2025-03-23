@@ -1284,33 +1284,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "CheckUserUsername",
-    "RelativePath": "api/users/CheckUserUsername/{Username}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Username",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
+        "Type": "System.Int32",
         "MediaTypes": [
           "text/plain",
           "application/json",
