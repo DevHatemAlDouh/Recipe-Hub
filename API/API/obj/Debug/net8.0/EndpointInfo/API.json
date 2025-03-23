@@ -3007,12 +3007,12 @@
         }
       }
     },
-    "/api/users/GetPermissionById/{userId}": {
+    "/api/users/GetUserPermissionById/{UserPermissionId}": {
       "get": {
         "tags": ["Users"],
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserPermissionId",
             "in": "path",
             "required": true,
             "schema": {
