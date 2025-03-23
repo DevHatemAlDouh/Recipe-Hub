@@ -42,7 +42,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAllReports")]
-        public async Task<ActionResult<IEnumerable<UserInfo>>> GetReports()
+        public async Task<ActionResult<IEnumerable<ReportInfo>>> GetReports()
         {
             var users = await _reportService.GetAll();
             return Ok(users);
@@ -58,14 +58,14 @@ namespace API.Controllers
 
         // GET: api/users/GetAllMyRecipes/{userId}
         [HttpGet("GetAllMyFavorites/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyFavorites(int userId)
+        public async Task<ActionResult<IEnumerable<FavoriteInfo>>> GetMyFavorites(int userId)
         {
             var users = await _favoriteService.GetAllMy(userId);
             return Ok(users);
         }
 
         [HttpGet("GetAllNonResolvedReports")]
-        public async Task<ActionResult<IEnumerable<UserInfo>>> GetNonResolvedReports()
+        public async Task<ActionResult<IEnumerable<ReportInfo>>> GetNonResolvedReports()
         {
             var users = await _reportService.GetAllnonResolved();
             return Ok(users);
@@ -73,7 +73,7 @@ namespace API.Controllers
 
         // GET: api/users/GetAllMyRecipes/{userId}
         [HttpGet("GetAllMyRecipes/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserInfo>>> GetMyRecipes(int userId)
+        public async Task<ActionResult<IEnumerable<RecipeInfo>>> GetMyRecipes(int userId)
         {
             var users = await _userRecipes.GetAll(userId);
             return Ok(users);
@@ -131,19 +131,27 @@ namespace API.Controllers
             return Ok(report);
         }
 
-        // GET: api/users/UserPermissions/{userId}
+        // GET: api/users/GetPenaltyById/{userId}
         [HttpGet("GetPenaltyById/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
+        public async Task<ActionResult<IEnumerable<UserPenaltyInfo>>> UserPenalties(int userId)
         {
             var Penalties = await (_userPenalties.GetAllpenalty(userId));
             return Ok(Penalties);
         }
 
         // GET: api/users/UserPermissions/{userId}
-        [HttpGet("GetPermissionById/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
+        [HttpGet("GetUserPermissionsById/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
         {
             var Permissions = await (_usePermissions.GetAllPermation(userId));
+            return Ok(Permissions);
+        }
+
+        // GET: api/users/GetUserPermissionById/{UserPermissionId}
+        [HttpGet("GetUserPermissionById/{UserPermissionId}")]
+        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermission(int UserPermissionId)
+        {
+            var Permissions = await (_usePermissions.GetById(UserPermissionId));
             return Ok(Permissions);
         }
 

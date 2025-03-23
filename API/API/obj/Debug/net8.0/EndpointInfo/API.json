@@ -2143,7 +2143,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               },
@@ -2151,7 +2151,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               },
@@ -2159,7 +2159,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               }
@@ -2230,7 +2230,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/FavoriteInfo"
                   }
                 }
               },
@@ -2238,7 +2238,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/FavoriteInfo"
                   }
                 }
               },
@@ -2246,7 +2246,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/FavoriteInfo"
                   }
                 }
               }
@@ -2268,7 +2268,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               },
@@ -2276,7 +2276,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               },
@@ -2284,7 +2284,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/ReportInfo"
                   }
                 }
               }
@@ -2317,7 +2317,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/RecipeInfo"
                   }
                 }
               },
@@ -2325,7 +2325,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/RecipeInfo"
                   }
                 }
               },
@@ -2333,7 +2333,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserInfo"
+                    "$ref": "#/components/schemas/RecipeInfo"
                   }
                 }
               }
@@ -2524,6 +2524,55 @@
                 "schema": {
                   "type": "array",
                   "items": {
+                    "$ref": "#/components/schemas/UserPenaltyInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserPenaltyInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserPenaltyInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/GetUserPermissionsById/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
                     "$ref": "#/components/schemas/UserPermissionInfo"
                   }
                 }
@@ -2549,14 +2598,14 @@
         }
       }
     },
-    "/api/users/GetPermissionById/{userId}": {
+    "/api/users/GetUserPermissionById/{UserPermissionId}": {
       "get": {
         "tags": [
           "Users"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserPermissionId",
             "in": "path",
             "required": true,
             "schema": {
