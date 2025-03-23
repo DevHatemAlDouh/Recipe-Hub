@@ -82,13 +82,16 @@ namespace API.Controllers
         // GET: api/users/CheckUserEmail/{Email}
         [HttpGet("CheckUserEmail/{Email}")]
         public async Task<int> CheckUserEmail(String Email)
+        public async Task<int> CheckUserEmail(String Email)
         {
+            int userid = 0;
             int userid = 0;
             var users = await _userService.GetAll();
             foreach (var user in users)
             {
-                if (user.Email == Email && user.Id != 1) { userid = user.Id; }
+                if (user.Email == Email) { userid = user.Id; }
             }
+            return userid;
             return userid;
         }
 

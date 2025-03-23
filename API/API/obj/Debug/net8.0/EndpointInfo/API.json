@@ -2754,12 +2754,14 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "text/json": {
