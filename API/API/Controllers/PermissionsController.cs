@@ -60,7 +60,7 @@ namespace API.Controllers
         public async Task<ActionResult<PermissionInfo>> PostPermission(PermissionInfo permission)
         {
             await _permissionService.Add(permission);
-            return CreatedAtAction(nameof(GetPermission), new { permissionId = permission.Id }, permission);
+            return NoContent();
         }
 
         // POST: api/permissions/GrantPermission

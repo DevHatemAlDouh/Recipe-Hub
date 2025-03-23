@@ -67,7 +67,7 @@ namespace API.Controllers
         public async Task<ActionResult<CommentInfo>> PostComment(CommentInfo commentInfo)
         {
             await _commentService.Add(commentInfo);
-            return CreatedAtAction(nameof(GetComment), new { id = commentInfo.Id }, commentInfo);
+            return NoContent();
         }
 
         [HttpPost("AddRate")]

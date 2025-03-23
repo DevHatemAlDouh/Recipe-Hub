@@ -67,7 +67,7 @@ namespace API.Controllers
         public async Task<ActionResult<PenaltyInfo>> PostPenalty(PenaltyInfo penaltyInfo)
         {
             await _penaltyService.Add(penaltyInfo);
-            return CreatedAtAction(nameof(GetPenalty), new { permissionId = penaltyInfo.Id }, penaltyInfo);
+            return NoContent();
         }
 
         // POST: api/Penalties/GrantPenalties

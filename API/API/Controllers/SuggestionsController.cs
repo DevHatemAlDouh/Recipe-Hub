@@ -57,7 +57,7 @@ namespace API.Controllers
         public async Task<ActionResult<SuggestionInfo>> PostSuggestion(SuggestionInfo suggestionInfo)
         {
             await _suggestionService.Add(suggestionInfo);
-            return CreatedAtAction(nameof(GetSuggestion), new { id = suggestionInfo.Id }, suggestionInfo);
+            return NoContent();
         }
 
         // DELETE: api/Suggestions/5

@@ -110,7 +110,7 @@ namespace API.Controllers
         public async Task<ActionResult<RecipeInfo>> PostRecipe(RecipeInfo recipeInfo)
         {
             await _recipeService.Add(recipeInfo);
-            return CreatedAtAction(nameof(GetRecipe), new { permissionId = recipeInfo.Id }, recipeInfo);
+            return NoContent();
         }
 
         [HttpPost("AddRate")]

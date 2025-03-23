@@ -74,7 +74,7 @@ namespace API.Controllers
         public async Task<ActionResult<CategoryInfo>> PostCategory(CategoryInfo categoryInfo)
         {
             await _categoryService.Add(categoryInfo);
-            return CreatedAtAction("GetCategoryInfo", new { id = categoryInfo.Id }, categoryInfo);
+            return NoContent();
         }
 
         // DELETE: api/Categories/5

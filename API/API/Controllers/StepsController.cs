@@ -64,7 +64,7 @@ namespace API.Controllers
         public async Task<ActionResult<StepInfo>> PostStepInfo(StepInfo stepInfo)
         {
             await _stepService.Add(stepInfo);
-            return CreatedAtAction(nameof(GetStepInfo), new { stepId = stepInfo.Id }, stepInfo);
+            return NoContent();
         }
 
         // DELETE: api/Steps/5
