@@ -147,7 +147,7 @@ namespace API.Controllers
         }
 
         // GET: api/users/UserPermissions/{userId}
-        [HttpGet("GetPermissionById/{permissionId}")]
+        [HttpGet("GetPermissionById/{userId}")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPenalties(int userId)
         {
             var user = _userService.GetById(userId);

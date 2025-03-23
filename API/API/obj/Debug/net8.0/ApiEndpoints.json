@@ -1270,6 +1270,58 @@
   },
   {
     "ContainingType": "API.Controllers.UsersController",
+    "Method": "CheckUserEmail",
+    "RelativePath": "api/users/CheckUserEmail/{Email}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "CheckUserUsername",
+    "RelativePath": "api/users/CheckUserUsername/{Username}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Username",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
     "Method": "DeleteUser",
     "RelativePath": "api/users/Delete/{userId}",
     "HttpMethod": "DELETE",
@@ -1503,7 +1555,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPenalties",
-    "RelativePath": "api/users/GetPermissionById/{permissionId}",
+    "RelativePath": "api/users/GetPermissionById/{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1511,11 +1563,6 @@
       {
         "Name": "userId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "permissionId",
-        "Type": "",
         "IsRequired": true
       }
     ],
