@@ -57,7 +57,7 @@ namespace API.Controllers
         public async Task<ActionResult<IngredientInfo>> PostIngredient(IngredientInfo ingredientInfo)
         {
             await _ingredienService.Add(ingredientInfo);
-            return CreatedAtAction(nameof(GetIngredient), new { ingredientId = ingredientInfo.Id }, ingredientInfo);
+            return NoContent();
         }
 
         // DELETE: api/Ingredients/5
