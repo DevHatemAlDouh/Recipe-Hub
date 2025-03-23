@@ -56,7 +56,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] User data)
+        public async Task<IActionResult> Create([FromForm] Permission data)
         {
             bool result;
             using (var API = new HttpClient())

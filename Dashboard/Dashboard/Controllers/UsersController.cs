@@ -4,13 +4,19 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Data;
 using System.Text;
+using Dashboard.Service;
 
 namespace Dashboard.Controllers
 {
     public class UsersController : Controller
     {
         private string baseURL = "http://recipe-hub.runasp.net/swagger";
-
+        private Hashing _hashing;
+        public UsersController(Hashing hashing)
+        {
+            _hashing = hashing;
+        }
+        
         public async Task<IActionResult> Index()
         {
             DataTable dt = new DataTable();
@@ -57,6 +63,19 @@ namespace Dashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] User data)
         {
+            if (data.UserImageBase64 != null && data.UserImageBase64.Length > 0)
+            {
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    // Copy the uploaded file to the memory stream
+                    await data.UserImageBase64.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
+                    data.UserImage = Convert.ToBase64String(imageBytes); // Store as Base64
+                }
+            }
+
+            data.Password = _hashing.HashPassword(data.Password);
+
             bool result;
             using (var API = new HttpClient())
             {
@@ -65,14 +84,24 @@ namespace Dashboard.Controllers
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                 HttpResponseMessage Res = await API.PostAsync("/api/users/Add", content);
-                result = Res.IsSuccessStatusCode;
+
+                if (!Res.IsSuccessStatusCode)
+                {
+                    // Handle error
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    return View(data);
+                }
+
+                result = true; // Indicate success
             }
+
             if (result)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index"); // Redirect to Index after successful creation
             }
-            return View(data);
+            return View(data); // Return to the view if creation fails
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -97,6 +126,18 @@ namespace Dashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [FromForm] User data)
         {
+            if (data.UserImageBase64 != null && data.UserImageBase64.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await data.UserImageBase64.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
+                    data.UserImage = Convert.ToBase64String(imageBytes); // Assuming User has this property
+                }
+            }
+
+            data.Password = _hashing.HashPassword(data.Password);
+
             bool result;
             using (var API = new HttpClient())
             {
@@ -105,8 +146,17 @@ namespace Dashboard.Controllers
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                 HttpResponseMessage Res = await API.PutAsync($"/api/users/Update/{id}", content);
-                result = Res.IsSuccessStatusCode;
+
+                if (!Res.IsSuccessStatusCode)
+                {
+                    // Handle error
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    return View(data);
+                }
+
+                result = true; // Set to true if successful
             }
+
             if (result)
             {
                 return RedirectToAction("Index");
@@ -151,6 +201,145 @@ namespace Dashboard.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public async Task<IActionResult> Grant(int id)
+        {
+            // Create an instance of User_Permission_form
+            var userPermissionForm = new User_Permission_form
+            {
+                user_permission = new User_Permission(),
+                user = new User(),
+                permissions = new List<Permission>()
+            };
+
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Get user information
+                HttpResponseMessage userResponse = await API.GetAsync($"/api/users/GetById/{id}");
+                if (userResponse.IsSuccessStatusCode)
+                {
+                    var userApiResponse = await userResponse.Content.ReadAsStringAsync();
+                    userPermissionForm.user = JsonConvert.DeserializeObject<User>(userApiResponse);
+                }
+
+                // Get all permissions
+                HttpResponseMessage permissionsResponse = await API.GetAsync("/api/Permissions/GetAll");
+                if (permissionsResponse.IsSuccessStatusCode)
+                {
+                    var permissionsApiResponse = await permissionsResponse.Content.ReadAsStringAsync();
+                    userPermissionForm.permissions = JsonConvert.DeserializeObject<List<Permission>>(permissionsApiResponse);
+                }
+            }
+
+            return View(userPermissionForm); // Pass the model to the view
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Grant([FromForm] User_Permission_form userPermissionform)
+        {
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var content = new StringContent(JsonConvert.SerializeObject(userPermissionform.user_permission), Encoding.UTF8, "application/json");
+                HttpResponseMessage Res = await API.PostAsync("/api/Permissions/GrantPermission", content);
+
+                if (!Res.IsSuccessStatusCode)
+                {
+                    // Handle error
+                    ModelState.AddModelError(string.Empty, "Failed to grant permission. Please contact administrator.");
+                    return View(userPermissionform);
+                }
+            }
+
+            return RedirectToAction("Index"); // Redirect to Index after successful grant
+        }
+
+
+        public async Task<IActionResult> Permissions(int id)
+        {
+            
+            using (var API = new HttpClient())
+            {
+                User_All_Permissions user_All_Permissions = new User_All_Permissions();
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage userResponse = await API.GetAsync($"/api/users/GetById/{id}");
+                if (userResponse.IsSuccessStatusCode)
+                {
+                    var userApiResponse = await userResponse.Content.ReadAsStringAsync();
+                    user_All_Permissions.user = JsonConvert.DeserializeObject<User>(userApiResponse);
+                }
+
+                HttpResponseMessage UserPermissionResponse = await API.GetAsync($"/api/users/GetPermissionById/{id}");
+                if (UserPermissionResponse.IsSuccessStatusCode)
+                {
+                    var APIResponse = await UserPermissionResponse.Content.ReadAsStringAsync();
+                    user_All_Permissions.user_permission = JsonConvert.DeserializeObject<List<User_Permission>>(APIResponse);
+                }
+
+                foreach (var permission in user_All_Permissions.user_permission)
+                {
+                    HttpResponseMessage PermissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{permission.Id}");
+                    if (PermissionsResponse.IsSuccessStatusCode)
+                    {
+                        var APIResponse = await PermissionsResponse.Content.ReadAsStringAsync();
+                        user_All_Permissions.permission = JsonConvert.DeserializeObject<List<Permission>>(APIResponse);
+                    }
+                }
+                
+                return View(user_All_Permissions);
+            }
+        }
+
+        public async Task<IActionResult> Revoke(int id)
+        {
+            DataTable dt = new DataTable();
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage Res = await API.GetAsync($"/api/users/GetPermissionById/{id}");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var APIResponse = Res.Content.ReadAsStringAsync().Result;
+                    dt = JsonConvert.DeserializeObject<DataTable>(APIResponse);
+                }
+                return View(dt);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RevokeConfirmed(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage Res = await API.DeleteAsync($"/api/Permissions/Revoke/{id}");
+
+                if (!Res.IsSuccessStatusCode)
+                {
+                    // Handle error
+                    ModelState.AddModelError(string.Empty, "Failed to revoke permission. Please contact administrator.");
+                    return View();
+                }
+            }
+
+            return RedirectToAction("Index"); // Redirect to Index after successful revoke
         }
     }
 }

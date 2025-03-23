@@ -18,6 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<Hashing>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddHttpContextAccessor();
 

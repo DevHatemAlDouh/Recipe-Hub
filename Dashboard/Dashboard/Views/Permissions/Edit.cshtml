@@ -1,4 +1,4 @@
-﻿@model Permission
+﻿@model Dashboard.Models.Permission
 
 @{
     ViewBag.Title = "Edit Permission";
@@ -14,8 +14,8 @@
                 <input type="hidden" asp-for="Id" />
 
                 <div class="form-group">
-                    <label asp-for="titel"></label>
-                    <input type="text" class="form-control" asp-for="titel" required />
+                    <label asp-for="Title">Title</label>
+                    <input type="text" class="form-control" asp-for="Title" required />
                 </div>
 
                 <br />

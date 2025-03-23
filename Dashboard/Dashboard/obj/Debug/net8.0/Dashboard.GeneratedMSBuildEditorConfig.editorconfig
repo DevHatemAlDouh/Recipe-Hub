@@ -84,8 +84,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Users/Grant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcR3JhbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Users/Permissions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUGVybWlzc2lvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/Users/Revoke.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmV2b2tlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/HMD-8134/Desktop/Repos/Recipe-Hub/Dashboard/Dashboard/Views/_ViewImports.cshtml]

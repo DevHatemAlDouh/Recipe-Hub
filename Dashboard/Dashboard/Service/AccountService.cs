@@ -1,13 +1,18 @@
 ﻿using Dashboard.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text;
 
 namespace Dashboard.Service
 {
     public class AccountService
     {
         private string baseURL = "http://recipe-hub.runasp.net/swagger";
+        private Hashing _hashing;
+        public AccountService(Hashing hashing) 
+        {
+            _hashing = hashing;
+        }
+        
 
         public async Task<bool> LoginAsync(Login user)
         {
@@ -23,10 +28,12 @@ namespace Dashboard.Service
                     var usersResponse = await response.Content.ReadAsStringAsync();
                     var users = JsonConvert.DeserializeObject<List<Login>>(usersResponse);
 
-                    return users.Any(u => u.UserName == user.UserName && u.Password == user.Password);
+                    return users.Any(u => u.UserName == user.UserName && _hashing.VerifyPassword(user.Password,u.Password));
                 }
                 return false;
             }
         }
+
+        
     }
 }
