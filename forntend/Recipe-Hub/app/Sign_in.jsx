@@ -74,21 +74,33 @@ const SignIn = () => {
     if (valid) {
       setLoading(true);
       try {
-        const usersResponse = await axios.get('http://recipe-hub.runasp.net/api/users/GetAll', {
-          timeout: 10000, // مهلة 10 ثواني
-        });
-        const user = usersResponse.data.find((u) => u.email === email);
-        if (user) {
-          const userResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${user.id}`);
+        // 1. Check if email exists and get user ID
+        const checkResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/CheckUserEmail/${email}`);
+
+        const userId = checkResponse.data;
+
+        if (userId > 0) {
+          // 2. Get full user data by ID
+          const userResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${userId}`);
+          
           if (userResponse.status === 200 && userResponse.data) {
+            const user = userResponse.data;
+            
+            // 3. Encrypt input password and compare
             const encryptedPassword = await Crypto.digestStringAsync(
               Crypto.CryptoDigestAlgorithm.SHA256,
               password
             );
 
-            if (encryptedPassword === userResponse.data.password) {
-              await AsyncStorage.setItem('userData', JSON.stringify(user.email));
+            if (encryptedPassword === user.password) {
+              // 4. Save user data and redirect
+              await AsyncStorage.setItem('userData', JSON.stringify({
+                id: userId,
+                email: user.email,
+                name: user.userName
+              }));
               await AsyncStorage.setItem('lastLoginTime', new Date().toISOString());
+              Alert.alert(AsyncStorage.setItem('lastLoginTime', new Date().toISOString()));
               router.replace('/(tabs)/Home');
             } else {
               setLoginError('Invalid email or password');
@@ -100,13 +112,13 @@ const SignIn = () => {
           setLoginError('User not found');
         }
       } catch (error) {
-        console.error('Error during login:', error.response?.data || error.message);
+        console.error('Login error:', error.response?.data || error.message);
         setLoginError('There was an error during login. Please try again later.');
       } finally {
         setLoading(false);
       }
     } else {
-      setLoading(false); // إيقاف التحميل إذا كانت البيانات غير صالحة
+      setLoading(false);
     }
   };
 

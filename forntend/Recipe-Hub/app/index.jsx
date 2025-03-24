@@ -52,7 +52,7 @@ const Open = () => {
           } else {
             router.replace('/Sign_in'); // الانتقال إلى صفحة تسجيل الدخول إذا لم يكن مسجل دخول
           }
-        }, 15000);
+        }, 5000);
       } catch (error) {
         console.error('Error checking last login time:', error);
       }
@@ -67,7 +67,7 @@ const Open = () => {
         <Text style={[styles.title, { fontSize: width < 400 ? 24 : 28 }]}>Recipe Hub</Text>
         <ActivityIndicator size="large" color="#00f" style={styles.loader} />
         <Text style={styles.subtitle}>
-          {userData ? `مرحبًا ${userData.username}!` : 'لم يتم تسجيل الدخول.'}
+          {userData ? `مرحبًا ${userData.name}!` : 'لم يتم تسجيل الدخول.'}
         </Text>
         <Text style={styles.subtitle}>
           {lastLoginTime ? `آخر دخول: ${new Date(lastLoginTime).toLocaleString()}` : 'لا يوجد سجل دخول.'}
