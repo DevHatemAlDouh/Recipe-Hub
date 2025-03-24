@@ -1121,6 +1121,115 @@
   },
   {
     "ContainingType": "API.Controllers.StepsController",
+    "Method": "PostStepIngredientInfo",
+    "RelativePath": "api/Steps/Ingredient/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stepIngredientInfo",
+        "Type": "API.Models.StepIngredientinfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.StepInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StepsController",
+    "Method": "DeleteStepIngredientInfo",
+    "RelativePath": "api/Steps/Ingredient/Delete/{stepId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stepId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.StepsController",
+    "Method": "GetStepIngredientInfo",
+    "RelativePath": "api/Steps/Ingredient/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.StepInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StepsController",
+    "Method": "GetStepIngredientInfo",
+    "RelativePath": "api/Steps/Ingredient/GetById/{stepId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stepId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.StepInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StepsController",
+    "Method": "PutStepIngredientInfo",
+    "RelativePath": "api/Steps/Ingredient/Update/{stepId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stepId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "stepInfoIngredient",
+        "Type": "API.Models.StepIngredientinfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.StepsController",
     "Method": "PutStepInfo",
     "RelativePath": "api/Steps/Update/{stepId}",
     "HttpMethod": "PUT",
