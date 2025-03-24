@@ -1748,6 +1748,44 @@
         }
       }
     },
+    "/api/Steps/Ingredient/GetAll": {
+      "get": {
+        "tags": [
+          "Steps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Steps/GetById/{stepId}": {
       "get": {
         "tags": [
@@ -1788,6 +1826,55 @@
         }
       }
     },
+    "/api/Steps/Ingredient/GetById/{stepId}": {
+      "get": {
+        "tags": [
+          "Steps"
+        ],
+        "parameters": [
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Steps/Update/{stepId}": {
       "put": {
         "tags": [
@@ -1819,6 +1906,48 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/StepInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Steps/Ingredient/Update/{stepId}": {
+      "put": {
+        "tags": [
+          "Steps"
+        ],
+        "parameters": [
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
               }
             }
           }
@@ -1878,7 +2007,78 @@
         }
       }
     },
+    "/api/Steps/Ingredient/Add": {
+      "post": {
+        "tags": [
+          "Steps"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StepIngredientinfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Steps/Delete/{stepId}": {
+      "delete": {
+        "tags": [
+          "Steps"
+        ],
+        "parameters": [
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Steps/Ingredient/Delete/{stepId}": {
       "delete": {
         "tags": [
           "Steps"
@@ -3210,6 +3410,42 @@
           "backgroundImage": {
             "type": "string",
             "format": "byte",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StepIngredientinfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ingredientID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stepID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "float"
+          },
+          "unit": {
+            "type": "string",
             "nullable": true
           },
           "createdAt": {

@@ -29,6 +29,7 @@ builder.Services.AddScoped<UsePermissions>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
 builder.Services.AddScoped<RecipeSteps>();
+builder.Services.AddScoped<StepIngredient>();
 builder.Services.AddScoped<RecipeAndCategoryAndComment>();
 builder.Services.AddScoped<RecipeSuggestions>();
 builder.Services.AddScoped<FavoriteService>();
