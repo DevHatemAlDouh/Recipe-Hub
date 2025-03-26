@@ -20,7 +20,7 @@ namespace API.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Suggestion> Suggestions { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
-        public DbSet<StepIngredient> StepIngredients { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<RecipeCategory> RecipeCategories { get; set; }
         public DbSet<RecipeRate> RecipeRates { get; set; }
@@ -85,16 +85,16 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for StepIngredient
-            modelBuilder.Entity<StepIngredient>()
+            modelBuilder.Entity<RecipeIngredient>()
                 .HasOne(si => si.Ingredient)
-                .WithMany(i => i.StepIngredients)
+                .WithMany(i => i.RecipeIngredients)
                 .HasForeignKey(si => si.IngredientID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<StepIngredient>()
-                .HasOne(si => si.Step)
-                .WithMany(s => s.StepIngredients)
-                .HasForeignKey(si => si.StepID)
+            modelBuilder.Entity<RecipeIngredient>()
+                .HasOne(si => si.recipe)
+                .WithMany(s => s.RecipeIngredients)
+                .HasForeignKey(si => si.RecipeID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for Comment

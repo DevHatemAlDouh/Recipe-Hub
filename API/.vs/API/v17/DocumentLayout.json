@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\recipeingredientserves.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\recipeingredientserves.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\stepscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\stepscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RecipeIngredientServes.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\RecipeIngredientServes.cs",
+              "RelativeDocumentMoniker": "API\\Service\\RecipeIngredientServes.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\RecipeIngredientServes.cs",
+              "RelativeToolTip": "API\\Service\\RecipeIngredientServes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T21:00:20.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RecipesController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\RecipesController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeToolTip": "API\\Controllers\\RecipesController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABUAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T20:50:02.122Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StepsController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\StepsController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\StepsController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\StepsController.cs",
+              "RelativeToolTip": "API\\Controllers\\StepsController.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T20:47:07.58Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

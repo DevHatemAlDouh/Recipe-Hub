@@ -10,24 +10,23 @@ namespace API.Controllers
     {
         private readonly ICRUDService<RecipeInfo> _recipeService;
         private readonly RecipeAndCategoryAndComment _recipeAndCategory;
-        private readonly UserRecipes _userRecipes;
         private readonly RecipeSteps _recipeSteps;
         private readonly RecipeSuggestions _recipeSuggestions;
         private readonly RecipeRateService _recipeRateService;
+        private readonly RecipeIngredientServes _recipeIngredient;
 
         public RecipesController(
-            ICRUDService<RecipeInfo> recipeService,
-            UserRecipes userRecipes, RecipeSteps recipeSteps,
+            ICRUDService<RecipeInfo> recipeService, RecipeSteps recipeSteps,
             RecipeAndCategoryAndComment recipeAndCategory,
             RecipeSuggestions recipeSuggestions,
-            RecipeRateService recipeRateService)
+            RecipeRateService recipeRateService, RecipeIngredientServes recipeIngredient)
         {
             _recipeService = recipeService;
-            _userRecipes = userRecipes;
             _recipeSteps = recipeSteps;
             _recipeAndCategory = recipeAndCategory;
             _recipeSuggestions = recipeSuggestions;
             _recipeRateService = recipeRateService;
+            _recipeIngredient = recipeIngredient;
         }
 
         // GET: api/Recipes
@@ -67,6 +66,14 @@ namespace API.Controllers
             return Ok(steps);
         }
 
+        // GET: api/Recipes
+        [HttpGet("Ingredient/GetAll")]
+        public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo()
+        {
+            var steps = await _recipeIngredient.GetAll();
+            return Ok(steps);
+        }
+
         // GET: api/Recipes/5
         [HttpGet("GetById/{recipeId}")]
         public async Task<ActionResult<RecipeInfo>> GetRecipe(int recipeId)
@@ -81,6 +88,19 @@ namespace API.Controllers
             return Ok(recipe);
         }
 
+        // GET: api/Steps/5
+        [HttpGet("Ingredient/GetById/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo(int recipeId)
+        {
+            var step = await _recipeIngredient.GetById(recipeId);
+
+            if (step == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(step);
+        }
 
         // PUT: api/Recipes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -104,6 +124,20 @@ namespace API.Controllers
             return NoContent();
         }
 
+        // PUT: api/Steps/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("Ingredient/Update/{recipeId}")]
+        public async Task<IActionResult> PutStepIngredientInfo(int recipeId, RecipeIngredientinfo recipeIngredientInfo)
+        {
+            if (recipeId != recipeIngredientInfo.Id)
+            {
+                return BadRequest();
+            }
+
+            await _recipeIngredient.Update(recipeIngredientInfo);
+            return NoContent();
+        }
+
         // POST: api/Recipes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Add")]
@@ -117,6 +151,15 @@ namespace API.Controllers
         public async Task<ActionResult<RecipeRateInfo>> PostRecipeRate(RecipeRateInfo recipeRateInfo)
         {
             await _recipeRateService.Add(recipeRateInfo);
+            return NoContent();
+        }
+
+        // POST: api/Steps
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("Ingredient/Add")]
+        public async Task<ActionResult<RecipeIngredientinfo>> PostStepIngredientInfo(RecipeIngredientinfo recipIngredientInfo)
+        {
+            await _recipeIngredient.Add(recipIngredientInfo);
             return NoContent();
         }
 
@@ -144,6 +187,20 @@ namespace API.Controllers
             }
 
             await _recipeService.Delete(recipeId);
+            return NoContent();
+        }
+
+        // DELETE: api/Steps/5
+        [HttpDelete("Ingredient/Delete/{recipeId}")]
+        public async Task<IActionResult> DeleteStepIngredientInfo(int recipeId)
+        {
+            var step = _recipeIngredient.GetById(recipeId);
+            if (step == null)
+            {
+                return NotFound();
+            }
+
+            await _recipeIngredient.Delete(recipeId);
             return NoContent();
         }
     }

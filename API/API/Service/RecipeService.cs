@@ -24,7 +24,9 @@ namespace API.Service
                 CreatedAt = DateTime.Now,
                 Comments = new List<Comment>(),
                 RecipeRates = new List<RecipeRate>(),
-                Steps = new List<Step>()
+                Steps = new List<Step>(),
+                RecipeIngredients = new List<RecipeIngredient>(),
+                
             };
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();

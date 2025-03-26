@@ -25,7 +25,6 @@ namespace API.Service
                 CreatedAt = DateTime.Now,
                 
                 Suggestions = new List<Suggestion>(),
-                StepIngredients = new List<StepIngredient>()
             };
 
             await _context.Steps.AddAsync(step);

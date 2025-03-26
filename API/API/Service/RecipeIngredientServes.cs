@@ -4,46 +4,46 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
-    public class StepIngredientServes
+    public class RecipeIngredientServes
     {
         private readonly APIContext _context;
-        public StepIngredientServes(APIContext context)
+        public RecipeIngredientServes(APIContext context)
         {
             _context = context;
         }
 
-        public async Task Add(StepIngredientinfo entity)
+        public async Task Add(RecipeIngredientinfo entity)
         {
-            var stepIngredient = new StepIngredient
+            var recipeIngredient = new RecipeIngredient
             {
-                StepID = entity.StepID,
+                RecipeID = entity.RecipeID,
                 IngredientID = entity.IngredientID,
                 Quantity = entity.Quantity,
                 Unit = entity.Unit,
                 CreatedAt = DateTime.Now
             };
-            await _context.StepIngredients.AddAsync(stepIngredient);
+            await _context.RecipeIngredients.AddAsync(recipeIngredient);
             await _context.SaveChangesAsync();
-            entity.Id = stepIngredient.Id; // Update the entity with the generated Id
+            entity.Id = recipeIngredient.Id; // Update the entity with the generated Id
 
         }
 
         public async Task Delete(int id)
         {
-            var stepIngredient = await _context.StepIngredients.FirstOrDefaultAsync(f => f.StepID == id);
+            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == id);
             if (stepIngredient != null)
             {
-                _context.StepIngredients.Remove(stepIngredient);
+                _context.RecipeIngredients.Remove(stepIngredient);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<StepIngredientinfo>> GetAll()
+        public async Task<IEnumerable<RecipeIngredientinfo>> GetAll()
         {
-            return await _context.StepIngredients.Select(f => new StepIngredientinfo
+            return await _context.RecipeIngredients.Select(f => new RecipeIngredientinfo
             {
                 Id = f.Id,
-                StepID = f.StepID,
+                RecipeID = f.RecipeID,
                 IngredientID = f.IngredientID,
                 Quantity = f.Quantity,
                 Unit = f.Unit,
@@ -52,15 +52,15 @@ namespace API.Service
             }).ToListAsync();
         }
 
-        public async Task<IEnumerable<StepIngredientinfo>> GetById(int id)
+        public async Task<IEnumerable<RecipeIngredientinfo>> GetById(int id)
         {
-            var stepIngredient = await _context.StepIngredients.FirstOrDefaultAsync(f => f.StepID == id);
+            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == id);
             if (stepIngredient == null) return null;
 
-            return await _context.StepIngredients.Select(f => new StepIngredientinfo
+            return await _context.RecipeIngredients.Select(f => new RecipeIngredientinfo
             {
                 Id = f.Id,
-                StepID = f.StepID,
+                RecipeID = f.RecipeID,
                 IngredientID = f.IngredientID,
                 Quantity = f.Quantity,
                 Unit = f.Unit,
@@ -69,19 +69,19 @@ namespace API.Service
             }).ToListAsync();
         }
 
-        public async Task Update(StepIngredientinfo entity)
+        public async Task Update(RecipeIngredientinfo entity)
         {
-            var stepIngredient = await _context.StepIngredients.FirstOrDefaultAsync(u => u.StepID == entity.Id);
+            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(u => u.RecipeID == entity.Id);
             if (stepIngredient != null)
             {
-                stepIngredient.StepID = entity.StepID;
+                stepIngredient.RecipeID = entity.RecipeID;
                 stepIngredient.IngredientID = entity.IngredientID;
                 stepIngredient.Quantity = entity.Quantity;
                 stepIngredient.Unit = entity.Unit;
                 stepIngredient.CreatedAt = entity.CreatedAt;
                 stepIngredient.UpdatedAt = DateTime.Now;
 
-                _context.StepIngredients.Update(stepIngredient);
+                _context.RecipeIngredients.Update(stepIngredient);
                 await _context.SaveChangesAsync();
             }
         }

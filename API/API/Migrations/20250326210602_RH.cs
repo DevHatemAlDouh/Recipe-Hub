@@ -289,6 +289,36 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RecipeIngredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientID = table.Column<int>(type: "int", nullable: false),
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<float>(type: "real", nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeIngredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredients_Ingredients_IngredientID",
+                        column: x => x.IngredientID,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredients_Recipes_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RecipeRates",
                 columns: table => new
                 {
@@ -369,36 +399,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StepIngredients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IngredientID = table.Column<int>(type: "int", nullable: false),
-                    StepID = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<float>(type: "real", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StepIngredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StepIngredients_Ingredients_IngredientID",
-                        column: x => x.IngredientID,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StepIngredients_Steps_StepID",
-                        column: x => x.StepID,
-                        principalTable: "Steps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Suggestions",
                 columns: table => new
                 {
@@ -468,6 +468,16 @@ namespace API.Migrations
                 column: "RecipeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredients_IngredientID",
+                table: "RecipeIngredients",
+                column: "IngredientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredients_RecipeID",
+                table: "RecipeIngredients",
+                column: "RecipeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RecipeRates_RecipeID",
                 table: "RecipeRates",
                 column: "RecipeID");
@@ -486,16 +496,6 @@ namespace API.Migrations
                 name: "IX_Reports_FromUserID",
                 table: "Reports",
                 column: "FromUserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StepIngredients_IngredientID",
-                table: "StepIngredients",
-                column: "IngredientID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StepIngredients_StepID",
-                table: "StepIngredients",
-                column: "StepID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Steps_RecipeID",
@@ -546,13 +546,13 @@ namespace API.Migrations
                 name: "RecipeCategories");
 
             migrationBuilder.DropTable(
+                name: "RecipeIngredients");
+
+            migrationBuilder.DropTable(
                 name: "RecipeRates");
 
             migrationBuilder.DropTable(
                 name: "Reports");
-
-            migrationBuilder.DropTable(
-                name: "StepIngredients");
 
             migrationBuilder.DropTable(
                 name: "Suggestions");

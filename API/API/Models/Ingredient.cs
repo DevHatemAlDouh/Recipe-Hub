@@ -8,7 +8,7 @@
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<StepIngredient> StepIngredients { get; set; }
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
         public ICollection<Favorite> Favorites { get; set; }
     }
 }

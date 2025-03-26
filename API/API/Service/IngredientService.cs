@@ -20,8 +20,9 @@ namespace API.Service
                 Name = entity.Name,
                 Description = entity.Description,
                 CreatedAt = DateTime.Now,
-                
-                StepIngredients = new List<StepIngredient>()
+
+                RecipeIngredients = new List<RecipeIngredient>(),
+                Favorites = new List<Favorite>()
             };
 
             await _context.Ingredients.AddAsync(ingredient);
