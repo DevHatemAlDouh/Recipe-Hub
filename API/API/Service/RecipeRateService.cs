@@ -13,6 +13,26 @@ namespace API.Service
             _context = context;
         }
 
+        public async Task<IEnumerable<RecipeRateInfo>> GetAll()
+        {
+            var recipes = await _context.RecipeRates.Select(u => new RecipeRateInfo
+            {
+                Id = u.Id,
+                UserID = u.UserID,
+                RecipeID = u.RecipeID,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt,
+
+            }).ToListAsync();
+
+            if (!recipes.Any())
+            {
+                return new List<RecipeRateInfo>();
+            }
+
+            return recipes;
+        }
+
         public async Task<RecipeRateInfo> GetById(int id)
         {
             var recipe = await _context.RecipeRates.FirstOrDefaultAsync(r => r.Id == id);
@@ -44,11 +64,19 @@ namespace API.Service
 
         public async Task Delete(int id)
         {
-            var recipeRate = await _context.RecipeRates.FirstOrDefaultAsync(f => f.Id == id);
+            var recipeRate = await GetAll();
             if (recipeRate != null)
             {
-                _context.RecipeRates.Remove(recipeRate);
-                await _context.SaveChangesAsync();
+                foreach (var rate in recipeRate)
+                {
+                    if (rate.RecipeID == id)
+                    {
+                        var reciperate = await _context.RecipeRates.FirstOrDefaultAsync(f => f.RecipeID == rate.RecipeID);
+                        _context.RecipeRates.Remove(reciperate);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                
             }
         }
 

@@ -82,7 +82,7 @@ namespace API.Controllers
         [HttpDelete("Delete/{penaltyId}")]
         public async Task<IActionResult> DeletePenalty(int penaltyId)
         {
-            var penalty = _penaltyService.GetById(penaltyId);
+            var penalty = await _penaltyService.GetById(penaltyId);
             if (penalty == null)
             {
                 return NotFound();

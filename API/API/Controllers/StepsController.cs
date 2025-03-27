@@ -71,7 +71,7 @@ namespace API.Controllers
         [HttpDelete("Delete/{stepId}")]
         public async Task<IActionResult> DeleteStepInfo(int stepId)
         {
-            var step = _stepService.GetById(stepId);
+            var step = await _stepService.GetById(stepId);
             if (step == null)
             {
                 return NotFound();

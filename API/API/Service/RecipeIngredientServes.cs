@@ -30,11 +30,21 @@ namespace API.Service
 
         public async Task Delete(int id)
         {
-            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == id);
-            if (stepIngredient != null)
+           
+            var recipeIngredient = await GetAll();
+            if (recipeIngredient != null)
             {
-                _context.RecipeIngredients.Remove(stepIngredient);
-                await _context.SaveChangesAsync();
+                foreach (var Ingredient in recipeIngredient)
+                {
+                    if (Ingredient.RecipeID == id)
+                    {
+                        var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == Ingredient.RecipeID);
+                        _context.RecipeIngredients.Remove(recipeingredient);
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                }
+               
             }
         }
 

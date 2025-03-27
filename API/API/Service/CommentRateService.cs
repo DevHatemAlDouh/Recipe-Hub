@@ -12,6 +12,26 @@ namespace API.Service
             _context = context;
         }
 
+        public async Task<IEnumerable<CommentRateInfo>> GetAll()
+        {
+            var recipes = await _context.CommentRates.Select(u => new CommentRateInfo
+            {
+                Id = u.Id,
+                UserID = u.UserID,
+                CommentID = u.CommentID,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt,
+
+            }).ToListAsync();
+
+            if (!recipes.Any())
+            {
+                return new List<CommentRateInfo>();
+            }
+
+            return recipes;
+        }
+
         public async Task<CommentRateInfo> GetById(int id)
         {
             var commentRate = await _context.CommentRates.FirstOrDefaultAsync(r => r.Id == id);
@@ -43,11 +63,20 @@ namespace API.Service
 
         public async Task Delete(int id)
         {
-            var commentRate = await _context.CommentRates.FirstOrDefaultAsync(f => f.Id == id);
+            var commentRate = await GetAll();
             if (commentRate != null)
             {
-                _context.CommentRates.Remove(commentRate);
-                await _context.SaveChangesAsync();
+                foreach (var comment in commentRate)
+                {
+                    if (comment.CommentID == id)
+                    {
+                        var commentrate = await _context.CommentRates.FirstOrDefaultAsync(f => f.Id == id);
+                        _context.CommentRates.Remove(commentrate);
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                }
+                    
             }
         }
 

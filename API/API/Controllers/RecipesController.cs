@@ -92,14 +92,14 @@ namespace API.Controllers
         [HttpGet("Ingredient/GetById/{recipeId}")]
         public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo(int recipeId)
         {
-            var step = await _recipeIngredient.GetById(recipeId);
+            var ingredients = await _recipeIngredient.GetById(recipeId);
 
-            if (step == null)
+            if (ingredients == null)
             {
                 return NotFound();
             }
 
-            return Ok(step);
+            return Ok(ingredients);
         }
 
         // PUT: api/Recipes/5
@@ -167,26 +167,28 @@ namespace API.Controllers
         [HttpDelete("Delete/{recipeId}")]
         public async Task<IActionResult> DeleteRecipe(int recipeId)
         {
-            var recipe = _recipeService.GetById(recipeId);
+            var recipe = await _recipeService.GetById(recipeId);
             if (recipe == null)
             {
                 return NotFound();
             }
 
             await _recipeService.Delete(recipeId);
+            await _recipeIngredient.Delete(recipeId);
+            await _recipeRateService.Delete(recipeId);
             return NoContent();
         }
 
         [HttpDelete("DeleteRate/{recipeId}")]
         public async Task<IActionResult> DeleteRecipeRate(int recipeId)
         {
-            var Rate = _recipeRateService.GetById(recipeId);
+            var Rate = await _recipeRateService.GetById(recipeId);
             if (Rate == null)
             {
                 return NotFound();
             }
 
-            await _recipeService.Delete(recipeId);
+            await _recipeRateService.Delete(recipeId);
             return NoContent();
         }
 
@@ -194,7 +196,7 @@ namespace API.Controllers
         [HttpDelete("Ingredient/Delete/{recipeId}")]
         public async Task<IActionResult> DeleteStepIngredientInfo(int recipeId)
         {
-            var step = _recipeIngredient.GetById(recipeId);
+            var step = await _recipeIngredient.GetById(recipeId);
             if (step == null)
             {
                 return NotFound();

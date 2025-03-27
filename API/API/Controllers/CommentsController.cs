@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Service;
+using System.ComponentModel.Design;
 
 namespace API.Controllers
 {
@@ -88,13 +89,14 @@ namespace API.Controllers
             }
 
             await _commentService.Delete(id);
+            await _commentRateService.Delete(id);
             return NoContent();
         }
 
-        [HttpDelete("DeleteRate/{recipeId}")]
+        [HttpDelete("DeleteRate/{commentId}")]
         public async Task<IActionResult> DeleteCommentRate(int commentId)
         {
-            var Rate = _commentRateService.GetById(commentId);
+            var Rate = await _commentRateService.GetById(commentId);
             if (Rate == null)
             {
                 return NotFound();
