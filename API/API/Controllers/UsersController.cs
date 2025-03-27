@@ -89,7 +89,7 @@ namespace API.Controllers
             var users = await _userService.GetAll();
             foreach (var user in users)
             {
-                if (user.Email == Email) { userid = user.Id; }
+                if (user.Email == Email && user.Id != 1) { userid = user.Id; }
             }
             return userid;
             return userid;
