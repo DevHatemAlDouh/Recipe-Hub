@@ -56,7 +56,11 @@ namespace API.Service
                 UserID = u.UserID,
                 Description = u.Description,
                 BackgroundImage = u.BackgroundImage,
-                Title = u.Title
+                Title = u.Title,
+                Rate = u.Rate,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt,
+
             }).ToListAsync();
 
             if (!recipes.Any())
