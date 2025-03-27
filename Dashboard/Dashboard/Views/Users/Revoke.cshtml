@@ -26,7 +26,7 @@
                 <dd class="col-sm-9">@Model.user_permission.UpdatedAt</dd>
             </dl>
 
-            <form asp-action="RevokeConfirmed" method="post">
+            <form asp-action="Revoke" method="post">
                 <input type="hidden" asp-for="@Model.user_permission.Id" />
                 <div class="text-center">
                     <button type="submit" class="btn btn-danger">Delete</button>

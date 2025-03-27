@@ -290,7 +290,7 @@ namespace Dashboard.Controllers
 
                 var permissionTasks = user_All_Permissions.user_permission.Select(async permission =>
                 {
-                    HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{permission.Id}");
+                    HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{permission.PermissionID}");
                     if (permissionsResponse.IsSuccessStatusCode)
                     {
                         var apiResponse = await permissionsResponse.Content.ReadAsStringAsync();
@@ -341,7 +341,7 @@ namespace Dashboard.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Revoke")]
         public async Task<IActionResult> RevokeConfirmed(int id)
         {
             using (var API = new HttpClient())

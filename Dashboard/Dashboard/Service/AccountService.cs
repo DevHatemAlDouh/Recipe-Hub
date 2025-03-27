@@ -26,9 +26,23 @@ namespace Dashboard.Service
                 if (response.IsSuccessStatusCode)
                 {
                     var usersResponse = await response.Content.ReadAsStringAsync();
-                    var users = JsonConvert.DeserializeObject<List<Login>>(usersResponse);
+                    var users = JsonConvert.DeserializeObject<List<User>>(usersResponse);
+                    foreach (var _user in users)
+                    {
+                       if(_user.UserName == user.UserName && _hashing.VerifyPassword(user.Password, _user.Password))
+                        {
+                            HttpResponseMessage userresponse = await client.GetAsync($"/api/users/GetUserPermissionsById/{_user.Id}");
+                            if (userresponse.IsSuccessStatusCode)
+                            {
+                                var userspermisstionResponse = await userresponse.Content.ReadAsStringAsync();
+                                var userpermisstions = JsonConvert.DeserializeObject<List<User_Permission>>(userspermisstionResponse);
 
-                    return users.Any(u => u.UserName == user.UserName && _hashing.VerifyPassword(user.Password,u.Password));
+                                return userpermisstions.Any(u => u.PermissionID == 1 );
+                            }
+                        }
+                    }
+
+                    
                 }
                 return false;
             }
