@@ -1462,7 +1462,43 @@
         }
       }
     },
-    "/api/Recipes/GetAllIngredient": {
+    "/api/Recipes/Ingredient/GetAll": {
+      "get": {
+        "tags": ["Recipes"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recipes/GetById/{recipeId}": {
       "get": {
         "tags": ["Recipes"],
         "parameters": [
@@ -1539,6 +1575,53 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RecipeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recipes/Ingredient/GetById/{recipeId}": {
+      "get": {
+        "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientinfo"
+                  }
                 }
               }
             }
@@ -1628,12 +1711,12 @@
         }
       }
     },
-    "/api/Recipes/UpdateIngredient/{Id}": {
+    "/api/Recipes/Ingredient/Update/{recipeId}": {
       "put": {
         "tags": ["Recipes"],
         "parameters": [
           {
-            "name": "Id",
+            "name": "recipeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1657,46 +1740,6 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RecipeIngredientinfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Recipes/UpdateCategory/{Id}": {
-      "put": {
-        "tags": ["Recipes"],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
               }
             }
           }
@@ -1846,52 +1889,6 @@
         }
       }
     },
-    "/api/Recipes/Category/Add": {
-      "post": {
-        "tags": ["Recipes"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecipeCategoryInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeCategoryInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeCategoryInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeCategoryInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Recipes/Delete/{recipeId}": {
       "delete": {
         "tags": ["Recipes"],
@@ -1913,12 +1910,12 @@
         }
       }
     },
-    "/api/Recipes/DeleteIngredient/{Id}": {
+    "/api/Recipes/DeleteRate/{recipeId}": {
       "delete": {
         "tags": ["Recipes"],
         "parameters": [
           {
-            "name": "Id",
+            "name": "recipeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1934,12 +1931,12 @@
         }
       }
     },
-    "/api/Recipes/DeleteCategory/{Id}": {
+    "/api/Recipes/Ingredient/Delete/{recipeId}": {
       "delete": {
         "tags": ["Recipes"],
         "parameters": [
           {
-            "name": "Id",
+            "name": "recipeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1958,44 +1955,6 @@
     "/api/Steps/GetAll": {
       "get": {
         "tags": ["Steps"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Steps/Ingredient/GetAll": {
-      "get": {
-        "tags": [
-          "Steps"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2067,55 +2026,6 @@
         }
       }
     },
-    "/api/Steps/Ingredient/GetById/{stepId}": {
-      "get": {
-        "tags": [
-          "Steps"
-        ],
-        "parameters": [
-          {
-            "name": "stepId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StepInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Steps/Update/{stepId}": {
       "put": {
         "tags": ["Steps"],
@@ -2145,48 +2055,6 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/StepInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Steps/Ingredient/Update/{stepId}": {
-      "put": {
-        "tags": [
-          "Steps"
-        ],
-        "parameters": [
-          {
-            "name": "stepId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
               }
             }
           }
@@ -2244,60 +2112,12 @@
         }
       }
     },
-    "/api/Steps/Ingredient/Add": {
-      "post": {
-        "tags": [
-          "Steps"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/StepIngredientinfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/StepInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StepInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StepInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Steps/Delete/{stepId}": {
       "delete": {
         "tags": ["Steps"],
         "parameters": [
           {
-            "name": "stepId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -2306,29 +2126,25 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Steps/Ingredient/Delete/{stepId}": {
-      "delete": {
-        "tags": [
-          "Steps"
-        ],
-        "parameters": [
-          {
-            "name": "stepId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestionInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestionInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestionInfo"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2339,187 +2155,6 @@
     "/api/Suggestions/GetAll": {
       "get": {
         "tags": ["Suggestions"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SuggestionInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SuggestionInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SuggestionInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Suggestions/GetById/{id}": {
-      "get": {
-        "tags": ["Suggestions"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Suggestions/Update/{id}": {
-      "put": {
-        "tags": ["Suggestions"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Suggestions/Add": {
-      "post": {
-        "tags": ["Suggestions"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuggestionInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuggestionInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Suggestions/Delete/{id}": {
-      "delete": {
-        "tags": ["Suggestions"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Terms/GetAll": {
-      "get": {
-        "tags": ["Terms"],
         "responses": {
           "200": {
             "description": "OK",
@@ -2555,7 +2190,7 @@
     },
     "/api/Terms/GetById/{termId}": {
       "get": {
-        "tags": ["Terms"],
+        "tags": ["Suggestions"],
         "parameters": [
           {
             "name": "termId",
@@ -2593,7 +2228,7 @@
     },
     "/api/Terms/Update/{termId}": {
       "put": {
-        "tags": ["Terms"],
+        "tags": ["Suggestions"],
         "parameters": [
           {
             "name": "termId",
@@ -2633,7 +2268,7 @@
     },
     "/api/Terms/Add": {
       "post": {
-        "tags": ["Terms"],
+        "tags": ["Suggestions"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2679,7 +2314,7 @@
     },
     "/api/Terms/Delete/{termId}": {
       "delete": {
-        "tags": ["Terms"],
+        "tags": ["Suggestions"],
         "parameters": [
           {
             "name": "termId",
@@ -3782,11 +3417,6 @@
             "format": "int32",
             "nullable": true
           },
-          "view": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -3887,7 +3517,7 @@
             "type": "string",
             "nullable": true
           },
-          "solved": {
+          "resolved": {
             "type": "boolean"
           },
           "createdAt": {
@@ -3940,74 +3570,6 @@
         },
         "additionalProperties": false
       },
-      "StepIngredientinfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ingredientID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "stepID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "quantity": {
-            "type": "number",
-            "format": "float"
-          },
-          "unit": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SuggestionInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "recipeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "TermsInfo": {
         "type": "object",
         "properties": {
@@ -4019,7 +3581,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "permissionid": {
+          "stepID": {
             "type": "integer",
             "format": "int32"
           },
