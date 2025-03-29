@@ -507,7 +507,7 @@
         }
       }
     },
-    "/api/Comments/DeleteRate/{recipeId}": {
+    "/api/Comments/DeleteRate/{commentId}": {
       "delete": {
         "tags": [
           "Comments"
@@ -515,18 +515,11 @@
         "parameters": [
           {
             "name": "commentId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "recipeId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],

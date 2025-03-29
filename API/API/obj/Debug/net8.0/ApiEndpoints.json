@@ -205,7 +205,7 @@
   {
     "ContainingType": "API.Controllers.CommentsController",
     "Method": "DeleteCommentRate",
-    "RelativePath": "api/Comments/DeleteRate/{recipeId}",
+    "RelativePath": "api/Comments/DeleteRate/{commentId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -213,11 +213,6 @@
       {
         "Name": "commentId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "recipeId",
-        "Type": "",
         "IsRequired": true
       }
     ],
