@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "GkQU5jUqf/aFGwLnzuD3RVYbLGjM1zFBAYmZ+ftu8E0=",
+  "Hash": "95/Ef3wKzhbWpvCqZ2hPElFcyOHISmaUAFyri1SrqF4=",
   "Source": "Dashboard",
   "BasePath": "_content/Dashboard",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "a4iznzthu5",
-      "Integrity": "ejmk8y5okus8jQNMhSytJMKyOa7GCQe5TO/XIj72RS4=",
+      "Fingerprint": "bxll7x317e",
+      "Integrity": "P11M4u2GheRRTKMRxdvvfDP3Hfq2YhUEysCMNUD/Blo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1321,7 +1321,7 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.a4iznzthu5.css",
+      "Route": "css/site.bxll7x317e.css",
       "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1331,7 +1331,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4987"
+          "Value": "4152"
         },
         {
           "Name": "Content-Type",
@@ -1339,11 +1339,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ejmk8y5okus8jQNMhSytJMKyOa7GCQe5TO/XIj72RS4=\""
+          "Value": "\"P11M4u2GheRRTKMRxdvvfDP3Hfq2YhUEysCMNUD/Blo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 13:25:17 GMT"
+          "Value": "Sat, 29 Mar 2025 15:51:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1353,7 +1353,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "a4iznzthu5"
+          "Value": "bxll7x317e"
         },
         {
           "Name": "label",
@@ -1361,7 +1361,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ejmk8y5okus8jQNMhSytJMKyOa7GCQe5TO/XIj72RS4="
+          "Value": "sha256-P11M4u2GheRRTKMRxdvvfDP3Hfq2YhUEysCMNUD/Blo="
         }
       ]
     },
@@ -1376,7 +1376,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4987"
+          "Value": "4152"
         },
         {
           "Name": "Content-Type",
@@ -1384,11 +1384,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ejmk8y5okus8jQNMhSytJMKyOa7GCQe5TO/XIj72RS4=\""
+          "Value": "\"P11M4u2GheRRTKMRxdvvfDP3Hfq2YhUEysCMNUD/Blo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 13:25:17 GMT"
+          "Value": "Sat, 29 Mar 2025 15:51:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1398,7 +1398,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ejmk8y5okus8jQNMhSytJMKyOa7GCQe5TO/XIj72RS4="
+          "Value": "sha256-P11M4u2GheRRTKMRxdvvfDP3Hfq2YhUEysCMNUD/Blo="
         }
       ]
     },

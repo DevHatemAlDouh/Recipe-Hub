@@ -38,16 +38,22 @@ body {
     width: 250px;
     height: 100vh;
     position: fixed;
-    border-radius: 0 30px 30px 0;
+    border-radius: 0 20px 20px 0;
     top: 0;
     left: 0;
     background-color: var(--sidebar-background); /* Sidebar background */
     padding-top: 20px;
 }
 
+    .sidebar h1 {
+        padding: 10px 30px;
+        margin-bottom: 50px;
+        font-weight: bold;
+        color: var(--background-color); /* Background color based on theme */
+    }
+
     .sidebar a {
         position: relative;
-        margin: 20px 0;
         padding: 10px 35px;
         text-decoration: none;
         border-radius: 30px 0 0 30px;
@@ -57,34 +63,12 @@ body {
     }
 
         .sidebar a:hover {
-            margin: 20px 0 20px 20px;
-            color: var(--sidebar-background);
-            background-color: var(--background-color); /* Sidebar link hover color */
+            margin: 0 0 0 20px;
             font-weight: bold;
         }
 
-            .sidebar a:hover::before,
-            .sidebar a:hover::after {
-                content: '';
-                width: 10px;
-                height: 10px;
-                background-image: radial-gradient(circle at 100% 100%, transparent 10px, var(--background-color) 10px);
-                position: absolute;
-                right: 0;
-            }
-
-                .sidebar a:hover::before {
-                    rotate: 180deg;
-                    top: -10px;
-                }
-
-                .sidebar a:hover::after {
-                    rotate: 90deg;
-                    bottom: -10px;
-                }
-
     .sidebar .active-sidebar {
-        margin: 20px 0 20px 20px;
+        margin: 0 0 0 20px;
         color: var(--sidebar-background);
         background-color: var(--background-color); /* Sidebar link color */
         font-weight:bold;

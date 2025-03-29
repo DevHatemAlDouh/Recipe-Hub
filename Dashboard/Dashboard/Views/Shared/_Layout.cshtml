@@ -16,6 +16,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="sidebar">
+            <h1>Recipehub</h1>
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active-sidebar" :"")" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Users" ? "active-sidebar" :"")" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Permissions" ? "active-sidebar" :"")" asp-area="" asp-controller="Permissions" asp-action="Index">Permissions</a>
