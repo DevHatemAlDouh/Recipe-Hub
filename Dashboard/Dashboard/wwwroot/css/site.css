@@ -93,8 +93,13 @@ body {
                 bottom: -10px;
             }
 
+.User-Info{
+    top: 20px;
+    right: 20px;
+}
 .content {
     margin-left: 250px;
+    margin-top: 60px;
     padding: 20px;
     width: 100%;
 }

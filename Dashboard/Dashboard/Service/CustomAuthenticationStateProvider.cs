@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Dashboard.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Buffers.Text;
 using System.Security.Claims;
 
 namespace Dashboard.Service
@@ -13,11 +15,11 @@ namespace Dashboard.Service
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task SignInAsync(string username)
+        public async Task SignInAsync(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username)
+                new Claim(ClaimTypes.Name, user.UserName),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

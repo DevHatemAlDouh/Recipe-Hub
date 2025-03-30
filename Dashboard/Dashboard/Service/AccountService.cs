@@ -1,6 +1,8 @@
 ﻿using Dashboard.Models;
 using Newtonsoft.Json;
+using System.Buffers.Text;
 using System.Net.Http.Headers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dashboard.Service
 {
@@ -14,7 +16,7 @@ namespace Dashboard.Service
         }
         
 
-        public async Task<bool> LoginAsync(Login user)
+        public async Task<User> LoginAsync(Login user)
         {
             using (var client = new HttpClient())
             {
@@ -30,21 +32,22 @@ namespace Dashboard.Service
                     foreach (var _user in users)
                     {
                        if(_user.UserName == user.UserName && _hashing.VerifyPassword(user.Password, _user.Password))
-                        {
+                       {
                             HttpResponseMessage userresponse = await client.GetAsync($"/api/users/GetUserPermissionsById/{_user.Id}");
                             if (userresponse.IsSuccessStatusCode)
                             {
                                 var userspermisstionResponse = await userresponse.Content.ReadAsStringAsync();
                                 var userpermisstions = JsonConvert.DeserializeObject<List<User_Permission>>(userspermisstionResponse);
 
-                                return userpermisstions.Any(u => u.PermissionID == 1 );
+                                if(userpermisstions.Any(u => u.PermissionID == 1))
+                                {
+                                    return _user;
+                                }
                             }
-                        }
+                       }
                     }
-
-                    
                 }
-                return false;
+                return null;
             }
         }
 

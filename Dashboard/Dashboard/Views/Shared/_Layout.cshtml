@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="~/Dashboard.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <button id="theme-toggle" class="btn btn-secondary" style="position: fixed; top: 20px; right: 20px;">
+    <button id="theme-toggle" class="btn btn-dark" style="position: fixed; bottom: 20px; left: 20px; z-index: 100000;">
         Toggle Dark Mode
     </button>
 
     @if (User.Identity.IsAuthenticated)
     {
+
         <div class="sidebar">
             <h1>Recipehub</h1>
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active-sidebar" :"")" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
@@ -23,6 +24,10 @@
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Ingredients" ? "active-sidebar" :"")" asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredients</a>
             <a class="@(ViewContext.RouteData.Values["controller"].ToString() == "Categories" ? "active-sidebar" :"")" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
         </div>
+        <div class="position-absolute User-Info">
+            <a asp-area="" asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger btn-sm">Logout</a>
+            @User.Identity.Name
+        </div>
         <div class="content">
             <div class="container">
                 <main role="main" class="pb-3">
@@ -30,6 +35,8 @@
                 </main>
             </div>
         </div>
+
+        
     }
     else
     {

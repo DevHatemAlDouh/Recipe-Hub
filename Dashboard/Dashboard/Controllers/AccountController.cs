@@ -1,7 +1,6 @@
 using Dashboard.Models;
 using Dashboard.Service;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Dashboard.Controllers
 {
@@ -27,11 +26,11 @@ namespace Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool isSuccess = await _accountService.LoginAsync(model);
+                User isSuccess = await _accountService.LoginAsync(model);
 
-                if (isSuccess)
+                if (isSuccess != null)
                 {
-                    await _authenticationStateProvider.SignInAsync(model.UserName);
+                    await _authenticationStateProvider.SignInAsync(isSuccess);
                     // If successful, redirect to the home page
                     return RedirectToAction("Index", "Home");
                 }
@@ -43,6 +42,13 @@ namespace Dashboard.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _authenticationStateProvider.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }
