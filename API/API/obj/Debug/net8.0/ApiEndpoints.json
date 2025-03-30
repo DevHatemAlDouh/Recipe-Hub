@@ -766,6 +766,22 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
+    "Method": "DeleteStepIngredientInfo",
+    "RelativePath": "api/Recipes/DeleteIngredient/{recipeId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
     "Method": "DeleteRecipeRate",
     "RelativePath": "api/Recipes/DeleteRate/{recipeId}",
     "HttpMethod": "DELETE",
@@ -843,6 +859,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CommentInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "GetStepIngredientInfo",
+    "RelativePath": "api/Recipes/GetAllIngredient/{recipeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeid",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeIngredientinfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -958,89 +1000,6 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "DeleteStepIngredientInfo",
-    "RelativePath": "api/Recipes/Ingredient/Delete/{recipeId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recipeId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
-    "Method": "GetStepIngredientInfo",
-    "RelativePath": "api/Recipes/Ingredient/GetAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeIngredientinfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
-    "Method": "GetStepIngredientInfo",
-    "RelativePath": "api/Recipes/Ingredient/GetById/{recipeId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recipeId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeIngredientinfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
-    "Method": "PutStepIngredientInfo",
-    "RelativePath": "api/Recipes/Ingredient/Update/{recipeId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recipeId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "recipeIngredientInfo",
-        "Type": "API.Models.RecipeIngredientinfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
     "Method": "PutRecipe",
     "RelativePath": "api/Recipes/Update/{recipeId}",
     "HttpMethod": "PUT",
@@ -1062,8 +1021,45 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PutStepIngredientInfo",
+    "RelativePath": "api/Recipes/UpdateIngredient/{Id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "recipeIngredientInfo",
+        "Type": "API.Models.RecipeIngredientinfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
     "Method": "PutRecipeRate",
     "RelativePath": "api/Recipes/UpdateRate/{recipeId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PutRecipeViwe",
+    "RelativePath": "api/Recipes/UpdateViwe/{recipeId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,

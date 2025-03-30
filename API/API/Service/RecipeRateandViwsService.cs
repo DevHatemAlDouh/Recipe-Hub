@@ -5,10 +5,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace API.Service
 {
-    public class RecipeRateService
+    public class RecipeRateandViwsService
     {
         private readonly APIContext _context;
-        public RecipeRateService(APIContext context)
+        public RecipeRateandViwsService(APIContext context)
         {
             _context = context;
         }
@@ -80,7 +80,7 @@ namespace API.Service
             }
         }
 
-        public async Task Update(int recipeID)
+        public async Task UpdateRate(int recipeID)
         {
             var recipeRates = await _context.RecipeRates.Where(rr => rr.RecipeID == recipeID).ToListAsync();
             var Count = recipeRates.Count;
@@ -95,6 +95,15 @@ namespace API.Service
                 recipe.CreatedAt = DateTime.Now;
             }
             _context.Recipes.Update(recipe);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateView(int recipeID)
+        {
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(rv => rv.Id == recipeID);
+            recipe.View += 1;
+            _context.Recipes.Update(recipe);
+            await _context.SaveChangesAsync();
         }
     }
 }

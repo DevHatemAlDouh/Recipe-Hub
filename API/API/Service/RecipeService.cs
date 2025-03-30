@@ -58,6 +58,7 @@ namespace API.Service
                 BackgroundImage = u.BackgroundImage,
                 Title = u.Title,
                 Rate = u.Rate,
+                View = u.View,
                 CreatedAt = u.CreatedAt,
                 UpdatedAt = u.UpdatedAt,
 
@@ -82,7 +83,11 @@ namespace API.Service
                 UserID = recipe.UserID,
                 BackgroundImage = recipe.BackgroundImage,
                 Description = recipe.Description,
-                Title = recipe.Title
+                Title = recipe.Title,
+                Rate = recipe.Rate,
+                View = recipe.View,
+                CreatedAt = recipe.CreatedAt,
+                UpdatedAt = recipe.UpdatedAt,
             };
         }
 

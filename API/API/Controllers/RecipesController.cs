@@ -12,14 +12,14 @@ namespace API.Controllers
         private readonly RecipeAndCategoryAndComment _recipeAndCategory;
         private readonly RecipeSteps _recipeSteps;
         private readonly RecipeSuggestions _recipeSuggestions;
-        private readonly RecipeRateService _recipeRateService;
+        private readonly RecipeRateandViwsService _recipeRateService;
         private readonly RecipeIngredientServes _recipeIngredient;
 
         public RecipesController(
             ICRUDService<RecipeInfo> recipeService, RecipeSteps recipeSteps,
             RecipeAndCategoryAndComment recipeAndCategory,
             RecipeSuggestions recipeSuggestions,
-            RecipeRateService recipeRateService, RecipeIngredientServes recipeIngredient)
+            RecipeRateandViwsService recipeRateService, RecipeIngredientServes recipeIngredient)
         {
             _recipeService = recipeService;
             _recipeSteps = recipeSteps;
@@ -67,10 +67,10 @@ namespace API.Controllers
         }
 
         // GET: api/Recipes
-        [HttpGet("Ingredient/GetAll")]
-        public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo()
+        [HttpGet("GetAllIngredient/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo(int recipeid)
         {
-            var steps = await _recipeIngredient.GetAll();
+            var steps = await _recipeIngredient.GetAll(recipeid);
             return Ok(steps);
         }
 
@@ -86,20 +86,6 @@ namespace API.Controllers
             }
 
             return Ok(recipe);
-        }
-
-        // GET: api/Steps/5
-        [HttpGet("Ingredient/GetById/{recipeId}")]
-        public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo(int recipeId)
-        {
-            var ingredients = await _recipeIngredient.GetById(recipeId);
-
-            if (ingredients == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(ingredients);
         }
 
         // PUT: api/Recipes/5
@@ -120,16 +106,24 @@ namespace API.Controllers
         public async Task<IActionResult> PutRecipeRate(int recipeId)
         {
             
-            await _recipeRateService.Update(recipeId);
+            await _recipeRateService.UpdateRate(recipeId);
+            return NoContent();
+        }
+
+        [HttpPut("UpdateView/{recipeId}")]
+        public async Task<IActionResult> PutRecipeView(int recipeId)
+        {
+
+            await _recipeRateService.UpdateView(recipeId);
             return NoContent();
         }
 
         // PUT: api/Steps/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Ingredient/Update/{recipeId}")]
-        public async Task<IActionResult> PutStepIngredientInfo(int recipeId, RecipeIngredientinfo recipeIngredientInfo)
+        [HttpPut("UpdateIngredient/{Id}")]
+        public async Task<IActionResult> PutStepIngredientInfo(int Id, RecipeIngredientinfo recipeIngredientInfo)
         {
-            if (recipeId != recipeIngredientInfo.Id)
+            if (Id != recipeIngredientInfo.Id)
             {
                 return BadRequest();
             }
@@ -193,10 +187,10 @@ namespace API.Controllers
         }
 
         // DELETE: api/Steps/5
-        [HttpDelete("Ingredient/Delete/{recipeId}")]
+        [HttpDelete("DeleteIngredient/{recipeId}")]
         public async Task<IActionResult> DeleteStepIngredientInfo(int recipeId)
         {
-            var step = await _recipeIngredient.GetById(recipeId);
+            var step = await _recipeIngredient.GetAll(recipeId);
             if (step == null)
             {
                 return NotFound();

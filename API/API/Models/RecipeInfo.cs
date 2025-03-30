@@ -8,6 +8,7 @@
         public byte[] BackgroundImage { get; set; }
         public string Description { get; set; }
         public int? Rate { get; set; }
+        public int? View { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
