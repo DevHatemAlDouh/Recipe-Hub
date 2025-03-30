@@ -1462,9 +1462,20 @@
         }
       }
     },
-    "/api/Recipes/Ingredient/GetAll": {
+    "/api/Recipes/GetAllIngredient/{recipeId}": {
       "get": {
         "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "recipeid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1505,91 +1516,6 @@
           {
             "name": "recipeid",
             "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Recipes/GetById/{recipeId}": {
-      "get": {
-        "tags": ["Recipes"],
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecipeInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Recipes/Ingredient/GetById/{recipeId}": {
-      "get": {
-        "tags": ["Recipes"],
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1690,7 +1616,7 @@
         }
       }
     },
-    "/api/Recipes/UpdateView/{recipeId}": {
+    "/api/Recipes/UpdateViwe/{recipeId}": {
       "put": {
         "tags": ["Recipes"],
         "parameters": [
@@ -1711,12 +1637,33 @@
         }
       }
     },
-    "/api/Recipes/Ingredient/Update/{recipeId}": {
+    "/api/Recipes/UpdateIngredient/{Id}": {
       "put": {
         "tags": ["Recipes"],
         "parameters": [
           {
-            "name": "recipeId",
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Recipes/UpdateIngredient/{Id}": {
+      "put": {
+        "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1931,7 +1878,7 @@
         }
       }
     },
-    "/api/Recipes/Ingredient/Delete/{recipeId}": {
+    "/api/Recipes/DeleteIngredient/{recipeId}": {
       "delete": {
         "tags": ["Recipes"],
         "parameters": [
@@ -3413,6 +3360,11 @@
             "format": "int32"
           },
           "rate": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "viwe": {
             "type": "integer",
             "format": "int32",
             "nullable": true

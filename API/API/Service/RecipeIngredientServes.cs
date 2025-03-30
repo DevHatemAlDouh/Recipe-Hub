@@ -48,53 +48,40 @@ namespace API.Service
         {
            
             var recipeIngredient = await GetAll(id);
+            var recipeIngredient = await GetAll(id);
             if (recipeIngredient != null)
             {
                 foreach (var Ingredient in recipeIngredient)
                 {
-                    await Delete(Ingredient.Id);
+                    
+                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == Ingredient.RecipeID);
+                    _context.RecipeIngredients.Remove(recipeingredient);
+                    await _context.SaveChangesAsync();
+                    
                 }
                
             }
         }
 
-        public async Task Delete(int id)
+        public async Task<IEnumerable<RecipeIngredientinfo>> GetAll(int ID)
         {
-
-            var recipeIngredient = await GetById(id);
-            if (recipeIngredient != null)
+            var recipeIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == ID);
+            if (recipeIngredient == null) return null;
+            return await _context.RecipeIngredients.Select(f => new RecipeIngredientinfo
             {
-                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.Id == id);
-                    _context.RecipeIngredients.Remove(recipeingredient);
-                    await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<IEnumerable<RecipeIngredientinfo>> GetAll(int RecipeID)
-        {
-            var recipeIngredient = await _context.RecipeIngredients
-                .Where(r => r.RecipeID == RecipeID)
-                .Select(r => new RecipeIngredientinfo
-                {
-                    Id = r.Id,
-                    RecipeID = r.RecipeID,
-                    IngredientID = r.IngredientID,
-                    Quantity = r.Quantity,
-                    Unit = r.Unit,
-                    CreatedAt = r.CreatedAt,
-                    UpdatedAt = r.UpdatedAt
-                }).ToListAsync();
-
-            if (!recipeIngredient.Any())
-            {
-                return new List<RecipeIngredientinfo>();
-            }
-
-            return recipeIngredient;
+                Id = f.Id,
+                RecipeID = f.RecipeID,
+                IngredientID = f.IngredientID,
+                Quantity = f.Quantity,
+                Unit = f.Unit,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
+            }).ToListAsync();
         }
 
         public async Task Update(RecipeIngredientinfo entity)
         {
+            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(u => u.Id == entity.Id);
             var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(u => u.Id == entity.Id);
             if (stepIngredient != null)
             {

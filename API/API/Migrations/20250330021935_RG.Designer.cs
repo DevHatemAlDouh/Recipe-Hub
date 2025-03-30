@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20250327014501_RH")]
-    partial class RH
+    [Migration("20250330021935_RG")]
+    partial class RG
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,6 +272,9 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("View")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
