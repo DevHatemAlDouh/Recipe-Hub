@@ -150,8 +150,8 @@ body {
         -6px -6px 10px -1px rgba(255,255,255,0.7);
 }
     .outer::after {
-        width: 8rem;
-        height: 8rem;
+        width: 4rem;
+        height: 4rem;
         content: attr(aria-valuenow) "%";
         display: grid;
         place-items: center;
