@@ -7,6 +7,8 @@
     --card-header-background: #007bff; /* Card header background */
     --btn-primary-background: #007bff; /* Button background */
     --btn-primary-hover-background: #0056b3; /* Button hover background */
+
+    --progress: 15%;
 }
 
 [data-theme='dark'] {
@@ -130,6 +132,38 @@ body {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Focus styles */
 }
+
+.skill{
+    width:160px;
+    height:160px;
+}
+
+.outer {
+    width: 160px;
+    height: 160px;
+    background-image: conic-gradient(
+        from 90deg,
+        rgb(63, 118, 219) var(--progress),
+        rgb(223, 122, 59) 0%);
+    box-shadow: 
+        6px 6px 10px -1px rgba(0,0,0,0.15),
+        -6px -6px 10px -1px rgba(255,255,255,0.7);
+}
+    .outer::after {
+        width: 8rem;
+        height: 8rem;
+        content: attr(aria-valuenow) "%";
+        display: grid;
+        place-items: center;
+        background-color: var(--background-color);
+        border-radius: inherit;
+        box-shadow: 
+            inset 4px 4px 6px -1px rgba(0,0,0,0.2),
+            inset -4px -4px 6px -1px rgba(255,255,255,0.7),
+            -0.5px -0.5px 0px rgba(255,255,255,1),
+            0.5px 0.5px 0px rgba(0,0,0,0.15),
+            0px 12px 10px -10px rgba(0,0,0,0.05);
+    }
 
 @media (min-width: 768px) {
     html {
