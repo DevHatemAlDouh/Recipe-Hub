@@ -37,21 +37,21 @@ namespace API.Controllers
             return Ok(recipes);
         }
 
-        [HttpGet("GetAllCategories/{recipeId}")]
+        [HttpGet("GetAllCategories/")]
         public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetCategories(int recipeId)
         {
             var recipes = await _recipeAndCategory.GetAllCategoriesInRecipe(recipeId);
             return Ok(recipes);
         }
 
-        [HttpGet("GetAllComments/{recipeId}")]
+        [HttpGet("GetAllComments/")]
         public async Task<ActionResult<IEnumerable<CommentInfo>>> GetComments(int recipeId)
         {
             var recipes = await _recipeAndCategory.GetAllCommentsInRecipe(recipeId);
             return Ok(recipes);
         }
 
-        [HttpGet("GetAllSuggestions/{recipeId}")]
+        [HttpGet("GetAllSuggestions/")]
         public async Task<ActionResult<IEnumerable<SuggestionInfo>>> GetSuggestions(int recipeId)
         {
             var recipes = await _recipeSuggestions.GetAll(recipeId);
@@ -59,7 +59,7 @@ namespace API.Controllers
         }
 
         // GET: api/Steps
-        [HttpGet("GetAllSteps/{recipeId}")]
+        [HttpGet("GetAllSteps/")]
         public async Task<ActionResult<IEnumerable<StepInfo>>> GetSteps(int recipeid)
         {
             var steps = await _recipeSteps.GetAll(recipeid);
@@ -67,7 +67,7 @@ namespace API.Controllers
         }
 
         // GET: api/Recipes
-        [HttpGet("GetAllIngredient/{recipeId}")]
+        [HttpGet("GetAllIngredient/")]
         public async Task<ActionResult<IEnumerable<RecipeIngredientinfo>>> GetStepIngredientInfo(int recipeid)
         {
             var steps = await _recipeIngredient.GetAll(recipeid);

@@ -1260,7 +1260,7 @@
         }
       }
     },
-    "/api/Recipes/GetAllCategories/{recipeId}": {
+    "/api/Recipes/GetAllCategories": {
       "get": {
         "tags": [
           "Recipes"
@@ -1268,8 +1268,7 @@
         "parameters": [
           {
             "name": "recipeId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1309,7 +1308,7 @@
         }
       }
     },
-    "/api/Recipes/GetAllComments/{recipeId}": {
+    "/api/Recipes/GetAllComments": {
       "get": {
         "tags": [
           "Recipes"
@@ -1317,8 +1316,7 @@
         "parameters": [
           {
             "name": "recipeId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1358,7 +1356,7 @@
         }
       }
     },
-    "/api/Recipes/GetAllSuggestions/{recipeId}": {
+    "/api/Recipes/GetAllSuggestions": {
       "get": {
         "tags": [
           "Recipes"
@@ -1366,8 +1364,7 @@
         "parameters": [
           {
             "name": "recipeId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1407,7 +1404,7 @@
         }
       }
     },
-    "/api/Recipes/GetAllSteps/{recipeId}": {
+    "/api/Recipes/GetAllSteps": {
       "get": {
         "tags": [
           "Recipes"
@@ -1415,8 +1412,7 @@
         "parameters": [
           {
             "name": "recipeid",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1456,7 +1452,7 @@
         }
       }
     },
-    "/api/Recipes/GetAllIngredient/{recipeId}": {
+    "/api/Recipes/GetAllIngredient": {
       "get": {
         "tags": [
           "Recipes"
@@ -1464,8 +1460,7 @@
         "parameters": [
           {
             "name": "recipeid",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1610,7 +1605,7 @@
         }
       }
     },
-    "/api/Recipes/UpdateViwe/{recipeId}": {
+    "/api/Recipes/UpdateView/{recipeId}": {
       "put": {
         "tags": [
           "Recipes"
@@ -3286,7 +3281,7 @@
             "format": "int32",
             "nullable": true
           },
-          "viwe": {
+          "view": {
             "type": "integer",
             "format": "int32",
             "nullable": true
