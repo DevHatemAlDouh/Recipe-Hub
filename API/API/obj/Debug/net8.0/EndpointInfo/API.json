@@ -1462,14 +1462,13 @@
         }
       }
     },
-    "/api/Recipes/GetAllIngredient/{recipeId}": {
+    "/api/Recipes/GetAllIngredient": {
       "get": {
         "tags": ["Recipes"],
         "parameters": [
           {
             "name": "recipeid",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1616,7 +1615,7 @@
         }
       }
     },
-    "/api/Recipes/UpdateViwe/{recipeId}": {
+    "/api/Recipes/UpdateView/{recipeId}": {
       "put": {
         "tags": ["Recipes"],
         "parameters": [
@@ -3364,7 +3363,7 @@
             "format": "int32",
             "nullable": true
           },
-          "viwe": {
+          "view": {
             "type": "integer",
             "format": "int32",
             "nullable": true

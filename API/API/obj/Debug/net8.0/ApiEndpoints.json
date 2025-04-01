@@ -873,7 +873,7 @@
   {
     "ContainingType": "API.Controllers.RecipesController",
     "Method": "GetStepIngredientInfo",
-    "RelativePath": "api/Recipes/GetAllIngredient/{recipeId}",
+    "RelativePath": "api/Recipes/GetAllIngredient",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -895,7 +895,7 @@
   {
     "ContainingType": "API.Controllers.RecipesController",
     "Method": "GetSteps",
-    "RelativePath": "api/Recipes/GetAllSteps/{recipeId}",
+    "RelativePath": "api/Recipes/GetAllSteps",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -903,7 +903,7 @@
       {
         "Name": "recipeid",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -917,7 +917,7 @@
   {
     "ContainingType": "API.Controllers.RecipesController",
     "Method": "GetSuggestions",
-    "RelativePath": "api/Recipes/GetAllSuggestions/{recipeId}",
+    "RelativePath": "api/Recipes/GetAllSuggestions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -925,7 +925,7 @@
       {
         "Name": "recipeId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1045,8 +1045,8 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "PutRecipeViwe",
-    "RelativePath": "api/Recipes/UpdateViwe/{recipeId}",
+    "Method": "PutRecipeView",
+    "RelativePath": "api/Recipes/UpdateView/{recipeId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
