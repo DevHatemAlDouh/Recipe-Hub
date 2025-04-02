@@ -9,6 +9,10 @@
     --btn-primary-hover-background: #0056b3; /* Button hover background */
 
     --progress: 15%;
+    --outer-color: red;
+    --mid-color: green;
+    --internal-color: blue;
+    --users-color: rgb(223, 122, 59);
 }
 
 [data-theme='dark'] {
@@ -139,34 +143,76 @@ body {
 }
 
 .outer {
+    
     width: 160px;
     height: 160px;
     background-image: conic-gradient(
         from 90deg,
-        rgb(63, 118, 219) var(--progress),
-        rgb(223, 122, 59) 0%);
+        var(--outer-color) var(--progress),
+        var(--users-color) 0%);
     box-shadow: 
         6px 6px 10px -1px rgba(0,0,0,0.15),
         -6px -6px 10px -1px rgba(255,255,255,0.7);
 }
-    .outer::after {
-        width: 4rem;
-        height: 4rem;
-        content: attr(aria-valuenow) "%";
+    
+.mid {
+    width: 140px;
+    height: 140px;
+    top: 10px;
+    left: 10px;
+    background-image: conic-gradient( 
+        from 90deg,
+        var(--mid-color) var(--progress),
+        var(--users-color) 0%);
+}
+
+
+
+.internal {
+    width: 120px;
+    height: 120px;
+    padding: 12px;
+    top: 20px;
+    left: 20px;
+    background-image: conic-gradient( 
+        from 90deg,
+        var(--internal-color) var(--progress),
+        var(--users-color) 0%);
+}
+
+    .internal::after {
+        width: 6rem;
+        height: 6rem;
+        content: '';
         display: grid;
         place-items: center;
         background-color: var(--background-color);
         border-radius: inherit;
-        box-shadow: 
-            inset 4px 4px 6px -1px rgba(0,0,0,0.2),
-            inset -4px -4px 6px -1px rgba(255,255,255,0.7),
-            -0.5px -0.5px 0px rgba(255,255,255,1),
-            0.5px 0.5px 0px rgba(0,0,0,0.15),
-            0px 12px 10px -10px rgba(0,0,0,0.05);
+        box-shadow: inset 4px 4px 6px -1px rgba(0,0,0,0.2), inset -4px -4px 6px -1px rgba(255,255,255,0.7), -0.5px -0.5px 0px rgba(255,255,255,1), 0.5px 0.5px 0px rgba(0,0,0,0.15), 0px 12px 10px -10px rgba(0,0,0,0.05);
     }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+.user-info, .outer-info, .mid-info, .internal-info {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 22px;
+    left: 5px;
 }
+.user-info {
+    background-color: var(--users-color);
+}
+.outer-info {
+    background-color: var(--outer-color);
+}
+.mid-info {
+    background-color: var(--mid-color);
+}
+.internal-info {
+    background-color: var(--internal-color);
+}
+
+    @media (min-width: 768px) {
+        html {
+            font-size: 16px;
+        }
+    }
