@@ -281,7 +281,7 @@ namespace Dashboard.Controllers
                     user_All_Permissions.user = JsonConvert.DeserializeObject<User>(userApiResponse);
                 }
 
-                HttpResponseMessage userPermissionResponse = await API.GetAsync($"/api/users/GetUserPermissionsById/{id}");
+                HttpResponseMessage userPermissionResponse = await API.GetAsync($"/api/users/GetUserPermissionsById?userId={id}");
                 if (userPermissionResponse.IsSuccessStatusCode)
                 {
                     var apiResponse = await userPermissionResponse.Content.ReadAsStringAsync();

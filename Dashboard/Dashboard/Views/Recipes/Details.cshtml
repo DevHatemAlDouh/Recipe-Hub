@@ -1,0 +1,43 @@
+﻿@model Recipe_details
+
+@* @{ *@
+@*     ViewBag.Title = "Recipe Ditails"; *@
+@* } *@
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>User Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Recipe.Id</dd>
+
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model.Recipe.title</dd>
+
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Recipe.description</dd>
+
+                <dt class="col-sm-3">Number Of Views</dt>
+                <dd class="col-sm-9">@Model.Recipe.View</dd>
+
+                <dt class="col-sm-3">Number Of Rates</dt>
+                <dd class="col-sm-9">@Model.Recipe.Rate</dd>
+
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.Recipe.CreatedAt</dd>
+
+                <dt class="col-sm-3">Background Image</dt>
+                <dd class="col-sm-9">
+                    <img src="data:image/jpeg;base64,@Model.Recipe.backgroundImage" alt="User Image" class="img-fluid rounded-circle" style="width: 250px; height: 250px; border: 2px solid #007bff; padding: 5px;" />
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Edit" asp-route-id="@Model.Recipe.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

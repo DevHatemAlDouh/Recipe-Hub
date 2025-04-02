@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VZJ/uuCUrfFVUhrJV+c9MKWUMQDyvODUZrbyb7sZ3Mk=",
+  "Hash": "80OeQzVZkcOFN55QuAMXRkG+cEbTKhSswb1lc/z8RoM=",
   "Source": "Dashboard",
   "BasePath": "_content/Dashboard",
   "Mode": "Default",
@@ -94,8 +94,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "xkb50fzu4a",
-      "Integrity": "H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=",
+      "Fingerprint": "qoyplbmnxh",
+      "Integrity": "JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1364,7 +1364,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 15:27:14 GMT"
+          "Value": "Wed, 02 Apr 2025 22:44:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1409,7 +1409,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 15:27:14 GMT"
+          "Value": "Wed, 02 Apr 2025 22:44:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1434,7 +1434,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6137"
+          "Value": "6203"
         },
         {
           "Name": "Content-Type",
@@ -1442,11 +1442,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=\""
+          "Value": "\"JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 15:27:14 GMT"
+          "Value": "Wed, 02 Apr 2025 22:44:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1456,12 +1456,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0="
+          "Value": "sha256-JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ="
         }
       ]
     },
     {
-      "Route": "css/site.xkb50fzu4a.css",
+      "Route": "css/site.qoyplbmnxh.css",
       "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1471,7 +1471,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6137"
+          "Value": "6203"
         },
         {
           "Name": "Content-Type",
@@ -1479,11 +1479,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=\""
+          "Value": "\"JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 15:27:14 GMT"
+          "Value": "Wed, 02 Apr 2025 22:44:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1493,7 +1493,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "xkb50fzu4a"
+          "Value": "qoyplbmnxh"
         },
         {
           "Name": "label",
@@ -1501,7 +1501,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0="
+          "Value": "sha256-JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ="
         }
       ]
     },

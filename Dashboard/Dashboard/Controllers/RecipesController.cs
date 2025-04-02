@@ -35,16 +35,33 @@ namespace Dashboard.Controllers
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await API.GetAsync($"/api/Recipes/GetAllSteps");
+                HttpResponseMessage Res = await API.GetAsync($"/api/Recipes/GetById/{id}");
                 if (Res.IsSuccessStatusCode)
                 {
                     var APIResponse = Res.Content.ReadAsStringAsync().Result;
                     recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipes>(APIResponse);
-                    HttpResponseMessage stepRes = await API.GetAsync($"/api/Recipes/GetById/{id}");
-                    if (stepRes.IsSuccessStatusCode)
+
+                    HttpResponseMessage ingredientRes = await API.GetAsync($"/api/Recipes/GetAllSteps?recipeid={id}");
+                    if (ingredientRes.IsSuccessStatusCode)
                     {
-                        var APIStepResponse = stepRes.Content.ReadAsStringAsync().Result;
-                        recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipes>(APIStepResponse);
+                        var APIIngredientResponse = ingredientRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.ingredients = JsonConvert.DeserializeObject<List<Ingredient>>(APIIngredientResponse);
+
+                        HttpResponseMessage stepRes = await API.GetAsync($"/api/Recipes/GetAllIngredient?recipeid={id}");
+                        if (stepRes.IsSuccessStatusCode)
+                        {
+                            var APIStepResponse = stepRes.Content.ReadAsStringAsync().Result;
+                            recipe_Details.steps = JsonConvert.DeserializeObject<List<Steps>>(APIStepResponse);
+
+                            HttpResponseMessage categorieRes = await API.GetAsync($"/api/Recipes/GetAllCategories?recipeId={id}");
+                            if (categorieRes.IsSuccessStatusCode)
+                            {
+                                var APICategorieResponse = categorieRes.Content.ReadAsStringAsync().Result;
+                                recipe_Details.categories = JsonConvert.DeserializeObject<List<Category>>(APICategorieResponse);
+
+                            }
+                        }
+
                     }
                 }
 
