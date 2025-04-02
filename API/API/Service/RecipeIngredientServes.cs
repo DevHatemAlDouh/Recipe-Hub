@@ -46,20 +46,27 @@ namespace API.Service
             }
         }
 
-        public async Task<IEnumerable<RecipeIngredientinfo>> GetAll(int ID)
+        public async Task<IEnumerable<RecipeIngredientinfo>> GetAll(int RecipeID)
         {
-            var recipeIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == ID);
-            if (recipeIngredient == null) return null;
-            return await _context.RecipeIngredients.Select(f => new RecipeIngredientinfo
+            var recipeIngredient = await _context.RecipeIngredients
+                .Where(r => r.RecipeID == RecipeID)
+                .Select(r => new RecipeIngredientinfo
+                {
+                    Id = r.Id,
+                    RecipeID = r.RecipeID,
+                    IngredientID = r.IngredientID,
+                    Quantity = r.Quantity,
+                    Unit = r.Unit,
+                    CreatedAt = r.CreatedAt,
+                    UpdatedAt = r.UpdatedAt
+                }).ToListAsync();
+
+            if (!recipeIngredient.Any())
             {
-                Id = f.Id,
-                RecipeID = f.RecipeID,
-                IngredientID = f.IngredientID,
-                Quantity = f.Quantity,
-                Unit = f.Unit,
-                CreatedAt = f.CreatedAt,
-                UpdatedAt = f.UpdatedAt
-            }).ToListAsync();
+                return new List<RecipeIngredientinfo>();
+            }
+
+            return recipeIngredient;
         }
 
         public async Task Update(RecipeIngredientinfo entity)

@@ -2636,7 +2636,7 @@
         }
       }
     },
-    "/api/users/GetPenaltyById": {
+    "/api/users/GetPenaltysById": {
       "get": {
         "tags": [
           "Users"
@@ -2692,54 +2692,6 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserPermissionInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserPermissionInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserPermissionInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/GetUserPermissionById": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "name": "UserPermissionId",
             "in": "query",
             "schema": {
               "type": "integer",
