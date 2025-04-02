@@ -2466,7 +2466,7 @@
         }
       }
     },
-    "/api/users/GetAllMyRecipes/{userId}": {
+    "/api/users/GetAllMyRecipes": {
       "get": {
         "tags": [
           "Users"
@@ -2474,8 +2474,7 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2637,7 +2636,7 @@
         }
       }
     },
-    "/api/users/GetPenaltyById/{userId}": {
+    "/api/users/GetPenaltyById": {
       "get": {
         "tags": [
           "Users"
@@ -2645,8 +2644,7 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2686,7 +2684,7 @@
         }
       }
     },
-    "/api/users/GetUserPermissionsById/{userId}": {
+    "/api/users/GetUserPermissionsById": {
       "get": {
         "tags": [
           "Users"
@@ -2694,8 +2692,7 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2735,7 +2732,7 @@
         }
       }
     },
-    "/api/users/GetUserPermissionById/{UserPermissionId}": {
+    "/api/users/GetUserPermissionById": {
       "get": {
         "tags": [
           "Users"
@@ -2743,8 +2740,7 @@
         "parameters": [
           {
             "name": "UserPermissionId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
