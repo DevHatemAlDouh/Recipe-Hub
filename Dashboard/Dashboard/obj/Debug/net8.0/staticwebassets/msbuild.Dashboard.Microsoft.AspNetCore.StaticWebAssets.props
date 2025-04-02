@@ -1,5 +1,23 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\as\Group 1.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Dashboard</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Dashboard</BasePath>
+      <RelativePath>as/Group 1.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>5oxrt44sym</Fingerprint>
+      <Integrity>NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\as\Group 1.png'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))">
       <SourceType>Package</SourceType>
       <SourceId>Dashboard</SourceId>
@@ -12,8 +30,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>eewbgse5b2</Fingerprint>
-      <Integrity>xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc=</Integrity>
+      <Fingerprint>xkb50fzu4a</Fingerprint>
+      <Integrity>H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>

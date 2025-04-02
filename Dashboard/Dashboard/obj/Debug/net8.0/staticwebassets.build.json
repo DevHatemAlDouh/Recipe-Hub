@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+zcy7xLaHSnt3V37/u4G0foLvSMLsgBL6eQ6+P+0lzk=",
+  "Hash": "9x4m5J2cmoygvyfuG4D6ql3gdoMZQiDNo608aLaqsIk=",
   "Source": "Dashboard",
   "BasePath": "_content/Dashboard",
   "Mode": "Default",
@@ -59,6 +59,27 @@
       "OriginalItemSpec": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Dashboard.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\as\\Group 1.png",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "as/Group 1#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5oxrt44sym",
+      "Integrity": "NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\as\\Group 1.png"
+    },
+    {
       "Identity": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "SourceId": "Dashboard",
       "SourceType": "Discovered",
@@ -73,8 +94,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "eewbgse5b2",
-      "Integrity": "xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc=",
+      "Fingerprint": "xkb50fzu4a",
+      "Integrity": "H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1321,6 +1342,88 @@
   ],
   "Endpoints": [
     {
+      "Route": "as/Group 1.5oxrt44sym.png",
+      "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\as\\Group 1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4729"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Mar 2025 10:08:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5oxrt44sym"
+        },
+        {
+          "Name": "label",
+          "Value": "as/Group 1.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw="
+        }
+      ]
+    },
+    {
+      "Route": "as/Group 1.png",
+      "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\as\\Group 1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4729"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Mar 2025 10:08:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-NfD6+hYaIQE8WIMFg9MNYfmitVtehlGk+c/I8gZRJNw="
+        }
+      ]
+    },
+    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "Selectors": [],
@@ -1331,7 +1434,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6090"
+          "Value": "6137"
         },
         {
           "Name": "Content-Type",
@@ -1339,11 +1442,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc=\""
+          "Value": "\"H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 01 Apr 2025 21:06:25 GMT"
+          "Value": "Wed, 02 Apr 2025 14:17:55 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1353,12 +1456,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc="
+          "Value": "sha256-H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0="
         }
       ]
     },
     {
-      "Route": "css/site.eewbgse5b2.css",
+      "Route": "css/site.xkb50fzu4a.css",
       "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1368,7 +1471,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6090"
+          "Value": "6137"
         },
         {
           "Name": "Content-Type",
@@ -1376,11 +1479,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc=\""
+          "Value": "\"H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 01 Apr 2025 21:06:25 GMT"
+          "Value": "Wed, 02 Apr 2025 14:17:55 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1390,7 +1493,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "eewbgse5b2"
+          "Value": "xkb50fzu4a"
         },
         {
           "Name": "label",
@@ -1398,7 +1501,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-xphZ3hYgi1lYHC+btq4+Za/j3agOB5+7toSHv/dt5Sc="
+          "Value": "sha256-H+oF6fUamNmaRfSGVFN3zNSd088iN44LyFSKvvUgDx0="
         }
       ]
     },
