@@ -67,7 +67,7 @@ namespace API.Controllers
         [HttpGet("GetAllNonResolvedReports")]
         public async Task<ActionResult<IEnumerable<ReportInfo>>> GetNonResolvedReports()
         {
-            var users = await _reportService.GetAllnonSolved();
+            var users = await _reportService.GetAllnonResolved();
             return Ok(users);
         }
 
@@ -82,16 +82,13 @@ namespace API.Controllers
         // GET: api/users/CheckUserEmail/{Email}
         [HttpGet("CheckUserEmail/{Email}")]
         public async Task<int> CheckUserEmail(String Email)
-        public async Task<int> CheckUserEmail(String Email)
         {
-            int userid = 0;
             int userid = 0;
             var users = await _userService.GetAll();
             foreach (var user in users)
             {
                 if (user.Email == Email && user.Id != 1) { userid = user.Id; }
             }
-            return userid;
             return userid;
         }
 
@@ -123,26 +120,19 @@ namespace API.Controllers
             return Ok(report);
         }
 
-        [HttpGet("GetPenaltyById/{penaltyId}")]
-        public async Task<ActionResult<PenaltyInfo>> GetPenalty(int penaltyId)
+        // GET: api/users/GetPenaltyById
+        [HttpGet("GetPenaltysById")]
+        public async Task<ActionResult<IEnumerable<UserPenaltyInfo>>> UserPenalties(int userId)
         {
             var Penalties = await (_userPenalties.GetAllpenalty(userId));
             return Ok(Penalties);
         }
 
-        // GET: api/users/UserPermissions/{userId}
-        [HttpGet("GetUserPermissionsById/{userId}")]
+        // GET: api/users/UserPermissions
+        [HttpGet("GetUserPermissionsById")]
         public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermissions(int userId)
         {
             var Permissions = await (_usePermissions.GetAllPermation(userId));
-            return Ok(Permissions);
-        }
-
-        // GET: api/users/GetUserPermissionById/{UserPermissionId}
-        [HttpGet("GetUserPermissionById/{UserPermissionId}")]
-        public async Task<ActionResult<IEnumerable<UserPermissionInfo>>> UserPermission(int UserPermissionId)
-        {
-            var Permissions = await (_usePermissions.GetById(UserPermissionId));
             return Ok(Permissions);
         }
 
@@ -156,19 +146,6 @@ namespace API.Controllers
             }
 
             await _userService.Update(userInfo);
-            return NoContent();
-        }
-
-        // PUT: api/users/UpdateReport/{reportId}
-        [HttpPut("UpdateReport/{reportId}")]
-        public async Task<IActionResult> PutReoprt(int reportId, ReportInfo reportInfo)
-        {
-            if (reportId != reportInfo.Id)
-            {
-                return BadRequest();
-            }
-
-            await _reportService.Update(reportInfo);
             return NoContent();
         }
 
@@ -198,6 +175,19 @@ namespace API.Controllers
         // DELETE: api/users/{userId}
         [HttpDelete("Delete/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var user = await _userService.GetById(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            await _userService.Delete(userId);
+            return NoContent();
+        }
+
+        [HttpDelete("DeleteReport/{userId}")]
+        public async Task<IActionResult> DeleteReport(int userId)
         {
             var user = await _userService.GetById(userId);
             if (user == null)

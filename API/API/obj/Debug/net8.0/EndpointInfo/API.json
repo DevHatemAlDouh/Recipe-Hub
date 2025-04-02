@@ -7,7 +7,9 @@
   "paths": {
     "/api/Categories/GetAll": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -43,7 +45,9 @@
     },
     "/api/Categories/GetAllRecipes/{categoryId}": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "parameters": [
           {
             "name": "categoryId",
@@ -90,7 +94,9 @@
     },
     "/api/Categories/GetById/{categoryId}": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "parameters": [
           {
             "name": "categoryId",
@@ -128,7 +134,9 @@
     },
     "/api/Categories/Update/{categoryId}": {
       "put": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "parameters": [
           {
             "name": "categoryId",
@@ -168,7 +176,9 @@
     },
     "/api/Categories/Add": {
       "post": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -214,7 +224,9 @@
     },
     "/api/Categories/Delete/{categoryId}": {
       "delete": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "parameters": [
           {
             "name": "categoryId",
@@ -235,7 +247,9 @@
     },
     "/api/Comments/GetAll": {
       "get": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -271,7 +285,9 @@
     },
     "/api/Comments/GetById/{id}": {
       "get": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -309,7 +325,9 @@
     },
     "/api/Comments/Update/{id}": {
       "put": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -349,7 +367,9 @@
     },
     "/api/Comments/UpdateRate/{commentId}": {
       "put": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "commentId",
@@ -370,7 +390,9 @@
     },
     "/api/Comments/Add": {
       "post": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -416,7 +438,9 @@
     },
     "/api/Comments/AddRate": {
       "post": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -462,7 +486,9 @@
     },
     "/api/Comments/Delete/{id}": {
       "delete": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -483,7 +509,9 @@
     },
     "/api/Comments/DeleteRate/{commentId}": {
       "delete": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "commentId",
@@ -504,7 +532,9 @@
     },
     "/api/Ingredients/GetAll": {
       "get": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -540,7 +570,9 @@
     },
     "/api/Ingredients/GetById/{ingredienId}": {
       "get": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "parameters": [
           {
             "name": "ingredienId",
@@ -578,7 +610,9 @@
     },
     "/api/Ingredients/Update/{ingredienId}": {
       "put": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "parameters": [
           {
             "name": "ingredienId",
@@ -618,7 +652,9 @@
     },
     "/api/Ingredients/Add": {
       "post": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -664,7 +700,9 @@
     },
     "/api/Ingredients/Delete/{ingredientId}": {
       "delete": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "parameters": [
           {
             "name": "ingredientId",
@@ -685,52 +723,8 @@
     },
     "/api/Penalties/GetAll": {
       "get": {
-        "tags": ["Penalties"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PenaltyInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PenaltyInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PenaltyInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Penalties/GetAllTerms": {
-      "get": {
-        "tags": ["Penalties"],
-        "parameters": [
-          {
-            "name": "penaltyId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+        "tags": [
+          "Penalties"
         ],
         "responses": {
           "200": {
@@ -740,7 +734,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
+                    "$ref": "#/components/schemas/PenaltyInfo"
                   }
                 }
               },
@@ -748,7 +742,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
+                    "$ref": "#/components/schemas/PenaltyInfo"
                   }
                 }
               },
@@ -756,7 +750,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
+                    "$ref": "#/components/schemas/PenaltyInfo"
                   }
                 }
               }
@@ -767,7 +761,9 @@
     },
     "/api/Penalties/GetById/{penaltyId}": {
       "get": {
-        "tags": ["Penalties"],
+        "tags": [
+          "Penalties"
+        ],
         "parameters": [
           {
             "name": "penaltyId",
@@ -805,7 +801,9 @@
     },
     "/api/Penalties/Update/{penaltyId}": {
       "put": {
-        "tags": ["Penalties"],
+        "tags": [
+          "Penalties"
+        ],
         "parameters": [
           {
             "name": "penaltyId",
@@ -845,7 +843,9 @@
     },
     "/api/Penalties/Add": {
       "post": {
-        "tags": ["Penalties"],
+        "tags": [
+          "Penalties"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -891,7 +891,9 @@
     },
     "/api/Penalties/GrantPenalties": {
       "post": {
-        "tags": ["Penalties"],
+        "tags": [
+          "Penalties"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -935,47 +937,11 @@
         }
       }
     },
-    "/api/Penalties/Revoke/{userpenaltyId}": {
-      "delete": {
-        "tags": ["Penalties"],
-        "parameters": [
-          {
-            "name": "userpenaltyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Penalties/Delete/{penaltyId}": {
       "delete": {
-        "tags": ["Penalties"],
+        "tags": [
+          "Penalties"
+        ],
         "parameters": [
           {
             "name": "penaltyId",
@@ -996,7 +962,9 @@
     },
     "/api/Permissions/GetAll": {
       "get": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1032,7 +1000,9 @@
     },
     "/api/Permissions/GetById/{permissionId}": {
       "get": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "parameters": [
           {
             "name": "permissionId",
@@ -1070,7 +1040,9 @@
     },
     "/api/Permissions/Update/{permissionId}": {
       "put": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "parameters": [
           {
             "name": "permissionId",
@@ -1110,7 +1082,9 @@
     },
     "/api/Permissions/Add": {
       "post": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1156,7 +1130,9 @@
     },
     "/api/Permissions/GrantPermission": {
       "post": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1202,7 +1178,9 @@
     },
     "/api/Permissions/Revoke/{userpermissionId}": {
       "delete": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "parameters": [
           {
             "name": "userpermissionId",
@@ -1223,7 +1201,9 @@
     },
     "/api/Permissions/Delete/{permissionId}": {
       "delete": {
-        "tags": ["Permissions"],
+        "tags": [
+          "Permissions"
+        ],
         "parameters": [
           {
             "name": "permissionId",
@@ -1244,7 +1224,9 @@
     },
     "/api/Recipes/GetAll": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1280,7 +1262,9 @@
     },
     "/api/Recipes/GetAllCategories": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1299,7 +1283,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RecipeCategoryInfo"
+                    "$ref": "#/components/schemas/CategoryInfo"
                   }
                 }
               },
@@ -1307,7 +1291,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RecipeCategoryInfo"
+                    "$ref": "#/components/schemas/CategoryInfo"
                   }
                 }
               },
@@ -1315,7 +1299,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RecipeCategoryInfo"
+                    "$ref": "#/components/schemas/CategoryInfo"
                   }
                 }
               }
@@ -1326,7 +1310,9 @@
     },
     "/api/Recipes/GetAllComments": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1372,7 +1358,9 @@
     },
     "/api/Recipes/GetAllSuggestions": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1418,7 +1406,9 @@
     },
     "/api/Recipes/GetAllSteps": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeid",
@@ -1464,7 +1454,9 @@
     },
     "/api/Recipes/GetAllIngredient": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeid",
@@ -1510,11 +1502,14 @@
     },
     "/api/Recipes/GetById/{recipeId}": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
-            "name": "recipeid",
-            "in": "query",
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1527,26 +1522,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
+                  "$ref": "#/components/schemas/RecipeInfo"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
+                  "$ref": "#/components/schemas/RecipeInfo"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RecipeIngredientinfo"
-                  }
+                  "$ref": "#/components/schemas/RecipeInfo"
                 }
               }
             }
@@ -1556,7 +1542,9 @@
     },
     "/api/Recipes/Update/{recipeId}": {
       "put": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1596,7 +1584,9 @@
     },
     "/api/Recipes/UpdateRate/{recipeId}": {
       "put": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1617,7 +1607,9 @@
     },
     "/api/Recipes/UpdateView/{recipeId}": {
       "put": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1638,28 +1630,9 @@
     },
     "/api/Recipes/UpdateIngredient/{Id}": {
       "put": {
-        "tags": ["Recipes"],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+        "tags": [
+          "Recipes"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Recipes/UpdateIngredient/{Id}": {
-      "put": {
-        "tags": ["Recipes"],
         "parameters": [
           {
             "name": "Id",
@@ -1699,7 +1672,9 @@
     },
     "/api/Recipes/Add": {
       "post": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1745,7 +1720,9 @@
     },
     "/api/Recipes/AddRate": {
       "post": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1791,7 +1768,9 @@
     },
     "/api/Recipes/Ingredient/Add": {
       "post": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1837,7 +1816,9 @@
     },
     "/api/Recipes/Delete/{recipeId}": {
       "delete": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1858,7 +1839,9 @@
     },
     "/api/Recipes/DeleteRate/{recipeId}": {
       "delete": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1879,7 +1862,9 @@
     },
     "/api/Recipes/DeleteIngredient/{recipeId}": {
       "delete": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -1900,7 +1885,9 @@
     },
     "/api/Steps/GetAll": {
       "get": {
-        "tags": ["Steps"],
+        "tags": [
+          "Steps"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1936,7 +1923,9 @@
     },
     "/api/Steps/GetById/{stepId}": {
       "get": {
-        "tags": ["Steps"],
+        "tags": [
+          "Steps"
+        ],
         "parameters": [
           {
             "name": "stepId",
@@ -1974,7 +1963,9 @@
     },
     "/api/Steps/Update/{stepId}": {
       "put": {
-        "tags": ["Steps"],
+        "tags": [
+          "Steps"
+        ],
         "parameters": [
           {
             "name": "stepId",
@@ -2014,7 +2005,9 @@
     },
     "/api/Steps/Add": {
       "post": {
-        "tags": ["Steps"],
+        "tags": [
+          "Steps"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2060,7 +2053,110 @@
     },
     "/api/Steps/Delete/{stepId}": {
       "delete": {
-        "tags": ["Steps"],
+        "tags": [
+          "Steps"
+        ],
+        "parameters": [
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Suggestions/GetAll": {
+      "get": {
+        "tags": [
+          "Suggestions"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuggestionInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuggestionInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuggestionInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Suggestions/GetById/{id}": {
+      "get": {
+        "tags": [
+          "Suggestions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Suggestions/Update/{id}": {
+      "put": {
+        "tags": [
+          "Suggestions"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2098,138 +2194,26 @@
         }
       }
     },
-    "/api/Suggestions/GetAll": {
-      "get": {
-        "tags": ["Suggestions"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TermsInfo"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Terms/GetById/{termId}": {
-      "get": {
-        "tags": ["Suggestions"],
-        "parameters": [
-          {
-            "name": "termId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TermsInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TermsInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TermsInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Terms/Update/{termId}": {
-      "put": {
-        "tags": ["Suggestions"],
-        "parameters": [
-          {
-            "name": "termId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Terms/Add": {
+    "/api/Suggestions/Add": {
       "post": {
-        "tags": ["Suggestions"],
+        "tags": [
+          "Suggestions"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
+                "$ref": "#/components/schemas/SuggestionInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
+                "$ref": "#/components/schemas/SuggestionInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TermsInfo"
+                "$ref": "#/components/schemas/SuggestionInfo"
               }
             }
           }
@@ -2240,17 +2224,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/IngredientInfo"
+                  "$ref": "#/components/schemas/SuggestionInfo"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IngredientInfo"
+                  "$ref": "#/components/schemas/SuggestionInfo"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IngredientInfo"
+                  "$ref": "#/components/schemas/SuggestionInfo"
                 }
               }
             }
@@ -2258,12 +2242,14 @@
         }
       }
     },
-    "/api/Terms/Delete/{termId}": {
+    "/api/Suggestions/Delete/{id}": {
       "delete": {
-        "tags": ["Suggestions"],
+        "tags": [
+          "Suggestions"
+        ],
         "parameters": [
           {
-            "name": "termId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -2281,7 +2267,9 @@
     },
     "/api/users/GetAll": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2317,7 +2305,9 @@
     },
     "/api/users/GetAllReports": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2353,7 +2343,9 @@
     },
     "/api/users/GetAllFavorite": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2389,7 +2381,9 @@
     },
     "/api/users/GetAllMyFavorites/{userId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2436,7 +2430,9 @@
     },
     "/api/users/GetAllNonResolvedReports": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2472,7 +2468,9 @@
     },
     "/api/users/GetAllMyRecipes": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2518,7 +2516,9 @@
     },
     "/api/users/CheckUserEmail/{Email}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "Email",
@@ -2547,44 +2547,8 @@
               },
               "text/json": {
                 "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/CheckUserUsername/{Username}": {
-      "get": {
-        "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "Username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "boolean"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -2594,7 +2558,9 @@
     },
     "/api/users/GetById/{userId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2632,7 +2598,9 @@
     },
     "/api/users/GetReportById/{reportId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "reportId",
@@ -2668,85 +2636,11 @@
         }
       }
     },
-    "/api/users/GetPenaltyById/{penaltyId}": {
-      "get": {
-        "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "penaltyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/PenaltyInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PenaltyInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PenaltyInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/GetPermissionById/{permissionId}": {
-      "get": {
-        "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "permissionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/users/GetPenaltysById": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2790,14 +2684,15 @@
         }
       }
     },
-    "/api/users/GetUserPermissionById/{UserPermissionId}": {
+    "/api/users/GetUserPermissionsById": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
-            "name": "UserPermissionId",
-            "in": "path",
-            "required": true,
+            "name": "userId",
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2839,7 +2734,9 @@
     },
     "/api/users/Update/{userId}": {
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2877,49 +2774,11 @@
         }
       }
     },
-    "/api/users/UpdateReport/{reportId}": {
-      "put": {
-        "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "reportId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReportInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReportInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReportInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/users/Add": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2965,7 +2824,9 @@
     },
     "/api/users/AddReport": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3011,7 +2872,9 @@
     },
     "/api/users/AddFavorite": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3057,7 +2920,32 @@
     },
     "/api/users/Delete/{userId}": {
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/DeleteReport/{userId}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -3078,7 +2966,9 @@
     },
     "/api/users/DeleteFavorite/{favoriteId}": {
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "favoriteId",
@@ -3237,6 +3127,10 @@
             "type": "string",
             "nullable": true
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -3254,6 +3148,10 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
             "type": "integer",
             "format": "int32"
           },
@@ -3302,34 +3200,6 @@
         },
         "additionalProperties": false
       },
-      "RecipeCategoryInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "recipeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "RecipeInfo": {
         "type": "object",
         "properties": {
@@ -3353,10 +3223,6 @@
           "description": {
             "type": "string",
             "nullable": true
-          },
-          "persons": {
-            "type": "integer",
-            "format": "int32"
           },
           "rate": {
             "type": "integer",
@@ -3521,20 +3387,24 @@
         },
         "additionalProperties": false
       },
-      "TermsInfo": {
+      "SuggestionInfo": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "penaltyid": {
+          "userID": {
             "type": "integer",
             "format": "int32"
           },
           "stepID": {
             "type": "integer",
             "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
           },
           "createdAt": {
             "type": "string",
@@ -3609,9 +3479,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "isActive": {
-            "type": "boolean"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -3639,9 +3506,6 @@
           "permissionID": {
             "type": "integer",
             "format": "int32"
-          },
-          "isActive": {
-            "type": "boolean"
           },
           "createdAt": {
             "type": "string",

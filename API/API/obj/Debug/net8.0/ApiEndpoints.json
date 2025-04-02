@@ -16,7 +16,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.CategoryInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -48,7 +52,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -70,7 +78,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -92,7 +104,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.CategoryInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -135,7 +151,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.CommentInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -157,7 +177,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.CommentRateInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -205,7 +229,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CommentInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -227,7 +255,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.CommentInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -286,7 +318,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.IngredientInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -318,7 +354,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.IngredientInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -340,7 +380,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.IngredientInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -383,7 +427,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.PenaltyInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -415,29 +463,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.PenaltyInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.PenaltiesController",
-    "Method": "GetAllTerms",
-    "RelativePath": "api/Penalties/GetAllTerms",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "penaltyId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.TermsInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -459,7 +489,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.PenaltyInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -481,29 +515,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.UserPenaltyInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.PenaltiesController",
-    "Method": "Revoke",
-    "RelativePath": "api/Penalties/Revoke/{userpenaltyId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userpenaltyId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -546,7 +562,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.PermissionInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -578,7 +598,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.PermissionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -600,7 +624,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.PermissionInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -622,7 +650,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.UserPermissionInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -681,7 +713,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.RecipeInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -703,29 +739,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.RecipeRateInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
-    "Method": "PostRecipeCategoryInfo",
-    "RelativePath": "api/Recipes/Category/Add",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recipIngredientInfo",
-        "Type": "API.Models.RecipeCategoryInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "API.Models.RecipeCategoryInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -780,38 +798,6 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "DeleteRecipeRate",
-    "RelativePath": "api/Recipes/DeleteCategory/{Id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
-    "Method": "DeleteRecipeIngredient",
-    "RelativePath": "api/Recipes/DeleteIngredient/{Id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
     "Method": "GetRecips",
     "RelativePath": "api/Recipes/GetAll",
     "HttpMethod": "GET",
@@ -821,7 +807,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -842,8 +832,12 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeCategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CategoryInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -865,7 +859,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.CommentInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -887,7 +885,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeIngredientinfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -909,7 +911,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.StepInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -931,7 +937,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.SuggestionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -953,7 +963,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.RecipeInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -970,17 +984,16 @@
         "Name": "recipIngredientInfo",
         "Type": "API.Models.RecipeIngredientinfo",
         "IsRequired": true
-      },
-      {
-        "Name": "recipeInfo",
-        "Type": "API.Models.RecipeInfo",
-        "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
         "Type": "API.Models.RecipeIngredientinfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1076,7 +1089,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.StepInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1108,7 +1125,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.StepInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1130,7 +1151,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.StepInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1173,7 +1198,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.SuggestionInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1205,7 +1234,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.SuggestionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1227,7 +1260,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.SuggestionInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1254,103 +1291,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.TermsController",
-    "Method": "PostIngredient",
-    "RelativePath": "api/Terms/Add",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "TermsInfo",
-        "Type": "API.Models.TermsInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "API.Models.IngredientInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.TermsController",
-    "Method": "DeleteIngredient",
-    "RelativePath": "api/Terms/Delete/{termId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "termId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.TermsController",
-    "Method": "GetIngredients",
-    "RelativePath": "api/Terms/GetAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.TermsInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.TermsController",
-    "Method": "GetIngredient",
-    "RelativePath": "api/Terms/GetById/{termId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "termId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "API.Models.TermsInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.TermsController",
-    "Method": "PutIngredient",
-    "RelativePath": "api/Terms/Update/{termId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "termId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "TermsInfo",
-        "Type": "API.Models.TermsInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "PostUser",
     "RelativePath": "api/users/Add",
@@ -1367,7 +1307,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.UserInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1389,7 +1333,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.FavoriteInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1411,7 +1359,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.ReportInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1432,54 +1384,20 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Boolean",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
   },
   {
     "ContainingType": "API.Controllers.UsersController",
-    "Method": "CheckUserUsername",
-    "RelativePath": "api/users/CheckUserUsername/{Username}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Username",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "CheckUserEmail",
-    "RelativePath": "api/users/CheckUserEmail/{Email}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "DeleteFavorite",
-    "RelativePath": "api/users/DeleteFavorite/{favoriteId}",
+    "Method": "DeleteUser",
+    "RelativePath": "api/users/Delete/{userId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1510,6 +1428,22 @@
   },
   {
     "ContainingType": "API.Controllers.UsersController",
+    "Method": "DeleteReport",
+    "RelativePath": "api/users/DeleteReport/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/users/GetAll",
     "HttpMethod": "GET",
@@ -1519,7 +1453,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1535,7 +1473,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.FavoriteInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1557,7 +1499,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.FavoriteInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1579,7 +1525,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.RecipeInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1595,7 +1545,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.ReportInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1611,7 +1565,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.ReportInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1633,7 +1591,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.UserInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1641,13 +1603,13 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPenalties",
-    "RelativePath": "api/users/GetPenaltyById",
+    "RelativePath": "api/users/GetPenaltysById",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "penaltyId",
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": false
       }
@@ -1655,7 +1617,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserPenaltyInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1677,29 +1643,11 @@
     "ReturnTypes": [
       {
         "Type": "API.Models.UserInfo",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "UserPermission",
-    "RelativePath": "api/users/GetUserPermissionById",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "UserPermissionId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserPermissionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1721,7 +1669,11 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.UserPermissionInfo, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -1742,27 +1694,6 @@
       {
         "Name": "userInfo",
         "Type": "API.Models.UserInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
-    "Method": "PutReoprt",
-    "RelativePath": "api/users/UpdateReport/{reportId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reportId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "reportInfo",
-        "Type": "API.Models.ReportInfo",
         "IsRequired": true
       }
     ],
