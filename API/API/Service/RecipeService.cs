@@ -21,6 +21,7 @@ namespace API.Service
                 Description = entity.Description,
                 BackgroundImage = entity.BackgroundImage,
                 Title = entity.Title,
+                Rate = 0,
                 View = 0,
                 CreatedAt = DateTime.Now,
                 Comments = new List<Comment>(),
