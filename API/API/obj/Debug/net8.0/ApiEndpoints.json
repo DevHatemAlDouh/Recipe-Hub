@@ -1641,7 +1641,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPenalties",
-    "RelativePath": "api/users/GetPenaltyById/{userId}",
+    "RelativePath": "api/users/GetPenaltyById",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1649,7 +1649,7 @@
       {
         "Name": "penaltyId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1685,7 +1685,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPermission",
-    "RelativePath": "api/users/GetUserPermissionById/{UserPermissionId}",
+    "RelativePath": "api/users/GetUserPermissionById",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1693,7 +1693,7 @@
       {
         "Name": "UserPermissionId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1707,7 +1707,7 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "UserPermissions",
-    "RelativePath": "api/users/GetUserPermissionsById/{userId}",
+    "RelativePath": "api/users/GetUserPermissionsById",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1715,7 +1715,7 @@
       {
         "Name": "userId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
