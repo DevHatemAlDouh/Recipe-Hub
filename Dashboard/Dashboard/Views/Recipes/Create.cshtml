@@ -1,0 +1,184 @@
+﻿@model Recipe_details
+
+@{
+    ViewBag.Title = "Create Recipe";
+}
+<a hidden href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    var Step = [];
+    var Ingredint = [];
+    $(document).ready(function(){
+        
+        $("#add-step").click(function(){
+            
+            var stepDescription = $("input[name='step.description']").val();
+            var stepImage = $("input[name='UserImageBase64']").val();
+            if(stepDescription && stepImage){
+                Step.push([stepDescription,stepImage]);
+                ShowSteps();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+        $("#add-ingredint").click(function(){
+            var ingredientID = $("select[name='recipeIngredient.IngredientID']").val();
+            var quantity = $("input[name='recipeIngredient.quantity']").val();
+            var unit = $("input[name='recipeIngredient.unit']").val();
+            if(ingredientID && quantity && unit){
+                Ingredint.push([ingredientID,quantity,unit]);
+                ShowIngredints();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+        $("form").submit(function(){
+            $("input[name='step']").val(JSON.stringify(Step));
+            $("input[name='ingredient']").val(JSON.stringify(Ingredint));
+        });
+    });
+    function ShowSteps(){
+        for (var i = 0; i < Step.length; i++) {
+            var stepDescription = Step[i][0];
+            var stepImage = Step[i][1];
+            AddStep(i,stepDescription,stepImage);
+        }
+    }
+
+    function ShowIngredints(){
+        for (var i = 0; i < Ingredint.length; i++) {
+            var ingredientID = Ingredint[i][0];
+            var quantity = Ingredint[i][1];
+            var unit = Ingredint[i][2];
+            AddIngredint(ingredientID,quantity,unit);
+        }
+    }
+
+    function AddStep(Id,Description,Image){
+        var step = " <tr> <td>" + Id + "</td><td>" + Description + "</td><td><img src=" + Image + "alt=\"User Image\" style=\"width: 250px; height: 250px; \" /></td></tr>";
+
+        $("#StepTable tbody").last().append(step);
+    }
+
+    function AddIngredint(Id,Quantity,Unit){
+        var ingredint = " <tr> <td>" + Id + "</td><td>" + Quantity + "</td><td>" + Unit + "</td>";
+
+        $("#IngredintTable tbody").last().append(ingredint);
+    }
+</script>
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Create Recipe</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label asp-for="Recipe.title">Title</label>
+                    <input type="text" class="form-control" asp-for="Recipe.title" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Recipe.description">Description</label>
+                    <input type="text" class="form-control" asp-for="Recipe.description" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Recipe.backgroundImageBase64">Background Image</label>
+                    <input type="file" accept="image/*" class="form-control" asp-for="Recipe.backgroundImageBase64" name="UserImageBase64" />
+                </div>
+
+                <br />
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Add Steps</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label asp-for="step.description">Description</label>
+                            <input type="text" class="form-control" asp-for="step.description" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="step.backgroundImageBase64">Background Image</label>
+                            <input type="file" accept="image/*" class="form-control" asp-for="step.backgroundImageBase64" name="UserImageBase64" />
+                        </div>
+
+                        <br />
+
+                        <input type="button" id="add-step" value="Add Step"/>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Add Ingredints</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label asp-for="recipeIngredient.IngredientID">Select Permission</label>
+                            <select asp-for="recipeIngredient.IngredientID" class="form-control" required>
+                                <option value="">-- Select Permission --</option>
+                                @foreach (var ingredient in Model.ingredients)
+                                {
+                                    <option value="@ingredient.Id">@ingredient.Name</option>
+                                }
+                            </select>
+                        </div>
+                            <div class="form-group">
+                            <label asp-for="recipeIngredient.quantity">Quantity</label>
+                            <input type="number" class="form-control" asp-for="recipeIngredient.quantity" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="recipeIngredient.unit">Unit</label>
+                            <input type="text" class="form-control" asp-for="recipeIngredient.unit" />
+                        </div>
+                            
+
+                        <br />
+
+                        <input type="button" id="add-ingredint" value="Add Ingredint"/>
+                    </div>
+                </div>
+
+                <br />
+
+                <input hidden type="text" class="form-control" asp-for="step" />
+                <input hidden type="text" class="form-control" asp-for="ingredient" />
+
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+<h2 class="text-center mb-4">Steps</h2>
+<table class="table table-striped table-bordered" id="StepTable">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Description</th>
+            <th>backgroundImage</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    
+</table>
+
+<h2 class="text-center mb-4">Ingredints</h2>
+<table class="table table-striped table-bordered" id="IngredintTable">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

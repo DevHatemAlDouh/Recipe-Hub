@@ -1,13 +1,13 @@
 ﻿@model Recipe_details
 
-@* @{ *@
-@*     ViewBag.Title = "Recipe Ditails"; *@
-@* } *@
+@{ 
+    ViewBag.Title = "Recipe Ditails";
+} 
 
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h4>User Details</h4>
+            <h4>Recipe Details</h4>
         </div>
         <div class="card-body">
             <dl class="row">
@@ -31,12 +31,73 @@
 
                 <dt class="col-sm-3">Background Image</dt>
                 <dd class="col-sm-9">
-                    <img src="data:image/jpeg;base64,@Model.Recipe.backgroundImage" alt="User Image" class="img-fluid rounded-circle" style="width: 250px; height: 250px; border: 2px solid #007bff; padding: 5px;" />
+                    <img src="data:image/jpeg;base64,@Model.Recipe.backgroundImage" 
+                    alt="User Image" style="width: 250px; height: 250px;" />
                 </dd>
             </dl>
         </div>
+        <div class="card-header">
+            <h4>Recipe Steps</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach (var step in Model.steps.OrderBy(s => s.StepNumber).ToList())
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">Id</dt>
+                        <dd class="col-sm-9">@step.StepNumber</dd>
+
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@step.description</dd>
+
+                        <dt class="col-sm-3">Created At</dt>
+                        <dd class="col-sm-9">@step.CreatedAt</dd>
+
+                        <dt class="col-sm-3">Background Image</dt>
+                        <dd class="col-sm-9">
+                            <img src="data:image/jpeg;base64,@step.backgroundImage" 
+                            alt="User Image" style="width: 250px; height: 250px; " />
+                        </dd>
+                        <a asp-action="EditStep" asp-route-id="@step.Id" class="btn btn-primary">Edit Step</a>
+                    </dl>
+                }
+
+            }
+
+        </div>
+        <div class="card-header">
+            <h4>Recipe Ingrediants</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach(var recipeIngredient in Model.recipeIngredients)
+                {
+                    <dl class="row">
+                        @{
+                            foreach (var ingredient in Model.ingredients.Where(i => i.Id == recipeIngredient.IngredientID))
+                            {
+                                <dt class="col-sm-3">Name</dt>
+                                <dd class="col-sm-9">@ingredient.Name</dd>
+                                break;
+                            }
+                        }
+
+                        <dt class="col-sm-3">Unit</dt>
+                        <dd class="col-sm-9">@recipeIngredient.unit</dd>
+
+                        <dt class="col-sm-3">Quantity</dt>
+                        <dd class="col-sm-9">@recipeIngredient.quantity</dd>
+
+                        <dt class="col-sm-3">Created At</dt>
+                        <dd class="col-sm-9">@recipeIngredient.CreatedAt</dd>
+                        <a asp-action="EditIngredint" asp-route-id="@recipeIngredient.Id" class="btn btn-primary">Edit Ingrediant</a>
+                    </dl>
+                }
+        }
+           
+        </div>
         <div class="card-footer text-right">
-            <a asp-action="Edit" asp-route-id="@Model.Recipe.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.Recipe.Id" class="btn btn-primary">Edit Recipe</a>
             <a asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </div>

@@ -1,6 +1,6 @@
 ﻿namespace Dashboard.Models
 {
-    public class Recipes
+    public class Recipe
     {
         public int Id { get; set; }
         public int UserId { get; set; }
