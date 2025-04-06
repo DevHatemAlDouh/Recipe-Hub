@@ -138,7 +138,7 @@ namespace API.Controllers
         public async Task<ActionResult<RecipeInfo>> PostRecipe(RecipeInfo recipeInfo)
         {
             await _recipeService.Add(recipeInfo);
-            return NoContent();
+            return CreatedAtRoute(new { recipeId = recipeInfo.Id }, recipeInfo);
         }
 
         [HttpPost("AddRate")]
