@@ -13,33 +13,6 @@ namespace API.Service
             _context = context;
         }
 
-        public async Task<IEnumerable<CategoryInfo>> GetAllCategoriesInRecipe(int RecipeID)
-        {
-            var categoriesInRecipe = await _context.RecipeCategories
-                .Where(c => c.RecipeID == RecipeID)
-                .ToListAsync();
-
-            var categories = new List<CategoryInfo>();
-            if (categoriesInRecipe.Any())
-            {
-                foreach (var category in categoriesInRecipe)
-                {
-                    var categoryInfo = await _context.Categories
-                        .Where(c => c.Id == category.CategoryID)
-                        .Select(c => new CategoryInfo
-                        {
-                            Id = c.Id,
-                            Name = c.Name,
-                            CreatedAt = c.CreatedAt,
-                            UpdatedAt = c.UpdatedAt
-                        }).ToListAsync();
-
-                    categories.AddRange(categoryInfo);
-                }
-            }
-            return categories;
-        }
-
         public async Task<IEnumerable<CommentInfo>> GetAllCommentsInRecipe(int CommentID)
         {
             var commentsInRecipe = await _context.CommentRates

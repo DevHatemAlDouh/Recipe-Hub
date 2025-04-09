@@ -12,6 +12,22 @@ namespace API.Service
             _context = context;
         }
 
+        public async Task<RecipeIngredientinfo> GetById(int id)
+        {
+            var recipeIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(p => p.Id == id);
+            if (recipeIngredient == null) return null;
+
+            return new RecipeIngredientinfo
+            {
+                Id = recipeIngredient.Id,
+                IngredientID = recipeIngredient.IngredientID,
+                Quantity = recipeIngredient.Quantity,
+                Unit = recipeIngredient.Unit,
+                CreatedAt = recipeIngredient.CreatedAt,
+                UpdatedAt = recipeIngredient.UpdatedAt
+            };
+        }
+
         public async Task Add(RecipeIngredientinfo entity)
         {
             var recipeIngredient = new RecipeIngredient
@@ -28,7 +44,7 @@ namespace API.Service
 
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAll(int id)
         {
            
             var recipeIngredient = await GetAll(id);
@@ -36,13 +52,21 @@ namespace API.Service
             {
                 foreach (var Ingredient in recipeIngredient)
                 {
-                    
-                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == Ingredient.RecipeID);
-                    _context.RecipeIngredients.Remove(recipeingredient);
-                    await _context.SaveChangesAsync();
-                    
+                    await Delete(Ingredient.Id);
                 }
                
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+
+            var recipeIngredient = await GetById(id);
+            if (recipeIngredient != null)
+            {
+                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.Id == id);
+                    _context.RecipeIngredients.Remove(recipeingredient);
+                    await _context.SaveChangesAsync();
             }
         }
 
