@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAllCategories/")]
-        public async Task<ActionResult<IEnumerable<CategoryInfo>>> GetCategories(int recipeId)
+        public async Task<ActionResult<IEnumerable<RecipeCategoryInfo>>> GetCategories(int recipeId)
         {
             var recipes = await _recipeCategoryService.GetAll(recipeId);
             return Ok(recipes);
