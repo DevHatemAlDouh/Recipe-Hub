@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "a/SfcolfI5aljaBqQ/BIg3O7br/n/oJ4rQJ6dj+Pl5I=",
+  "Hash": "2GBtaWC3lC38MwiF8DeXVH3rGonEV/C/YxmdKtaf0jE=",
   "Source": "Dashboard",
   "BasePath": "_content/Dashboard",
   "Mode": "Default",
@@ -94,8 +94,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "qoyplbmnxh",
-      "Integrity": "JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=",
+      "Fingerprint": "641v0bwvw6",
+      "Integrity": "mhzRuPfemQ3eOIMAOM/pgAmvUgfprbXvK1QLKKrdAWM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1364,7 +1364,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 23:27:44 GMT"
+          "Value": "Sun, 06 Apr 2025 02:45:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1409,7 +1409,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 23:27:44 GMT"
+          "Value": "Sun, 06 Apr 2025 02:45:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1424,6 +1424,51 @@
       ]
     },
     {
+      "Route": "css/site.641v0bwvw6.css",
+      "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5582"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mhzRuPfemQ3eOIMAOM/pgAmvUgfprbXvK1QLKKrdAWM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 06 Apr 2025 14:56:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "641v0bwvw6"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mhzRuPfemQ3eOIMAOM/pgAmvUgfprbXvK1QLKKrdAWM="
+        }
+      ]
+    },
+    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
       "Selectors": [],
@@ -1434,7 +1479,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6203"
+          "Value": "5582"
         },
         {
           "Name": "Content-Type",
@@ -1442,11 +1487,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=\""
+          "Value": "\"mhzRuPfemQ3eOIMAOM/pgAmvUgfprbXvK1QLKKrdAWM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 23:27:44 GMT"
+          "Value": "Sun, 06 Apr 2025 14:56:50 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1456,52 +1501,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.qoyplbmnxh.css",
-      "AssetFile": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6203"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 02 Apr 2025 23:27:44 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "qoyplbmnxh"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-JiMmltUFXsvq/f9SYRF283cuOtivzrAPR3LmfRTHRMQ="
+          "Value": "sha256-mhzRuPfemQ3eOIMAOM/pgAmvUgfprbXvK1QLKKrdAWM="
         }
       ]
     },

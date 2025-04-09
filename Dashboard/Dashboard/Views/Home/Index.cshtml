@@ -107,12 +107,13 @@
         </div>
     </div>
 </div>
-
-<script>
-    const progressbarouter = document.querySelector(".outer");
-    const progressbarmid = document.querySelector(".mid");
-    const progressbarinternal = document.querySelector(".internal");
-    progressbarouter.style.setProperty("--progress",progressbarouter.getAttribute("aria-valuenow")+"%");
-    progressbarmid.style.setProperty("--progress",progressbarmid.getAttribute("aria-valuenow")+"%");
-    progressbarinternal.style.setProperty("--progress",progressbarinternal.getAttribute("aria-valuenow")+"%");
-</script>
+@section Scripts {
+    <script>
+        const progressbarouter = document.querySelector(".outer");
+        const progressbarmid = document.querySelector(".mid");
+        const progressbarinternal = document.querySelector(".internal");
+        progressbarouter.style.setProperty("--progress",progressbarouter.getAttribute("aria-valuenow")+"%");
+        progressbarmid.style.setProperty("--progress",progressbarmid.getAttribute("aria-valuenow")+"%");
+        progressbarinternal.style.setProperty("--progress",progressbarinternal.getAttribute("aria-valuenow")+"%");
+    </script>
+}

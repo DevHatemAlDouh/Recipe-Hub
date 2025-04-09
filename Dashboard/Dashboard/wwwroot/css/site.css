@@ -15,18 +15,6 @@
     --users-color: rgb(223, 122, 59);
 }
 
-[data-theme='dark'] {
-    --background-color: #212529; /* Dark mode background */
-    --text-color: #ffffff; /* Dark mode text */
-    --sidebar-background: #1c1e22; /* Dark sidebar background */
-    --sidebar-link-color: #ffffff; /* Dark sidebar link color */
-    --sidebar-link-hover: #575d63; /* Dark sidebar link hover color */
-    --card-background: #343a40; /* Dark card background */
-    --card-header-background: #007bff; /* Card header background */
-    --btn-primary-background: #0056b3; /* Dark button background */
-    --btn-primary-hover-background: #00408b; /* Dark button hover background */
-}
-
 html {
     font-size: 14px;
     position: relative;

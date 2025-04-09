@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="~/Dashboard.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <button id="theme-toggle" class="btn btn-dark" style="position: fixed; bottom: 20px; left: 20px; z-index: 100000;">
-        Toggle Dark Mode
-    </button>
 
     @if (User.Identity.IsAuthenticated)
     {
@@ -48,21 +45,6 @@
         </div>
     }
 
-    <script>
-        const toggleButton = document.getElementById('theme-toggle');
-        const currentTheme = localStorage.getItem('theme');
-
-        if (currentTheme) {
-            document.documentElement.setAttribute('data-theme', currentTheme);
-        }
-
-        toggleButton.addEventListener('click', () => {
-            let theme = document.documentElement.getAttribute('data-theme');
-            theme = (theme === 'dark') ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-        });
-    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

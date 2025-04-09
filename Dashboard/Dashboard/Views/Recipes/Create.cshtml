@@ -3,70 +3,124 @@
 @{
     ViewBag.Title = "Create Recipe";
 }
-<a hidden href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<script type="text/javascript">
-    var Step = [];
-    var Ingredint = [];
-    $(document).ready(function(){
-        
+
+@section Scripts {
+    <script>
+        var Step = [];
+        var Ingredint = [];
+
+        imgInp.onchange = evt => {
+        const [file] = imgInp.files
+        if (file) {
+        blah.src = URL.createObjectURL(file)
+        }
+        }
+
+        $(document).ready(function(){
+
         $("#add-step").click(function(){
-            
-            var stepDescription = $("input[name='step.description']").val();
-            var stepImage = $("input[name='UserImageBase64']").val();
-            if(stepDescription && stepImage){
-                Step.push([stepDescription,stepImage]);
-                ShowSteps();
-            } else {
-                alert("Please fill in all fields.");
-            }
+
+        var stepDescription = $("input[name='step.description']").val();
+        var stepImage = blah.src;
+        if(stepDescription && stepImage){
+        Step.push([stepDescription,stepImage]);
+        ShowSteps();
+        } else {
+        alert("Please fill in all fields.");
+        }
         });
         $("#add-ingredint").click(function(){
-            var ingredientID = $("select[name='recipeIngredient.IngredientID']").val();
-            var quantity = $("input[name='recipeIngredient.quantity']").val();
-            var unit = $("input[name='recipeIngredient.unit']").val();
-            if(ingredientID && quantity && unit){
-                Ingredint.push([ingredientID,quantity,unit]);
+        var ingredientID = $("select[name='recipeIngredient.IngredientID']").val();
+        var quantity = $("input[name='recipeIngredient.quantity']").val();
+        var unit = $("input[name='recipeIngredient.unit']").val();
+        if(ingredientID && quantity && unit){
+        Ingredint.push([ingredientID,quantity,unit]);
+        ShowIngredints();
+        } else {
+        alert("Please fill in all fields.");
+        }
+        });
+        $("form").submit(function(e){
+        
+        
+
+                // to prevat the request of firing
+                e.preventDefault();
+
+                // Get the parameters as an array
+                var values = $(this).serializeArray();
+
+                values.push({
+                    name: "Steps",
+                    value: Step
+                });
+
+                values.push({
+                    name: "recipeIngredient",
+                    value: Ingredint
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create")",
+                    data: $.param(values),
+                    success: function(response){
+                        alert(response);
+                    },
+                    error: function (req, status, error) {
+                         var err = req.responseText.Message;
+                         console.log(err);
+                     }
+                });
+            });
+        });
+
+        $(document).on('click', '.btn.btn-danger.btn-sm', function() {
+           if($(this).closest('tr').parent().parent().attr('id') == 'StepTable'){
+               Step.splice($(this).closest('tr').index(), 1);
+               ShowSteps();
+           }
+           else if($(this).closest('tr').parent().parent().attr('id') == 'IngredintTable'){
+                Ingredint.splice($(this).closest('tr').index(), 1);
                 ShowIngredints();
-            } else {
-                alert("Please fill in all fields.");
             }
+            $(this).closest('tr').remove();
         });
-        $("form").submit(function(){
-            $("input[name='step']").val(JSON.stringify(Step));
-            $("input[name='ingredient']").val(JSON.stringify(Ingredint));
-        });
-    });
-    function ShowSteps(){
-        for (var i = 0; i < Step.length; i++) {
-            var stepDescription = Step[i][0];
-            var stepImage = Step[i][1];
-            AddStep(i,stepDescription,stepImage);
-        }
-    }
 
-    function ShowIngredints(){
-        for (var i = 0; i < Ingredint.length; i++) {
-            var ingredientID = Ingredint[i][0];
-            var quantity = Ingredint[i][1];
-            var unit = Ingredint[i][2];
-            AddIngredint(ingredientID,quantity,unit);
+        function ShowSteps(){
+            $("#StepTable tbody").empty();
+            for (var i = 0; i < Step.length; i++) {
+                var stepDescription = Step[i][0];
+                var stepImage = Step[i][1];
+                AddStep(i+1,stepDescription,stepImage);
+            }
         }
-    }
 
-    function AddStep(Id,Description,Image){
-        var step = " <tr> <td>" + Id + "</td><td>" + Description + "</td><td><img src=" + Image + "alt=\"User Image\" style=\"width: 250px; height: 250px; \" /></td></tr>";
+        function ShowIngredints(){
+            $("#IngredintTable tbody").empty();
+            for (var i = 0; i < Ingredint.length; i++) {
+                var ingredientID = Ingredint[i][0];
+                var quantity = Ingredint[i][1];
+                var unit = Ingredint[i][2];
+                AddIngredint(i+1,ingredientID,quantity,unit);
+            }
+        }
+
+        function AddStep(Id,Description,Image){
+        var step = "<tr> <td>" + Id + "</td><td>" + Description + "</td><td><img src=" + Image + " alt=\"User Image\" style=\"width: 250px; height: 250px; \" /></td> <td> <butten class=\"btn btn-danger btn-sm\">Delete</butten> </td> </tr>";
 
         $("#StepTable tbody").last().append(step);
-    }
+        }
 
-    function AddIngredint(Id,Quantity,Unit){
-        var ingredint = " <tr> <td>" + Id + "</td><td>" + Quantity + "</td><td>" + Unit + "</td>";
+        function AddIngredint(Id,ingredientID,Quantity,Unit){
+        var ingredint = "<tr> <td>" + Id + "</td> <td>" + ingredientID + "</td><td>" + Quantity + "</td><td>" + Unit + "</td> <td> <butten class=\"btn btn-danger btn-sm\">Delete</butten> </td> </tr>";
 
         $("#IngredintTable tbody").last().append(ingredint);
-    }
-</script>
+        }
+    </script>
+}
+
 
 <div class="container mt-5">
 
@@ -87,7 +141,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Recipe.backgroundImageBase64">Background Image</label>
-                    <input type="file" accept="image/*" class="form-control" asp-for="Recipe.backgroundImageBase64" name="UserImageBase64" />
+                    <input type="file" accept="image/*" class="form-control" asp-for="Recipe.backgroundImageBase64" name="Recipe.backgroundImageBase64" />
                 </div>
 
                 <br />
@@ -104,8 +158,9 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="step.backgroundImageBase64">Background Image</label>
-                            <input type="file" accept="image/*" class="form-control" asp-for="step.backgroundImageBase64" name="UserImageBase64" />
+                            <input type="file" id="imgInp" accept="image/*" class="form-control" asp-for="step.backgroundImageBase64" name="step.backgroundImageBase64" />
                         </div>
+                        <img hidden id="blah" src="#" alt="your image" />
 
                         <br />
 
@@ -131,7 +186,7 @@
                                 }
                             </select>
                         </div>
-                            <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="recipeIngredient.quantity">Quantity</label>
                             <input type="number" class="form-control" asp-for="recipeIngredient.quantity" />
                         </div>
@@ -140,7 +195,6 @@
                             <label asp-for="recipeIngredient.unit">Unit</label>
                             <input type="text" class="form-control" asp-for="recipeIngredient.unit" />
                         </div>
-                            
 
                         <br />
 
@@ -149,9 +203,6 @@
                 </div>
 
                 <br />
-
-                <input hidden type="text" class="form-control" asp-for="step" />
-                <input hidden type="text" class="form-control" asp-for="ingredient" />
 
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
@@ -165,6 +216,7 @@
             <th>Id</th>
             <th>Description</th>
             <th>backgroundImage</th>
+            <th>remove</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -176,8 +228,10 @@
     <thead class="thead-dark">
         <tr>
             <th>Id</th>
+            <th>ingredientID</th>
             <th>Quantity</th>
             <th>Unit</th>
+            <th>remove</th>
         </tr>
     </thead>
     <tbody></tbody>

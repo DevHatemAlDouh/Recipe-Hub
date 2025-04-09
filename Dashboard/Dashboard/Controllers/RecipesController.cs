@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
 using System.Net.Http.Headers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dashboard.Controllers
 {
@@ -103,18 +104,36 @@ namespace Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Recipe_details recipe_Details)
+        public async Task<IActionResult> Create([FromForm] Recipe_details recipe_Details)
         {
             using (var API = new HttpClient())
             {
+                recipe_Details.Recipe.UserId = 1;
+
+
+
+                if (recipe_Details.Recipe.backgroundImageBase64 != null && recipe_Details.Recipe.backgroundImageBase64.Length > 0)
+                {
+                    using (var memoryStream = new System.IO.MemoryStream())
+                    {
+                        // Copy the uploaded file to the memory stream
+                        await recipe_Details.Recipe.backgroundImageBase64.CopyToAsync(memoryStream);
+                        byte[] imageBytes = memoryStream.ToArray();
+                        recipe_Details.Recipe.backgroundImage = Convert.ToBase64String(imageBytes); // Store as Base64
+                    }
+                }
+
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var Recipe = JsonConvert.SerializeObject(recipe_Details.Recipe);
                 var content = new StringContent(Recipe, System.Text.Encoding.UTF8, "application/json");
-                HttpResponseMessage Res = await API.PostAsync("/api/Recipes/Create", content);
+                HttpResponseMessage Res = await API.PostAsync("/api/Recipes/Add", content);
+               
                 if (Res.IsSuccessStatusCode)
                 {
+                    var APIResponse = Res.Content.ReadAsStringAsync().Result;
+                    recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipe>(APIResponse);
                     return RedirectToAction("Index");
                 }
             }
