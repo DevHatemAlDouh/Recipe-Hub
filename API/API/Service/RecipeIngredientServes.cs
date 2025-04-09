@@ -53,13 +53,21 @@ namespace API.Service
             {
                 foreach (var Ingredient in recipeIngredient)
                 {
-                    
-                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.RecipeID == Ingredient.RecipeID);
-                    _context.RecipeIngredients.Remove(recipeingredient);
-                    await _context.SaveChangesAsync();
-                    
+                    await Delete(Ingredient.Id);
                 }
                
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+
+            var recipeIngredient = await GetById(id);
+            if (recipeIngredient != null)
+            {
+                    var recipeingredient = await _context.RecipeIngredients.FirstOrDefaultAsync(f => f.Id == id);
+                    _context.RecipeIngredients.Remove(recipeingredient);
+                    await _context.SaveChangesAsync();
             }
         }
 

@@ -1670,6 +1670,48 @@
         }
       }
     },
+    "/api/Recipes/UpdateCategory/{Id}": {
+      "put": {
+        "tags": [
+          "Recipes"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Recipes/Add": {
       "post": {
         "tags": [
@@ -1814,6 +1856,54 @@
         }
       }
     },
+    "/api/Recipes/Category/Add": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeCategoryInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeCategoryInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeCategoryInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeCategoryInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Recipes/Delete/{recipeId}": {
       "delete": {
         "tags": [
@@ -1837,14 +1927,14 @@
         }
       }
     },
-    "/api/Recipes/DeleteRate/{recipeId}": {
+    "/api/Recipes/DeleteIngredient/{Id}": {
       "delete": {
         "tags": [
           "Recipes"
         ],
         "parameters": [
           {
-            "name": "recipeId",
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1860,14 +1950,14 @@
         }
       }
     },
-    "/api/Recipes/DeleteIngredient/{recipeId}": {
+    "/api/Recipes/DeleteCategory/{Id}": {
       "delete": {
         "tags": [
           "Recipes"
         ],
         "parameters": [
           {
-            "name": "recipeId",
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -3186,6 +3276,34 @@
           "title": {
             "type": "string",
             "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecipeCategoryInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recipeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryID": {
+            "type": "integer",
+            "format": "int32"
           },
           "createdAt": {
             "type": "string",

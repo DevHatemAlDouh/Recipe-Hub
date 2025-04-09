@@ -750,6 +750,32 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PostRecipeCategoryInfo",
+    "RelativePath": "api/Recipes/Category/Add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recipIngredientInfo",
+        "Type": "API.Models.RecipeCategoryInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API.Models.RecipeCategoryInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
     "Method": "DeleteRecipe",
     "RelativePath": "api/Recipes/Delete/{recipeId}",
     "HttpMethod": "DELETE",
@@ -766,14 +792,14 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "DeleteStepIngredientInfo",
-    "RelativePath": "api/Recipes/DeleteIngredient/{recipeId}",
+    "Method": "DeleteRecipeRate",
+    "RelativePath": "api/Recipes/DeleteCategory/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "recipeId",
+        "Name": "Id",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -782,14 +808,14 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "DeleteRecipeRate",
-    "RelativePath": "api/Recipes/DeleteRate/{recipeId}",
+    "Method": "DeleteRecipeIngredient",
+    "RelativePath": "api/Recipes/DeleteIngredient/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "recipeId",
+        "Name": "Id",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -974,7 +1000,7 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "PostStepIngredientInfo",
+    "Method": "PostRecipeIngredientInfo",
     "RelativePath": "api/Recipes/Ingredient/Add",
     "HttpMethod": "POST",
     "IsController": true,
@@ -1014,6 +1040,27 @@
       {
         "Name": "recipeInfo",
         "Type": "API.Models.RecipeInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.RecipesController",
+    "Method": "PutStepIngredientInfo",
+    "RelativePath": "api/Recipes/UpdateCategory/{Id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "recipeCategoryInfo",
+        "Type": "API.Models.RecipeCategoryInfo",
         "IsRequired": true
       }
     ],

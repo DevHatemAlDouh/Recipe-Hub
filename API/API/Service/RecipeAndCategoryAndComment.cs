@@ -13,28 +13,33 @@ namespace API.Service
             _context = context;
         }
 
-        public async Task<IEnumerable<CommentInfo>> GetAllCommentsInRecipe(int RecipeId)
+        public async Task<IEnumerable<CommentInfo>> GetAllCommentsInRecipe(int CommentID)
         {
-
+            var commentsInRecipe = await _context.CommentRates
+                .Where(c => c.CommentID == CommentID)
+                .ToListAsync();
             var comments = new List<CommentInfo>();
-            
-            var commentInfo = await _context.Comments
-                .Where(c => c.RecipeID == RecipeId)
-                .Select(c => new CommentInfo
+            if (commentsInRecipe.Any())
+            {
+                foreach (var comment in commentsInRecipe)
                 {
-                    Id = c.Id,
-                    RecipeID = c.RecipeID,
-                    UserID = c.UserID,
-                    Description = c.Description,
-                    SupCommentID = c.SupCommentID,
-                    Rate = c.Rate,
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt
-                }).ToListAsync();
+                    var commentInfo = await _context.Comments
+                        .Where(c => c.Id == comment.CommentID)
+                        .Select(c => new CommentInfo
+                        {
+                            Id = c.Id,
+                            RecipeID = c.RecipeID,
+                            UserID = c.UserID,
+                            Description = c.Description,
+                            SupCommentID = c.SupCommentID,
+                            Rate = c.Rate,
+                            CreatedAt = c.CreatedAt,
+                            UpdatedAt = c.UpdatedAt
+                        }).ToListAsync();
 
-            comments.AddRange(commentInfo);
-                
-            
+                    comments.AddRange(commentInfo);
+                }
+            }
             return comments;
         }
 
