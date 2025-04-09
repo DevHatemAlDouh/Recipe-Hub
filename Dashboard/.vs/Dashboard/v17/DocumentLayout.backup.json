@@ -42,8 +42,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Recipes\\Delete.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-09T14:58:38.508Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-09T14:58:38.508Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Recipes\\Edit.cshtml",
               "ViewState": "AgIAAJYAAAAAAAAAAAASwKQAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-09T10:03:30.234Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-09T10:03:30.234Z"
             },
             {
               "$type": "Document",
@@ -81,8 +79,7 @@
               "RelativeToolTip": "Dashboard\\Controllers\\RecipesController.cs",
               "ViewState": "AgIAAMMAAAAAAAAAAAAQwNYAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T14:21:22.128Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-02T14:21:22.128Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "Dashboard\\Controllers\\UsersController.cs",
               "ViewState": "AgIAAKEAAAAAAAAAAAASwKcAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T14:05:06.699Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-02T14:05:06.699Z"
             }
           ]
         }

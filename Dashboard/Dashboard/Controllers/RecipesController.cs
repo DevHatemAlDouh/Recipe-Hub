@@ -99,6 +99,13 @@ namespace Dashboard.Controllers
                     var APIResponse = Res.Content.ReadAsStringAsync().Result;
                     recipe_Details.ingredients = JsonConvert.DeserializeObject<List<Ingredient>>(APIResponse);
                 }
+                HttpResponseMessage categorieRes = await API.GetAsync($"/api/Recipes/GetAllCategories?recipeId={id}");
+                if (categorieRes.IsSuccessStatusCode)
+                {
+                    var APICategorieResponse = categorieRes.Content.ReadAsStringAsync().Result;
+                    recipe_Details.categories = JsonConvert.DeserializeObject<List<Category>>(APICategorieResponse);
+
+                }
                 return View(recipe_Details);
             }
         }
@@ -219,8 +226,7 @@ namespace Dashboard.Controllers
                 return NotFound();
             }
         }
-
-        // POST: Recipes/Delete/{id}
+        
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -313,7 +319,7 @@ namespace Dashboard.Controllers
 
                 var stepJson = JsonConvert.SerializeObject(stepPayload);
                 var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
-                await API.PostAsync($"/api/Steps/Update/{step.Id}", stepContent);
+                await API.PutAsync($"/api/Steps/Update/{step.Id}", stepContent);
             }
         }
 
@@ -349,7 +355,7 @@ namespace Dashboard.Controllers
 
                 var ingredientJson = JsonConvert.SerializeObject(ingredientPayload);
                 var ingredientContent = new StringContent(ingredientJson, System.Text.Encoding.UTF8, "application/json");
-                await API.PostAsync($"/api/Recipes/UpdateIngredient/{ingredient.Id}", ingredientContent);
+                await API.PutAsync($"/api/Recipes/UpdateIngredient/{ingredient.Id}", ingredientContent);
             }
         }
 
