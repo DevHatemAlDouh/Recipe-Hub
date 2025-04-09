@@ -4,124 +4,6 @@
     ViewBag.Title = "Create Recipe";
 }
 
-
-@section Scripts {
-    <script>
-        var Step = [];
-        var Ingredint = [];
-
-        imgInp.onchange = evt => {
-        const [file] = imgInp.files
-        if (file) {
-        blah.src = URL.createObjectURL(file)
-        }
-        }
-
-        $(document).ready(function(){
-
-        $("#add-step").click(function(){
-
-        var stepDescription = $("input[name='step.description']").val();
-        var stepImage = blah.src;
-        if(stepDescription && stepImage){
-        Step.push([stepDescription,stepImage]);
-        ShowSteps();
-        } else {
-        alert("Please fill in all fields.");
-        }
-        });
-        $("#add-ingredint").click(function(){
-        var ingredientID = $("select[name='recipeIngredient.IngredientID']").val();
-        var quantity = $("input[name='recipeIngredient.quantity']").val();
-        var unit = $("input[name='recipeIngredient.unit']").val();
-        if(ingredientID && quantity && unit){
-        Ingredint.push([ingredientID,quantity,unit]);
-        ShowIngredints();
-        } else {
-        alert("Please fill in all fields.");
-        }
-        });
-        $("form").submit(function(e){
-        
-        
-
-                // to prevat the request of firing
-                e.preventDefault();
-
-                // Get the parameters as an array
-                var values = $(this).serializeArray();
-
-                values.push({
-                    name: "Steps",
-                    value: Step
-                });
-
-                values.push({
-                    name: "recipeIngredient",
-                    value: Ingredint
-                });
-
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("Create")",
-                    data: $.param(values),
-                    success: function(response){
-                        alert(response);
-                    },
-                    error: function (req, status, error) {
-                         var err = req.responseText.Message;
-                         console.log(err);
-                     }
-                });
-            });
-        });
-
-        $(document).on('click', '.btn.btn-danger.btn-sm', function() {
-           if($(this).closest('tr').parent().parent().attr('id') == 'StepTable'){
-               Step.splice($(this).closest('tr').index(), 1);
-               ShowSteps();
-           }
-           else if($(this).closest('tr').parent().parent().attr('id') == 'IngredintTable'){
-                Ingredint.splice($(this).closest('tr').index(), 1);
-                ShowIngredints();
-            }
-            $(this).closest('tr').remove();
-        });
-
-        function ShowSteps(){
-            $("#StepTable tbody").empty();
-            for (var i = 0; i < Step.length; i++) {
-                var stepDescription = Step[i][0];
-                var stepImage = Step[i][1];
-                AddStep(i+1,stepDescription,stepImage);
-            }
-        }
-
-        function ShowIngredints(){
-            $("#IngredintTable tbody").empty();
-            for (var i = 0; i < Ingredint.length; i++) {
-                var ingredientID = Ingredint[i][0];
-                var quantity = Ingredint[i][1];
-                var unit = Ingredint[i][2];
-                AddIngredint(i+1,ingredientID,quantity,unit);
-            }
-        }
-
-        function AddStep(Id,Description,Image){
-        var step = "<tr> <td>" + Id + "</td><td>" + Description + "</td><td><img src=" + Image + " alt=\"User Image\" style=\"width: 250px; height: 250px; \" /></td> <td> <butten class=\"btn btn-danger btn-sm\">Delete</butten> </td> </tr>";
-
-        $("#StepTable tbody").last().append(step);
-        }
-
-        function AddIngredint(Id,ingredientID,Quantity,Unit){
-        var ingredint = "<tr> <td>" + Id + "</td> <td>" + ingredientID + "</td><td>" + Quantity + "</td><td>" + Unit + "</td> <td> <butten class=\"btn btn-danger btn-sm\">Delete</butten> </td> </tr>";
-
-        $("#IngredintTable tbody").last().append(ingredint);
-        }
-    </script>
-}
-
-
 <div class="container mt-5">
 
     <div class="card">
@@ -141,64 +23,33 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Recipe.backgroundImageBase64">Background Image</label>
-                    <input type="file" accept="image/*" class="form-control" asp-for="Recipe.backgroundImageBase64" name="Recipe.backgroundImageBase64" />
+                    <input type="file" accept="image/*" class="form-control recipe-image" asp-for="Recipe.backgroundImageBase64" />
+                    <img class="img-preview" src="#" alt="Recipe Image Preview" style="display:none; max-width:100%; margin-top:10px;" />
                 </div>
 
                 <br />
 
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Add Steps</h4>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="form-group">
-                            <label asp-for="step.description">Description</label>
-                            <input type="text" class="form-control" asp-for="step.description" />
+                <div id="steps-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add Steps</h4>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="step.backgroundImageBase64">Background Image</label>
-                            <input type="file" id="imgInp" accept="image/*" class="form-control" asp-for="step.backgroundImageBase64" name="step.backgroundImageBase64" />
+                        <div class="card-body">
+                            <input type="button" id="add-step" class="btn btn-secondary" value="Add Step" />
                         </div>
-                        <img hidden id="blah" src="#" alt="your image" />
-
-                        <br />
-
-                        <input type="button" id="add-step" value="Add Step"/>
                     </div>
                 </div>
 
                 <br />
 
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Add Ingredints</h4>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="form-group">
-                            <label asp-for="recipeIngredient.IngredientID">Select Permission</label>
-                            <select asp-for="recipeIngredient.IngredientID" class="form-control" required>
-                                <option value="">-- Select Permission --</option>
-                                @foreach (var ingredient in Model.ingredients)
-                                {
-                                    <option value="@ingredient.Id">@ingredient.Name</option>
-                                }
-                            </select>
+                <div id="ingredients-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add Ingredients</h4>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="recipeIngredient.quantity">Quantity</label>
-                            <input type="number" class="form-control" asp-for="recipeIngredient.quantity" />
+                        <div class="card-body">
+                            <input type="button" id="add-ingredient" class="btn btn-secondary" value="Add Ingredient" />
                         </div>
-
-                        <div class="form-group">
-                            <label asp-for="recipeIngredient.unit">Unit</label>
-                            <input type="text" class="form-control" asp-for="recipeIngredient.unit" />
-                        </div>
-
-                        <br />
-
-                        <input type="button" id="add-ingredint" value="Add Ingredint"/>
                     </div>
                 </div>
 
@@ -209,30 +60,124 @@
         </div>
     </div>
 </div>
-<h2 class="text-center mb-4">Steps</h2>
-<table class="table table-striped table-bordered" id="StepTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>Description</th>
-            <th>backgroundImage</th>
-            <th>remove</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-    
-</table>
 
-<h2 class="text-center mb-4">Ingredints</h2>
-<table class="table table-striped table-bordered" id="IngredintTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>ingredientID</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>remove</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let stepCount = 0;
+            let ingredientCount = 0;
+
+            // Preview for the recipe background image
+            $('.recipe-image').change(function (event) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.img-preview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+            $('#add-step').click(function () {
+                const newStep = `
+                    <div class="step-form">
+                        <div class="form-group">
+                            <label>Step Number</label>
+                            <input type="number" class="form-control" name="steps[${stepCount}].StepNumber" value="${stepCount + 1}" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" class="form-control" name="steps[${stepCount}].description" />
+                        </div>
+                        <div class="form-group">
+                            <label>Background Image</label>
+                            <input type="file" accept="image/*" class="form-control step-image" name="steps[${stepCount}].backgroundImageBase64" />
+                            <img class="img-preview" src="#" alt="Image Preview" style="display:none; max-width:100%; margin-top:10px;" />
+                        </div>
+                        <br />
+                        <button type="button" class="btn btn-danger remove-step">Remove Step</button>
+                    </div>`;
+                $('#steps-container').append(newStep);
+                stepCount++;
+            });
+
+            $('#add-ingredient').click(function () {
+                const newIngredient = `
+                    <div class="ingredient-form">
+                        <div class="form-group">
+                            <label>Select Ingredient</label>
+                            <select name="recipeIngredients[${ingredientCount}].IngredientID" class="form-control" required>
+                                <option value="">-- Select Ingredient --</option>
+        @foreach (var ingredient in Model.ingredients)
+        {
+                                        <option value="@ingredient.Id">@ingredient.Name</option>
+        }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" class="form-control" name="recipeIngredients[${ingredientCount}].quantity" />
+                        </div>
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input type="text" class="form-control" name="recipeIngredients[${ingredientCount}].unit" />
+                        </div>
+                        <br />
+                        <button type="button" class="btn btn-danger remove-ingredient">Remove Ingredient</button>
+                    </div>`;
+                $('#ingredients-container').append(newIngredient);
+                ingredientCount++;
+            });
+
+            // Image preview for steps
+            $(document).on('change', '.step-image', function (event) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(event.target).siblings('.img-preview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+            // Image preview for ingredients
+            $(document).on('change', '.ingredient-image', function (event) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(event.target).siblings('.img-preview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+            // Remove step functionality
+            $(document).on('click', '.remove-step', function () {
+                $(this).closest('.step-form').remove();
+                updateStepNumbers();
+            });
+
+            // Remove ingredient functionality
+            $(document).on('click', '.remove-ingredient', function () {
+                $(this).closest('.ingredient-form').remove();
+                updateIngredientNumbers();
+            });
+
+            function updateStepNumbers() {
+                $('#steps-container .step-form').each(function (index) {
+                    $(this).find('input[name^="steps"]').each(function () {
+                        const name = $(this).attr('name').replace(/\[\d+\]/, `[${index}]`);
+                        $(this).attr('name', name);
+                    });
+                    $(this).find('input[type="number"]').val(index + 1); // Update Step Number display
+                });
+                stepCount = $('#steps-container .step-form').length; // Update stepCount
+            }
+
+            function updateIngredientNumbers() {
+                $('#ingredients-container .ingredient-form').each(function (index) {
+                    $(this).find('select[name^="recipeIngredients"]').each(function () {
+                        const name = $(this).attr('name').replace(/\[\d+\]/, `[${index}]`);
+                        $(this).attr('name', name);
+                    });
+                });
+                ingredientCount = $('#ingredients-container .ingredient-form').length; // Update ingredientCount
+            }
+        });
+    </script>
+}

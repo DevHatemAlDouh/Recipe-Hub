@@ -110,35 +110,257 @@ namespace Dashboard.Controllers
             {
                 recipe_Details.Recipe.UserId = 1;
 
-
-
+                // Process recipe background image
                 if (recipe_Details.Recipe.backgroundImageBase64 != null && recipe_Details.Recipe.backgroundImageBase64.Length > 0)
                 {
-                    using (var memoryStream = new System.IO.MemoryStream())
-                    {
-                        // Copy the uploaded file to the memory stream
-                        await recipe_Details.Recipe.backgroundImageBase64.CopyToAsync(memoryStream);
-                        byte[] imageBytes = memoryStream.ToArray();
-                        recipe_Details.Recipe.backgroundImage = Convert.ToBase64String(imageBytes); // Store as Base64
-                    }
+                    recipe_Details.Recipe.backgroundImage = await ConvertToBase64Async(recipe_Details.Recipe.backgroundImageBase64);
                 }
 
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var Recipe = JsonConvert.SerializeObject(recipe_Details.Recipe);
-                var content = new StringContent(Recipe, System.Text.Encoding.UTF8, "application/json");
-                HttpResponseMessage Res = await API.PostAsync("/api/Recipes/Add", content);
-               
-                if (Res.IsSuccessStatusCode)
+
+                // Serialize and send the recipe
+                var recipeContent = await SendRecipeAsync(API, recipe_Details.Recipe);
+                if (recipeContent != null)
                 {
-                    var APIResponse = Res.Content.ReadAsStringAsync().Result;
-                    recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipe>(APIResponse);
+                    recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipe>(recipeContent);
+                    await ProcessStepsAsync(API, recipe_Details.steps, recipe_Details.Recipe.Id);
+                    await ProcessIngredientsAsync(API, recipe_Details.recipeIngredients, recipe_Details.Recipe.Id);
+
                     return RedirectToAction("Index");
                 }
             }
             return View(recipe_Details);
+        }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                Recipe_details recipe_Details = new Recipe_details();
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await API.GetAsync($"/api/Recipes/GetById/{id}");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var APIResponse = Res.Content.ReadAsStringAsync().Result;
+                    recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipe>(APIResponse);
+                    HttpResponseMessage IngredentsRes = await API.GetAsync("/api/Ingredients/GetAll");
+                    if (IngredentsRes.IsSuccessStatusCode)
+                    {
+                        var IngredentsAPIResponse = IngredentsRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.ingredients = JsonConvert.DeserializeObject<List<Ingredient>>(IngredentsAPIResponse);
+                    }
+                    HttpResponseMessage StepRes = await API.GetAsync($"/api/Recipes/GetAllSteps?recipeid={id}");
+                    if (StepRes.IsSuccessStatusCode)
+                    {
+                        var StepAPIResponse = StepRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.Lsteps = JsonConvert.DeserializeObject<List<Step>>(StepAPIResponse);
+                    }
+                    HttpResponseMessage RecpieIngredentsRes = await API.GetAsync($"/api/Recipes/GetAllIngredient?recipeid={id}");
+                    if (RecpieIngredentsRes.IsSuccessStatusCode)
+                    { 
+                        var RecpieIngredentsAPIResponse = RecpieIngredentsRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.LrecipeIngredients = JsonConvert.DeserializeObject<List<RecipeIngredient>>(RecpieIngredentsAPIResponse);
+                    }
+                }
+                ViewBag.Steps = recipe_Details.Lsteps.Count;
+                ViewBag.RecipeIngredents = recipe_Details.LrecipeIngredients.Count;
+                return View(recipe_Details);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id,[FromForm] Recipe_details data)
+        {
+            using (var API = new HttpClient())
+            {
+
+                // Process recipe background image
+                if (data.Recipe.backgroundImageBase64 != null && data.Recipe.backgroundImageBase64.Length > 0)
+                {
+                    data.Recipe.backgroundImage = await ConvertToBase64Async(data.Recipe.backgroundImageBase64);
+                }
+
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Serialize and send the recipe
+                var recipeContent = await UpdateRecipeAsync(API, data.Recipe);
+                if (recipeContent != null)
+                {
+                    await UpdateStepsAsync(API, data.steps, data.Recipe.Id);
+                    await UpdateIngredientsAsync(API, data.recipeIngredients, data.Recipe.Id);
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Edit", id);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await API.GetAsync($"/api/Recipes/GetById/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    var recipeDetails = JsonConvert.DeserializeObject<Recipe>(apiResponse);
+                    return View(recipeDetails);
+                }
+
+                return NotFound();
+            }
+        }
+
+        // POST: Recipes/Delete/{id}
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await API.DeleteAsync($"/api/Recipes/Delete/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("", "Failed to delete the recipe.");
+                return View(await GetRecipeDetailsAsync(API, id)); // Show the recipe details again
+            }
+        }
+
+        // Helper method to fetch recipe details
+        private async Task<Recipe_details> GetRecipeDetailsAsync(HttpClient API, int id)
+        {
+            var response = await API.GetAsync($"/api/Recipes/GetById/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Recipe_details>(content);
+            }
+            return null;
+        }
+
+        private async Task<string> SendRecipeAsync(HttpClient API, Recipe recipe)
+        {
+            var recipeJson = JsonConvert.SerializeObject(recipe);
+            var content = new StringContent(recipeJson, System.Text.Encoding.UTF8, "application/json");
+            var response = await API.PostAsync("/api/Recipes/Add", content);
+
+            return response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
+        }
+
+        private async Task<string> UpdateRecipeAsync(HttpClient API, Recipe recipe)
+        {
+            var recipeJson = JsonConvert.SerializeObject(recipe);
+            var content = new StringContent(recipeJson, System.Text.Encoding.UTF8, "application/json");
+            var response = await API.PutAsync($"/api/Recipes/Update/{recipe.Id}", content); // Change to PUT
+
+            return response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
+        }
+
+        private async Task ProcessStepsAsync(HttpClient API, ICollection<Step> steps, int recipeId)
+        {
+            foreach (var step in steps)
+            {
+                if (step.backgroundImageBase64 != null && step.backgroundImageBase64.Length > 0)
+                {
+                    step.backgroundImage = await ConvertToBase64Async(step.backgroundImageBase64);
+                }
+
+                var stepPayload = new Step
+                {
+                    RecipeID = recipeId,
+                    StepNumber = step.StepNumber,
+                    description = step.description,
+                    backgroundImage = step.backgroundImage,
+                };
+
+                var stepJson = JsonConvert.SerializeObject(stepPayload);
+                var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync("/api/Steps/Add", stepContent);
+            }
+        }
+
+        private async Task UpdateStepsAsync(HttpClient API, ICollection<Step> steps, int recipeId)
+        {
+            foreach (var step in steps)
+            {
+                if (step.backgroundImageBase64 != null && step.backgroundImageBase64.Length > 0)
+                {
+                    step.backgroundImage = await ConvertToBase64Async(step.backgroundImageBase64);
+                }
+
+                var stepPayload = new Step
+                {
+                    RecipeID = recipeId,
+                    StepNumber = step.StepNumber,
+                    description = step.description,
+                    backgroundImage = step.backgroundImage,
+                };
+
+                var stepJson = JsonConvert.SerializeObject(stepPayload);
+                var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync($"/api/Steps/Update/{step.Id}", stepContent);
+            }
+        }
+
+        private async Task ProcessIngredientsAsync(HttpClient API, ICollection<RecipeIngredient> ingredients, int recipeId)
+        {
+            foreach (var ingredient in ingredients)
+            {
+                var ingredientPayload = new RecipeIngredient
+                {
+                    RecipeID = recipeId,
+                    IngredientID = ingredient.IngredientID,
+                    quantity = ingredient.quantity,
+                    unit = ingredient.unit,
+                };
+
+                var ingredientJson = JsonConvert.SerializeObject(ingredientPayload);
+                var ingredientContent = new StringContent(ingredientJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync("/api/Recipes/Ingredient/Add", ingredientContent);
+            }
+        }
+
+        private async Task UpdateIngredientsAsync(HttpClient API, ICollection<RecipeIngredient> ingredients, int recipeId)
+        {
+            foreach (var ingredient in ingredients)
+            {
+                var ingredientPayload = new RecipeIngredient
+                {
+                    RecipeID = recipeId,
+                    IngredientID = ingredient.IngredientID,
+                    quantity = ingredient.quantity,
+                    unit = ingredient.unit,
+                };
+
+                var ingredientJson = JsonConvert.SerializeObject(ingredientPayload);
+                var ingredientContent = new StringContent(ingredientJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync($"/api/Recipes/UpdateIngredient/{ingredient.Id}", ingredientContent);
+            }
+        }
+
+        private async Task<string> ConvertToBase64Async(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                byte[] imageBytes = memoryStream.ToArray();
+                return Convert.ToBase64String(imageBytes);
+            }
         }
     }
 }

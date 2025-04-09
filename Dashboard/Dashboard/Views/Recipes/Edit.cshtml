@@ -1,0 +1,219 @@
+﻿@model Recipe_details
+
+@{
+    ViewBag.Title = "Edit Recipe"; 
+} 
+
+<div class="container mt-5"> 
+
+    <div class="card"> 
+        <div class="card-header"> 
+            <h4>Edit Recipe</h4> 
+        </div>
+        <div class="card-body"> 
+            <form asp-action="Edit" method="post" enctype="multipart/form-data"> 
+                <input type="hidden" asp-for="Recipe.Id" />
+                <input type="hidden" asp-for="Recipe.UserId" />
+                <input type="hidden" asp-for="Recipe.backgroundImage" />
+                <div class="form-group"> 
+                    <label asp-for="Recipe.title">Title</label> 
+                    <input type="text" class="form-control" asp-for="Recipe.title" /> 
+                </div> 
+                <div class="form-group"> 
+                    <label asp-for="Recipe.description">Description</label> 
+                    <input type="text" class="form-control" asp-for="Recipe.description" /> 
+                </div> 
+                <div class="form-group"> 
+                    <label asp-for="Recipe.backgroundImageBase64">Background Image</label> 
+                    <input type="file" accept="image/*" class="form-control recipe-image" asp-for="Recipe.backgroundImageBase64" /> 
+                    <img class="img-preview" src="@($"data:image/png;base64,{Model.Recipe.backgroundImage}")" alt="Recipe Image Preview" style="max-width:100%; margin-top:10px;" /> 
+                </div> 
+
+                <br />
+
+                <div id="steps-container"> 
+                    <div class="card"> 
+                        <div class="card-header"> 
+                            <h4>Steps</h4> 
+                        </div> 
+                        <div class="card-body"> 
+                            @{
+                                int stepIndex = 0;
+                                foreach (var step in Model.Lsteps)
+                                {
+                                    // Use stepIndex for proper indexing
+                                    <div class="step-form"> 
+                                        <div class="form-group"> 
+                                            <label>Step Number</label>
+                                            <input type="number" class="form-control" name="steps[${stepIndex}].StepNumber" value="@step.StepNumber" readonly />
+                                        </div> 
+                                        <div class="form-group"> 
+                                            <label>Description</label>
+                                            <input type="text" class="form-control" name="steps[${stepIndex}].description" value="@step.description" />
+                                        </div> 
+                                        <div class="form-group"> 
+                                            <label>Background Image</label> 
+                                            <input type="file" accept="image/*" class="form-control step-image" name="steps[${stepIndex}].backgroundImageBase64" />
+                                            <img class="img-preview" src="@($"data:image/png;base64,{step.backgroundImage}")" alt="Step Image Preview" style="max-width:100%; margin-top:10px;" />
+                                        </div> 
+                                        <button type="button" class="btn btn-danger remove-step">Remove Step</button> 
+                                        <br /> 
+                                    </div> 
+                                    stepIndex++; // Increment after using
+                                }
+                            }
+                            <input type="button" id="add-step" class="btn btn-secondary" value="Add Step" /> 
+                        </div> 
+                    </div> 
+                </div> 
+
+                <br /> 
+
+                <div id="ingredients-container"> 
+                    <div class="card"> 
+                        <div class="card-header"> 
+                            <h4>Ingredients</h4> 
+                        </div> 
+                        <div class="card-body"> 
+                            @{
+                                int recipeIngredientIndex = 0;
+                                foreach (var recipeIngredient in Model.LrecipeIngredients) 
+                                {
+                                    <div class="ingredient-form"> 
+                                        <div class="form-group"> 
+                                            <label>Select Ingredient</label> 
+                                            <select name="recipeIngredients[${recipeIngredientIndex}].IngredientID" class="form-control" required> 
+                                                <option value="">-- Select Ingredient --</option> 
+                                                @foreach (var ingredient in Model.ingredients) 
+                                                { 
+                                                    <option value="@ingredient.Id" >@ingredient.Name</option>
+                                                } 
+                                            </select> 
+                                        </div> 
+                                        <div class="form-group"> 
+                                            <label>Quantity</label>
+                                            <input type="number" class="form-control" name="recipeIngredients[${recipeIngredientIndex}].quantity" value="@recipeIngredient.quantity" />
+                                        </div> 
+                                        <div class="form-group"> 
+                                            <label>Unit</label>
+                                            <input type="text" class="form-control" name="recipeIngredients[${recipeIngredientIndex}].unit" value="@recipeIngredient.unit" />
+                                        </div> 
+                                        <button type="button" class="btn btn-danger remove-ingredient">Remove Ingredient</button> 
+                                        <br /> 
+                                    </div> 
+                                    recipeIngredientIndex++; // Increment after using
+                                }
+                            }
+                            <input type="button" id="add-ingredient" class="btn btn-secondary" value="Add Ingredient" /> 
+                        </div> 
+                    </div> 
+                </div> 
+
+                <br /> 
+
+                <button type="submit" class="btn btn-primary">Save Changes</button> 
+            </form> 
+        </div> 
+    </div> 
+</div> 
+
+@section Scripts { 
+    <script> 
+        $(document).ready(function () {
+            var stepCount = @Model.Lsteps.Count; // Initialize stepCount from model
+            var ingredientCount = @Model.LrecipeIngredients.Count; // Initialize ingredientCount from model
+
+            // Preview for the recipe background image 
+            $('.recipe-image').change(function (event) { 
+                const reader = new FileReader(); 
+                reader.onload = function (e) { 
+                    $('.img-preview').attr('src', e.target.result).show(); 
+                } 
+                reader.readAsDataURL(event.target.files[0]); 
+            }); 
+
+            $('#add-step').click(function () { 
+                const newStep = ` 
+                    <div class="step-form"> 
+                        <div class="form-group"> 
+                            <label>Step Number</label> 
+                            <input type="number" class="form-control" name="steps[${stepCount}].StepNumber" value="${stepCount + 1}" readonly /> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label>Description</label> 
+                            <input type="text" class="form-control" name="steps[${stepCount}].description" /> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label>Background Image</label> 
+                            <input type="file" accept="image/*" class="form-control step-image" name="steps[${stepCount}].backgroundImageBase64" /> 
+                            <img class="img-preview" src="#" alt="Image Preview" style="display:none; max-width:100%; margin-top:10px;" /> 
+                        </div> 
+                        <button type="button" class="btn btn-danger remove-step">Remove Step</button> 
+                        <br /> 
+                    </div>`; 
+                $('#steps-container').append(newStep); 
+                stepCount++; 
+            }); 
+
+            $('#add-ingredient').click(function () { 
+                const newIngredient = ` 
+                    <div class="ingredient-form"> 
+                        <div class="form-group"> 
+                            <label>Select Ingredient</label> 
+                            <select name="recipeIngredients[${ingredientCount}].IngredientID" class="form-control"> 
+                                <option value="">-- Select Ingredient --</option> 
+                                @foreach (var ingredient in Model.ingredients) 
+                                { 
+                                    <option value="@ingredient.Id">@ingredient.Name</option> 
+                                } 
+                            </select> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label>Quantity</label> 
+                            <input type="number" class="form-control" name="recipeIngredients[${ingredientCount}].quantity" /> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label>Unit</label> 
+                            <input type="text" class="form-control" name="recipeIngredients[${ingredientCount}].unit" /> 
+                        </div> 
+                        <button type="button" class="btn btn-danger remove-ingredient">Remove Ingredient</button> 
+                        <br /> 
+                    </div>`; 
+                $('#ingredients-container').append(newIngredient); 
+                ingredientCount++; 
+            }); 
+
+            // Remove step functionality 
+            $(document).on('click', '.remove-step', function () { 
+                $(this).closest('.step-form').remove(); 
+                updateStepNumbers(); 
+            }); 
+
+            // Remove ingredient functionality 
+            $(document).on('click', '.remove-ingredient', function () { 
+                $(this).closest('.ingredient-form').remove(); 
+                updateIngredientNumbers(); 
+            }); 
+
+            function updateStepNumbers() { 
+                $('#steps-container .step-form').each(function (index) { 
+                    $(this).find('input[name^="steps"]').each(function () { 
+                        const name = $(this).attr('name').replace(/[\d+]/, `[${index}]`); 
+                        $(this).attr('name', name); 
+                    }); 
+                }); 
+                stepCount = $('#steps-container .step-form').length; // Update stepCount 
+            } 
+
+            function updateIngredientNumbers() { 
+                $('#ingredients-container .ingredient-form').each(function (index) { 
+                    $(this).find('select[name^="recipeIngredients"]').each(function () { 
+                        const name = $(this).attr('name').replace(/[\d+]/, `[${index}]`); 
+                        $(this).attr('name', name); 
+                    }); 
+                }); 
+                ingredientCount = $('#ingredients-container .ingredient-form').length; // Update ingredientCount 
+            } 
+        }); 
+    </script> 
+}
