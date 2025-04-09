@@ -35,6 +35,7 @@ builder.Services.AddScoped<RecipeAndCategoryAndComment>();
 builder.Services.AddScoped<RecipeSuggestions>();
 builder.Services.AddScoped<FavoriteService>();
 builder.Services.AddScoped<RecipeRateandViwsService>();
+builder.Services.AddScoped<RecipeCategoryService>();
 builder.Services.AddScoped<CommentRateService>();
 builder.Services.AddScoped<ReportService>();
 
