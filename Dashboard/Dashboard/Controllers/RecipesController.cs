@@ -133,6 +133,7 @@ namespace Dashboard.Controllers
                     recipe_Details.Recipe = JsonConvert.DeserializeObject<Recipe>(recipeContent);
                     await ProcessStepsAsync(API, recipe_Details.steps, recipe_Details.Recipe.Id);
                     await ProcessIngredientsAsync(API, recipe_Details.recipeIngredients, recipe_Details.Recipe.Id);
+                    await ProcessCategoresAsync(API, recipe_Details.recipeCategories, recipe_Details.Recipe.Id);
 
                     return RedirectToAction("Index");
                 }
@@ -200,6 +201,7 @@ namespace Dashboard.Controllers
                 {
                     await UpdateStepsAsync(API, data.steps, data.Recipe.Id);
                     await UpdateIngredientsAsync(API, data.recipeIngredients, data.Recipe.Id);
+                    await UpdateCategoresAsync(API, data.recipeCategories, data.Recipe.Id);
                     return RedirectToAction("Index");
                 }
             }
@@ -319,6 +321,38 @@ namespace Dashboard.Controllers
                 var stepJson = JsonConvert.SerializeObject(stepPayload);
                 var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
                 await API.PutAsync($"/api/Steps/Update/{step.Id}", stepContent);
+            }
+        }
+
+        private async Task ProcessCategoresAsync(HttpClient API, ICollection<RecipeCategory> categores, int recipeId)
+        {
+            foreach (var category in categores)
+            {
+                var categoryPayload = new RecipeCategory
+                {
+                    RecipeID = recipeId,
+                    CategoryID = category.CategoryID,
+                };
+
+                var categoryJson = JsonConvert.SerializeObject(categoryPayload);
+                var categoryContent = new StringContent(categoryJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync("/api/Recipes/Category/Add", categoryContent);
+            }
+        }
+
+        private async Task UpdateCategoresAsync(HttpClient API, ICollection<RecipeCategory> Categores, int recipeId)
+        {
+            foreach (var category in Categores)
+            {
+                var categoryPayload = new RecipeCategory
+                {
+                    RecipeID = recipeId,
+                    CategoryID = category.CategoryID,
+                };
+
+                var categoryJson = JsonConvert.SerializeObject(categoryPayload);
+                var categoryContent = new StringContent(categoryJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PutAsync($"/api/Recipes/UpdateCategory/{category.Id}", categoryContent);
             }
         }
 

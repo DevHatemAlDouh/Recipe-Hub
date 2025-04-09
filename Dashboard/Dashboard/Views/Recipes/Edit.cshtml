@@ -5,7 +5,6 @@
 } 
 
 <div class="container mt-5"> 
-
     <div class="card"> 
         <div class="card-header"> 
             <h4>Edit Recipe</h4> 
@@ -31,6 +30,40 @@
 
                 <br />
 
+                <div id="categories-container"> 
+                    <div class="card"> 
+                        <div class="card-header"> 
+                            <h4>Categories</h4> 
+                        </div> 
+                        <div class="card-body"> 
+                            @{
+                                int categoryIndex = 0;
+                                foreach (var recipeCategory in Model.LrecipeCategories)
+                                {
+                                    <div class="category-form"> 
+                                        <div class="form-group"> 
+                                            <label>Select Category</label> 
+                                            <select name="recipeCategories[${categoryIndex}].CategoryID" class="form-control" required> 
+                                                <option value="">-- Select Category --</option> 
+                                                @foreach (var category in Model.categories) 
+                                                { 
+                                                    <option value="@category.Id">@category.Name</option> 
+                                                } 
+                                            </select> 
+                                        </div> 
+                                        <button type="button" class="btn btn-danger remove-category">Remove Category</button> 
+                                        <br /> 
+                                    </div> 
+                                    categoryIndex++; // Increment after using
+                                }
+                            }
+                            <input type="button" id="add-category" class="btn btn-secondary" value="Add Category" /> 
+                        </div> 
+                    </div> 
+                </div> 
+
+                <br /> 
+
                 <div id="steps-container"> 
                     <div class="card"> 
                         <div class="card-header"> 
@@ -41,7 +74,6 @@
                                 int stepIndex = 0;
                                 foreach (var step in Model.Lsteps)
                                 {
-                                    // Use stepIndex for proper indexing
                                     <div class="step-form"> 
                                         <div class="form-group"> 
                                             <label>Step Number</label>
@@ -53,8 +85,8 @@
                                         </div> 
                                         <div class="form-group"> 
                                             <label>Background Image</label> 
-                                            <input type="file" accept="image/*" class="form-control step-image" name="steps[${stepIndex}].backgroundImageBase64" />
-                                            <img class="img-preview" src="@($"data:image/png;base64,{step.backgroundImage}")" alt="Step Image Preview" style="max-width:100%; margin-top:10px;" />
+                                            <input type="file" accept="image/*" class="form-control step-image" name="steps[${stepIndex}].backgroundImageBase64" /> 
+                                            <img class="img-preview" src="@($"data:image/png;base64,{step.backgroundImage}")" alt="Step Image Preview" style="max-width:100%; margin-top:10px;" /> 
                                         </div> 
                                         <button type="button" class="btn btn-danger remove-step">Remove Step</button> 
                                         <br /> 
@@ -86,7 +118,7 @@
                                                 <option value="">-- Select Ingredient --</option> 
                                                 @foreach (var ingredient in Model.ingredients) 
                                                 { 
-                                                    <option value="@ingredient.Id" >@ingredient.Name</option>
+                                                    <option value="@ingredient.Id">@ingredient.Name</option> 
                                                 } 
                                             </select> 
                                         </div> 
@@ -122,6 +154,7 @@
         $(document).ready(function () {
             var stepCount = @Model.Lsteps.Count; // Initialize stepCount from model
             var ingredientCount = @Model.LrecipeIngredients.Count; // Initialize ingredientCount from model
+            var categoryCount = @Model.LrecipeCategories.Count; // Initialize categoryCount from model
 
             // Preview for the recipe background image 
             $('.recipe-image').change(function (event) { 
@@ -183,6 +216,26 @@
                 ingredientCount++; 
             }); 
 
+            $('#add-category').click(function () { 
+                const newCategory = ` 
+                    <div class="category-form"> 
+                        <div class="form-group"> 
+                            <label>Select Category</label> 
+                            <select name="recipeCategories[${categoryCount}].CategoryID" class="form-control" required> 
+                                <option value="">-- Select Category --</option> 
+                                @foreach (var category in Model.categories) 
+                                { 
+                                    <option value="@category.Id">@category.Name</option> 
+                                } 
+                            </select> 
+                        </div> 
+                        <button type="button" class="btn btn-danger remove-category">Remove Category</button> 
+                        <br /> 
+                    </div>`; 
+                $('#categories-container').append(newCategory); 
+                categoryCount++; 
+            }); 
+
             // Remove step functionality 
             $(document).on('click', '.remove-step', function () { 
                 $(this).closest('.step-form').remove(); 
@@ -193,6 +246,12 @@
             $(document).on('click', '.remove-ingredient', function () { 
                 $(this).closest('.ingredient-form').remove(); 
                 updateIngredientNumbers(); 
+            }); 
+
+            // Remove category functionality 
+            $(document).on('click', '.remove-category', function () { 
+                $(this).closest('.category-form').remove(); 
+                updateCategoryNumbers(); 
             }); 
 
             function updateStepNumbers() { 
@@ -213,6 +272,16 @@
                     }); 
                 }); 
                 ingredientCount = $('#ingredients-container .ingredient-form').length; // Update ingredientCount 
+            } 
+            
+            function updateCategoryNumbers() { 
+                $('#categories-container .category-form').each(function (index) { 
+                    $(this).find('select[name^="recipeCategories"]').each(function () { 
+                        const name = $(this).attr('name').replace(/[\d+]/, `[${index}]`); 
+                        $(this).attr('name', name); 
+                    }); 
+                }); 
+                categoryCount = $('#categories-container .category-form').length; // Update categoryCount 
             } 
         }); 
     </script> 
