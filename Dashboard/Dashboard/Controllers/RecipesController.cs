@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
 using System.Net.Http.Headers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dashboard.Controllers
 {
@@ -72,7 +71,7 @@ namespace Dashboard.Controllers
                             if (categorieRes.IsSuccessStatusCode)
                             {
                                 var APICategorieResponse = categorieRes.Content.ReadAsStringAsync().Result;
-                                recipe_Details.categories = JsonConvert.DeserializeObject<List<Category>>(APICategorieResponse);
+                                recipe_Details.recipeCategories = JsonConvert.DeserializeObject<List<RecipeCategory>>(APICategorieResponse);
 
                             }
                         }
@@ -99,7 +98,7 @@ namespace Dashboard.Controllers
                     var APIResponse = Res.Content.ReadAsStringAsync().Result;
                     recipe_Details.ingredients = JsonConvert.DeserializeObject<List<Ingredient>>(APIResponse);
                 }
-                HttpResponseMessage categorieRes = await API.GetAsync($"/api/Recipes/GetAllCategories?recipeId={id}");
+                HttpResponseMessage categorieRes = await API.GetAsync($"/api/Categories/GetAll");
                 if (categorieRes.IsSuccessStatusCode)
                 {
                     var APICategorieResponse = categorieRes.Content.ReadAsStringAsync().Result;
