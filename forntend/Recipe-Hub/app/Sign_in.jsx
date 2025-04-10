@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   BackHandler,
   ActivityIndicator,
+  Alert
 } from 'react-native';
 import icen_img from '@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg';
 import { Link } from 'expo-router';
@@ -100,7 +101,6 @@ const SignIn = () => {
                 name: user.userName
               }));
               await AsyncStorage.setItem('lastLoginTime', new Date().toISOString());
-              Alert.alert(AsyncStorage.setItem('lastLoginTime', new Date().toISOString()));
               router.replace('/(tabs)/Home');
             } else {
               setLoginError('Invalid email or password');

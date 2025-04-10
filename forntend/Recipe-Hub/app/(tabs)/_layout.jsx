@@ -35,6 +35,8 @@ return (
         }}
     />
 
+    
+    
             {/* صفحة إضافة وصفة */}
 <Tabs.Screen
         name="Add_Reciepe"

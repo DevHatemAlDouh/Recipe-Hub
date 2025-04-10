@@ -8,119 +8,124 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ActivityIndicator
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
 
 const AddRecipe = () => {
-  const [title, setTitle] = useState(''); // اسم الوصفة
-  const [description, setDescription] = useState(''); // وصف الوصفة
-  const [ingredients, setIngredients] = useState(''); // المكونات
-  const [steps, setSteps] = useState([{ text: '', image: null }]); // الخطوات
-  const [backgroundImage, setBackgroundImage] = useState(null); // صورة الوصفة
-  const [rate, setRate] = useState(0); // تقييم الوصفة (يمكن تعيينه افتراضيًا)
-  const [userID, setUserID] = useState('user123'); // معرف المستخدم (يمكن استرداده من حالة المستخدم)
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [backgroundImageBase64, setBackgroundImageBase64] = useState('');
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
-  // اختيار صورة الوصفة الرئيسية
+  const convertImageToBase64 = async (uri) => {
+    try {
+      const base64 = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return base64;
+    } catch (error) {
+      console.error('Error converting image:', error);
+      Alert.alert('Error', 'Failed to process image');
+      return null;
+    }
+  };
+
   const pickRecipeImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
 
-    if (!result.canceled) {
-      setBackgroundImage(result.assets[0].uri);
+      if (!result.canceled) {
+        setBackgroundImage(result.assets[0].uri);
+        const base64 = await convertImageToBase64(result.assets[0].uri);
+        setBackgroundImageBase64(base64);
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image');
     }
   };
 
-  // اختيار صورة لخطوة معينة
-  const pickStepImage = async (index) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const updatedSteps = [...steps];
-      updatedSteps[index].image = result.assets[0].uri;
-      setSteps(updatedSteps);
-    }
-  };
-
-  // إضافة خطوة جديدة
-  const addStep = () => {
-    setSteps([...steps, { text: '', image: null }]);
-  };
-
-  // تحديث نص الخطوة
-  const updateStepText = (index, text) => {
-    const updatedSteps = [...steps];
-    updatedSteps[index].text = text;
-    setSteps(updatedSteps);
-  };
-
-  // حذف خطوة معينة
-  const deleteStep = (index) => {
-    const updatedSteps = steps.filter((_, i) => i !== index);
-    setSteps(updatedSteps);
-  };
-
-  // إرسال الوصفة إلى الخادم
   const handleAddRecipe = async () => {
-    if (!title || !description || !ingredients || steps.some(step => !step.text) || !backgroundImage) {
-      Alert.alert('Error', 'Please fill all fields, add steps, and select an image.');
+    if (!title.trim()) {
+      Alert.alert('Error', 'Please enter recipe title');
+      return;
+    }
+    if (!description.trim()) {
+      Alert.alert('Error', 'Please enter recipe description');
+      return;
+    }
+    if (!backgroundImageBase64) {
+      Alert.alert('Error', 'Please select recipe image');
       return;
     }
 
     setLoading(true);
 
     try {
-      // إرسال الوصفة
-      const recipeResponse = await axios.post('http://recipe-hub.runasp.net/api/Recipes/Add', {
-        title:title,
-        userID:'2',
-        backgroundImage,
-        description:description,
+      const userData = await AsyncStorage.getItem('userData');
+      if (!userData) {
+        throw new Error('User data not found. Please login again.');
+      }
+      
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
+
+      const response = await axios.post('http://recipe-hub.runasp.net/api/Recipes/Add', {
+        userID: userId,
+        title: title.trim(),
+        backgroundImage: backgroundImageBase64,
+        description: description.trim(),
+        rate: 0,
+        view: 0,
+        userInfo: {
+          bio: 'New user',
+          joinDate: new Date().toISOString(),
+        },
       });
 
-      if (recipeResponse.status === 201) {
-        const recipeID = recipeResponse.data.id; // الحصول على معرف الوصفة
-
-        // إرسال المكونات
-        const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
-        await axios.post(`http://recipe-hub.runasp.net/api/Ingredients/Add`, {
-          ingredients: ingredientsArray.map((ingredient, index) => ({
-            name: ingredient,
-            description: `Ingredient ${index + 1}`,
-          })),
+      if (response.status === 201) {
+        const recipeId = response.data.id;
+        
+        // Save recipeId to AsyncStorage and navigate
+        await AsyncStorage.setItem('lastAddedRecipeId', JSON.stringify({ 
+          id: recipeId,
+          timestamp: new Date().getTime() 
+        }));
+        
+        router.push({
+          pathname: '/(tabs)/ingre',
+          params: { 
+            recipeId: recipeId,
+            title: title.trim() 
+          }
         });
-
-        // إرسال الخطوات
-        await axios.post(`http://recipe-hub.runasp.net/api/Steps/Add`, {
-          recipeID, // ربط الخطوات بالوصفة
-          steps: steps.map((step, index) => ({
-            stepNumber: index + 1,
-            description: step.text,
-            backgroundImage: step.image,
-          })),
-        });
-
-        Alert.alert('Success', 'Recipe added successfully!');
-        router.push('/Home');
-      } else {
-        Alert.alert('Error', 'Failed to add recipe.');
       }
     } catch (error) {
-      console.error('Error adding recipe:', error);
-      Alert.alert('Error', 'An error occurred while adding the recipe.');
+      console.error('Error adding recipe:', {
+        message: error.message,
+        response: error.response?.data,
+      });
+      
+      let errorMessage = 'Failed to add recipe';
+      if (error.response?.data?.errors) {
+        errorMessage = Object.values(error.response.data.errors).join('\n');
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      
+      Alert.alert('Error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -130,100 +135,51 @@ const AddRecipe = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add New Recipe</Text>
 
-      {/* اسم الوصفة */}
       <TextInput
         style={styles.input}
         placeholder="Recipe Name"
         value={title}
         onChangeText={setTitle}
+        maxLength={100}
       />
 
-      {/* وصف الوصفة */}
       <TextInput
         style={[styles.input, styles.multilineInput]}
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
         multiline
+        maxLength={500}
       />
 
-      {/* المكونات */}
-      <TextInput
-        style={[styles.input, styles.multilineInput]}
-        placeholder="Ingredients (one per line)"
-        value={ingredients}
-        onChangeText={setIngredients}
-        multiline
-      />
-
-      {/* عرض المكونات بشكل مرقم */}
-      <ScrollView style={styles.ingredientsContainer}>
-        {ingredients.split('\n').map((ingredient, index) => (
-          ingredient.trim() !== '' && (
-            <Text key={index} style={styles.ingredientText}>
-              {`${index + 1}- ${ingredient}`}
-            </Text>
-          )
-        ))}
-      </ScrollView>
-
-      {/* الخطوات */}
-      {steps.map((step, index) => (
-        <View key={index} style={styles.stepContainer}>
-          <View style={styles.stepHeader}>
-            <Text style={styles.stepNumber}>Step {index + 1}</Text>
-            <TouchableOpacity
-              style={styles.deleteStepButton}
-              onPress={() => deleteStep(index)}
-            >
-              <Text style={styles.deleteStepButtonText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
-          <TextInput
-            style={[styles.input, styles.multilineInput]}
-            placeholder={`Step ${index + 1} description`}
-            value={step.text}
-            onChangeText={(text) => updateStepText(index, text)}
-            multiline
-          />
-          <TouchableOpacity
-            style={styles.imagePickerButton}
-            onPress={() => pickStepImage(index)}
-          >
-            <Text style={styles.imagePickerText}>
-              {step.image ? 'Change Step Image' : 'Add Step Image'}
-            </Text>
-          </TouchableOpacity>
-          {step.image && (
-            <Image source={{ uri: step.image }} style={styles.stepImage} />
-          )}
-        </View>
-      ))}
-
-      {/* زر إضافة خطوة جديدة */}
-      <TouchableOpacity style={styles.addStepButton} onPress={addStep}>
-        <Text style={styles.addStepButtonText}>Add Step</Text>
+      <TouchableOpacity 
+        style={styles.imagePickerButton} 
+        onPress={pickRecipeImage}
+        disabled={loading}
+      >
+        <Text style={styles.imagePickerText}>
+          {backgroundImage ? 'Change Recipe Image' : 'Choose Recipe Image'}
+        </Text>
       </TouchableOpacity>
 
-      {/* اختيار صورة الوصفة الرئيسية */}
-      <TouchableOpacity style={styles.imagePickerButton} onPress={pickRecipeImage}>
-        <Text style={styles.imagePickerText}>Choose Recipe Image</Text>
-      </TouchableOpacity>
-
-      {/* عرض صورة الوصفة الرئيسية */}
       {backgroundImage && (
-        <Image source={{ uri: backgroundImage }} style={styles.recipeImage} />
+        <Image 
+          source={{ uri: backgroundImage }} 
+          style={styles.recipeImage} 
+          resizeMode="cover"
+        />
       )}
 
-      {/* زر إضافة الوصفة */}
       <TouchableOpacity
-        style={styles.addButton}
+        style={[styles.addButton, loading && styles.disabledButton]}
         onPress={handleAddRecipe}
         disabled={loading}
       >
-        <Text style={styles.addButtonText}>
-          {loading ? 'Adding...' : 'Add Recipe'}
-        </Text>
+        {loading ? (
+          <ActivityIndicator color="#fff" size="small" />
+        ) : (
+          <Text style={styles.addButtonText}>Add Recipe</Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
   );
@@ -240,6 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#333',
   },
   input: {
     backgroundColor: '#fff',
@@ -247,39 +204,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   multilineInput: {
-    height: 100,
+    height: 120,
     textAlignVertical: 'top',
-  },
-  ingredientsContainer: {
-    marginBottom: 15,
-  },
-  ingredientText: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  stepContainer: {
-    marginBottom: 20,
-  },
-  stepHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  stepNumber: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  deleteStepButton: {
-    backgroundColor: '#dc3545',
-    padding: 10,
-    borderRadius: 5,
-  },
-  deleteStepButtonText: {
-    color: '#fff',
-    fontSize: 14,
   },
   imagePickerButton: {
     backgroundColor: '#007AFF',
@@ -291,38 +221,23 @@ const styles = StyleSheet.create({
   imagePickerText: {
     color: '#fff',
     fontSize: 16,
-  },
-  stepImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 15,
-    resizeMode: 'cover',
+    fontWeight: '500',
   },
   recipeImage: {
     width: '100%',
     height: 200,
     borderRadius: 10,
-    marginBottom: 15,
-    resizeMode: 'cover',
-  },
-  addStepButton: {
-    backgroundColor: '#ffc107',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  addStepButtonText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginBottom: 20,
   },
   addButton: {
     backgroundColor: '#28a745',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
+    marginTop: 10,
+  },
+  disabledButton: {
+    opacity: 0.6,
   },
   addButtonText: {
     color: '#fff',
