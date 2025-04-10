@@ -83,7 +83,6 @@ namespace Dashboard.Controllers
             }
         }
 
-
         public async Task<IActionResult> Create()
         {
             using (var API = new HttpClient())
@@ -160,6 +159,12 @@ namespace Dashboard.Controllers
                         var IngredentsAPIResponse = IngredentsRes.Content.ReadAsStringAsync().Result;
                         recipe_Details.ingredients = JsonConvert.DeserializeObject<List<Ingredient>>(IngredentsAPIResponse);
                     }
+                    HttpResponseMessage CategoriesRes = await API.GetAsync("/api/Categories/GetAll");
+                    if (CategoriesRes.IsSuccessStatusCode)
+                    {
+                        var CategoriesAPIResponse = CategoriesRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.categories = JsonConvert.DeserializeObject<List<Category>>(CategoriesAPIResponse);
+                    }
                     HttpResponseMessage StepRes = await API.GetAsync($"/api/Recipes/GetAllSteps?recipeid={id}");
                     if (StepRes.IsSuccessStatusCode)
                     {
@@ -172,9 +177,17 @@ namespace Dashboard.Controllers
                         var RecpieIngredentsAPIResponse = RecpieIngredentsRes.Content.ReadAsStringAsync().Result;
                         recipe_Details.LrecipeIngredients = JsonConvert.DeserializeObject<List<RecipeIngredient>>(RecpieIngredentsAPIResponse);
                     }
+                    HttpResponseMessage RecpieCategoriesRes = await API.GetAsync($"/api/Recipes/GetAllCategories?recipeid={id}");
+                    if (RecpieCategoriesRes.IsSuccessStatusCode)
+                    {
+                        var RecpieCategoriesAPIResponse = RecpieCategoriesRes.Content.ReadAsStringAsync().Result;
+                        recipe_Details.LrecipeCategories = JsonConvert.DeserializeObject<List<RecipeCategory>>(RecpieCategoriesAPIResponse);
+                    }
                 }
+
                 ViewBag.Steps = recipe_Details.Lsteps.Count;
                 ViewBag.RecipeIngredents = recipe_Details.LrecipeIngredients.Count;
+                ViewBag.RecpieCategories = recipe_Details.LrecipeCategories.Count;
                 return View(recipe_Details);
             }
         }
@@ -249,13 +262,13 @@ namespace Dashboard.Controllers
         }
 
         // Helper method to fetch recipe details
-        private async Task<Recipe_details> GetRecipeDetailsAsync(HttpClient API, int id)
+        private async Task<Recipe> GetRecipeDetailsAsync(HttpClient API, int id)
         {
             var response = await API.GetAsync($"/api/Recipes/GetById/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Recipe_details>(content);
+                return JsonConvert.DeserializeObject<Recipe>(content);
             }
             return null;
         }
@@ -278,26 +291,31 @@ namespace Dashboard.Controllers
             return response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
         }
 
+        private async Task ProcessStepAsync(HttpClient API, Step step, int recipeId)
+        {
+            if (step.backgroundImageBase64 != null && step.backgroundImageBase64.Length > 0)
+            {
+                step.backgroundImage = await ConvertToBase64Async(step.backgroundImageBase64);
+            }
+
+            var stepPayload = new Step
+            {
+                RecipeID = recipeId,
+                StepNumber = step.StepNumber,
+                description = step.description,
+                backgroundImage = step.backgroundImage,
+            };
+
+            var stepJson = JsonConvert.SerializeObject(stepPayload);
+            var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
+            await API.PostAsync("/api/Steps/Add", stepContent);
+        }
+
         private async Task ProcessStepsAsync(HttpClient API, ICollection<Step> steps, int recipeId)
         {
             foreach (var step in steps)
             {
-                if (step.backgroundImageBase64 != null && step.backgroundImageBase64.Length > 0)
-                {
-                    step.backgroundImage = await ConvertToBase64Async(step.backgroundImageBase64);
-                }
-
-                var stepPayload = new Step
-                {
-                    RecipeID = recipeId,
-                    StepNumber = step.StepNumber,
-                    description = step.description,
-                    backgroundImage = step.backgroundImage,
-                };
-
-                var stepJson = JsonConvert.SerializeObject(stepPayload);
-                var stepContent = new StringContent(stepJson, System.Text.Encoding.UTF8, "application/json");
-                await API.PostAsync("/api/Steps/Add", stepContent);
+                await ProcessStepAsync(API, step, recipeId);
             }
         }
 
@@ -305,6 +323,11 @@ namespace Dashboard.Controllers
         {
             foreach (var step in steps)
             {
+                if(step.Id == 0)
+                {
+                    await ProcessStepAsync(API, step, recipeId);
+                }
+
                 if (step.backgroundImageBase64 != null && step.backgroundImageBase64.Length > 0)
                 {
                     step.backgroundImage = await ConvertToBase64Async(step.backgroundImageBase64);
@@ -324,19 +347,24 @@ namespace Dashboard.Controllers
             }
         }
 
+        private async Task ProcessCategoryAsync(HttpClient API, RecipeCategory category, int recipeId)
+        {
+            var categoryPayload = new RecipeCategory
+            {
+                RecipeID = recipeId,
+                CategoryID = category.CategoryID,
+            };
+
+            var categoryJson = JsonConvert.SerializeObject(categoryPayload);
+            var categoryContent = new StringContent(categoryJson, System.Text.Encoding.UTF8, "application/json");
+                await API.PostAsync("/api/Recipes/Category/Add", categoryContent);
+        }
+
         private async Task ProcessCategoresAsync(HttpClient API, ICollection<RecipeCategory> categores, int recipeId)
         {
             foreach (var category in categores)
             {
-                var categoryPayload = new RecipeCategory
-                {
-                    RecipeID = recipeId,
-                    CategoryID = category.CategoryID,
-                };
-
-                var categoryJson = JsonConvert.SerializeObject(categoryPayload);
-                var categoryContent = new StringContent(categoryJson, System.Text.Encoding.UTF8, "application/json");
-                await API.PostAsync("/api/Recipes/Category/Add", categoryContent);
+                await ProcessCategoryAsync(API, category, recipeId);
             }
         }
 
@@ -344,6 +372,10 @@ namespace Dashboard.Controllers
         {
             foreach (var category in Categores)
             {
+                if(category.Id == 0)
+                {
+                    await ProcessCategoryAsync(API, category, recipeId);
+                }
                 var categoryPayload = new RecipeCategory
                 {
                     RecipeID = recipeId,
@@ -356,21 +388,26 @@ namespace Dashboard.Controllers
             }
         }
 
+        private async Task ProcessIngredientAsync(HttpClient API, RecipeIngredient ingredient, int recipeId)
+        {
+            var ingredientPayload = new RecipeIngredient
+            {
+                RecipeID = recipeId,
+                IngredientID = ingredient.IngredientID,
+                quantity = ingredient.quantity,
+                unit = ingredient.unit,
+            };
+
+            var ingredientJson = JsonConvert.SerializeObject(ingredientPayload);
+            var ingredientContent = new StringContent(ingredientJson, System.Text.Encoding.UTF8, "application/json");
+            await API.PostAsync("/api/Recipes/Ingredient/Add", ingredientContent);
+        }
+
         private async Task ProcessIngredientsAsync(HttpClient API, ICollection<RecipeIngredient> ingredients, int recipeId)
         {
             foreach (var ingredient in ingredients)
             {
-                var ingredientPayload = new RecipeIngredient
-                {
-                    RecipeID = recipeId,
-                    IngredientID = ingredient.IngredientID,
-                    quantity = ingredient.quantity,
-                    unit = ingredient.unit,
-                };
-
-                var ingredientJson = JsonConvert.SerializeObject(ingredientPayload);
-                var ingredientContent = new StringContent(ingredientJson, System.Text.Encoding.UTF8, "application/json");
-                await API.PostAsync("/api/Recipes/Ingredient/Add", ingredientContent);
+                await ProcessIngredientAsync(API, ingredient, recipeId);
             }
         }
 
@@ -378,6 +415,10 @@ namespace Dashboard.Controllers
         {
             foreach (var ingredient in ingredients)
             {
+                if(ingredient.Id == 0)
+                {
+                    await ProcessIngredientAsync(API, ingredient, recipeId);
+                }
                 var ingredientPayload = new RecipeIngredient
                 {
                     RecipeID = recipeId,

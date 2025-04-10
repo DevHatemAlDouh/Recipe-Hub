@@ -1,6 +1,6 @@
 ﻿@model Recipe_details
 
-@{
+@{ 
     ViewBag.Title = "Edit Recipe"; 
 } 
 
@@ -43,13 +43,14 @@
                                     <div class="category-form"> 
                                         <div class="form-group"> 
                                             <label>Select Category</label> 
-                                            <select name="recipeCategories[${categoryIndex}].CategoryID" class="form-control" required> 
+                                            <select name="recipeCategories[@categoryIndex].CategoryID" class="form-control" required> 
                                                 <option value="">-- Select Category --</option> 
                                                 @foreach (var category in Model.categories) 
                                                 { 
                                                     <option value="@category.Id">@category.Name</option> 
                                                 } 
                                             </select> 
+                                            <input type="hidden" name="recipeCategories[@categoryIndex].Id" value="@recipeCategory.Id" />
                                         </div> 
                                         <button type="button" class="btn btn-danger remove-category">Remove Category</button> 
                                         <br /> 
@@ -77,11 +78,11 @@
                                     <div class="step-form"> 
                                         <div class="form-group"> 
                                             <label>Step Number</label>
-                                            <input type="number" class="form-control" name="steps[${stepIndex}].StepNumber" value="@step.StepNumber" readonly />
+                                            <input type="number" class="form-control" name="steps[@stepIndex].StepNumber" value="@step.StepNumber" readonly />
                                         </div> 
                                         <div class="form-group"> 
                                             <label>Description</label>
-                                            <input type="text" class="form-control" name="steps[${stepIndex}].description" value="@step.description" />
+                                            <input type="text" class="form-control" name="steps[@stepIndex].description" value="@step.description" />
                                         </div> 
                                         <div class="form-group"> 
                                             <label>Background Image</label> 
@@ -114,7 +115,7 @@
                                     <div class="ingredient-form"> 
                                         <div class="form-group"> 
                                             <label>Select Ingredient</label> 
-                                            <select name="recipeIngredients[${recipeIngredientIndex}].IngredientID" class="form-control" required> 
+                                            <select name="recipeIngredients[@recipeIngredientIndex].IngredientID" class="form-control" required> 
                                                 <option value="">-- Select Ingredient --</option> 
                                                 @foreach (var ingredient in Model.ingredients) 
                                                 { 
@@ -124,11 +125,11 @@
                                         </div> 
                                         <div class="form-group"> 
                                             <label>Quantity</label>
-                                            <input type="number" class="form-control" name="recipeIngredients[${recipeIngredientIndex}].quantity" value="@recipeIngredient.quantity" />
+                                            <input type="number" class="form-control" name="recipeIngredients[@recipeIngredientIndex].quantity" value="@recipeIngredient.quantity" />
                                         </div> 
                                         <div class="form-group"> 
                                             <label>Unit</label>
-                                            <input type="text" class="form-control" name="recipeIngredients[${recipeIngredientIndex}].unit" value="@recipeIngredient.unit" />
+                                            <input type="text" class="form-control" name="recipeIngredients[@recipeIngredientIndex].unit" value="@recipeIngredient.unit" />
                                         </div> 
                                         <button type="button" class="btn btn-danger remove-ingredient">Remove Ingredient</button> 
                                         <br /> 
@@ -150,11 +151,12 @@
 </div> 
 
 @section Scripts { 
-    <script> 
+    <script>
+
         $(document).ready(function () {
-            var stepCount = @Model.Lsteps.Count; // Initialize stepCount from model
-            var ingredientCount = @Model.LrecipeIngredients.Count; // Initialize ingredientCount from model
-            var categoryCount = @Model.LrecipeCategories.Count; // Initialize categoryCount from model
+            var stepCount = @ViewBag.Steps ; // Initialize stepCount from model
+            var ingredientCount = @ViewBag.RecipeIngredents; // Initialize ingredientCount from model
+            var categoryCount = @ViewBag.RecpieCategories; // Initialize categoryCount from model
 
             // Preview for the recipe background image 
             $('.recipe-image').change(function (event) { 
