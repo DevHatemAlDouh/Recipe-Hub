@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 const { width } = Dimensions.get('window');
 
 const Profile = () => {
@@ -29,37 +30,21 @@ const Profile = () => {
       {/* إحصائيات مطورة مع أيقونات */}
       <View style={styles.statsContainer}>
         <StatItem icon="utensils" value="45" label="Recipes" />
-        <StatItem icon="users" value="1.2K" label="Followers" />
-        <StatItem icon="star" value="4.8" label="Rating" />
+        <StatItem icon="heart" value="4.8" label="Rating" />
       </View>
 
       {/* أزرار تفاعلية مدمجة */}
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.primaryButton}>
           <Icon name="user-plus" size={18} color="#fff" />
-          <Text style={styles.buttonText}>Follow</Text>
+          <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.secondaryButton}>
-          <Icon name="user-edit" size={18} color="#6B5B95" />
-          <Text style={styles.secondaryButtonText}>Edit Profile</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* نبذة مع أيقونة */}
-      <View style={styles.aboutSection}>
-        <View style={styles.sectionHeader}>
-          <Icon name="user-alt" size={20} color="#6B5B95" />
-          <Text style={styles.sectionTitle}>About Me</Text>
-        </View>
-        <Text style={styles.aboutText}>
-          Passionate home chef with a love for Italian cuisine. Sharing my favorite recipes and cooking tips with the world!
-        </Text>
       </View>
 
       {/* وصفات مميزة مع تأثيرات بصرية */}
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
-          <Icon name="star" size={20} color="#FFA07A" />
+          <Icon name="heart-outline" size={20} color="#FFA07A" />
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
           <TouchableOpacity style={styles.viewAllButton}>
             <Text style={styles.viewAllText}>View All</Text>

@@ -10,8 +10,8 @@ const RecipeDetails = () => {
   const parsedRecipe = params.recipe ? JSON.parse(params.recipe) : null;
 
   // Handlers
-  const handleShare = () => {/* منطق المشاركة */};
-  const handleFavorite = () => {/* منطق المفضلة */};
+  // const handleShare = () => {/* منطق المشاركة */};
+  // const handleFavorite = () => {/* منطق المفضلة */};
 
   useFocusEffect(
     React.useCallback(() => {
@@ -54,18 +54,18 @@ const RecipeDetails = () => {
                 </View>
                 )}
                 
-                <View style={styles.actionsRow}>
+                {/* <View style={styles.actionsRow}>
                 <TouchableOpacity onPress={handleFavorite} style={styles.iconButton}>
                     <Ionicons name="heart-outline" size={28} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleShare} style={styles.iconButton}>
                     <Ionicons name="share-social-outline" size={28} color="#fff" />
                 </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
 
             {/* معلومات الوصفة الأساسية */}
-            <View style={styles.recipeMeta}>
+            {/* <View style={styles.recipeMeta}>
                 <View style={styles.metaItem}>
                 <Ionicons name="people-outline" size={28} color="#e17055" />
                 <Text style={styles.metaValue}>{parsedRecipe.serves || 4}</Text>
@@ -83,7 +83,7 @@ const RecipeDetails = () => {
                 <Text style={styles.metaValue}>{parsedRecipe.difficulty || 'متوسط'}</Text>
                 <Text style={styles.metaLabel}>الصعوبة</Text>
                 </View>
-            </View>
+            </View> */}
 
             {/* محتوى الوصفة */}
             <View style={styles.content}>

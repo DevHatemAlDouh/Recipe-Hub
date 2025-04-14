@@ -105,7 +105,7 @@ const AddRecipe = () => {
         }));
         
         router.push({
-          pathname: '/(tabs)/ingre',
+          pathname: '/ingre',
           params: { 
             recipeId: recipeId,
             title: title.trim() 
