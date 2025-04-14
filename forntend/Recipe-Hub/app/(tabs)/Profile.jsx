@@ -30,20 +30,11 @@ const Profile = () => {
       {/* إحصائيات مطورة مع أيقونات */}
       <View style={styles.statsContainer}>
         <StatItem icon="utensils" value="45" label="Recipes" />
-        <StatItem icon="star" value="4.8" label="Rating" />
         <StatItem icon="heart" value="4.8" label="Rating" />
       </View>
 
       {/* أزرار تفاعلية مدمجة */}
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.secondaryButton}>
-          <Icon name="user-edit" size={18} color="#6B5B95" />
-          <Text style={styles.secondaryButtonText}>Edit Profile</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* نبذة مع أيقونة */}
-      
         <TouchableOpacity style={styles.primaryButton}>
           <Icon name="user-plus" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
