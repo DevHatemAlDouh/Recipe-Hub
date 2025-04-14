@@ -175,7 +175,7 @@ const IngredientsSection = () => {
             onPress: () => {
               setSelectedIngredients([]);
               router.push({
-                pathname: '/(tabs)/StepsSection',
+                pathname: '/StepsSection',
                 params: { 
                   recipeId: recipeId,
                   title: recipeTitle 

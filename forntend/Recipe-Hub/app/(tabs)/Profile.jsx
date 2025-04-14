@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 const { width } = Dimensions.get('window');
 
 const Profile = () => {
@@ -30,6 +31,7 @@ const Profile = () => {
       <View style={styles.statsContainer}>
         <StatItem icon="utensils" value="45" label="Recipes" />
         <StatItem icon="star" value="4.8" label="Rating" />
+        <StatItem icon="heart" value="4.8" label="Rating" />
       </View>
 
       {/* أزرار تفاعلية مدمجة */}
@@ -42,11 +44,16 @@ const Profile = () => {
 
       {/* نبذة مع أيقونة */}
       
+        <TouchableOpacity style={styles.primaryButton}>
+          <Icon name="user-plus" size={18} color="#fff" />
+          <Text style={styles.buttonText}>Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* وصفات مميزة مع تأثيرات بصرية */}
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
-          <Icon name="star" size={20} color="#FFA07A" />
+          <Icon name="heart-outline" size={20} color="#FFA07A" />
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
           <TouchableOpacity style={styles.viewAllButton}>
             <Text style={styles.viewAllText}>View All</Text>

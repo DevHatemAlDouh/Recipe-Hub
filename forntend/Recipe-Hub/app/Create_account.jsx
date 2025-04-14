@@ -150,7 +150,6 @@ const CreateAccount = () => {
           });
 
           if (response.status === 201) {
-            Alert.alert('Success', 'Account created successfully!');
             router.push('/Sign_in');
           } else {
             Alert.alert('Error', response.data.message || 'There was an error with your registration');
