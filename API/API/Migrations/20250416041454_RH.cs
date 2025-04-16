@@ -49,7 +49,6 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TimeOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -162,7 +161,7 @@ namespace API.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    persons = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    persons = table.Column<int>(type: "int", nullable: false),
                     Rate = table.Column<int>(type: "int", nullable: true),
                     View = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
