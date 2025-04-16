@@ -759,6 +759,54 @@
         }
       }
     },
+    "/api/Penalties/GetAllTerms": {
+      "get": {
+        "tags": [
+          "Penalties"
+        ],
+        "parameters": [
+          {
+            "name": "penaltyId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TermsInfo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TermsInfo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TermsInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Penalties/GetById/{penaltyId}": {
       "get": {
         "tags": [
@@ -3428,10 +3476,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {
-            "type": "integer",
-            "format": "int32"
-          },
           "description": {
             "type": "string",
             "nullable": true
@@ -3530,8 +3574,8 @@
             "nullable": true
           },
           "persons": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "rate": {
             "type": "integer",

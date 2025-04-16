@@ -19,7 +19,6 @@ namespace API.Service
             {
                 Description = entity.Description,
                 TimeOut = entity.TimeOut,
-                Type = entity.Type,
                 CreatedAt = DateTime.Now,
 
                 UserPenalties = new List<UserPenalty>()
@@ -44,7 +43,6 @@ namespace API.Service
             var penalties = await _context.Penalties.Select(u => new PenaltyInfo
             {
                 Id = u.Id,
-                Type = u.Type,
                 Description = u.Description,
                 TimeOut = u.TimeOut,
                 CreatedAt = u.CreatedAt,
@@ -68,7 +66,6 @@ namespace API.Service
             return new PenaltyInfo
             {
                 Id = penalty.Id,
-                Type = penalty.Type,
                 Description = penalty.Description,
                 TimeOut = penalty.TimeOut,
                 CreatedAt = penalty.CreatedAt,
@@ -83,7 +80,6 @@ namespace API.Service
             {
                 penalty.TimeOut = entity.TimeOut;
                 penalty.Description = entity.Description;
-                penalty.Type = entity.Type;
                 penalty.UpdatedAt = DateTime.Now;
 
                 _context.Penalties.Update(penalty);

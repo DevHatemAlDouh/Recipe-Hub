@@ -187,9 +187,6 @@ namespace API.Migrations
                     b.Property<DateTime>("TimeOut")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -270,9 +267,8 @@ namespace API.Migrations
                     b.Property<int?>("View")
                         .HasColumnType("int");
 
-                    b.Property<string>("persons")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("persons")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -18,11 +18,13 @@ namespace API.Controllers
     {
         private readonly ICRUDService<PenaltyInfo> _penaltyService;
         private readonly UserPenalties _userPenalties;
+        private readonly PenaltyTermsService _penaltyTerms;
 
-        public PenaltiesController(ICRUDService<PenaltyInfo> penaltyService, UserPenalties userPenalties)
+        public PenaltiesController(ICRUDService<PenaltyInfo> penaltyService, UserPenalties userPenalties, PenaltyTermsService penaltyTerms)
         {
             _penaltyService = penaltyService;
             _userPenalties = userPenalties;
+            _penaltyTerms = penaltyTerms;
         }
 
         // GET: api/Penalties
@@ -30,6 +32,13 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<PenaltyInfo>>> GetPenaltys()
         {
             var penalties = await _penaltyService.GetAll();
+            return Ok(penalties);
+        }
+
+        [HttpGet("GetAllTerms")]
+        public async Task<ActionResult<IEnumerable<TermsInfo>>> GetAllTerms(int penaltyId)
+        {
+            var penalties = await _penaltyTerms.GetAll(penaltyId);
             return Ok(penalties);
         }
 
