@@ -18,7 +18,6 @@ namespace API.Service
             var ingredient = new Ingredient
             {
                 Name = entity.Name,
-                Description = entity.Description,
                 CreatedAt = DateTime.Now,
 
                 RecipeIngredients = new List<RecipeIngredient>(),
@@ -50,7 +49,6 @@ namespace API.Service
             var ingredients = await _context.Ingredients.Select(u => new IngredientInfo
             {
                 Id = u.Id,
-                Description = u.Description,
                 Name = u.Name,
                 CreatedAt = u.CreatedAt,
                 UpdatedAt = u.UpdatedAt
@@ -73,7 +71,6 @@ namespace API.Service
             return new IngredientInfo
             {
                 Id = ingredient.Id,
-                Description = ingredient.Description,
                 Name = ingredient.Name,
                 CreatedAt = ingredient.CreatedAt,
                 UpdatedAt = ingredient.UpdatedAt
@@ -86,8 +83,6 @@ namespace API.Service
             if (ingredient != null)
             {
                 ingredient.Name = entity.Name;
-                ingredient.Description = entity.Description;
-                ingredient.CreatedAt = entity.CreatedAt;
                 ingredient.UpdatedAt = DateTime.Now;
 
                 _context.Ingredients.Update(ingredient);

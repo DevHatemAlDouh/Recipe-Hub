@@ -84,7 +84,6 @@ namespace API.Service
                 penalty.TimeOut = entity.TimeOut;
                 penalty.Description = entity.Description;
                 penalty.Type = entity.Type;
-                penalty.CreatedAt = entity.CreatedAt;
                 penalty.UpdatedAt = DateTime.Now;
 
                 _context.Penalties.Update(penalty);

@@ -52,7 +52,6 @@ namespace API.Service
                 suggestion.UserID = entity.UserID;
                 suggestion.StepID = entity.StepID;
                 suggestion.Description = entity.Description;
-                suggestion.CreatedAt = entity.CreatedAt;
                 suggestion.UpdatedAt = DateTime.Now;
 
                 _context.Suggestions.Update(suggestion);

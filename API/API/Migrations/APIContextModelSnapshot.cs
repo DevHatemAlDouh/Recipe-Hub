@@ -157,10 +157,6 @@ namespace API.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -273,6 +269,10 @@ namespace API.Migrations
 
                     b.Property<int?>("View")
                         .HasColumnType("int");
+
+                    b.Property<string>("persons")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -480,6 +480,35 @@ namespace API.Migrations
                     b.ToTable("Suggestions");
                 });
 
+            modelBuilder.Entity("API.Models.Terms", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("penaltyid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("permissionid")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("penaltyid");
+
+                    b.HasIndex("permissionid");
+
+                    b.ToTable("Terms");
+                });
+
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -547,6 +576,9 @@ namespace API.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PenaltyID")
                         .HasColumnType("int");
 
@@ -576,6 +608,9 @@ namespace API.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PermissionID")
                         .HasColumnType("int");
 
@@ -598,6 +633,7 @@ namespace API.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
                             PermissionID = 1,
                             UserID = 1
                         },
@@ -605,6 +641,7 @@ namespace API.Migrations
                         {
                             Id = 2,
                             CreatedAt = new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
                             PermissionID = 2,
                             UserID = 1
                         });
@@ -776,6 +813,25 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Models.Terms", b =>
+                {
+                    b.HasOne("API.Models.Penalty", "penalty")
+                        .WithMany("Terms")
+                        .HasForeignKey("penaltyid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Permission", "permission")
+                        .WithMany("Terms")
+                        .HasForeignKey("permissionid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("penalty");
+
+                    b.Navigation("permission");
+                });
+
             modelBuilder.Entity("API.Models.UserPenalty", b =>
                 {
                     b.HasOne("API.Models.Penalty", "Penalty")
@@ -833,11 +889,15 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Penalty", b =>
                 {
+                    b.Navigation("Terms");
+
                     b.Navigation("UserPenalties");
                 });
 
             modelBuilder.Entity("API.Models.Permission", b =>
                 {
+                    b.Navigation("Terms");
+
                     b.Navigation("UserPermissions");
                 });
 

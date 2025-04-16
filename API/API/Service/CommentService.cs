@@ -81,7 +81,6 @@ namespace API.Service
                 comment.Description = entity.Description;
                 comment.SupCommentID = entity.SupCommentID;
                 comment.Rate = entity.Rate;
-                comment.CreatedAt = entity.CreatedAt;
                 comment.UpdatedAt = DateTime.Now;
 
                 _context.Comments.Update(comment);

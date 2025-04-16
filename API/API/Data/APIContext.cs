@@ -29,6 +29,7 @@ namespace API.Data
         public DbSet<Penalty> Penalties { get; set; }
         public DbSet<Step> Steps { get; set; }
         public DbSet<UserPenalty> UserPenalties { get; set; }
+        public DbSet<Terms> Terms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -142,6 +143,19 @@ namespace API.Data
                 .HasOne(up => up.Penalty)
                 .WithMany(p => p.UserPenalties)
                 .HasForeignKey(up => up.PenaltyID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure relationships for UserPenalty
+            modelBuilder.Entity<Terms>()
+                .HasOne(up => up.permission)
+                .WithMany(u => u.Terms)
+                .HasForeignKey(up => up.permissionid)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Terms>()
+                .HasOne(up => up.penalty)
+                .WithMany(p => p.Terms)
+                .HasForeignKey(up => up.penaltyid)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for UserPermission

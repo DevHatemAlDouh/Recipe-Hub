@@ -77,7 +77,6 @@ namespace API.Service
             if (permission != null)
             {
                 permission.Title = entity.Title;
-                permission.CreatedAt = entity.CreatedAt;
                 permission.UpdatedAt = DateTime.Now;
 
                 _context.Permissions.Update(permission);

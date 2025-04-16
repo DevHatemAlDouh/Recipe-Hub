@@ -8,5 +8,6 @@
         public DateTime? UpdatedAt { get; set; }
 
         public ICollection<UserPermission> UserPermissions { get; set; }
+        public ICollection<Terms> Terms { get; set; }
     }
 }

@@ -18,6 +18,7 @@ builder.Services.AddDbContext<APIContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICRUDService<UserInfo>, UserService>();
+builder.Services.AddScoped<ICRUDService<TermsInfo>, TermsService>();
 builder.Services.AddScoped<ICRUDService<PenaltyInfo>, PenaltyService>();
 builder.Services.AddScoped<ICRUDService<PermissionInfo>, PermissionService>();
 builder.Services.AddScoped<ICRUDService<IngredientInfo>, IngredientService>();

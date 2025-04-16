@@ -21,6 +21,7 @@ namespace API.Service
                 Description = entity.Description,
                 BackgroundImage = entity.BackgroundImage,
                 Title = entity.Title,
+                persons = entity.persons,
                 Rate = 0,
                 View = 0,
                 CreatedAt = DateTime.Now,
@@ -59,6 +60,7 @@ namespace API.Service
                 Description = u.Description,
                 BackgroundImage = u.BackgroundImage,
                 Title = u.Title,
+                persons = u.persons,
                 Rate = u.Rate,
                 View = u.View,
                 CreatedAt = u.CreatedAt,
@@ -86,6 +88,7 @@ namespace API.Service
                 BackgroundImage = recipe.BackgroundImage,
                 Description = recipe.Description,
                 Title = recipe.Title,
+                persons = recipe.persons,
                 Rate = recipe.Rate,
                 View = recipe.View,
                 CreatedAt = recipe.CreatedAt,
@@ -102,6 +105,8 @@ namespace API.Service
                 recipe.Title = entity.Title;
                 recipe.Description = entity.Description;
                 recipe.BackgroundImage = entity.BackgroundImage;
+                recipe.persons = entity.persons;
+                recipe.UpdatedAt = DateTime.Now;
 
                 _context.Recipes.Update(recipe);
                 await _context.SaveChangesAsync();

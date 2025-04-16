@@ -47,7 +47,6 @@ namespace API.Service
             if (category != null)
             {
                 category.Name = entity.Name;
-                category.CreatedAt = entity.CreatedAt;
                 category.UpdatedAt = DateTime.Now;
 
                 _context.Categories.Update(category);

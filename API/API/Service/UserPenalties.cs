@@ -23,6 +23,7 @@ namespace API.Service
                 Id = penalty.Id,
                 UserID = penalty.UserID,
                 PenaltyID = penalty.PenaltyID,
+                IsActive = penalty.IsActive,
                 CreatedAt = penalty.CreatedAt,
                 UpdatedAt = penalty.UpdatedAt
             };
@@ -39,15 +40,93 @@ namespace API.Service
                 {
                     UserID = entity.UserID,
                     PenaltyID = entity.PenaltyID,
-                    Penalty = penalty,
+                    IsActive = true,
                     CreatedAt = DateTime.Now,
                     User = user
                 };
 
                 await _context.UserPenalties.AddAsync(userPenalty);
                 await _context.SaveChangesAsync();
+
+                var terms = await _context.Terms
+                    .Where(t => t.penaltyid == entity.PenaltyID)
+                    .Select(t => new Terms
+                    {
+                        Id = t.Id,
+                        penaltyid = t.penaltyid,
+                        permissionid = t.permissionid
+                    }).ToListAsync();
+
+
+                foreach (var term in terms) 
+                {
+                    var userPermmtions = await _context.UserPermissions.FirstOrDefaultAsync(u => u.PermissionID == term.permissionid);
+                    userPermmtions.IsActive = false;
+                    userPermmtions.UpdatedAt = DateTime.Now;
+
+
+                    _context.UserPermissions.Update(userPermmtions);
+                    await _context.SaveChangesAsync();
+                }
+
                 entity.Id = userPenalty.Id; // Update the entity with the generated Id
             }
+        }
+
+        public async Task<string> Revoke(UserPenaltyInfo entity)
+        {
+            var userPenalty = await _context.UserPenalties.FirstOrDefaultAsync(p => p.Id == entity.Id);
+            var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID);
+
+            if (userPenalty.IsActive)
+            {
+                
+                if (userPenalty.CreatedAt.HasValue)
+                {
+                    DateTime createdAt = userPenalty.CreatedAt.Value;
+                    DateTime TimeOut = penalty.TimeOut;
+
+                    int year = createdAt.Year + TimeOut.Year;
+                    int month = createdAt.Month + TimeOut.Month;
+                    int day = createdAt.Day + TimeOut.Day;
+                    int hour = createdAt.Hour + TimeOut.Hour;
+                    int minute = createdAt.Minute + TimeOut.Minute;
+                    int second = createdAt.Second + TimeOut.Second;
+                    int millisecond = createdAt.Millisecond + TimeOut.Millisecond;
+
+                    DateTime newTime = new DateTime(year, month, day, hour, minute, second, millisecond);
+                    if(newTime > DateTime.Now)
+                    {
+                        userPenalty.IsActive = false;
+                        userPenalty.UpdatedAt = DateTime.Now;
+                        _context.UserPenalties.Update(userPenalty);
+                        await _context.SaveChangesAsync();
+                        var terms = await _context.Terms
+                            .Where(t => t.penaltyid == entity.PenaltyID)
+                            .Select(t => new Terms
+                            {
+                                Id = t.Id,
+                                penaltyid = t.penaltyid,
+                                permissionid = t.permissionid
+                            }).ToListAsync();
+
+
+                        foreach (var term in terms)
+                        {
+                            var userPermmtions = await _context.UserPermissions.FirstOrDefaultAsync(u => u.PermissionID == term.permissionid);
+                            userPermmtions.IsActive = true;
+                            userPermmtions.UpdatedAt = DateTime.Now;
+
+
+                            _context.UserPermissions.Update(userPermmtions);
+                            await _context.SaveChangesAsync();
+                        }
+                        return null;
+                    }
+                }
+                
+            }
+            return penalty.Description;
 
             
         }
@@ -55,7 +134,7 @@ namespace API.Service
         public async Task<IEnumerable<UserPenaltyInfo>> GetAllpenalty(int id)
         {
             var userPenalties = await _context.UserPenalties
-                .Where(u => u.UserID == id)
+                .Where(u => u.UserID == id && u.IsActive == true)
                 .Select(u => new UserPenaltyInfo
                 {
                     Id = u.Id,

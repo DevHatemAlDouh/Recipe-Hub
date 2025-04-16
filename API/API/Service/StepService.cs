@@ -94,7 +94,6 @@ namespace API.Service
                 step.RecipeID = entity.RecipeID;
                 step.StepNumber = entity.StepNumber;
                 step.BackgroundImage = entity.BackgroundImage;
-                step.CreatedAt = entity.CreatedAt;
                 step.UpdatedAt = DateTime.Now;
 
                 _context.Steps.Update(step);

@@ -11,5 +11,6 @@
 
         // Navigation property
         public ICollection<UserPenalty> UserPenalties { get; set; } // Collection of UserPenalties
+        public ICollection<Terms> Terms { get; set; } // Collection of Terms
     }
 }

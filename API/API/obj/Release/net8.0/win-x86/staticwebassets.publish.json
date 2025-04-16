@@ -1,12 +1,20 @@
 {
   "Version": 1,
-  "Hash": "OV8vHmuRUkSC09QpOjYDPasMdBSCa6iu4RW6YjiOfVA=",
+  "Hash": "tEuLSiTrKkPea9P5dG+mL+pvkjiSOqYKBjokUof7d5I=",
   "Source": "API",
   "BasePath": "_content/API",
   "Mode": "Default",
   "ManifestType": "Publish",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "API\\wwwroot",
+      "Source": "API",
+      "ContentRoot": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\wwwroot\\",
+      "BasePath": "_content/API",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [],
   "Endpoints": []
 }

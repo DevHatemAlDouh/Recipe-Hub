@@ -23,6 +23,7 @@ namespace API.Service
                 Id = permission.Id,
                 UserID = permission.UserID,  
                 PermissionID = permission.PermissionID,
+                IsActive = permission.IsActive,
                 CreatedAt = permission.CreatedAt,
                 UpdatedAt = permission.UpdatedAt
             };
@@ -43,6 +44,7 @@ namespace API.Service
                 UserID = entity.UserID,
                 PermissionID = entity.PermissionID,
                 Permission = permission,
+                IsActive = true,
                 CreatedAt = DateTime.Now,
                 User = user
             };
@@ -71,6 +73,7 @@ namespace API.Service
                     Id = u.Id,
                     UserID = u.UserID,
                     PermissionID = u.PermissionID,
+                    IsActive = u.IsActive,
                     CreatedAt = u.CreatedAt,
                     UpdatedAt = u.UpdatedAt
                 }).ToListAsync();

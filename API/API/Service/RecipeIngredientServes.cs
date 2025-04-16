@@ -102,7 +102,6 @@ namespace API.Service
                 stepIngredient.IngredientID = entity.IngredientID;
                 stepIngredient.Quantity = entity.Quantity;
                 stepIngredient.Unit = entity.Unit;
-                stepIngredient.CreatedAt = entity.CreatedAt;
                 stepIngredient.UpdatedAt = DateTime.Now;
 
                 _context.RecipeIngredients.Update(stepIngredient);

@@ -95,7 +95,6 @@ namespace API.Service
             {
                 recipeCategory.RecipeID = entity.RecipeID;
                 recipeCategory.CategoryID = entity.CategoryID;
-                recipeCategory.CreatedAt = entity.CreatedAt;
                 recipeCategory.UpdatedAt = DateTime.Now;
 
                 _context.RecipeCategories.Update(recipeCategory);

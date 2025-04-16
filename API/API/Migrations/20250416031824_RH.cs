@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class RG : Migration
+    public partial class RH : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,6 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -97,6 +96,34 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Terms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    penaltyid = table.Column<int>(type: "int", nullable: false),
+                    permissionid = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Terms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Terms_Penalties_penaltyid",
+                        column: x => x.penaltyid,
+                        principalTable: "Penalties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Terms_Permissions_permissionid",
+                        column: x => x.permissionid,
+                        principalTable: "Permissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Favorites",
                 columns: table => new
                 {
@@ -135,6 +162,7 @@ namespace API.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BackgroundImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    persons = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rate = table.Column<int>(type: "int", nullable: true),
                     View = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -184,6 +212,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     PenaltyID = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -212,6 +241,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     PermissionID = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -446,11 +476,11 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserPermissions",
-                columns: new[] { "Id", "CreatedAt", "PermissionID", "UpdatedAt", "UserID" },
+                columns: new[] { "Id", "CreatedAt", "IsActive", "PermissionID", "UpdatedAt", "UserID" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, null, 1 },
-                    { 2, new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, 1 }
+                    { 1, new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, null, 1 },
+                    { 2, new DateTime(2025, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, null, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -539,6 +569,16 @@ namespace API.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Terms_penaltyid",
+                table: "Terms",
+                column: "penaltyid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Terms_permissionid",
+                table: "Terms",
+                column: "permissionid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserPenalties_PenaltyID",
                 table: "UserPenalties",
                 column: "PenaltyID");
@@ -582,6 +622,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Suggestions");
+
+            migrationBuilder.DropTable(
+                name: "Terms");
 
             migrationBuilder.DropTable(
                 name: "UserPenalties");

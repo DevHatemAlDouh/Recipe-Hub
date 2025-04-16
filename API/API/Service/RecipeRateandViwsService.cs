@@ -86,14 +86,6 @@ namespace API.Service
             var Count = recipeRates.Count;
             var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeID);
             recipe.Rate = Count;
-            if (recipe.CreatedAt != null)
-            {
-                recipe.UpdatedAt = DateTime.Now;
-            }
-            else
-            {
-                recipe.CreatedAt = DateTime.Now;
-            }
             _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
         }
