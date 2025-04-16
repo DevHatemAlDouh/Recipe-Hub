@@ -21,6 +21,10 @@
                     <input type="text" class="form-control" asp-for="Recipe.description" />
                 </div>
                 <div class="form-group">
+                    <label asp-for="Recipe.persons">persons</label>
+                    <input type="number" class="form-control" asp-for="Recipe.persons" />
+                </div>
+                <div class="form-group">
                     <label asp-for="Recipe.backgroundImageBase64">Background Image</label>
                     <input type="file" accept="image/*" class="form-control recipe-image" asp-for="Recipe.backgroundImageBase64" />
                     <img class="img-preview" src="#" alt="Recipe Image Preview" style="display:none; max-width:100%; margin-top:10px;" />

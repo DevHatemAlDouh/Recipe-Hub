@@ -6,6 +6,7 @@
         public int UserId { get; set; }
         public string title { get; set; }
         public string description { get; set; }
+        public string persons { get; set; }
         public int Rate { get; set; }
         public int View { get; set; }
         public string backgroundImage { get; set; }

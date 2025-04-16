@@ -35,7 +35,7 @@ namespace Dashboard.Controllers
         {
             using (var API = new HttpClient())
             {
-                Penalty penalty = new Penalty();
+                PenaltyInfo penaltyInfo = new PenaltyInfo();
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -43,9 +43,10 @@ namespace Dashboard.Controllers
                 if (res.IsSuccessStatusCode)
                 {
                     var apiResponse = await res.Content.ReadAsStringAsync();
-                    penalty = JsonConvert.DeserializeObject<Penalty>(apiResponse);
+                    penaltyInfo.penalty = JsonConvert.DeserializeObject<Penalty>(apiResponse);
                 }
-                return View(penalty);
+
+                return View(penaltyInfo);
             }
         }
 
