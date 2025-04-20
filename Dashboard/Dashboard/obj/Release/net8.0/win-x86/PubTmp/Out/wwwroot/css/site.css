@@ -1,0 +1,217 @@
+:root {
+    --background-color: #f8f9fa; /* Light mode background */
+    --text-color: #000000; /* Light mode text */
+    --sidebar-background: #3f76db; /* Sidebar background */
+    --sidebar-link-color: #ffffff; /* Sidebar link color */
+    --card-background: #ffffff; /* Card background */
+    --card-header-background: #007bff; /* Card header background */
+    --btn-primary-background: #007bff; /* Button background */
+    --btn-primary-hover-background: #0056b3; /* Button hover background */
+
+    --progress: 15%;
+    --outer-color: red;
+    --mid-color: green;
+    --internal-color: blue;
+    --users-color: rgb(223, 122, 59);
+}
+
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    display: flex;
+    margin-bottom: 60px;
+    background-color: var(--background-color); /* Background color based on theme */
+    color: var(--text-color); /* Text color based on theme */
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    border-radius: 0 20px 20px 0;
+    top: 0;
+    left: 0;
+    background-color: var(--sidebar-background); /* Sidebar background */
+    padding-top: 20px;
+}
+
+    .sidebar h1 {
+        padding: 10px 30px;
+        margin-bottom: 50px;
+        font-weight: bold;
+        color: var(--background-color); /* Background color based on theme */
+    }
+
+    .sidebar a {
+        position: relative;
+        padding: 10px 35px;
+        text-decoration: none;
+        border-radius: 30px 0 0 30px;
+        font-size: 18px;
+        color: var(--sidebar-link-color); /* Sidebar link color */
+        display: block;
+    }
+
+        .sidebar a:hover {
+            margin: 0 0 0 20px;
+            font-weight: bold;
+        }
+
+    .sidebar .active-sidebar {
+        margin: 0 0 0 20px;
+        color: var(--sidebar-background);
+        background-color: var(--background-color); /* Sidebar link color */
+        font-weight:bold;
+    }
+
+        .sidebar .active-sidebar::before,
+        .sidebar .active-sidebar::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-image: radial-gradient(circle at 100% 100%, transparent 10px, var(--background-color) 10px);
+            position: absolute;
+            right: 0;
+        }
+            .sidebar .active-sidebar::before {
+                rotate: 180deg;
+                top: -10px;
+            }
+
+            .sidebar .active-sidebar::after {
+                rotate: 90deg;
+                bottom: -10px;
+            }
+
+.User-Info{
+    top: 20px;
+    right: 20px;
+}
+.content {
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    width: 100%;
+}
+
+.card {
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
+    background-color: var(--card-background); /* Card background */
+}
+
+.card-header {
+    background-color: var(--card-header-background); /* Card header background */
+    color: #ffffff; /* White text */
+    border-top-left-radius: 10px; /* Rounded corners */
+    border-top-right-radius: 10px; /* Rounded corners */
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-background); /* Button background */
+    border: none; /* No border */
+}
+
+    .btn-primary:hover {
+        background-color: var(--btn-primary-hover-background); /* Button hover background */
+    }
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Focus styles */
+}
+
+.skill{
+    width:160px;
+    height:160px;
+}
+
+.outer {
+    
+    width: 160px;
+    height: 160px;
+    background-image: conic-gradient(
+        from 90deg,
+        var(--outer-color) var(--progress),
+        var(--users-color) 0%);
+    box-shadow: 
+        6px 6px 10px -1px rgba(0,0,0,0.15),
+        -6px -6px 10px -1px rgba(255,255,255,0.7);
+}
+    
+.mid {
+    width: 140px;
+    height: 140px;
+    top: 10px;
+    left: 10px;
+    background-image: conic-gradient( 
+        from 90deg,
+        var(--mid-color) var(--progress),
+        var(--users-color) 0%);
+}
+
+
+
+.internal {
+    width: 120px;
+    height: 120px;
+    padding: 12px;
+    top: 20px;
+    left: 20px;
+    background-image: conic-gradient( 
+        from 90deg,
+        var(--internal-color) var(--progress),
+        var(--users-color) 0%);
+}
+
+    .internal::after {
+        width: 6rem;
+        height: 6rem;
+        content: '';
+        display: grid;
+        place-items: center;
+        background-color: var(--background-color);
+        border-radius: inherit;
+        box-shadow: 
+            inset 4px 4px 6px -1px rgba(0,0,0,0.2),
+            inset -4px -4px 6px -1px rgba(255,255,255,0.7),
+            -0.5px -0.5px 0px rgba(255,255,255,1),
+            0.5px 0.5px 0px rgba(0,0,0,0.15),
+            0px 12px 10px -10px rgba(0,0,0,0.05);
+    }
+
+.user-info, .outer-info, .mid-info, .internal-info {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 22px;
+    left: 5px;
+}
+.user-info {
+    background-color: var(--users-color);
+}
+.outer-info {
+    background-color: var(--outer-color);
+}
+.mid-info {
+    background-color: var(--mid-color);
+}
+.internal-info {
+    background-color: var(--internal-color);
+}
+
+.populer{
+    width: 50px;
+    height: 50px;
+}
+
+
+@media (min-width: 768px) {
+    html {
+            font-size: 16px;
+        }
+    }

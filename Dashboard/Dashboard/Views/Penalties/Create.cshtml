@@ -1,11 +1,10 @@
-﻿@model Penalty
+﻿@model PenaltyInfo
 
 @{
     ViewBag.Title = "Create Penalty";
 }
 
 <div class="container mt-5">
-
     <div class="card">
         <div class="card-header">
             <h4>Create Penalty</h4>
@@ -14,13 +13,26 @@
             <form asp-action="Create" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
-                    <label asp-for="TimeOut">TimeOut</label>
-                    <input type="datetime" class="form-control" asp-for="TimeOut" required />
+                    <label asp-for="penalty.TimeOut">TimeOut</label>
+                    <input type="datetime-local" class="form-control" asp-for="penalty.TimeOut" required />
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Description">Description</label>
-                    <input type="text" class="form-control" asp-for="Description" required />
+                    <label asp-for="penalty.Description">Description</label>
+                    <input type="text" class="form-control" asp-for="penalty.Description" required />
+                </div>
+
+                <br />
+
+                <div id="terms-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add Terms</h4>
+                        </div>
+                        <div class="card-body">
+                            <input type="button" id="add-term" class="btn btn-secondary" value="Add Term" />
+                        </div>
+                    </div>
                 </div>
 
                 <br />
@@ -34,3 +46,36 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let termCount = 0;
+
+            $('#add-term').click(function () {
+                const newTerm = `
+                    <div class="term-form">
+                        <div class="form-group">
+                            <label>Select Permission</label>
+                            <select name="terms[${termCount}].permissionid" class="form-control" required>
+                                <option value="">-- Select Permission --</option>
+                                @foreach (var permission in Model.permissions)
+                                {
+                                    <option value="@permission.Id">@permission.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <br />
+                        <button type="button" class="btn btn-danger remove-term">Remove Term</button>
+                    </div>`;
+                $('#terms-container').append(newTerm);
+                termCount++;
+            });
+
+            // Remove term functionality
+            $(document).on('click', '.remove-term', function () {
+                $(this).closest('.term-form').remove();
+            });
+        });
+    </script>
+}

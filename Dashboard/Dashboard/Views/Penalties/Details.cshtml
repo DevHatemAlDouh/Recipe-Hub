@@ -1,4 +1,4 @@
-﻿@model Penalty
+﻿@model PenaltyInfo
 
 @{
     ViewBag.Title = "Penalty Details";
@@ -12,17 +12,27 @@
         <div class="card-body">
             <dl class="row">
                 <dt class="col-sm-3">Id</dt>
-                <dd class="col-sm-9">@Model.Id</dd>
+                <dd class="col-sm-9">@Model.penalty.Id</dd>
 
                 <dt class="col-sm-3">TimeOut</dt>
-                <dd class="col-sm-9">@Model.TimeOut</dd>
+                <dd class="col-sm-9">@Model.penalty.TimeOut</dd>
 
                 <dt class="col-sm-3">Description</dt>
-                <dd class="col-sm-9">@Model.Description</dd>
+                <dd class="col-sm-9">@Model.penalty.Description</dd>
+            </dl>
+            <dl class="row">
+                <dt class="col-sm-3">Revocde Permmtions</dt>
+                @{
+                    foreach(var term in Model.terms)
+                    {
+                        var permission = Model.permissions.FirstOrDefault(c => c.Id == term.permissionid);
+                        <dd>@permission.Title</dd>
+                    }
+                }
             </dl>
         </div>
         <div class="card-footer text-right">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.penalty.Id" class="btn btn-primary">Edit</a>
             <a asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </div>

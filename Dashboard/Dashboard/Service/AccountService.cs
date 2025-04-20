@@ -33,7 +33,7 @@ namespace Dashboard.Service
                     {
                        if(_user.UserName == user.UserName && _hashing.VerifyPassword(user.Password, _user.Password))
                        {
-                            HttpResponseMessage userresponse = await client.GetAsync($"/api/users/GetUserPermissionsById/{_user.Id}");
+                            HttpResponseMessage userresponse = await client.GetAsync($"/api/users/GetUserPermissionsById?userId={_user.Id}");
                             if (userresponse.IsSuccessStatusCode)
                             {
                                 var userspermisstionResponse = await userresponse.Content.ReadAsStringAsync();
