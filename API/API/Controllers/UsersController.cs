@@ -120,6 +120,32 @@ namespace API.Controllers
             return Ok(report);
         }
 
+        [HttpGet("GetPenaltyById/{penaltyId}")]
+        public async Task<ActionResult<PenaltyInfo>> GetPenalty(int penaltyId)
+        {
+            var penalty = await _userPenalties.GetById(penaltyId);
+
+            if (penalty == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(penalty);
+        }
+
+        [HttpGet("GetPermissionById/{permissionId}")]
+        public async Task<ActionResult<UserInfo>> GetPermission(int permissionId)
+        {
+            var permission = await _usePermissions.GetById(permissionId);
+
+            if (permission == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(permission);
+        }
+
         // GET: api/users/GetPenaltyById
         [HttpGet("GetPenaltysById")]
         public async Task<ActionResult<IEnumerable<UserPenaltyInfo>>> UserPenalties(int userId)
