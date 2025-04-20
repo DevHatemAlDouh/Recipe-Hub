@@ -83,16 +83,38 @@ namespace API.Service
                 
                 if (userPenalty.CreatedAt.HasValue)
                 {
+                    int year, month, day, hour, minute, second, millisecond;
+                    DateTime penalty_createdAt;
+                    if (!userPenalty.UpdatedAt.HasValue)
+                    {
+                        penalty_createdAt = penalty.CreatedAt.Value;
+                    }
+                    else
+                    {
+                        penalty_createdAt = penalty.UpdatedAt.Value;
+                    }
+                    
                     DateTime createdAt = userPenalty.CreatedAt.Value;
                     DateTime TimeOut = penalty.TimeOut;
 
-                    int year = createdAt.Year + TimeOut.Year;
-                    int month = createdAt.Month + TimeOut.Month;
-                    int day = createdAt.Day + TimeOut.Day;
-                    int hour = createdAt.Hour + TimeOut.Hour;
-                    int minute = createdAt.Minute + TimeOut.Minute;
-                    int second = createdAt.Second + TimeOut.Second;
-                    int millisecond = createdAt.Millisecond + TimeOut.Millisecond;
+
+                    year = TimeOut.Year - penalty_createdAt.Year;
+                    month = TimeOut.Month - penalty_createdAt.Month;
+                    day = TimeOut.Day - penalty_createdAt.Day;
+                    hour = TimeOut.Hour - penalty_createdAt.Hour;
+                    minute = TimeOut.Minute - penalty_createdAt.Minute;
+                    second = TimeOut.Second - penalty_createdAt.Second;
+                    millisecond = TimeOut.Millisecond - penalty_createdAt.Millisecond;
+
+                    DateTime intervalTime = new DateTime(year, month, day, hour, minute, second, millisecond);
+
+                    year = createdAt.Year + intervalTime.Year;
+                    month = createdAt.Month + intervalTime.Month;
+                    day = createdAt.Day + intervalTime.Day;
+                    hour = createdAt.Hour + intervalTime.Hour;
+                    minute = createdAt.Minute + intervalTime.Minute;
+                    second = createdAt.Second + intervalTime.Second;
+                    millisecond = createdAt.Millisecond + intervalTime.Millisecond;
 
                     DateTime newTime = new DateTime(year, month, day, hour, minute, second, millisecond);
                     if(newTime > DateTime.Now)

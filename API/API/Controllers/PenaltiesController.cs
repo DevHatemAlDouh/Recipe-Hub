@@ -87,6 +87,14 @@ namespace API.Controllers
             return NoContent();
         }
 
+        // POST: api/Penalties/GrantPenalties
+        [HttpPost("RevokePenalties")]
+        public async Task<string> Revoke(UserPenaltyInfo userpenalty)
+        {
+            String Respons = await _userPenalties.Revoke(userpenalty);
+            return Respons;
+        }
+
         // DELETE: api/Penalties/5
         [HttpDelete("Delete/{penaltyId}")]
         public async Task<IActionResult> DeletePenalty(int penaltyId)
