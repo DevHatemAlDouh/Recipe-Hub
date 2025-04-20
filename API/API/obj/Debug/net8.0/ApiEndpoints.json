@@ -553,14 +553,14 @@
   {
     "ContainingType": "API.Controllers.PenaltiesController",
     "Method": "Revoke",
-    "RelativePath": "api/Penalties/RevokePenalties",
-    "HttpMethod": "POST",
+    "RelativePath": "api/Penalties/Revoke/{userpenaltyId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userpenalty",
-        "Type": "API.Models.UserPenaltyInfo",
+        "Name": "userpenaltyId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
