@@ -552,6 +552,32 @@
   },
   {
     "ContainingType": "API.Controllers.PenaltiesController",
+    "Method": "Revoke",
+    "RelativePath": "api/Penalties/RevokePenalties",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userpenalty",
+        "Type": "API.Models.UserPenaltyInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PenaltiesController",
     "Method": "PutPenalty",
     "RelativePath": "api/Penalties/Update/{penaltyId}",
     "HttpMethod": "PUT",
