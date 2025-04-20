@@ -1,0 +1,36 @@
+﻿@model User_Penalty_form
+
+@{
+    ViewBag.Title = "Grant Penalty to User";
+}
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Grant Penalty to @(Model.user != null ? Model.user.UserName : "Unknown User")</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Grant" method="post">
+                <input type="hidden" asp-for="user_Penalty.UserID" value="@Model.user?.Id" />
+
+                <div class="form-group">
+                    <label asp-for="user_Penalty.PenaltyID">Select Penalty</label>
+                    <select asp-for="user_Penalty.PenaltyID" class="form-control" required>
+                        <option value="">-- Select Permission --</option>
+                        @foreach (var PenaltyID in Model.penalties)
+                        {
+                            <option value="@PenaltyID.Id">@PenaltyID.Description</option>
+                        }
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Grant PenaltyID</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
