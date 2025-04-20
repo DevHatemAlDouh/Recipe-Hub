@@ -148,7 +148,7 @@ namespace Dashboard.Controllers
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonConvert.SerializeObject(data.penalty), Encoding.UTF8, "application/json");
                 HttpResponseMessage res = await API.PutAsync($"/api/Penalties/Update/{id}", content);
                 if (res.IsSuccessStatusCode)
                 {

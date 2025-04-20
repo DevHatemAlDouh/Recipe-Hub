@@ -11,7 +11,7 @@
             <h4>Grant Penalty to @(Model.user != null ? Model.user.UserName : "Unknown User")</h4>
         </div>
         <div class="card-body">
-            <form asp-action="Grant" method="post">
+            <form asp-action="GrantPenalty" method="post">
                 <input type="hidden" asp-for="user_Penalty.UserID" value="@Model.user?.Id" />
 
                 <div class="form-group">

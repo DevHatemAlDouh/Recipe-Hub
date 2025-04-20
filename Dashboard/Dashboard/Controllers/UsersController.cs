@@ -226,17 +226,17 @@ namespace Dashboard.Controllers
                 {
                     var apiResponse = await userPermissionResponse.Content.ReadAsStringAsync();
                     user_All_Permissions.user_permission = JsonConvert.DeserializeObject<List<User_Permission>>(apiResponse);
+                    
                 }
-
                 var permissionTasks = user_All_Permissions.user_permission.Select(async permission =>
                 {
-                    HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{permission.PermissionID}");
-                    if (permissionsResponse.IsSuccessStatusCode)
-                    {
-                        var apiResponse = await permissionsResponse.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<Permission>(apiResponse);
-                    }
-                    return null;
+                HttpResponseMessage permissionsResponse = await API.GetAsync($"/api/Permissions/GetById/{permission.PermissionID}");
+                if (permissionsResponse.IsSuccessStatusCode)
+                {
+                    var apiResponse = await permissionsResponse.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Permission>(apiResponse);
+                }
+                return null;
                 });
 
                 var permissions = await Task.WhenAll(permissionTasks);
@@ -382,7 +382,7 @@ namespace Dashboard.Controllers
                     user_All_Penalties.user = JsonConvert.DeserializeObject<User>(userApiResponse);
                 }
 
-                HttpResponseMessage userpenaltyResponse = await API.GetAsync($"/api/users/GetUserPenaltiesById?userId={id}");
+                HttpResponseMessage userpenaltyResponse = await API.GetAsync($"/api/users/GetPenaltysById?userId={id}");
                 if (userpenaltyResponse.IsSuccessStatusCode)
                 {
                     var apiResponse = await userpenaltyResponse.Content.ReadAsStringAsync();
@@ -474,7 +474,7 @@ namespace Dashboard.Controllers
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage Res = await API.DeleteAsync($"/api/Permissions/Revoke/{id}");
+                HttpResponseMessage Res = await API.DeleteAsync($"/api/Penalties/Revoke/{id}");
             }
 
             return RedirectToAction("Index"); // Redirect to Index after successful revoke
