@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Dashboard\\Controllers\\PenaltiesController.cs",
               "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Controllers\\PenaltiesController.cs",
               "RelativeToolTip": "Dashboard\\Controllers\\PenaltiesController.cs",
-              "ViewState": "AgIAAJYAAAAAAAAAAAAWwKEAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAWwCoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-20T23:11:48.229Z",
               "EditorCaption": ""
@@ -51,8 +51,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Users\\GrantPermission.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-20T23:01:57.222Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T23:01:57.222Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "Dashboard\\Views\\Users\\GrantPenalty.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-20T23:01:22.172Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T23:01:22.172Z"
             },
             {
               "$type": "Document",

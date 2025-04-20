@@ -153,7 +153,6 @@ namespace Dashboard.Controllers
                 if (res.IsSuccessStatusCode)
                 {
                     var apiResponse = await res.Content.ReadAsStringAsync();
-                    data.penalty = JsonConvert.DeserializeObject<Penalty>(apiResponse);
 
                     foreach (var term in data.terms)
                     {
