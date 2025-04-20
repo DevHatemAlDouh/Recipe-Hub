@@ -985,30 +985,22 @@
         }
       }
     },
-    "/api/Penalties/RevokePenalties": {
-      "post": {
+    "/api/Penalties/Revoke/{userpenaltyId}": {
+      "delete": {
         "tags": [
           "Penalties"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPenaltyInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPenaltyInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPenaltyInfo"
-              }
+        "parameters": [
+          {
+            "name": "userpenaltyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",

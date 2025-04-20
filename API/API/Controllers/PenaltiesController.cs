@@ -88,10 +88,10 @@ namespace API.Controllers
         }
 
         // POST: api/Penalties/GrantPenalties
-        [HttpPost("RevokePenalties")]
-        public async Task<string> Revoke(UserPenaltyInfo userpenalty)
+        [HttpDelete("Revoke/{userpenaltyId}")]
+        public async Task<string> Revoke(int userpenaltyId)
         {
-            String Respons = await _userPenalties.Revoke(userpenalty);
+            String Respons = await _userPenalties.Revoke(userpenaltyId);
             return Respons;
         }
 

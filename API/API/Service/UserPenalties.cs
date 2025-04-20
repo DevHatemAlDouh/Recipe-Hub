@@ -73,8 +73,9 @@ namespace API.Service
             }
         }
 
-        public async Task<string> Revoke(UserPenaltyInfo entity)
+        public async Task<string> Revoke(int userpenaltyId)
         {
+            var entity = await GetById(userpenaltyId);
             var userPenalty = await _context.UserPenalties.FirstOrDefaultAsync(p => p.Id == entity.Id);
             var penalty = await _context.Penalties.FirstOrDefaultAsync(p => p.Id == entity.PenaltyID);
 
