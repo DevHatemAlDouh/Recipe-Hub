@@ -317,7 +317,7 @@ namespace Dashboard.Controllers
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage userpermissionRes = await API.GetAsync($"/api/users/GetUserPermissionsById?userId={id}");
+                HttpResponseMessage userpermissionRes = await API.GetAsync($"/api/users/GetPermissionById/{id}");
                 if (userpermissionRes.IsSuccessStatusCode)
                 {
                     var APIResponse = userpermissionRes.Content.ReadAsStringAsync().Result;

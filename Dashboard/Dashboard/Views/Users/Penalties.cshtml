@@ -19,21 +19,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var PER in Model.user_Penalties)
+            @foreach (var PEN in Model.user_Penalties)
             {
                 <tr>
-                    <td>@PER.Id</td>
-                    @foreach (var row in Model.penalties.Where(p => p.Id == PER.PenaltyID))
+                    <td>@PEN.Id</td>
+                    @foreach (var row in Model.penalties.Where(p => p.Id == PEN.PenaltyID))
                     {
-                        @if (row.Id == PER.PenaltyID)
+                        @if (row.Id == PEN.PenaltyID)
                         {
                             <td>@row.Description</td>
                         }
                     }
                     <td>
-                        <a asp-action="RevokePenalty" asp-route-id="@PER.Id" class="btn btn-danger btn-sm">Revoke</a>
+                        <a asp-action="RevokePenalty" asp-route-id="@PEN.Id" class="btn btn-danger btn-sm">Revoke</a>
                     </td>
-                    @if (@PER.IsActive)
+                    @if (@PEN.IsActive)
                     {
                         <td><div class="btn btn-info btn-sm">Active</div></td>
                     }
