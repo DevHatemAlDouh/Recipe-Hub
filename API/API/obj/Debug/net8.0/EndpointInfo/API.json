@@ -3223,6 +3223,48 @@
         }
       }
     },
+    "/api/users/UpdateReport/{reportId}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/users/Add": {
       "post": {
         "tags": [
@@ -3368,29 +3410,6 @@
       }
     },
     "/api/users/Delete/{userId}": {
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/users/DeleteReport/{userId}": {
       "delete": {
         "tags": [
           "Users"
@@ -3807,7 +3826,7 @@
             "type": "string",
             "nullable": true
           },
-          "resolved": {
+          "solved": {
             "type": "boolean"
           },
           "createdAt": {
@@ -3871,7 +3890,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "stepID": {
+          "recipeID": {
             "type": "integer",
             "format": "int32"
           },
