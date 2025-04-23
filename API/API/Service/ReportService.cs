@@ -21,7 +21,7 @@ namespace API.Service
                 AtUserID = entity.AtUserID,
                 Type = entity.Type,
                 Description = entity.Description,
-                Resolved = entity.Resolved,
+                solved = false,
                 CreatedAt = DateTime.Now
 
             };
@@ -30,17 +30,15 @@ namespace API.Service
             entity.Id = report.Id; // Update the entity with the generated Id
         }
 
-        public async Task Delete(int id)
+        public async Task Update(ReportInfo entity)
         {
-            // Start by retrieving the user directly from the context
-            var report = await _context.Reports.FirstOrDefaultAsync(r => r.Id == id);
-
-            // Check if the user exists
+            var report = await _context.Reports.FirstOrDefaultAsync(u => u.Id == entity.Id);
             if (report != null)
             {
-                // Remove the user from the context
-                _context.Reports.Remove(report);
-                // Save changes to the database
+                report.solved = true;
+                report.UpdatedAt = DateTime.Now;
+
+                _context.Reports.Update(report);
                 await _context.SaveChangesAsync();
             }
         }
@@ -54,7 +52,7 @@ namespace API.Service
                 AtUserID = u.AtUserID,
                 Type = u.Type,
                 Description = u.Description,
-                Resolved = u.Resolved,
+                solved = u.solved,
                 CreatedAt = u.CreatedAt,
                 UpdatedAt = u.UpdatedAt
             }).ToListAsync();
@@ -67,10 +65,10 @@ namespace API.Service
             return reports;
         }
 
-        public async Task<IEnumerable<ReportInfo>> GetAllnonResolved()
+        public async Task<IEnumerable<ReportInfo>> GetAllnonSolved()
         {
             var reports = await _context.Reports
-                .Where(r => r.Resolved == false)
+                .Where(r => r.solved == false)
                 .Select(u => new ReportInfo
                 {
                     Id = u.Id,
@@ -78,7 +76,7 @@ namespace API.Service
                     AtUserID = u.AtUserID,
                     Type = u.Type,
                     Description = u.Description,
-                    Resolved = u.Resolved,
+                    solved = u.solved,
                     CreatedAt = u.CreatedAt,
                     UpdatedAt = u.UpdatedAt
                 }).ToListAsync();
@@ -102,7 +100,7 @@ namespace API.Service
                 AtUserID = report.AtUserID,
                 Description = report.Description,
                 FromUserID = report.FromUserID,
-                Resolved = report.Resolved,
+                solved = report.solved,
                 Type = report.Type,
                 CreatedAt = report.CreatedAt,
                 UpdatedAt = report.UpdatedAt

@@ -16,12 +16,12 @@ namespace API.Service
         public async Task<IEnumerable<SuggestionInfo>> GetAll(int recipeId)
         {
             var suggestions = await _context.Suggestions
-                .Where(s => s.Step.RecipeID == recipeId)
+                .Where(s => s.Recipe.Id == recipeId)
                 .Select(s => new SuggestionInfo
                 {
                     Id = s.Id,
                     UserID = s.UserID,
-                    StepID = s.StepID,
+                    RecipeID = s.RecipeID,
                     Description = s.Description,
                     CreatedAt = s.CreatedAt,
                     UpdatedAt = s.UpdatedAt

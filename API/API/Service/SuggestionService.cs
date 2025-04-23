@@ -18,7 +18,7 @@ namespace API.Service
             var suggestion = new Suggestion
             {
                 UserID = entity.UserID,
-                StepID = entity.StepID,
+                RecipeID = entity.RecipeID,
                 Description = entity.Description,
                 CreatedAt = DateTime.Now
             };
@@ -37,7 +37,7 @@ namespace API.Service
             {
                 Id = suggestion.Id,
                 UserID = suggestion.UserID,
-                StepID = suggestion.StepID,
+                RecipeID = suggestion.RecipeID,
                 Description = suggestion.Description,
                 CreatedAt = suggestion.CreatedAt,
                 UpdatedAt = suggestion.UpdatedAt
@@ -50,7 +50,7 @@ namespace API.Service
             if (suggestion != null)
             {
                 suggestion.UserID = entity.UserID;
-                suggestion.StepID = entity.StepID;
+                suggestion.RecipeID = entity.RecipeID;
                 suggestion.Description = entity.Description;
                 suggestion.UpdatedAt = DateTime.Now;
 
@@ -75,7 +75,7 @@ namespace API.Service
             {
                 Id = s.Id,
                 UserID = s.UserID,
-                StepID = s.StepID,
+                RecipeID = s.RecipeID,
                 Description = s.Description,
                 CreatedAt = s.CreatedAt,
                 UpdatedAt = s.UpdatedAt

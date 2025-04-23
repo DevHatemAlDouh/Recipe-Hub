@@ -391,15 +391,15 @@ namespace API.Migrations
                     b.Property<int>("FromUserID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Resolved")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("solved")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -458,7 +458,7 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StepID")
+                    b.Property<int>("RecipeID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -469,7 +469,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StepID");
+                    b.HasIndex("RecipeID");
 
                     b.HasIndex("UserID");
 
@@ -792,9 +792,9 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Suggestion", b =>
                 {
-                    b.HasOne("API.Models.Step", "Step")
+                    b.HasOne("API.Models.Recipe", "Recipe")
                         .WithMany("Suggestions")
-                        .HasForeignKey("StepID")
+                        .HasForeignKey("RecipeID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -804,7 +804,7 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Step");
+                    b.Navigation("Recipe");
 
                     b.Navigation("User");
                 });
@@ -908,10 +908,7 @@ namespace API.Migrations
                     b.Navigation("RecipeRates");
 
                     b.Navigation("Steps");
-                });
 
-            modelBuilder.Entity("API.Models.Step", b =>
-                {
                     b.Navigation("Suggestions");
                 });
 

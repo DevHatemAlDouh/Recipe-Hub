@@ -17,6 +17,7 @@
         public ICollection<Comment> Comments { get; set; }
         public ICollection<RecipeRate> RecipeRates { get; set; }
         public ICollection<Step> Steps { get; set; }
+        public ICollection<Suggestion> Suggestions { get; set; }
         public ICollection<RecipeCategory> RecipeCategories { get; set; } 
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }

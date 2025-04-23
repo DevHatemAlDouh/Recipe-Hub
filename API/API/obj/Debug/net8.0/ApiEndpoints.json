@@ -1636,22 +1636,6 @@
   },
   {
     "ContainingType": "API.Controllers.UsersController",
-    "Method": "DeleteReport",
-    "RelativePath": "api/users/DeleteReport/{userId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/users/GetAll",
     "HttpMethod": "GET",
@@ -1954,6 +1938,27 @@
       {
         "Name": "userInfo",
         "Type": "API.Models.UserInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "PutReoprt",
+    "RelativePath": "api/users/UpdateReport/{reportId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reportId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "reportInfo",
+        "Type": "API.Models.ReportInfo",
         "IsRequired": true
       }
     ],

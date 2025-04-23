@@ -67,7 +67,7 @@ namespace API.Controllers
         [HttpGet("GetAllNonResolvedReports")]
         public async Task<ActionResult<IEnumerable<ReportInfo>>> GetNonResolvedReports()
         {
-            var users = await _reportService.GetAllnonResolved();
+            var users = await _reportService.GetAllnonSolved();
             return Ok(users);
         }
 
@@ -175,6 +175,19 @@ namespace API.Controllers
             return NoContent();
         }
 
+        // PUT: api/users/UpdateReport/{reportId}
+        [HttpPut("UpdateReport/{reportId}")]
+        public async Task<IActionResult> PutReoprt(int reportId, ReportInfo reportInfo)
+        {
+            if (reportId != reportInfo.Id)
+            {
+                return BadRequest();
+            }
+
+            await _reportService.Update(reportInfo);
+            return NoContent();
+        }
+
         // POST: api/users
         [HttpPost("Add")]
         public async Task<ActionResult<UserInfo>> PostUser(UserInfo userInfo)
@@ -201,19 +214,6 @@ namespace API.Controllers
         // DELETE: api/users/{userId}
         [HttpDelete("Delete/{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
-        {
-            var user = await _userService.GetById(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            await _userService.Delete(userId);
-            return NoContent();
-        }
-
-        [HttpDelete("DeleteReport/{userId}")]
-        public async Task<IActionResult> DeleteReport(int userId)
         {
             var user = await _userService.GetById(userId);
             if (user == null)

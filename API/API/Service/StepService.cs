@@ -24,7 +24,6 @@ namespace API.Service
                 BackgroundImage = entity.BackgroundImage,
                 CreatedAt = DateTime.Now,
                 
-                Suggestions = new List<Suggestion>(),
             };
 
             await _context.Steps.AddAsync(step);

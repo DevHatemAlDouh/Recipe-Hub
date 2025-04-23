@@ -28,6 +28,7 @@ namespace API.Service
                 Comments = new List<Comment>(),
                 RecipeRates = new List<RecipeRate>(),
                 Steps = new List<Step>(),
+                Suggestions = new List<Suggestion>(),
                 RecipeIngredients = new List<RecipeIngredient>(),
                 
             };

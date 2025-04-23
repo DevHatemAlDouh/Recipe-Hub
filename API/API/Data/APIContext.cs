@@ -179,9 +179,9 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Suggestion>()
-                .HasOne(s => s.Step)
+                .HasOne(s => s.Recipe)
                 .WithMany(s => s.Suggestions)
-                .HasForeignKey(s => s.StepID)
+                .HasForeignKey(s => s.RecipeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Permission>()

@@ -188,7 +188,7 @@ namespace API.Migrations
                     AtUserID = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Resolved = table.Column<bool>(type: "bit", nullable: false),
+                    solved = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -403,6 +403,35 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suggestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    RecipeID = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suggestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suggestions_Recipes_RecipeID",
+                        column: x => x.RecipeID,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Suggestions_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CommentRates",
                 columns: table => new
                 {
@@ -424,35 +453,6 @@ namespace API.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CommentRates_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suggestions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    StepID = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suggestions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Suggestions_Steps_StepID",
-                        column: x => x.StepID,
-                        principalTable: "Steps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Suggestions_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -558,9 +558,9 @@ namespace API.Migrations
                 column: "RecipeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suggestions_StepID",
+                name: "IX_Suggestions_RecipeID",
                 table: "Suggestions",
-                column: "StepID");
+                column: "RecipeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Suggestions_UserID",
@@ -620,6 +620,9 @@ namespace API.Migrations
                 name: "Reports");
 
             migrationBuilder.DropTable(
+                name: "Steps");
+
+            migrationBuilder.DropTable(
                 name: "Suggestions");
 
             migrationBuilder.DropTable(
@@ -639,9 +642,6 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ingredients");
-
-            migrationBuilder.DropTable(
-                name: "Steps");
 
             migrationBuilder.DropTable(
                 name: "Penalties");
