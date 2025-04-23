@@ -17,7 +17,6 @@
             <tr>
                 <th>Id</th>
                 <th>Description</th>
-                <th>TimeOut</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -27,7 +26,6 @@
                 <tr>
                     <td>@row["Id"]</td>
                     <td>@row["Description"]</td>
-                    <td>@row["TimeOut"]</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@row["Id"]" class="btn btn-info btn-sm">Details</a>
                         <a asp-action="Edit" asp-route-id="@row["Id"]" class="btn btn-warning btn-sm">Edit</a>

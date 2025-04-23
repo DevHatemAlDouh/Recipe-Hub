@@ -1,0 +1,51 @@
+﻿@using System.Data
+
+@model RecipeComments
+
+@{
+    ViewBag.Title = $"Comments";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Comments</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach ( var comment in Model.comments.Where(c=>c.supCommentid == null) )
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">Id</dt>
+                        <dd class="col-sm-9">@comment.Id</dd>
+
+                        <dt class="col-sm-3">User</dt>
+                        <dd class="col-sm-9">@Model.users.FirstOrDefault(u => u.Id == comment.userid).UserName</dd>
+
+                        <dt class="col-sm-3">description</dt>
+                        <dd class="col-sm-9">@comment.description</dd>
+
+                        <dt class="col-sm-3">SubComments</dt>
+                        @{foreach (var supcomment in Model.comments.Where(c => c.supCommentid == @comment.Id))
+                        {
+                            
+                            <dt class="col-sm-3">Id</dt>
+                            <dd class="col-sm-9">@supcomment.Id</dd>
+
+                            <dt class="col-sm-3">User</dt>
+                            <dd class="col-sm-9">@Model.users.FirstOrDefault(u => u.Id == supcomment.userid).UserName</dd>
+
+                            <dt class="col-sm-3">description</dt>
+                            <dd class="col-sm-9">@supcomment.description</dd>
+                        }}
+
+                    </dl>
+                }
+            }
+            
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

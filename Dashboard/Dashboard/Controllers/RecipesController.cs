@@ -292,6 +292,55 @@ namespace Dashboard.Controllers
             }
         }
 
+        public async Task<IActionResult> Comments(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                var recipeComments = new RecipeComments();
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Get all comments
+                HttpResponseMessage commRes = await API.GetAsync("/api/Comments/GetAll");
+                if (commRes.IsSuccessStatusCode)
+                {
+                    var apiCommResponse = await commRes.Content.ReadAsStringAsync();
+                    var comments = JsonConvert.DeserializeObject<List<Comment>>(apiCommResponse);
+
+                    // Get all users
+                    HttpResponseMessage userRes = await API.GetAsync("/api/Users/GetAll"); // Adjusted the endpoint
+                    if (userRes.IsSuccessStatusCode)
+                    {
+                        var apiUserResponse = await userRes.Content.ReadAsStringAsync();
+                        var users = JsonConvert.DeserializeObject<List<User>>(apiUserResponse);
+
+                        // Filter comments and users
+                        var recipeCommentsList = new List<Comment>();
+                        var userCommentsList = new List<User>();
+
+                        foreach (var comment in comments)
+                        {
+                            if (comment.recipeid == id)
+                            {
+                                recipeCommentsList.Add(comment);
+                                var user = users.FirstOrDefault(u => u.Id == comment.userid);
+                                if (user != null)
+                                {
+                                    userCommentsList.Add(user);
+                                }
+                            }
+                        }
+
+                        recipeComments.comments = recipeCommentsList;
+                        recipeComments.users = userCommentsList;
+                    }
+                }
+
+                return View(recipeComments);
+            }
+        } 
+
         // Helper method to fetch recipe details
         private async Task<Recipe> GetRecipeDetailsAsync(HttpClient API, int id)
         {

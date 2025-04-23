@@ -479,5 +479,52 @@ namespace Dashboard.Controllers
 
             return RedirectToAction("Index"); // Redirect to Index after successful revoke
         }
+
+        public async Task<IActionResult> Reports(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                var userReports = new UserReports();
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Get all reports
+                HttpResponseMessage repmRes = await API.GetAsync("/api/Users/GetAllReports");
+                if (repmRes.IsSuccessStatusCode)
+                {
+                    var apirepResponse = await repmRes.Content.ReadAsStringAsync();
+                    var reports = JsonConvert.DeserializeObject<List<Report>>(apirepResponse);
+
+                    // Get all users
+                    HttpResponseMessage userRes = await API.GetAsync("/api/Users/GetAll"); // Adjusted the endpoint
+                    if (userRes.IsSuccessStatusCode)
+                    {
+                        var apiUserResponse = await userRes.Content.ReadAsStringAsync();
+                        var users = JsonConvert.DeserializeObject<List<User>>(apiUserResponse);
+
+                        // Filter comments and users
+                        var ReportsList = new List<Report>();
+                        var userReportsList = new List<User>();
+
+                        foreach (var report in reports)
+                        {
+                            ReportsList.Add(report);
+                            
+                                var user = users.FirstOrDefault(u => u.Id == report.atoUserid);
+                                if (user != null)
+                                {
+                                    userReportsList.Add(user);
+                                }
+                        }
+
+                        userReports.reports = ReportsList;
+                        userReports.users = userReportsList;
+                    }
+                }
+
+                return View(userReports);
+            }
+        }
     }
 }
