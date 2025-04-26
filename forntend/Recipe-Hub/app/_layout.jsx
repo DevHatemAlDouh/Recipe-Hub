@@ -17,6 +17,7 @@ const screens = [
   { name: "Create_account", options: { headerShown: false } },
   { name: "Comment",        options: { headerShown: false } },
   { name: "RecipeDetails",  options: { headerShown: false } },
+  { name: "Edeit_Profile",  options: { headerShown: false } },
   // { name: "Profile",        options: { headerShown: false } },
   // { name: "Settings",       options: { headerShown: false } },
   { name: "not-found",      options: { title: "Page Not Found" } },
