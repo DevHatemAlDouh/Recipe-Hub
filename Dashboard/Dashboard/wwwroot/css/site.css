@@ -9,8 +9,6 @@
     --btn-primary-hover-background: #0056b3; /* Button hover background */
 
     --progress: 15%;
-    --outer-color: red;
-    --mid-color: green;
     --internal-color: blue;
     --users-color: rgb(223, 122, 59);
 }
@@ -130,32 +128,6 @@ body {
     height:160px;
 }
 
-.outer {
-    
-    width: 160px;
-    height: 160px;
-    background-image: conic-gradient(
-        from 90deg,
-        var(--outer-color) var(--progress),
-        var(--users-color) 0%);
-    box-shadow: 
-        6px 6px 10px -1px rgba(0,0,0,0.15),
-        -6px -6px 10px -1px rgba(255,255,255,0.7);
-}
-    
-.mid {
-    width: 140px;
-    height: 140px;
-    top: 10px;
-    left: 10px;
-    background-image: conic-gradient( 
-        from 90deg,
-        var(--mid-color) var(--progress),
-        var(--users-color) 0%);
-}
-
-
-
 .internal {
     width: 120px;
     height: 120px;
@@ -184,7 +156,7 @@ body {
             0px 12px 10px -10px rgba(0,0,0,0.05);
     }
 
-.user-info, .outer-info, .mid-info, .internal-info {
+.user-info, .internal-info {
     position: absolute;
     width: 15px;
     height: 15px;
@@ -193,12 +165,6 @@ body {
 }
 .user-info {
     background-color: var(--users-color);
-}
-.outer-info {
-    background-color: var(--outer-color);
-}
-.mid-info {
-    background-color: var(--mid-color);
 }
 .internal-info {
     background-color: var(--internal-color);

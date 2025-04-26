@@ -127,24 +127,37 @@ namespace Dashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [FromForm] User data)
         {
-            if (data.UserImageBase64 != null && data.UserImageBase64.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await data.UserImageBase64.CopyToAsync(memoryStream);
-                    byte[] imageBytes = memoryStream.ToArray();
-                    data.UserImage = Convert.ToBase64String(imageBytes); // Assuming User has this property
-                }
-            }
-
-            data.Password = _hashing.HashPassword(data.Password);
-
-            bool result;
             using (var API = new HttpClient())
             {
+
                 API.BaseAddress = new Uri(baseURL);
                 API.DefaultRequestHeaders.Clear();
                 API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                if (data.UserImageBase64 != null && data.UserImageBase64.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await data.UserImageBase64.CopyToAsync(memoryStream);
+                        byte[] imageBytes = memoryStream.ToArray();
+                        data.UserImage = Convert.ToBase64String(imageBytes); // Assuming User has this property
+                    }
+                }
+                if(data.Password != null)
+                {
+                    data.Password = _hashing.HashPassword(data.Password);
+                }
+                else
+                {
+                    HttpResponseMessage usserRes = await API.GetAsync($"/api/users/GetById/{id}");
+                    if (usserRes.IsSuccessStatusCode)
+                    {
+                        var APIResponse = usserRes.Content.ReadAsStringAsync().Result;
+                        var user = JsonConvert.DeserializeObject<User>(APIResponse);
+                        data.Password = user.Password;
+                        data.UserImage = user.UserImage;
+                    }
+                }
+
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                 HttpResponseMessage Res = await API.PutAsync($"/api/users/Update/{id}", content);
 
@@ -154,15 +167,8 @@ namespace Dashboard.Controllers
                     ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
                     return View(data);
                 }
-
-                result = true; // Set to true if successful
             }
-
-            if (result)
-            {
-                return RedirectToAction("Index");
-            }
-            return View(data);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

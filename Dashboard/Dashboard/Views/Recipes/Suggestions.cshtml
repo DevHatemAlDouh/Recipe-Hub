@@ -1,0 +1,33 @@
+﻿@using System.Data
+
+@model RecipeSuggestions
+
+@{
+    ViewBag.Title = $"Suggestions";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Suggestions</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach (var suggestion in Model.suggestions)
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">Id</dt>
+                        <dd class="col-sm-9">@suggestion.Id</dd>
+
+                        <dt class="col-sm-3">description</dt>
+                        <dd class="col-sm-9">@suggestion.description</dd>
+                    </dl>
+                }
+            }
+
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

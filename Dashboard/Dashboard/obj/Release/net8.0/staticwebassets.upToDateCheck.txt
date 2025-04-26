@@ -1,4 +1,3 @@
-wwwroot\as\Group 1.png
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\js\site.js

@@ -339,7 +339,41 @@ namespace Dashboard.Controllers
 
                 return View(recipeComments);
             }
-        } 
+        }
+
+        public async Task<IActionResult> Suggestions(int id)
+        {
+            using (var API = new HttpClient())
+            {
+                var recipeSuggestions = new RecipeSuggestions();
+                API.BaseAddress = new Uri(baseURL);
+                API.DefaultRequestHeaders.Clear();
+                API.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Get all suggestions
+                HttpResponseMessage suggRes = await API.GetAsync("/api/Suggestions/GetAll");
+                if (suggRes.IsSuccessStatusCode)
+                {
+                    var apiSuggResponse = await suggRes.Content.ReadAsStringAsync();
+                    var suggestions = JsonConvert.DeserializeObject<List<Suggestion>>(apiSuggResponse);
+                    // Filter comments and users
+                    var recipeSuggestionsList = new List<Suggestion>();
+
+                    foreach (var suggestion in suggestions)
+                    {
+                        if (suggestion.RecipeID == id)
+                        {
+                            recipeSuggestionsList.Add(suggestion); 
+                        }
+                    }
+
+                    recipeSuggestions.suggestions = recipeSuggestionsList;
+                }
+
+                return View(recipeSuggestions);
+            }
+        }
+
 
         // Helper method to fetch recipe details
         private async Task<Recipe> GetRecipeDetailsAsync(HttpClient API, int id)
