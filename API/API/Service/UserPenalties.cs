@@ -174,5 +174,18 @@ namespace API.Service
 
             return userPenalties;
         }
+
+        public async Task Update(int id)
+        {
+            var userpwnalties = await _context.UserPenalties.FirstOrDefaultAsync(c => c.Id == id);
+            if (userpwnalties != null)
+            {
+                userpwnalties.IsActive = false;
+                userpwnalties.UpdatedAt = DateTime.Now;
+
+                _context.UserPenalties.Update(userpwnalties);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
