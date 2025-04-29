@@ -88,6 +88,7 @@ const AddRecipe = () => {
         backgroundImage: backgroundImageBase64,
         description: description.trim(),
         rate: 0,
+        persons:0,
         view: 0,
         userInfo: {
           bio: 'New user',
@@ -105,7 +106,7 @@ const AddRecipe = () => {
         }));
         
         router.push({
-          pathname: '/ingre',
+          pathname: '/(tabs)/ingre',
           params: { 
             recipeId: recipeId,
             title: title.trim() 

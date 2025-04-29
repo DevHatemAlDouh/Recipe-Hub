@@ -217,7 +217,7 @@ const IngredientsSection = () => {
 
       <TextInput
         style={styles.input}
-        placeholder="Search ingredients..."
+        placeholder="S ingredients..."
         value={searchQuery}
         onChangeText={setSearchQuery}
         editable={!isSubmitting}
