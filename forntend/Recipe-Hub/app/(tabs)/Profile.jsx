@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router, useRouter } from 'expo-router';
+
 
 
 const { width } = Dimensions.get('window');
@@ -35,7 +37,7 @@ const Profile = () => {
 
       {/* أزرار تفاعلية مدمجة */}
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.primaryButton}>
+        <TouchableOpacity style={styles.primaryButton} onPress={() => {router.push('/Edeit_Profile')}}>
           <Icon name="user-plus" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
