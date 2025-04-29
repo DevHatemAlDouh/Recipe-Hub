@@ -65,25 +65,25 @@ const RecipeDetails = () => {
             </View>
 
             {/* معلومات الوصفة الأساسية */}
-            {/* <View style={styles.recipeMeta}>
+            <View style={styles.recipeMeta}>
                 <View style={styles.metaItem}>
                 <Ionicons name="people-outline" size={28} color="#e17055" />
                 <Text style={styles.metaValue}>{parsedRecipe.serves || 4}</Text>
                 <Text style={styles.metaLabel}>أفراد</Text>
                 </View>
 
-                <View style={styles.metaItem}>
+                {/* <View style={styles.metaItem}>
                 <Ionicons name="time-outline" size={28} color="#e17055" />
                 <Text style={styles.metaValue}>{parsedRecipe.cookingTime || 30}</Text>
                 <Text style={styles.metaLabel}>دقيقة</Text>
-                </View>
+                </View> */}
 
                 <View style={styles.metaItem}>
                 <Ionicons name="flame-outline" size={28} color="#e17055" />
                 <Text style={styles.metaValue}>{parsedRecipe.difficulty || 'متوسط'}</Text>
-                <Text style={styles.metaLabel}>الصعوبة</Text>
+                <Text style={styles.metaLabel}>التصنيف</Text>
                 </View>
-            </View> */}
+            </View>
 
             {/* محتوى الوصفة */}
             <View style={styles.content}>
