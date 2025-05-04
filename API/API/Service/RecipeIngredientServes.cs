@@ -46,8 +46,6 @@ namespace API.Service
 
         public async Task DeleteAll(int id)
         {
-           
-            var recipeIngredient = await GetAll(id);
             var recipeIngredient = await GetAll(id);
             if (recipeIngredient != null)
             {
@@ -96,7 +94,6 @@ namespace API.Service
 
         public async Task Update(RecipeIngredientinfo entity)
         {
-            var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(u => u.Id == entity.Id);
             var stepIngredient = await _context.RecipeIngredients.FirstOrDefaultAsync(u => u.Id == entity.Id);
             if (stepIngredient != null)
             {
