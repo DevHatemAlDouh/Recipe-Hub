@@ -1,14 +1,100 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useRouter } from 'expo-router';
-
-
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const Profile = () => {
+  // بيانات المستخدم والوصفات
+  const [favoriteRecipes, setFavoriteRecipes] = useState([
+    {
+      id: 1,
+      image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141',
+      title: 'Pasta Carbonara',
+      rating: 4.9,
+      prepTime: '20 mins'
+    },
+    {
+      id: 2,
+      image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641',
+      title: 'Greek Salad',
+      rating: 4.7,
+      prepTime: '15 mins'
+    }
+  ]);
+
+  // مكون بطاقة الوصفة
+  const RecipeCard = ({ image, title, rating, }) => (
+    <TouchableOpacity style={styles.recipeCard}>
+      <Image source={{ uri: image }} style={styles.recipeImage} />
+      <LinearGradient 
+        colors={['transparent', 'rgba(0,0,0,0.7)']}
+        style={styles.recipeOverlay}
+      />
+      <View style={styles.recipeDetails}>
+        <Text style={styles.recipeName}>{title}</Text>
+        <View style={styles.recipeInfoContainer}>
+          <View style={styles.ratingContainer}>
+            <Icon name="star" size={14} color="#FFD700" solid />
+            <Text style={styles.ratingText}>{rating}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  // مكون عرض الوصفات المفضلة
+  const FavoriteRecipesSection = () => (
+    <View style={styles.favoriteSection}>
+      <View style={styles.sectionHeader}>
+        <View style={styles.sectionIconContainer}>
+          <Icon name="heart" size={20} color="#FF6B6B" solid />
+        </View>
+        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
+        {favoriteRecipes.length > 0 && (
+          <TouchableOpacity 
+            style={styles.viewAllButton}
+            onPress={() => router.push('/Favorites')}
+          >
+            <Text style={styles.viewAllText}>View All</Text>
+            <Icon name="chevron-right" size={14} color="#6B5B95" />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {favoriteRecipes.length !== 0 ? (
+        <View style={styles.emptyFavorites}>
+          <Icon name="heart-broken" size={40} color="#FF6B6B" />
+          <Text style={styles.emptyText}>No favorite recipes yet</Text>
+          <TouchableOpacity 
+            style={styles.discoverButton}
+            onPress={() => router.push('/Explore')}
+          >
+            <Text style={styles.discoverButtonText}>Discover Recipes</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.favoriteRecipesList}
+        >
+          {favoriteRecipes.map(recipe => (
+            <RecipeCard 
+              key={recipe.id}
+              image={recipe.image}
+              title={recipe.title}
+              rating={recipe.rating}
+              prepTime={recipe.prepTime}
+            />
+          ))}
+        </ScrollView>
+      )}
+    </View>
+  );
+
   return (
     <ScrollView 
       contentContainerStyle={styles.scrollContainer}
@@ -21,7 +107,7 @@ const Profile = () => {
       >
         <View style={styles.profileHeader}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/150' }}
+            source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
             style={styles.profileImage}
           />
           <Text style={styles.userName}>Chef John</Text>
@@ -29,99 +115,168 @@ const Profile = () => {
         </View>
       </LinearGradient>
 
-      {/* إحصائيات مطورة مع أيقونات */}
+      {/* إحصائيات المستخدم */}
       <View style={styles.statsContainer}>
-        <StatItem icon="utensils" value="45" label="Recipes" />
-        <StatItem icon="heart" value="4.8" label="Rating" />
+        <StatItem icon="utensils" value={favoriteRecipes.length.toString()} label="Favorites" />
+        <StatItem icon="star" value="4.8" label="Rating" />
       </View>
 
-      {/* أزرار تفاعلية مدمجة */}
+      {/* أزرار التحكم */}
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.primaryButton} onPress={() => {router.push('/Edeit_Profile')}}>
-          <Icon name="user-plus" size={18} color="#fff" />
+        <TouchableOpacity 
+          style={styles.primaryButton} 
+          onPress={() => router.push('Profile_Content/Edeit_Profile')}
+        >
+          <Icon name="user-edit" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
 
-      {/* وصفات مميزة مع تأثيرات بصرية */}
+      {/* قسم الوصفات المفضلة */}
+{/* قسم الوصفات المفضلة */}
+<View style={styles.favoriteSection}>
+  <View style={styles.sectionHeader}>
+    <View style={styles.sectionIconContainer}>
+      <Icon name="heart" size={22} color="#FF6B6B" solid />
+    </View>
+    <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
+    {favoriteRecipes.length > 2 && (
+      <TouchableOpacity 
+        style={styles.viewAllButton}
+        onPress={() => router.push('/Favorites')}
+      >
+        <Text style={styles.viewAllText}>View All</Text>
+        <Icon name="chevron-right" size={14} color="#6B5B95" />
+      </TouchableOpacity>
+    )}
+  </View>
+
+  {favoriteRecipes.length === 0 ? (
+    <View style={styles.emptyFavorites}>
+      <Icon name="heart-broken" size={40} color="#FF6B6B" />
+      <Text style={styles.emptyText}>No favorites yet</Text>
+      <TouchableOpacity 
+        style={styles.discoverButton}
+        onPress={() => router.push('/Explore')}
+      >
+        <Text style={styles.discoverButtonText}>Discover Recipes</Text>
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <ScrollView 
+      horizontal 
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.favoriteRecipesList}
+    >
+      {favoriteRecipes.slice(0, 4).map(recipe => (
+        <TouchableOpacity 
+          key={recipe.id} 
+          style={styles.favoriteRecipeCard}
+          onPress={() => router.push({
+            pathname: '/RecipeDetails',
+            params: { recipeId: recipe.id }
+          })}
+        >
+          <Image 
+            source={{ uri: recipe.image }} 
+            style={styles.favoriteRecipeImage} 
+          />
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.7)']}
+            style={styles.favoriteRecipeOverlay}
+          />
+          <View style={styles.favoriteRecipeInfo}>
+            <Text style={styles.favoriteRecipeTitle} numberOfLines={1}>
+              {recipe.title}
+            </Text>
+            <View style={styles.favoriteRecipeMeta}>
+              <View style={styles.ratingContainer}>
+                <Icon name="star" size={14} color="#FFD700" solid />
+                <Text style={styles.ratingText}>{recipe.rating}</Text>
+              </View>
+              <View style={styles.timeContainer}>
+                <Icon name="clock" size={12} color="#fff" />
+                <Text style={styles.timeText}>{recipe.prepTime}</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  )}
+</View>
+      {/* قسم الوصفات المميزة */}
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
-          <Icon name="heart-outline" size={20} color="#FFA07A" />
+          <View style={styles.sectionIconContainer}>
+            <Icon name="star" size={20} color="#FFD700" />
+          </View>
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
           <TouchableOpacity style={styles.viewAllButton}>
             <Text style={styles.viewAllText}>View All</Text>
-            <Icon name="arrow-right" size={14} color="#6B5B95" />
+            <Icon name="chevron-right" size={14} color="#6B5B95" />
           </TouchableOpacity>
         </View>
 
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.featuredList}
+          contentContainerStyle={styles.recipesList}
         >
           <RecipeCard 
-            image="https://via.placeholder.com/150"
-            title="Spaghetti Carbonara"
-            rating={4.9}
+            image="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
+            title="Avocado Toast"
+            rating={4.5}
+            prepTime="10 mins"
           />
           <RecipeCard 
-            image="https://via.placeholder.com/150"
-            title="Tiramisu"
-            rating={4.7}
+            image="https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
+            title="Pancakes"
+            rating={4.8}
+            prepTime="25 mins"
           />
         </ScrollView>
       </View>
 
-      {/* تقييمات مع تصميم متقدم */}
+      {/* قسم التقييمات */}
       <View style={styles.reviewsSection}>
         <View style={styles.sectionHeader}>
-          <Icon name="comments" size={20} color="#4CAF50" />
-          <Text style={styles.sectionTitle}>User Reviews</Text>
+          <View style={styles.sectionIconContainer}>
+            <Icon name="comments" size={20} color="#4CAF50" />
+          </View>
+          <Text style={styles.sectionTitle}>Recent Reviews</Text>
         </View>
 
         <ReviewItem 
-          reviewer="Jane Doe"
-          avatar="https://via.placeholder.com/50"
-          comment="Amazing recipes! Loved the Carbonara."
+          reviewer="Sarah Johnson"
+          avatar="https://randomuser.me/api/portraits/women/44.jpg"
+          comment="Your carbonara recipe changed my life! So delicious and easy to make."
           rating={5.0}
+          date="2 days ago"
         />
       </View>
     </ScrollView>
   );
 };
 
-// مكونات فرعية لإعادة الاستخدام
+// مكونات فرعية مساعدة
 const StatItem = ({ icon, value, label }) => (
   <View style={styles.statItem}>
     <Icon name={icon} size={24} color="#6B5B95" />
-    <Text style={styles.statNumber}>{value}</Text>
+    <Text style={styles.statValue}>{value}</Text>
     <Text style={styles.statLabel}>{label}</Text>
   </View>
 );
 
-const RecipeCard = ({ image, title, rating }) => (
-  <TouchableOpacity style={styles.recipeCard}>
-    <Image source={{ uri: image }} style={styles.recipeImage} />
-    <LinearGradient 
-      colors={['transparent', 'rgba(0,0,0,0.6)']}
-      style={styles.recipeOverlay}
-    />
-    <View style={styles.recipeDetails}>
-      <Text style={styles.recipeName}>{title}</Text>
-      <View style={styles.recipeRating}>
-        <Icon name="star" size={16} color="#FFD700" />
-        <Text style={styles.ratingText}>{rating}</Text>
-      </View>
-    </View>
-  </TouchableOpacity>
-);
-
-const ReviewItem = ({ avatar, reviewer, comment, rating }) => (
+const ReviewItem = ({ avatar, reviewer, comment, rating, date }) => (
   <View style={styles.reviewItem}>
     <Image source={{ uri: avatar }} style={styles.reviewerImage} />
     <View style={styles.reviewContent}>
       <View style={styles.reviewHeader}>
-        <Text style={styles.reviewerName}>{reviewer}</Text>
+        <View>
+          <Text style={styles.reviewerName}>{reviewer}</Text>
+          <Text style={styles.reviewDate}>{date}</Text>
+        </View>
         <View style={styles.reviewRating}>
           <Icon name="star" size={14} color="#FFD700" />
           <Text style={styles.ratingText}>{rating}</Text>
@@ -132,17 +287,20 @@ const ReviewItem = ({ avatar, reviewer, comment, rating }) => (
   </View>
 );
 
+// الأنماط
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 20,
+    paddingBottom: 30,
+    backgroundColor: '#f8f8f8',
   },
   headerGradient: {
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingTop: 50,
+    paddingBottom: 30,
     paddingHorizontal: 20,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
+    marginBottom: 20,
   },
   profileHeader: {
     alignItems: 'center',
@@ -168,26 +326,29 @@ const styles = StyleSheet.create({
   },
   userBio: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
+    color: 'rgba(255,255,255,0.9)',
     textAlign: 'center',
+    maxWidth: '80%',
   },
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 20,
     backgroundColor: '#fff',
-    margin: 20,
+    marginHorizontal: 20,
     borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
+    marginBottom: 20,
   },
   statItem: {
     alignItems: 'center',
+    minWidth: 80,
   },
-  statNumber: {
+  statValue: {
     fontSize: 20,
     fontWeight: '700',
     color: '#6B5B95',
@@ -207,10 +368,11 @@ const styles = StyleSheet.create({
   primaryButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#6B5B95',
     borderRadius: 25,
     paddingVertical: 12,
-    paddingHorizontal: 25,
+    paddingHorizontal: 20,
     flex: 1,
     marginRight: 10,
     shadowColor: '#000',
@@ -222,11 +384,12 @@ const styles = StyleSheet.create({
   secondaryButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     borderColor: '#6B5B95',
     borderWidth: 1.5,
     borderRadius: 25,
     paddingVertical: 12,
-    paddingHorizontal: 25,
+    paddingHorizontal: 20,
     flex: 1,
     marginLeft: 10,
   },
@@ -242,7 +405,37 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontWeight: '600',
   },
-  aboutSection: {
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  sectionIconContainer: {
+    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#333',
+    flex: 1,
+  },
+  viewAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  viewAllText: {
+    color: '#6B5B95',
+    fontSize: 14,
+    marginRight: 5,
+    fontWeight: '600',
+  },
+  favoriteSection: {
     backgroundColor: '#fff',
     marginHorizontal: 20,
     borderRadius: 15,
@@ -254,40 +447,59 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  sectionHeader: {
-    flexDirection: 'row',
+  featuredSection: {
+    backgroundColor: '#fff',
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  emptyFavorites: {
     alignItems: 'center',
-    marginBottom: 15,
+    justifyContent: 'center',
+    paddingVertical: 40,
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#333',
-    marginLeft: 10,
-    flex: 1,
+  emptyText: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 15,
+    marginBottom: 20,
   },
-  viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  discoverButton: {
+    backgroundColor: '#FF6B6B',
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
   },
-  viewAllText: {
-    color: '#6B5B95',
-    fontSize: 14,
-    marginRight: 5,
+  discoverButtonText: {
+    color: '#fff',
+    fontWeight: '600',
   },
-  featuredList: {
-    paddingHorizontal: 20,
+  favoriteRecipesList: {
+    paddingLeft: 5,
+  },
+  recipesList: {
+    paddingLeft: 5,
   },
   recipeCard: {
-    width: width * 0.6,
+    width: width * 0.5,
     marginRight: 15,
-    borderRadius: 15,
+    borderRadius: 12,
     overflow: 'hidden',
     elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
   recipeImage: {
     width: '100%',
-    height: 200,
+    height: 160,
     resizeMode: 'cover',
   },
   recipeOverlay: {
@@ -301,21 +513,45 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     left: 10,
+    right: 10,
   },
   recipeName: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
-    fontWeight: '600',
-    marginBottom: 5,
+    fontWeight: '700',
+    marginBottom: 8,
   },
-  recipeRating: {
+  recipeInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
   },
   ratingText: {
     color: '#fff',
     marginLeft: 5,
-    fontSize: 14,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  timeText: {
+    color: '#fff',
+    marginLeft: 5,
+    fontSize: 12,
+    fontWeight: '600',
   },
   reviewsSection: {
     backgroundColor: '#fff',
@@ -331,7 +567,7 @@ const styles = StyleSheet.create({
   },
   reviewItem: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 20,
   },
   reviewerImage: {
     width: 50,
@@ -355,11 +591,153 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
   },
+  reviewDate: {
+    fontSize: 12,
+    color: '#999',
+  },
+  reviewRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   reviewText: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
   },
+
+  favoriteSection: {
+  backgroundColor: '#fff',
+  marginHorizontal: 20,
+  borderRadius: 15,
+  padding: 20,
+  marginBottom: 20,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 6,
+  elevation: 3,
+},
+sectionHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 15,
+},
+sectionIconContainer: {
+  backgroundColor: 'rgba(255, 107, 107, 0.1)',
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginRight: 10,
+},
+sectionTitle: {
+  fontSize: 20,
+  fontWeight: '700',
+  color: '#333',
+  flex: 1,
+},
+viewAllButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+viewAllText: {
+  color: '#6B5B95',
+  fontSize: 14,
+  marginRight: 5,
+  fontWeight: '600',
+},
+emptyFavorites: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingVertical: 40,
+},
+emptyText: {
+  fontSize: 16,
+  color: '#666',
+  marginTop: 15,
+  marginBottom: 20,
+},
+discoverButton: {
+  backgroundColor: '#FF6B6B',
+  borderRadius: 25,
+  paddingVertical: 12,
+  paddingHorizontal: 25,
+},
+discoverButtonText: {
+  color: '#fff',
+  fontWeight: '600',
+},
+favoriteRecipesList: {
+  paddingLeft: 5,
+},
+favoriteRecipeCard: {
+  width: width * 0.5,
+  marginRight: 15,
+  borderRadius: 12,
+  overflow: 'hidden',
+  elevation: 4,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 6,
+},
+favoriteRecipeImage: {
+  width: '100%',
+  height: 160,
+  resizeMode: 'cover',
+},
+favoriteRecipeOverlay: {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: '50%',
+},
+favoriteRecipeInfo: {
+  position: 'absolute',
+  bottom: 10,
+  left: 10,
+  right: 10,
+},
+favoriteRecipeTitle: {
+  fontSize: 16,
+  color: '#fff',
+  fontWeight: '700',
+  marginBottom: 8,
+},
+favoriteRecipeMeta: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+ratingContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  borderRadius: 12,
+  paddingVertical: 3,
+  paddingHorizontal: 8,
+},
+timeContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  borderRadius: 12,
+  paddingVertical: 3,
+  paddingHorizontal: 8,
+},
+ratingText: {
+  color: '#fff',
+  marginLeft: 5,
+  fontSize: 12,
+  fontWeight: '600',
+},
+timeText: {
+  color: '#fff',
+  marginLeft: 5,
+  fontSize: 12,
+  fontWeight: '600',
+},
 });
 
 export default Profile;

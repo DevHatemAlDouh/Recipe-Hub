@@ -11,16 +11,15 @@ import { useEffect } from "react";
 SplashScreen.preventAutoHideAsync();
 
 const screens = [
-  { name: "open",           options: { headerShown: false } },
-  { name: "index",          options: { headerShown: false } },
-  { name: "Sign_in",        options: { headerShown: false } },
-  { name: "Create_account", options: { headerShown: false } },
-  { name: "Comment",        options: { headerShown: false } },
-  { name: "RecipeDetails",  options: { headerShown: false } },
-  { name: "Edeit_Profile",  options: { headerShown: false } },
-  // { name: "Profile",        options: { headerShown: false } },
-  // { name: "Settings",       options: { headerShown: false } },
-  { name: "not-found",      options: { title: "Page Not Found" } },
+  { name: "open",                           options: { headerShown: false } },
+  { name: "index",                          options: { headerShown: false } },
+  { name: "Sign_in",                        options: { headerShown: false } },
+  { name: "Create_account",                 options: { headerShown: false } },
+  { name: "Comment",                        options: { headerShown: false } },
+  { name: "RecipeDetails",                  options: { headerShown: false } },
+  { name: "Profile_Content/Edeit_Profile",  options: { headerShown: false } },
+  { name: "Profile_Content/Edeit_Recipe",   options: { headerShown: false } },
+  { name: "not-found",                      options: { title: "Page Not Found" } },
 ];
 
 export default function RootLayout() {
@@ -48,7 +47,7 @@ export default function RootLayout() {
               {screens.map((screen, index) => (
                 <Stack.Screen key={index} name={screen.name} options={screen.options} />
               ))}
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />              
             </Stack>
           </PaperProvider>
         </SafeAreaProvider>

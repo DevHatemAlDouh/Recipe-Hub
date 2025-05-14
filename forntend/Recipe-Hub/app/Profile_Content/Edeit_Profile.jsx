@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
 
 const EditProfile = () => {
   const [name, setName] = useState("John Doe"); // اسم افتراضي
@@ -27,6 +28,7 @@ const EditProfile = () => {
     Alert.alert("Profile Updated", `Name: ${name}`);
     console.log("Name:", name);
     console.log("Profile Image:", profileImage);
+    router.back(); // العودة إلى الصفحة السابقة
   };
 
   return (
