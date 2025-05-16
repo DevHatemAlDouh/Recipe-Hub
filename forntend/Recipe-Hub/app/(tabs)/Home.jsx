@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,73 +11,191 @@ import {
   ScrollView,
   Keyboard,
   RefreshControl,
+  ActivityIndicator,
+  Image
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Avatar, Card, IconButton, Menu, Icon, Dialog, Button, Portal } from "react-native-paper";
 import { router } from "expo-router";
-
-const recipes = [
-  {
-    id: "1",
-    author: "Ahmed Ali",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    image: "https://source.unsplash.com/400x300/?pasta",
-    title: "Pasta",
-    description: "Pasta with tomato sauce",
-    time: "30 minutes ago",
-    initialLikes: 15,
-  },
-  {
-    id: "2",
-    author: "Hassen Sabri",
-    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-    image: "https://source.unsplash.com/400x300/?pastries",
-    title: "Pastries",
-    description: "Cheesecake recipe",
-    time: "30 minutes ago",
-    initialLikes: 8,
-  },
-];
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const bottomSheetRef = useRef(null);
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [comments, setComments] = useState({});
   const [favorites, setFavorites] = useState({});
-  const [likesCount, setLikesCount] = useState(
-    recipes.reduce((acc, recipe) => {
-      acc[recipe.id] = recipe.initialLikes;
-      return acc;
-    }, {})
-  );
+  const [likesCount, setLikesCount] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [recipes, setRecipes] = useState([]);
+  const [users, setUsers] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
+  const fetchData = async () => {
+    try {
+      setRefreshing(true);
+      
+      const [recipesResponse, commentsResponse] = await Promise.all([
+        axios.get('http://recipe-hub.runasp.net/api/Recipes/GetAll'),
+        axios.get('http://recipe-hub.runasp.net/api/Comments/GetAll')
+      ]);
+
+      const recipesData = recipesResponse.data.map(recipe => ({
+        ...recipe,
+        backgroundImage: recipe.backgroundImage 
+          ? `data:image/jpeg;base64,${recipe.backgroundImage}`
+          : 'https://source.unsplash.com/400x300/?food'
+      }));
+
+      const allComments = commentsResponse.data;
+
+      const usersPromises = recipesData.map(recipe => 
+        axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${recipe.userID}`)
+      );
+      
+      const usersResponses = await Promise.all(usersPromises);
+      const usersMap = usersResponses.reduce((acc, response) => {
+        acc[response.data.id] = response.data;
+        return acc;
+      }, {});
+
+      const commentsByRecipe = {};
+      for (const comment of allComments) {
+        const recipeId = comment.recipeID.toString();
+        if (!commentsByRecipe[recipeId]) {
+          commentsByRecipe[recipeId] = [];
+        }
+        
+        let user = comment.user;
+        if (!user && comment.userID) {
+          try {
+            const userResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${comment.userID}`);
+            user = userResponse.data;
+          } catch (error) {
+            console.error('Error fetching user for comment:', error);
+            user = {
+              id: comment.userID,
+              userName: "مستخدم مجهول",
+              userImage: "https://randomuser.me/api/portraits/men/1.jpg"
+            };
+          }
+        }
+
+        commentsByRecipe[recipeId].push({
+          id: comment.id.toString(),
+          text: comment.description,
+          timestamp: new Date(comment.createdAt).toLocaleString(),
+          user: user || {
+            userName: "مستخدم مجهول",
+            userImage: "https://randomuser.me/api/portraits/men/1.jpg"
+          }
+        });
+      }
+
+      setRecipes(recipesData);
+      setUsers(usersMap);
+      setComments(commentsByRecipe);
       setLastUpdated(new Date());
+      
+      setLikesCount(recipesData.reduce((acc, recipe) => {
+        acc[recipe.id] = recipe.rate || 0;
+        return acc;
+      }, {}));
+      
+    } catch (error) {
+      console.error('Error fetching data:', error.response?.data || error.message);
+    } finally {
       setRefreshing(false);
-    }, 2000);
-  }, []);
-
-  const handleCommentPress = (recipeId) => {
-    setSelectedRecipeId(recipeId);
-    bottomSheetRef.current?.expand();
+      setLoading(false);
+    }
   };
 
-  const handleSendComment = (commentText) => {
-    if (commentText.trim()) {
-      const newComment = {
-        id: Date.now().toString(),
-        text: commentText,
-        timestamp: new Date().toLocaleString(),
-      };
-      setComments((prevComments) => ({
-        ...prevComments,
-        [selectedRecipeId]: [...(prevComments[selectedRecipeId] || []), newComment],
-      }));
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    fetchData();
+  }, []);
+
+  const handleCommentPress = async (recipeId) => {
+    try {
+      setSelectedRecipeId(recipeId);
+      
+      if (!comments[recipeId]) {
+        const response = await axios.get(`http://recipe-hub.runasp.net/api/Comments/GetById/${recipeId}`);
+        const commentsData = await Promise.all(response.data.map(async (comment) => {
+          let user = comment.user;
+          if (!user && comment.userID) {
+            try {
+              const userResponse = await axios.get(`http://recipe-hub.runasp.net/api/users/GetById/${comment.userID}`);
+              user = userResponse.data;
+            } catch (error) {
+              console.error('Error fetching user for comment:', error);
+              user = {
+                userName: "مستخدم مجهول",
+                userImage: "https://randomuser.me/api/portraits/men/1.jpg"
+              };
+            }
+          }
+          
+          return {
+            id: comment.id.toString(),
+            text: comment.description,
+            timestamp: new Date(comment.createdAt).toLocaleString(),
+            user: user || {
+              userName: "مستخدم مجهول",
+              userImage: "https://randomuser.me/api/portraits/men/1.jpg"
+            }
+          };
+        }));
+        
+        setComments(prev => ({
+          ...prev,
+          [recipeId]: commentsData
+        }));
+      }
+      
+      bottomSheetRef.current?.expand();
+    } catch (error) {
+      console.error('Error fetching comments:', error.response?.data || error.message);
+    }
+  };
+
+  const handleSendComment = async (commentText) => {
+    if (commentText.trim() && selectedRecipeId) {
+      try {
+        const userData = JSON.parse(await AsyncStorage.getItem('userData'));
+        
+        const response = await axios.post('http://recipe-hub.runasp.net/api/Comments/Add', {
+          recipeID: parseInt(selectedRecipeId),
+          userID: userData.id,
+          description: commentText,
+          rate: 0
+        });
+        
+        if (response.status === 200) {
+          const newComment = {
+            id: Date.now().toString(),
+            text: commentText,
+            timestamp: new Date().toLocaleString(),
+            user: {
+              id: userData.id,
+              userName: userData.userName,
+              userImage: userData.userImage
+            }
+          };
+          
+          setComments(prev => ({
+            ...prev,
+            [selectedRecipeId]: [...(prev[selectedRecipeId] || []), newComment],
+          }));
+        }
+      } catch (error) {
+        console.error('Error posting comment:', error.response?.data || error.message);
+      }
     }
   };
 
@@ -98,21 +216,49 @@ const Home = () => {
     });
   };
 
+  const renderRecipeCard = ({ item }) => {
+    const user = users[item.userID] || {};
+    
+    const recipeItem = {
+      id: item.id.toString(),
+      author: user.userName || "مستخدم مجهول",
+      avatar: user.userImage || "https://randomuser.me/api/portraits/men/1.jpg",
+      image: item.backgroundImage,
+      title: item.title,
+      description: item.description,
+      time: formatTime(item.createdAt),
+      initialLikes: item.rate || 0,
+      serves: item.persons,
+      difficulty: "متوسط",
+      ...item
+    };
+
+    return (
+      <RecipeCard
+        item={{...recipeItem, lastUpdated}}
+        onCommentPress={() => handleCommentPress(item.id)}
+        onFavoritePress={() => toggleFavorite(item.id)}
+        isFavorite={favorites[item.id] === "heart"}
+        likesCount={likesCount[item.id] || 0}
+        commentsCount={comments[item.id]?.length || 0}
+      />
+    );
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FF6B6B" />
+      </View>
+    );
+  }
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <FlatList
         data={recipes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <RecipeCard
-            item={{...item, lastUpdated}}
-            onCommentPress={() => handleCommentPress(item.id)}
-            onFavoritePress={() => toggleFavorite(item.id)}
-            isFavorite={favorites[item.id] === "heart"}
-            likesCount={likesCount[item.id] || 0}
-            commentsCount={comments[item.id]?.length || 0}
-          />
-        )}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderRecipeCard}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -123,7 +269,7 @@ const Home = () => {
         }
         ListHeaderComponent={
           <Text style={styles.lastUpdateText}>
-            Last updated: {lastUpdated.toLocaleTimeString()}
+            آخر تحديث: {lastUpdated.toLocaleTimeString()}
           </Text>
         }
       />
@@ -137,9 +283,20 @@ const Home = () => {
   );
 };
 
+function formatTime(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMinutes = Math.floor((now - date) / (1000 * 60));
+  
+  if (diffMinutes < 60) return `${diffMinutes} دقيقة مضت`;
+  if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)} ساعة مضت`;
+  return `${Math.floor(diffMinutes / 1440)} يوم مضى`;
+}
+
 const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCount, commentsCount }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleReport = () => {
     console.log("Reported recipe:", item.id);
@@ -181,7 +338,7 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCo
                   setMenuVisible(false);
                   setShowDialog(true);
                 }}
-                title="Report"
+                title="الإبلاغ"
               />
             </Menu>
           </View>
@@ -195,10 +352,10 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCo
           style={styles.dialogContainer}
         >
           <View style={styles.dialogContent}>
-            <Dialog.Title>Confirm Report</Dialog.Title>
+            <Dialog.Title>تأكيد الإبلاغ</Dialog.Title>
             <Dialog.Content>
               <Text style={styles.dialogText}>
-                Are you sure you want to report this recipe?
+                هل أنت متأكد أنك تريد الإبلاغ عن هذه الوصفة؟
               </Text>
             </Dialog.Content>
             <Dialog.Actions style={styles.dialogActions}>
@@ -207,7 +364,7 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCo
                 onPress={() => setShowDialog(false)}
                 style={styles.cancelButton}
               >
-                Cancel
+                إلغاء
               </Button>
               <Button
                 mode="contained"
@@ -215,22 +372,30 @@ const RecipeCard = ({ item, onCommentPress, onFavoritePress, isFavorite, likesCo
                 style={styles.confirmButton}
                 labelStyle={styles.buttonLabel}
               >
-                Confirm
+                تأكيد
               </Button>
             </Dialog.Actions>
           </View>
         </Dialog>
       </Portal>
 
-      <TouchableOpacity onPress={() => router.push(`/RecipeDetails?recipe=${encodeURIComponent(JSON.stringify(item))}`)}>
-        <Card.Cover source={{ uri: item.image }} style={styles.coverImage} />
+      <TouchableOpacity onPress={() => router.push(`/RecipeDetails?id=${item.id}`)}>
+        <Card.Cover 
+          source={{ 
+            uri: imageError 
+              ? 'https://source.unsplash.com/400x300/?food' 
+              : item.image 
+          }} 
+          style={styles.coverImage}
+          onError={() => setImageError(true)}
+        />
       </TouchableOpacity>
 
       <Card.Content>
-        <Text variant="titleMedium">{item.title}</Text>
-        <Text variant="bodyMedium">{item.description}</Text>
+        <Text variant="titleMedium" style={styles.recipeTitle}>{item.title}</Text>
+        <Text variant="bodyMedium" style={styles.recipeDescription}>{item.description}</Text>
         <Text style={styles.updateTime}>
-          Updated: {item.lastUpdated.toLocaleTimeString()}
+          تم التحديث: {item.lastUpdated.toLocaleTimeString()}
         </Text>
       </Card.Content>
       <Card.Actions>
@@ -277,7 +442,6 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
       enableContentPanningGesture={false}
       enableHandlePanningGesture={true}
       onChange={handleSheetChanges}
-      
     >
       <BottomSheetView style={styles.contentContainer}>
         <KeyboardAvoidingView
@@ -287,7 +451,7 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Write your comment..."
+              placeholder="اكتب تعليقك..."
               value={comment}
               onChangeText={setComment}
               multiline
@@ -303,12 +467,22 @@ const Comment = ({ bottomSheetRef, selectedRecipeId, comments, onSendComment }) 
           <ScrollView style={styles.scrollView}>
             {comments.map((item) => (
               <View key={item.id} style={styles.commentBubble}>
+                <View style={styles.commentHeader}>
+                  <Image 
+                    source={{ 
+                      uri: item.user?.userImage || "https://randomuser.me/api/portraits/men/1.jpg" 
+                    }} 
+                    style={styles.commentAvatar}
+                    onError={() => console.log("Error loading avatar")}
+                  />
+                  <Text style={styles.commentAuthor}>{item.user?.userName || "مستخدم مجهول"}</Text>
+                </View>
                 <Text style={styles.commentText}>{item.text}</Text>
                 <Text style={styles.timestamp}>{item.timestamp}</Text>
               </View>
             ))}
             {comments.length === 0 && (
-              <Text style={styles.noCommentsText}>No comments yet</Text>
+              <Text style={styles.noCommentsText}>لا توجد تعليقات بعد</Text>
             )}
           </ScrollView>
         </KeyboardAvoidingView>
@@ -322,13 +496,35 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   card: {
     margin: 10,
     position: 'relative',
     overflow: 'visible',
+    borderRadius: 12,
+    elevation: 3,
   },
   coverImage: {
     height: 200,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    resizeMode: 'cover',
+  },
+  recipeTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'right',
+  },
+  recipeDescription: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'right',
+    marginBottom: 8,
   },
   menuContainer: {
     position: 'relative',
@@ -362,6 +558,7 @@ const styles = StyleSheet.create({
   dialogText: {
     fontSize: 16,
     marginBottom: 20,
+    textAlign: 'right',
   },
   dialogActions: {
     flexDirection: 'row',
@@ -398,6 +595,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     minHeight: 80,
     maxHeight: 150,
+    textAlign: 'right',
   },
   sendButton: {
     backgroundColor: "#007AFF",
@@ -412,24 +610,42 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   commentBubble: {
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#f5f5f5",
     borderRadius: 12,
-    padding: 10,
+    padding: 12,
+    marginBottom: 10,
+  },
+  commentHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
+  commentAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginLeft: 8,
+    resizeMode: 'cover',
+  },
+  commentAuthor: {
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
   commentText: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 15,
+    color: '#333',
+    textAlign: 'right',
+    marginBottom: 4,
   },
   timestamp: {
     fontSize: 12,
-    color: "#666",
-    marginTop: 4,
+    color: "#888",
+    textAlign: 'left',
   },
   noCommentsText: {
     fontSize: 16,
-    color: "#666",
-    textAlign: "center",
+    color: "#888",
+    textAlign: 'center',
     marginTop: 20,
   },
   keyboardAvoidingView: {
@@ -452,9 +668,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   updateTime: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#999',
     marginTop: 4,
+    textAlign: 'right',
   },
 });
 
