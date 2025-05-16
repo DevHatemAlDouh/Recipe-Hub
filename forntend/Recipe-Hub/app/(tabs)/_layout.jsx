@@ -9,6 +9,7 @@ return (
         tabBarInactiveTintColor: "gray",
         tabBarLabelStyle: { fontSize: 12 },
         tabBarStyle: { backgroundColor: "white" },
+        headerShown: false
     }}
     >
       {/* الصفحة الرئيسية */}
