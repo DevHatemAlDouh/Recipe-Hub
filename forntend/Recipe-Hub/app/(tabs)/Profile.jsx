@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 const { width } = Dimensions.get('window');
 
 const Profile = () => {
-  // بيانات المستخدم والوصفات
+  // User and recipes data
   const [favoriteRecipes, setFavoriteRecipes] = useState([
     {
       id: 1,
@@ -25,9 +25,21 @@ const Profile = () => {
     }
   ]);
 
-  // مكون بطاقة الوصفة
-  const RecipeCard = ({ image, title, rating, }) => (
-    <TouchableOpacity style={styles.recipeCard}>
+  // Recipe Card Component
+  const RecipeCard = ({ id, image, title, rating, prepTime }) => (
+    <TouchableOpacity 
+      style={styles.recipeCard}
+      onPress={() => router.push({
+        pathname: '/RecipeDetails',
+        params: { 
+          recipeId: id,
+          recipeTitle: title,
+          recipeImage: image,
+          recipeRating: rating,
+          recipePrepTime: prepTime
+        }
+      })}
+    >
       <Image source={{ uri: image }} style={styles.recipeImage} />
       <LinearGradient 
         colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -40,20 +52,26 @@ const Profile = () => {
             <Icon name="star" size={14} color="#FFD700" solid />
             <Text style={styles.ratingText}>{rating}</Text>
           </View>
+          {prepTime && (
+            <View style={styles.timeContainer}>
+              <Icon name="clock" size={12} color="#fff" />
+              <Text style={styles.timeText}>{prepTime}</Text>
+            </View>
+          )}
         </View>
       </View>
     </TouchableOpacity>
   );
 
-  // مكون عرض الوصفات المفضلة
+  // Favorite Recipes Section
   const FavoriteRecipesSection = () => (
     <View style={styles.favoriteSection}>
       <View style={styles.sectionHeader}>
         <View style={styles.sectionIconContainer}>
-          <Icon name="heart" size={20} color="#FF6B6B" solid />
+          <Icon name="heart" size={22} color="#FF6B6B" solid />
         </View>
-        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
-        {favoriteRecipes.length > 0 && (
+        <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
+        {favoriteRecipes.length > 2 && (
           <TouchableOpacity 
             style={styles.viewAllButton}
             onPress={() => router.push('/Favorites')}
@@ -64,10 +82,10 @@ const Profile = () => {
         )}
       </View>
 
-      {favoriteRecipes.length !== 0 ? (
+      {favoriteRecipes.length === 0 ? (
         <View style={styles.emptyFavorites}>
           <Icon name="heart-broken" size={40} color="#FF6B6B" />
-          <Text style={styles.emptyText}>No favorite recipes yet</Text>
+          <Text style={styles.emptyText}>No favorites yet</Text>
           <TouchableOpacity 
             style={styles.discoverButton}
             onPress={() => router.push('/Explore')}
@@ -84,6 +102,7 @@ const Profile = () => {
           {favoriteRecipes.map(recipe => (
             <RecipeCard 
               key={recipe.id}
+              id={recipe.id}
               image={recipe.image}
               title={recipe.title}
               rating={recipe.rating}
@@ -100,7 +119,7 @@ const Profile = () => {
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}
     >
-      {/* Header مع تدرج لوني */}
+      {/* Header with Gradient */}
       <LinearGradient 
         colors={['#FF6B6B', '#FFA07A']} 
         style={styles.headerGradient}
@@ -115,104 +134,37 @@ const Profile = () => {
         </View>
       </LinearGradient>
 
-      {/* إحصائيات المستخدم */}
+      {/* User Statistics */}
       <View style={styles.statsContainer}>
         <StatItem icon="utensils" value={favoriteRecipes.length.toString()} label="Favorites" />
         <StatItem icon="star" value="4.8" label="Rating" />
       </View>
 
-      {/* أزرار التحكم */}
+      {/* Action Buttons */}
       <View style={styles.actionButtons}>
         <TouchableOpacity 
           style={styles.primaryButton} 
-          onPress={() => router.push('Profile_Content/Edeit_Profile')}
+          onPress={() => router.push('/Profile_Content/Edeit_Profile')}
         >
           <Icon name="user-edit" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
 
-      {/* قسم الوصفات المفضلة */}
-{/* قسم الوصفات المفضلة */}
-<View style={styles.favoriteSection}>
-  <View style={styles.sectionHeader}>
-    <View style={styles.sectionIconContainer}>
-      <Icon name="heart" size={22} color="#FF6B6B" solid />
-    </View>
-    <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
-    {favoriteRecipes.length > 2 && (
-      <TouchableOpacity 
-        style={styles.viewAllButton}
-        onPress={() => router.push('/Favorites')}
-      >
-        <Text style={styles.viewAllText}>View All</Text>
-        <Icon name="chevron-right" size={14} color="#6B5B95" />
-      </TouchableOpacity>
-    )}
-  </View>
+      {/* Favorite Recipes Section */}
+      <FavoriteRecipesSection />
 
-  {favoriteRecipes.length === 0 ? (
-    <View style={styles.emptyFavorites}>
-      <Icon name="heart-broken" size={40} color="#FF6B6B" />
-      <Text style={styles.emptyText}>No favorites yet</Text>
-      <TouchableOpacity 
-        style={styles.discoverButton}
-        onPress={() => router.push('/Explore')}
-      >
-        <Text style={styles.discoverButtonText}>Discover Recipes</Text>
-      </TouchableOpacity>
-    </View>
-  ) : (
-    <ScrollView 
-      horizontal 
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.favoriteRecipesList}
-    >
-      {favoriteRecipes.slice(0, 4).map(recipe => (
-        <TouchableOpacity 
-          key={recipe.id} 
-          style={styles.favoriteRecipeCard}
-          onPress={() => router.push({
-            pathname: '/RecipeDetails',
-            params: { recipeId: recipe.id }
-          })}
-        >
-          <Image 
-            source={{ uri: recipe.image }} 
-            style={styles.favoriteRecipeImage} 
-          />
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.7)']}
-            style={styles.favoriteRecipeOverlay}
-          />
-          <View style={styles.favoriteRecipeInfo}>
-            <Text style={styles.favoriteRecipeTitle} numberOfLines={1}>
-              {recipe.title}
-            </Text>
-            <View style={styles.favoriteRecipeMeta}>
-              <View style={styles.ratingContainer}>
-                <Icon name="star" size={14} color="#FFD700" solid />
-                <Text style={styles.ratingText}>{recipe.rating}</Text>
-              </View>
-              <View style={styles.timeContainer}>
-                <Icon name="clock" size={12} color="#fff" />
-                <Text style={styles.timeText}>{recipe.prepTime}</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  )}
-</View>
-      {/* قسم الوصفات المميزة */}
+      {/* Featured Recipes Section */}
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
             <Icon name="star" size={20} color="#FFD700" />
           </View>
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
-          <TouchableOpacity style={styles.viewAllButton}>
+          <TouchableOpacity 
+          style={styles.viewAllButton}
+            onPress={() => router.push('Profile_Content/Featured_Recipes')}
+          >
             <Text style={styles.viewAllText}>View All</Text>
             <Icon name="chevron-right" size={14} color="#6B5B95" />
           </TouchableOpacity>
@@ -224,12 +176,14 @@ const Profile = () => {
           contentContainerStyle={styles.recipesList}
         >
           <RecipeCard 
+            id="featured1"
             image="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
             title="Avocado Toast"
             rating={4.5}
             prepTime="10 mins"
           />
           <RecipeCard 
+            id="featured2"
             image="https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
             title="Pancakes"
             rating={4.8}
@@ -238,7 +192,7 @@ const Profile = () => {
         </ScrollView>
       </View>
 
-      {/* قسم التقييمات */}
+      {/* Reviews Section */}
       <View style={styles.reviewsSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
@@ -259,7 +213,7 @@ const Profile = () => {
   );
 };
 
-// مكونات فرعية مساعدة
+// Helper Components
 const StatItem = ({ icon, value, label }) => (
   <View style={styles.statItem}>
     <Icon name={icon} size={24} color="#6B5B95" />
@@ -287,7 +241,7 @@ const ReviewItem = ({ avatar, reviewer, comment, rating, date }) => (
   </View>
 );
 
-// الأنماط
+// Styles
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -604,140 +558,6 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 20,
   },
-
-  favoriteSection: {
-  backgroundColor: '#fff',
-  marginHorizontal: 20,
-  borderRadius: 15,
-  padding: 20,
-  marginBottom: 20,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 6,
-  elevation: 3,
-},
-sectionHeader: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 15,
-},
-sectionIconContainer: {
-  backgroundColor: 'rgba(255, 107, 107, 0.1)',
-  width: 36,
-  height: 36,
-  borderRadius: 18,
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginRight: 10,
-},
-sectionTitle: {
-  fontSize: 20,
-  fontWeight: '700',
-  color: '#333',
-  flex: 1,
-},
-viewAllButton: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-viewAllText: {
-  color: '#6B5B95',
-  fontSize: 14,
-  marginRight: 5,
-  fontWeight: '600',
-},
-emptyFavorites: {
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: 40,
-},
-emptyText: {
-  fontSize: 16,
-  color: '#666',
-  marginTop: 15,
-  marginBottom: 20,
-},
-discoverButton: {
-  backgroundColor: '#FF6B6B',
-  borderRadius: 25,
-  paddingVertical: 12,
-  paddingHorizontal: 25,
-},
-discoverButtonText: {
-  color: '#fff',
-  fontWeight: '600',
-},
-favoriteRecipesList: {
-  paddingLeft: 5,
-},
-favoriteRecipeCard: {
-  width: width * 0.5,
-  marginRight: 15,
-  borderRadius: 12,
-  overflow: 'hidden',
-  elevation: 4,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 6,
-},
-favoriteRecipeImage: {
-  width: '100%',
-  height: 160,
-  resizeMode: 'cover',
-},
-favoriteRecipeOverlay: {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  height: '50%',
-},
-favoriteRecipeInfo: {
-  position: 'absolute',
-  bottom: 10,
-  left: 10,
-  right: 10,
-},
-favoriteRecipeTitle: {
-  fontSize: 16,
-  color: '#fff',
-  fontWeight: '700',
-  marginBottom: 8,
-},
-favoriteRecipeMeta: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-},
-ratingContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: 'rgba(0,0,0,0.4)',
-  borderRadius: 12,
-  paddingVertical: 3,
-  paddingHorizontal: 8,
-},
-timeContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: 'rgba(0,0,0,0.4)',
-  borderRadius: 12,
-  paddingVertical: 3,
-  paddingHorizontal: 8,
-},
-ratingText: {
-  color: '#fff',
-  marginLeft: 5,
-  fontSize: 12,
-  fontWeight: '600',
-},
-timeText: {
-  color: '#fff',
-  marginLeft: 5,
-  fontSize: 12,
-  fontWeight: '600',
-},
 });
 
 export default Profile;
