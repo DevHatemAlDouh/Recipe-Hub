@@ -22,6 +22,9 @@ const Profile = () => {
 =======
   // بيانات المستخدم والوصفات
   const [userData, setUserData] = useState({}); // <-- Add state for user data
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   const [favoriteRecipes, setFavoriteRecipes] = useState([
     {
@@ -39,6 +42,7 @@ const Profile = () => {
   ]);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // Recipe Card Component
   const RecipeCard = ({ id, image, title, rating, prepTime }) => (
     <TouchableOpacity 
@@ -55,6 +59,8 @@ const Profile = () => {
       })}
     >
 =======
+=======
+>>>>>>> Stashed changes
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -116,9 +122,15 @@ const Profile = () => {
           <Icon name="heart" size={22} color="#FF6B6B" solid />
         </View>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
         {favoriteRecipes.length > 2 && (
           <TouchableOpacity 
+=======
+        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
+        {favoriteRecipes.length > 2 && (
+          <TouchableOpacity
+>>>>>>> Stashed changes
 =======
         <Text style={styles.sectionTitle}>Favorite Recipes</Text>
         {favoriteRecipes.length > 2 && (
@@ -137,8 +149,13 @@ const Profile = () => {
         <View style={styles.emptyFavorites}>
           <Icon name="heart-broken" size={40} color="#FF6B6B" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           <Text style={styles.emptyText}>No favorites yet</Text>
           <TouchableOpacity 
+=======
+          <Text style={styles.emptyText}>No favorite recipes yet</Text>
+          <TouchableOpacity
+>>>>>>> Stashed changes
 =======
           <Text style={styles.emptyText}>No favorite recipes yet</Text>
           <TouchableOpacity
@@ -176,9 +193,15 @@ const Profile = () => {
       showsVerticalScrollIndicator={false}
     >
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Header with Gradient */}
       <LinearGradient 
         colors={['#FF6B6B', '#FFA07A']} 
+=======
+      {/* Header مع تدرج لوني */}
+      <LinearGradient
+        colors={["#FF6B6B", "#FFA07A"]}
+>>>>>>> Stashed changes
 =======
       {/* Header مع تدرج لوني */}
       <LinearGradient
@@ -210,9 +233,15 @@ const Profile = () => {
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <TouchableOpacity 
           style={styles.primaryButton} 
           onPress={() => router.push('/Profile_Content/Edeit_Profile')}
+=======
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => router.push("Profile_Content/Edeit_Profile")}
+>>>>>>> Stashed changes
 =======
         <TouchableOpacity
           style={styles.primaryButton}
@@ -225,11 +254,14 @@ const Profile = () => {
       </View>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Favorite Recipes Section */}
       <FavoriteRecipesSection />
 
       {/* Featured Recipes Section */}
 =======
+=======
+>>>>>>> Stashed changes
       {/* قسم الوصفات المفضلة */}
       {/* قسم الوصفات المفضلة */}
       <View style={styles.favoriteSection}>
@@ -314,9 +346,15 @@ const Profile = () => {
           </View>
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           <TouchableOpacity 
           style={styles.viewAllButton}
             onPress={() => router.push('Profile_Content/Featured_Recipes')}
+=======
+          <TouchableOpacity
+            style={styles.viewAllButton}
+            onPress={() => router.push("/Profile_Content/Featured_Recipes")}
+>>>>>>> Stashed changes
 =======
           <TouchableOpacity
             style={styles.viewAllButton}
@@ -334,8 +372,12 @@ const Profile = () => {
           contentContainerStyle={styles.recipesList}
         >
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           <RecipeCard 
             id="featured1"
+=======
+          <RecipeCard
+>>>>>>> Stashed changes
 =======
           <RecipeCard
 >>>>>>> Stashed changes
@@ -345,8 +387,12 @@ const Profile = () => {
             prepTime="10 mins"
           />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           <RecipeCard 
             id="featured2"
+=======
+          <RecipeCard
+>>>>>>> Stashed changes
 =======
           <RecipeCard
 >>>>>>> Stashed changes
@@ -888,6 +934,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 });
 

@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
@@ -146,6 +147,8 @@ const styles = StyleSheet.create({
 
 export default Featured_Recipes;
 =======
+=======
+>>>>>>> Stashed changes
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -293,4 +296,7 @@ const styles = StyleSheet.create({
 });
 
 export default Featured_Recipes;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
