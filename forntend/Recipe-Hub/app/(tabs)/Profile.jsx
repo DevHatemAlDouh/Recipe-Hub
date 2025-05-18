@@ -1,30 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // <-- Add this import
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 const Profile = () => {
+<<<<<<< Updated upstream
   // User and recipes data
+=======
+  // بيانات المستخدم والوصفات
+  const [userData, setUserData] = useState({}); // <-- Add state for user data
+>>>>>>> Stashed changes
   const [favoriteRecipes, setFavoriteRecipes] = useState([
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141',
-      title: 'Pasta Carbonara',
+      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+      title: "Pasta Carbonara",
       rating: 4.9,
-      prepTime: '20 mins'
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641',
-      title: 'Greek Salad',
+      image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641",
+      title: "Greek Salad",
       rating: 4.7,
-      prepTime: '15 mins'
-    }
+    },
   ]);
 
+<<<<<<< Updated upstream
   // Recipe Card Component
   const RecipeCard = ({ id, image, title, rating, prepTime }) => (
     <TouchableOpacity 
@@ -40,9 +54,40 @@ const Profile = () => {
         }
       })}
     >
+=======
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await AsyncStorage.getItem("userData");
+        if (data) {
+          console.log(data);
+          setUserData(JSON.parse(data));
+        }
+      } catch (error) {
+        console.error("Failed to load user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  // Log out handler
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("userData");
+      Alert.alert("Logged Out", "You have been logged out.");
+      router.replace("/Login"); // Navigate to login or welcome screen
+    } catch (error) {
+      Alert.alert("Error", "Failed to log out.");
+    }
+  };
+
+  // مكون بطاقة الوصفة
+  const RecipeCard = ({ image, title, rating }) => (
+    <TouchableOpacity style={styles.recipeCard}>
+>>>>>>> Stashed changes
       <Image source={{ uri: image }} style={styles.recipeImage} />
-      <LinearGradient 
-        colors={['transparent', 'rgba(0,0,0,0.7)']}
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.7)"]}
         style={styles.recipeOverlay}
       />
       <View style={styles.recipeDetails}>
@@ -70,11 +115,17 @@ const Profile = () => {
         <View style={styles.sectionIconContainer}>
           <Icon name="heart" size={22} color="#FF6B6B" solid />
         </View>
+<<<<<<< Updated upstream
         <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
         {favoriteRecipes.length > 2 && (
           <TouchableOpacity 
+=======
+        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
+        {favoriteRecipes.length > 2 && (
+          <TouchableOpacity
+>>>>>>> Stashed changes
             style={styles.viewAllButton}
-            onPress={() => router.push('/Favorites')}
+            onPress={() => router.push("/Favorites")}
           >
             <Text style={styles.viewAllText}>View All</Text>
             <Icon name="chevron-right" size={14} color="#6B5B95" />
@@ -85,22 +136,27 @@ const Profile = () => {
       {favoriteRecipes.length === 0 ? (
         <View style={styles.emptyFavorites}>
           <Icon name="heart-broken" size={40} color="#FF6B6B" />
+<<<<<<< Updated upstream
           <Text style={styles.emptyText}>No favorites yet</Text>
           <TouchableOpacity 
+=======
+          <Text style={styles.emptyText}>No favorite recipes yet</Text>
+          <TouchableOpacity
+>>>>>>> Stashed changes
             style={styles.discoverButton}
-            onPress={() => router.push('/Explore')}
+            onPress={() => router.push("/Explore")}
           >
             <Text style={styles.discoverButtonText}>Discover Recipes</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <ScrollView 
-          horizontal 
+        <ScrollView
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.favoriteRecipesList}
         >
-          {favoriteRecipes.map(recipe => (
-            <RecipeCard 
+          {favoriteRecipes.map((recipe) => (
+            <RecipeCard
               key={recipe.id}
               id={recipe.id}
               image={recipe.image}
@@ -115,75 +171,185 @@ const Profile = () => {
   );
 
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}
     >
+<<<<<<< Updated upstream
       {/* Header with Gradient */}
       <LinearGradient 
         colors={['#FF6B6B', '#FFA07A']} 
+=======
+      {/* Header مع تدرج لوني */}
+      <LinearGradient
+        colors={["#FF6B6B", "#FFA07A"]}
+>>>>>>> Stashed changes
         style={styles.headerGradient}
       >
         <View style={styles.profileHeader}>
           <Image
-            source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+            source={{
+              uri: `data:image/jpeg;base64,${userData.userImage}`,
+            }}
             style={styles.profileImage}
           />
-          <Text style={styles.userName}>Chef John</Text>
-          <Text style={styles.userBio}>Home Chef | Italian Cuisine Lover</Text>
+          <Text style={styles.userName}>{userData?.name}</Text>
         </View>
       </LinearGradient>
 
       {/* User Statistics */}
       <View style={styles.statsContainer}>
-        <StatItem icon="utensils" value={favoriteRecipes.length.toString()} label="Favorites" />
+        <StatItem
+          icon="utensils"
+          value={favoriteRecipes.length.toString()}
+          label="Favorites"
+        />
         <StatItem icon="star" value="4.8" label="Rating" />
       </View>
 
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
+<<<<<<< Updated upstream
         <TouchableOpacity 
           style={styles.primaryButton} 
           onPress={() => router.push('/Profile_Content/Edeit_Profile')}
+=======
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => router.push("Profile_Content/Edeit_Profile")}
+>>>>>>> Stashed changes
         >
           <Icon name="user-edit" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
 
+<<<<<<< Updated upstream
       {/* Favorite Recipes Section */}
       <FavoriteRecipesSection />
 
       {/* Featured Recipes Section */}
+=======
+      {/* قسم الوصفات المفضلة */}
+      {/* قسم الوصفات المفضلة */}
+      <View style={styles.favoriteSection}>
+        <View style={styles.sectionHeader}>
+          <View style={styles.sectionIconContainer}>
+            <Icon name="heart" size={22} color="#FF6B6B" solid />
+          </View>
+          <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
+          {favoriteRecipes.length > 2 && (
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={() => router.push("/Profile_Content/Favorites")}
+            >
+              <Text style={styles.viewAllText}>View All</Text>
+              <Icon name="chevron-right" size={14} color="#6B5B95" />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {favoriteRecipes.length === 0 ? (
+          <View style={styles.emptyFavorites}>
+            <Icon name="heart-broken" size={40} color="#FF6B6B" />
+            <Text style={styles.emptyText}>No favorites yet</Text>
+            <TouchableOpacity
+              style={styles.discoverButton}
+              onPress={() => router.push("/Explore")}
+            >
+              <Text style={styles.discoverButtonText}>Discover Recipes</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.favoriteRecipesList}
+          >
+            {favoriteRecipes.slice(0, 4).map((recipe) => (
+              <TouchableOpacity
+                key={recipe.id}
+                style={styles.favoriteRecipeCard}
+                onPress={() =>
+                  router.push({
+                    pathname: "/RecipeDetails",
+                    params: { recipeId: recipe.id },
+                  })
+                }
+              >
+                <Image
+                  source={{ uri: recipe.image }}
+                  style={styles.favoriteRecipeImage}
+                />
+                <LinearGradient
+                  colors={["transparent", "rgba(0,0,0,0.7)"]}
+                  style={styles.favoriteRecipeOverlay}
+                />
+                <View style={styles.favoriteRecipeInfo}>
+                  <Text style={styles.favoriteRecipeTitle} numberOfLines={1}>
+                    {recipe.title}
+                  </Text>
+                  <View style={styles.favoriteRecipeMeta}>
+                    <View style={styles.ratingContainer}>
+                      <Icon name="star" size={14} color="#FFD700" solid />
+                      <Text style={styles.ratingText}>{recipe.rating}</Text>
+                    </View>
+                    <View style={styles.timeContainer}>
+                      <Icon name="clock" size={12} color="#fff" />
+                      <Text style={styles.timeText}>{recipe.prepTime}</Text>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+      {/* قسم الوصفات المميزة */}
+>>>>>>> Stashed changes
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
             <Icon name="star" size={20} color="#FFD700" />
           </View>
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
+<<<<<<< Updated upstream
           <TouchableOpacity 
           style={styles.viewAllButton}
             onPress={() => router.push('Profile_Content/Featured_Recipes')}
+=======
+          <TouchableOpacity
+            style={styles.viewAllButton}
+            onPress={() => router.push("/Profile_Content/Featured_Recipes")}
+>>>>>>> Stashed changes
           >
             <Text style={styles.viewAllText}>View All</Text>
             <Icon name="chevron-right" size={14} color="#6B5B95" />
           </TouchableOpacity>
         </View>
 
-        <ScrollView 
-          horizontal 
+        <ScrollView
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.recipesList}
         >
+<<<<<<< Updated upstream
           <RecipeCard 
             id="featured1"
+=======
+          <RecipeCard
+>>>>>>> Stashed changes
             image="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
             title="Avocado Toast"
             rating={4.5}
             prepTime="10 mins"
           />
+<<<<<<< Updated upstream
           <RecipeCard 
             id="featured2"
+=======
+          <RecipeCard
+>>>>>>> Stashed changes
             image="https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
             title="Pancakes"
             rating={4.8}
@@ -201,7 +367,7 @@ const Profile = () => {
           <Text style={styles.sectionTitle}>Recent Reviews</Text>
         </View>
 
-        <ReviewItem 
+        <ReviewItem
           reviewer="Sarah Johnson"
           avatar="https://randomuser.me/api/portraits/women/44.jpg"
           comment="Your carbonara recipe changed my life! So delicious and easy to make."
@@ -209,6 +375,11 @@ const Profile = () => {
           date="2 days ago"
         />
       </View>
+
+      {/* Log Out Button */}
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Log Out</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -246,7 +417,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingBottom: 30,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: "#f8f8f8",
   },
   headerGradient: {
     paddingTop: 50,
@@ -257,16 +428,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   profileHeader: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   profileImage: {
     width: 120,
     height: 120,
     borderRadius: 60,
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: "#fff",
     marginBottom: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -274,24 +445,24 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
+    fontWeight: "700",
+    color: "#fff",
     marginBottom: 5,
   },
   userBio: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    textAlign: 'center',
-    maxWidth: '80%',
+    color: "rgba(255,255,255,0.9)",
+    textAlign: "center",
+    maxWidth: "80%",
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     paddingVertical: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginHorizontal: 20,
     borderRadius: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
@@ -299,47 +470,47 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
     minWidth: 80,
   },
   statValue: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#6B5B95',
+    fontWeight: "700",
+    color: "#6B5B95",
     marginTop: 8,
   },
   statLabel: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     marginBottom: 20,
   },
   primaryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#6B5B95',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#6B5B95",
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 20,
     flex: 1,
     marginRight: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
   },
   secondaryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#6B5B95',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#6B5B95",
     borderWidth: 1.5,
     borderRadius: 25,
     paddingVertical: 12,
@@ -348,91 +519,91 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
     marginLeft: 10,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   secondaryButtonText: {
-    color: '#6B5B95',
+    color: "#6B5B95",
     fontSize: 16,
     marginLeft: 10,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 15,
   },
   sectionIconContainer: {
-    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+    backgroundColor: "rgba(255, 107, 107, 0.1)",
     width: 36,
     height: 36,
     borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#333',
+    fontWeight: "700",
+    color: "#333",
     flex: 1,
   },
   viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   viewAllText: {
-    color: '#6B5B95',
+    color: "#6B5B95",
     fontSize: 14,
     marginRight: 5,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   favoriteSection: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginHorizontal: 20,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
   },
   featuredSection: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginHorizontal: 20,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
   },
   emptyFavorites: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 40,
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginTop: 15,
     marginBottom: 20,
   },
   discoverButton: {
-    backgroundColor: '#FF6B6B',
+    backgroundColor: "#FF6B6B",
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 25,
   },
   discoverButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
   },
   favoriteRecipesList: {
     paddingLeft: 5,
@@ -444,83 +615,83 @@ const styles = StyleSheet.create({
     width: width * 0.5,
     marginRight: 15,
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
   },
   recipeImage: {
-    width: '100%',
+    width: "100%",
     height: 160,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   recipeOverlay: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    height: '50%',
+    height: "50%",
   },
   recipeDetails: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
     left: 10,
     right: 10,
   },
   recipeName: {
     fontSize: 16,
-    color: '#fff',
-    fontWeight: '700',
+    color: "#fff",
+    fontWeight: "700",
     marginBottom: 8,
   },
   recipeInfoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
     borderRadius: 12,
     paddingVertical: 3,
     paddingHorizontal: 8,
   },
   timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
     borderRadius: 12,
     paddingVertical: 3,
     paddingHorizontal: 8,
   },
   ratingText: {
-    color: '#fff',
+    color: "#fff",
     marginLeft: 5,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   timeText: {
-    color: '#fff',
+    color: "#fff",
     marginLeft: 5,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   reviewsSection: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginHorizontal: 20,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
   },
   reviewItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
   },
   reviewerImage: {
@@ -528,36 +699,196 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: '#6B5B95',
+    borderColor: "#6B5B95",
     marginRight: 15,
   },
   reviewContent: {
     flex: 1,
   },
   reviewHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 5,
   },
   reviewerName: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   reviewDate: {
     fontSize: 12,
-    color: '#999',
+    color: "#999",
   },
   reviewRating: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   reviewText: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     lineHeight: 20,
   },
+<<<<<<< Updated upstream
+=======
+
+  favoriteSection: {
+    backgroundColor: "#fff",
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  sectionIconContainer: {
+    backgroundColor: "rgba(255, 107, 107, 0.1)",
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#333",
+    flex: 1,
+  },
+  viewAllButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  viewAllText: {
+    color: "#6B5B95",
+    fontSize: 14,
+    marginRight: 5,
+    fontWeight: "600",
+  },
+  emptyFavorites: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 15,
+    marginBottom: 20,
+  },
+  discoverButton: {
+    backgroundColor: "#FF6B6B",
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+  },
+  discoverButtonText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  favoriteRecipesList: {
+    paddingLeft: 5,
+  },
+  favoriteRecipeCard: {
+    width: width * 0.5,
+    marginRight: 15,
+    borderRadius: 12,
+    overflow: "hidden",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+  },
+  favoriteRecipeImage: {
+    width: "100%",
+    height: 160,
+    resizeMode: "cover",
+  },
+  favoriteRecipeOverlay: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "50%",
+  },
+  favoriteRecipeInfo: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+  },
+  favoriteRecipeTitle: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "700",
+    marginBottom: 8,
+  },
+  favoriteRecipeMeta: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+  },
+  timeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+  },
+  ratingText: {
+    color: "#fff",
+    marginLeft: 5,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  timeText: {
+    color: "#fff",
+    marginLeft: 5,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  logoutButton: {
+    backgroundColor: "#fff",
+    borderColor: "#FF6B6B",
+    borderWidth: 2,
+    borderRadius: 25,
+    paddingVertical: 14,
+    paddingHorizontal: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 40,
+    marginTop: 10,
+    marginBottom: 30,
+    shadowColor: "#FF6B6B",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  logoutButtonText: {
+    color: "#FF6B6B",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+>>>>>>> Stashed changes
 });
 
 export default Profile;

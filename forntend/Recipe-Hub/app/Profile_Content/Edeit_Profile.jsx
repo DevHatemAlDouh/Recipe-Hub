@@ -1,14 +1,42 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditProfile = () => {
-  const [name, setName] = useState("John Doe"); // اسم افتراضي
-  const [profileImage, setProfileImage] = useState(null); // صورة افتراضية
+  const [name, setName] = useState(""); // اسم المستخدم من البيانات
+  const [profileImage, setProfileImage] = useState(null); // صورة المستخدم من البيانات
+
+  // تحميل بيانات المستخدم من AsyncStorage
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const data = await AsyncStorage.getItem("userData");
+        if (data) {
+          const user = JSON.parse(data);
+          setName(user.name || "");
+          setProfileImage(
+            user.userImage ? `data:image/jpeg;base64,${user.userImage}` : null
+          );
+        }
+      } catch (error) {
+        console.error("Failed to load user data:", error);
+      }
+    };
+    loadUserData();
+  }, []);
 
   const handleNameChange = (text) => {
-    setName(text); // تحديث الاسم عند تغييره
+    setName(text);
   };
 
   const handleImageChange = async () => {
@@ -17,18 +45,30 @@ const EditProfile = () => {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      base64: true,
     });
 
     if (!result.canceled) {
-      setProfileImage(result.assets[0].uri); // تحديث الصورة المختارة
+      // حفظ الصورة كـ base64
+      setProfileImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
     }
   };
 
-  const handleSubmit = () => {
-    Alert.alert("Profile Updated", `Name: ${name}`);
-    console.log("Name:", name);
-    console.log("Profile Image:", profileImage);
-    router.back(); // العودة إلى الصفحة السابقة
+  const handleSubmit = async () => {
+    // حفظ البيانات في AsyncStorage
+    try {
+      const userData = {
+        name,
+        userImage: profileImage
+          ? profileImage.replace(/^data:image\/jpeg;base64,/, "")
+          : null,
+      };
+      await AsyncStorage.setItem("userData", JSON.stringify(userData));
+      Alert.alert("Profile Updated", `Name: ${name}`);
+      router.back();
+    } catch (error) {
+      Alert.alert("Error", "Failed to save profile data.");
+    }
   };
 
   return (
@@ -39,11 +79,14 @@ const EditProfile = () => {
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
         ) : (
           <Image
-            source={{ uri: "https://via.placeholder.com/150" }} // صورة افتراضية من الإنترنت
+            source={{ uri: "https://via.placeholder.com/150" }}
             style={styles.profileImage}
           />
         )}
-        <TouchableOpacity style={styles.changeImageButton} onPress={handleImageChange}>
+        <TouchableOpacity
+          style={styles.changeImageButton}
+          onPress={handleImageChange}
+        >
           <Text style={styles.changeImageText}>Change Image</Text>
         </TouchableOpacity>
       </View>
