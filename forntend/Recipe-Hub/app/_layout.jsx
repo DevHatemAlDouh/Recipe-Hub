@@ -11,21 +11,6 @@ import { useEffect } from "react";
 SplashScreen.preventAutoHideAsync();
 
 const screens = [
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  { name: "open",                               options: { headerShown: false } },
-  { name: "index",                              options: { headerShown: false } },
-  { name: "Sign_in",                            options: { headerShown: false } },
-  { name: "Create_account",                     options: { headerShown: false } },
-  { name: "Comment",                            options: { headerShown: false } },
-  { name: "RecipeDetails",                      options: { headerShown: false } },
-  { name: "Profile_Content/Edeit_Profile",      options: { headerShown: false } },
-  { name: "Profile_Content/Edeit_Recipe",       options: { headerShown: false } },
-  { name: "Profile_Content/Featured_Recipes",   options: { title: "Featured Recipes"} },
-  { name: "not-found",                          options: { title: "Page Not Found" } },
-=======
-=======
->>>>>>> Stashed changes
   { name: "open", options: { headerShown: false } },
   { name: "index", options: { headerShown: false } },
   { name: "Sign_in", options: { headerShown: false } },
@@ -34,11 +19,11 @@ const screens = [
   { name: "RecipeDetails", options: { headerShown: false } },
   { name: "Profile_Content/Edeit_Profile", options: { headerShown: false } },
   { name: "Profile_Content/Edeit_Recipe", options: { headerShown: false } },
+  {
+    name: "Profile_Content/Featured_Recipes",
+    options: { title: "Featured Recipes" },
+  },
   { name: "not-found", options: { title: "Page Not Found" } },
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 ];
 
 export default function RootLayout() {

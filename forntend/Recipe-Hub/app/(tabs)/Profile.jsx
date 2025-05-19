@@ -12,61 +12,34 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // <-- Add this import
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
 const Profile = () => {
-<<<<<<< Updated upstream
-  // User and recipes data
-=======
-  // بيانات المستخدم والوصفات
-  const [userData, setUserData] = useState({}); // <-- Add state for user data
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  const [userData, setUserData] = useState({});
   const [favoriteRecipes, setFavoriteRecipes] = useState([
     {
       id: 1,
       image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
       title: "Pasta Carbonara",
       rating: 4.9,
+      prepTime: "20 mins",
     },
     {
       id: 2,
       image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641",
       title: "Greek Salad",
       rating: 4.7,
+      prepTime: "15 mins",
     },
   ]);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  // Recipe Card Component
-  const RecipeCard = ({ id, image, title, rating, prepTime }) => (
-    <TouchableOpacity 
-      style={styles.recipeCard}
-      onPress={() => router.push({
-        pathname: '/RecipeDetails',
-        params: { 
-          recipeId: id,
-          recipeTitle: title,
-          recipeImage: image,
-          recipeRating: rating,
-          recipePrepTime: prepTime
-        }
-      })}
-    >
-=======
-=======
->>>>>>> Stashed changes
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await AsyncStorage.getItem("userData");
         if (data) {
-          console.log(data);
           setUserData(JSON.parse(data));
         }
       } catch (error) {
@@ -76,21 +49,32 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  // Log out handler
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("userData");
       Alert.alert("Logged Out", "You have been logged out.");
-      router.replace("/Login"); // Navigate to login or welcome screen
+      router.replace("/Login");
     } catch (error) {
       Alert.alert("Error", "Failed to log out.");
     }
   };
 
-  // مكون بطاقة الوصفة
-  const RecipeCard = ({ image, title, rating }) => (
-    <TouchableOpacity style={styles.recipeCard}>
->>>>>>> Stashed changes
+  const RecipeCard = ({ id, image, title, rating, prepTime }) => (
+    <TouchableOpacity
+      style={styles.recipeCard}
+      onPress={() =>
+        router.push({
+          pathname: "/RecipeDetails",
+          params: {
+            recipeId: id,
+            recipeTitle: title,
+            recipeImage: image,
+            recipeRating: rating,
+            recipePrepTime: prepTime,
+          },
+        })
+      }
+    >
       <Image source={{ uri: image }} style={styles.recipeImage} />
       <LinearGradient
         colors={["transparent", "rgba(0,0,0,0.7)"]}
@@ -114,113 +98,31 @@ const Profile = () => {
     </TouchableOpacity>
   );
 
-  // Favorite Recipes Section
-  const FavoriteRecipesSection = () => (
-    <View style={styles.favoriteSection}>
-      <View style={styles.sectionHeader}>
-        <View style={styles.sectionIconContainer}>
-          <Icon name="heart" size={22} color="#FF6B6B" solid />
-        </View>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
-        {favoriteRecipes.length > 2 && (
-          <TouchableOpacity 
-=======
-        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
-        {favoriteRecipes.length > 2 && (
-          <TouchableOpacity
->>>>>>> Stashed changes
-=======
-        <Text style={styles.sectionTitle}>Favorite Recipes</Text>
-        {favoriteRecipes.length > 2 && (
-          <TouchableOpacity
->>>>>>> Stashed changes
-            style={styles.viewAllButton}
-            onPress={() => router.push("/Favorites")}
-          >
-            <Text style={styles.viewAllText}>View All</Text>
-            <Icon name="chevron-right" size={14} color="#6B5B95" />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {favoriteRecipes.length === 0 ? (
-        <View style={styles.emptyFavorites}>
-          <Icon name="heart-broken" size={40} color="#FF6B6B" />
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          <Text style={styles.emptyText}>No favorites yet</Text>
-          <TouchableOpacity 
-=======
-          <Text style={styles.emptyText}>No favorite recipes yet</Text>
-          <TouchableOpacity
->>>>>>> Stashed changes
-=======
-          <Text style={styles.emptyText}>No favorite recipes yet</Text>
-          <TouchableOpacity
->>>>>>> Stashed changes
-            style={styles.discoverButton}
-            onPress={() => router.push("/Explore")}
-          >
-            <Text style={styles.discoverButtonText}>Discover Recipes</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.favoriteRecipesList}
-        >
-          {favoriteRecipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              id={recipe.id}
-              image={recipe.image}
-              title={recipe.title}
-              rating={recipe.rating}
-              prepTime={recipe.prepTime}
-            />
-          ))}
-        </ScrollView>
-      )}
-    </View>
-  );
-
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}
     >
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      {/* Header with Gradient */}
-      <LinearGradient 
-        colors={['#FF6B6B', '#FFA07A']} 
-=======
-      {/* Header مع تدرج لوني */}
       <LinearGradient
         colors={["#FF6B6B", "#FFA07A"]}
->>>>>>> Stashed changes
-=======
-      {/* Header مع تدرج لوني */}
-      <LinearGradient
-        colors={["#FF6B6B", "#FFA07A"]}
->>>>>>> Stashed changes
         style={styles.headerGradient}
       >
         <View style={styles.profileHeader}>
           <Image
             source={{
-              uri: `data:image/jpeg;base64,${userData.userImage}`,
+              uri: userData?.userImage
+                ? `data:image/jpeg;base64,${userData.userImage}`
+                : "https://randomuser.me/api/portraits/men/32.jpg",
             }}
             style={styles.profileImage}
           />
-          <Text style={styles.userName}>{userData?.name}</Text>
+          <Text style={styles.userName}>{userData?.name || "Chef John"}</Text>
+          <Text style={styles.userBio}>
+            {userData?.bio || "Home Chef | Italian Cuisine Lover"}
+          </Text>
         </View>
       </LinearGradient>
 
-      {/* User Statistics */}
       <View style={styles.statsContainer}>
         <StatItem
           icon="utensils"
@@ -230,40 +132,17 @@ const Profile = () => {
         <StatItem icon="star" value="4.8" label="Rating" />
       </View>
 
-      {/* Action Buttons */}
       <View style={styles.actionButtons}>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        <TouchableOpacity 
-          style={styles.primaryButton} 
-          onPress={() => router.push('/Profile_Content/Edeit_Profile')}
-=======
         <TouchableOpacity
           style={styles.primaryButton}
           onPress={() => router.push("Profile_Content/Edeit_Profile")}
->>>>>>> Stashed changes
-=======
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => router.push("Profile_Content/Edeit_Profile")}
->>>>>>> Stashed changes
         >
           <Icon name="user-edit" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
       {/* Favorite Recipes Section */}
-      <FavoriteRecipesSection />
-
-      {/* Featured Recipes Section */}
-=======
-=======
->>>>>>> Stashed changes
-      {/* قسم الوصفات المفضلة */}
-      {/* قسم الوصفات المفضلة */}
       <View style={styles.favoriteSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
@@ -298,68 +177,30 @@ const Profile = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.favoriteRecipesList}
           >
-            {favoriteRecipes.slice(0, 4).map((recipe) => (
-              <TouchableOpacity
+            {favoriteRecipes.map((recipe) => (
+              <RecipeCard
                 key={recipe.id}
-                style={styles.favoriteRecipeCard}
-                onPress={() =>
-                  router.push({
-                    pathname: "/RecipeDetails",
-                    params: { recipeId: recipe.id },
-                  })
-                }
-              >
-                <Image
-                  source={{ uri: recipe.image }}
-                  style={styles.favoriteRecipeImage}
-                />
-                <LinearGradient
-                  colors={["transparent", "rgba(0,0,0,0.7)"]}
-                  style={styles.favoriteRecipeOverlay}
-                />
-                <View style={styles.favoriteRecipeInfo}>
-                  <Text style={styles.favoriteRecipeTitle} numberOfLines={1}>
-                    {recipe.title}
-                  </Text>
-                  <View style={styles.favoriteRecipeMeta}>
-                    <View style={styles.ratingContainer}>
-                      <Icon name="star" size={14} color="#FFD700" solid />
-                      <Text style={styles.ratingText}>{recipe.rating}</Text>
-                    </View>
-                    <View style={styles.timeContainer}>
-                      <Icon name="clock" size={12} color="#fff" />
-                      <Text style={styles.timeText}>{recipe.prepTime}</Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
+                id={recipe.id}
+                image={recipe.image}
+                title={recipe.title}
+                rating={recipe.rating}
+                prepTime={recipe.prepTime}
+              />
             ))}
           </ScrollView>
         )}
       </View>
-      {/* قسم الوصفات المميزة */}
->>>>>>> Stashed changes
+
+      {/* Featured Recipes Section */}
       <View style={styles.featuredSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
             <Icon name="star" size={20} color="#FFD700" />
           </View>
           <Text style={styles.sectionTitle}>Featured Recipes</Text>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          <TouchableOpacity 
-          style={styles.viewAllButton}
-            onPress={() => router.push('Profile_Content/Featured_Recipes')}
-=======
           <TouchableOpacity
             style={styles.viewAllButton}
             onPress={() => router.push("/Profile_Content/Featured_Recipes")}
->>>>>>> Stashed changes
-=======
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={() => router.push("/Profile_Content/Featured_Recipes")}
->>>>>>> Stashed changes
           >
             <Text style={styles.viewAllText}>View All</Text>
             <Icon name="chevron-right" size={14} color="#6B5B95" />
@@ -371,31 +212,15 @@ const Profile = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.recipesList}
         >
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          <RecipeCard 
+          <RecipeCard
             id="featured1"
-=======
-          <RecipeCard
->>>>>>> Stashed changes
-=======
-          <RecipeCard
->>>>>>> Stashed changes
             image="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
             title="Avocado Toast"
             rating={4.5}
             prepTime="10 mins"
           />
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          <RecipeCard 
+          <RecipeCard
             id="featured2"
-=======
-          <RecipeCard
->>>>>>> Stashed changes
-=======
-          <RecipeCard
->>>>>>> Stashed changes
             image="https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
             title="Pancakes"
             rating={4.8}
@@ -430,7 +255,6 @@ const Profile = () => {
   );
 };
 
-// Helper Components
 const StatItem = ({ icon, value, label }) => (
   <View style={styles.statItem}>
     <Icon name={icon} size={24} color="#6B5B95" />
@@ -458,7 +282,6 @@ const ReviewItem = ({ avatar, reviewer, comment, rating, date }) => (
   </View>
 );
 
-// Styles
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -775,142 +598,6 @@ const styles = StyleSheet.create({
     color: "#666",
     lineHeight: 20,
   },
-<<<<<<< Updated upstream
-=======
-
-  favoriteSection: {
-    backgroundColor: "#fff",
-    marginHorizontal: 20,
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  sectionIconContainer: {
-    backgroundColor: "rgba(255, 107, 107, 0.1)",
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#333",
-    flex: 1,
-  },
-  viewAllButton: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  viewAllText: {
-    color: "#6B5B95",
-    fontSize: 14,
-    marginRight: 5,
-    fontWeight: "600",
-  },
-  emptyFavorites: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 40,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: "#666",
-    marginTop: 15,
-    marginBottom: 20,
-  },
-  discoverButton: {
-    backgroundColor: "#FF6B6B",
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-  },
-  discoverButtonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  favoriteRecipesList: {
-    paddingLeft: 5,
-  },
-  favoriteRecipeCard: {
-    width: width * 0.5,
-    marginRight: 15,
-    borderRadius: 12,
-    overflow: "hidden",
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-  },
-  favoriteRecipeImage: {
-    width: "100%",
-    height: 160,
-    resizeMode: "cover",
-  },
-  favoriteRecipeOverlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: "50%",
-  },
-  favoriteRecipeInfo: {
-    position: "absolute",
-    bottom: 10,
-    left: 10,
-    right: 10,
-  },
-  favoriteRecipeTitle: {
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-  favoriteRecipeMeta: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  ratingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    borderRadius: 12,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-  },
-  timeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    borderRadius: 12,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-  },
-  ratingText: {
-    color: "#fff",
-    marginLeft: 5,
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  timeText: {
-    color: "#fff",
-    marginLeft: 5,
-    fontSize: 12,
-    fontWeight: "600",
-  },
   logoutButton: {
     backgroundColor: "#fff",
     borderColor: "#FF6B6B",
@@ -934,10 +621,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 });
 
 export default Profile;
