@@ -57,18 +57,6 @@ namespace API.Service
                     }
                 }
 
-                var nagIngredientIds = Nag_ingredients.Select(i => i.Id).ToHashSet();
-
-
-
-                var categories = await _context.Categories.Select(c => new CategoryInfo
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt
-                }).ToListAsync();
-
                 var comments = await _context.Comments.Select(c => new CommentInfo
                 {
                     Id = c.Id,
@@ -81,15 +69,6 @@ namespace API.Service
                     UpdatedAt = c.UpdatedAt
                 }).ToListAsync();
 
-                var Recipes_categories = await _context.RecipeCategories.Select(rc => new RecipeCategoryInfo
-                {
-                    Id = rc.Id,
-                    CategoryID = rc.CategoryID,
-                    RecipeID = rc.RecipeID,
-                    CreatedAt = rc.CreatedAt,
-                    UpdatedAt = rc.UpdatedAt
-                }).ToListAsync();
-
                 var Recipes_Ingredients = await _context.RecipeIngredients.Select(ri => new RecipeIngredientinfo
                 {
                     Id = ri.Id,
@@ -99,27 +78,6 @@ namespace API.Service
                     Unit = ri.Unit,
                     CreatedAt = ri.CreatedAt,
                     UpdatedAt = ri.UpdatedAt
-                }).ToListAsync();
-
-                var steps = await _context.Steps.Select(s => new StepInfo
-                {
-                    Id = s.Id,
-                    RecipeID = s.RecipeID,
-                    StepNumber = s.StepNumber,
-                    Description = s.Description,
-                    BackgroundImage = s.BackgroundImage,
-                    CreatedAt = s.CreatedAt,
-                    UpdatedAt = s.UpdatedAt
-                }).ToListAsync();
-
-                var suggestions = await _context.Suggestions.Select(s => new SuggestionInfo
-                {
-                    Id = s.Id,
-                    UserID = s.UserID,
-                    RecipeID = s.RecipeID,
-                    Description = s.Description,
-                    CreatedAt = s.CreatedAt,
-                    UpdatedAt = s.UpdatedAt
                 }).ToListAsync();
 
                 var recipes = await _context.Recipes.Select(r => new RecipeInfo
@@ -138,11 +96,6 @@ namespace API.Service
 
                 foreach (var recipe in recipes.Where(r => r.Id != userid))
                 {
-                    foreach (var category in Recipes_categories.Where(rc => rc.RecipeID == recipe.Id))
-                    {
-                        Recipe_categories.Add(categories.FirstOrDefault(c => c.Id == category.CategoryID));
-                    }
-
                     foreach (var comment in comments.Where(c => c.RecipeID == recipe.Id))
                     {
                         commenters.Add(new Commenters
@@ -157,27 +110,12 @@ namespace API.Service
                         Recipe_ingredients.Add(ingredients.FirstOrDefault(i => i.Id == ingredient.IngredientID));
                     }
 
-                    foreach (var step in steps.Where(s => s.RecipeID == recipe.Id))
-                    {
-                        Recipe_Steps.Add(step);
-                    }
-
-                    foreach (var suggestion in suggestions.Where(s => s.RecipeID == recipe.Id))
-                    {
-                        Recipe_suggestions.Add(suggestion);
-                    }
-
-                    Recipes_Ingredients.RemoveAll(ri => nagIngredientIds.Contains(ri.IngredientID));
-
                     algorithm.Add(new Algorithm
                     {
                         User = users.FirstOrDefault(u => u.Id == recipe.UserID),
                         Recipe = recipe,
-                        categories = Recipe_categories,
                         Commenters = commenters,
                         ingredients = ingredients,
-                        steps = Recipe_Steps,
-                        suggestions = Recipe_suggestions
                     });
                 }
             }
