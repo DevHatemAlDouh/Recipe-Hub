@@ -5,6 +5,54 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Algorithm/Home": {
+      "get": {
+        "tags": [
+          "Algorithm"
+        ],
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Algorithm"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Algorithm"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Algorithm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Categories/GetAll": {
       "get": {
         "tags": [
@@ -3458,6 +3506,53 @@
   },
   "components": {
     "schemas": {
+      "Algorithm": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "recipe": {
+            "$ref": "#/components/schemas/RecipeInfo"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StepInfo"
+            },
+            "nullable": true
+          },
+          "commenters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Commenters"
+            },
+            "nullable": true
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryInfo"
+            },
+            "nullable": true
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IngredientInfo"
+            },
+            "nullable": true
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SuggestionInfo"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CategoryInfo": {
         "type": "object",
         "properties": {
@@ -3548,6 +3643,18 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Commenters": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "comment": {
+            "$ref": "#/components/schemas/CommentInfo"
           }
         },
         "additionalProperties": false

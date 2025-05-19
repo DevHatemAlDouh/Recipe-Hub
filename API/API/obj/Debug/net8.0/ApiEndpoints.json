@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "API.Controllers.AlgorithmController",
+    "Method": "Home",
+    "RelativePath": "api/Algorithm/Home",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[API.Models.Algorithm, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.CategoriesController",
     "Method": "PostCategory",
     "RelativePath": "api/Categories/Add",

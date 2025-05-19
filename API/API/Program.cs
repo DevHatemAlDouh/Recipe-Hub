@@ -28,6 +28,7 @@ builder.Services.AddScoped<ICRUDService<SuggestionInfo>, SuggestionService>();
 builder.Services.AddScoped<ICRUDService<CommentInfo>, CommentService>();
 builder.Services.AddScoped<ICRUDService<RecipeInfo>, RecipeService>();
 builder.Services.AddScoped<UsePermissions>();
+builder.Services.AddScoped<AlgorithmService>();
 builder.Services.AddScoped<PenaltyTermsService>();
 builder.Services.AddScoped<UserPenalties>();
 builder.Services.AddScoped<UserRecipes>();
