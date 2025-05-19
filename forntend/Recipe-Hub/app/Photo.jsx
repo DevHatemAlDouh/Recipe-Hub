@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
 //     }
 // });
 
-// export default Photo;
+export default Photo;

@@ -19,7 +19,8 @@ const screens = [
   { name: "RecipeDetails",                      options: { headerShown: false } },
   { name: "Profile_Content/Edeit_Profile",      options: { headerShown: false } },
   { name: "Profile_Content/Edeit_Recipe",       options: { headerShown: false } },
-  { name: "Profile_Content/Featured_Recipes",   options: { title: "Featured Recipes"} },
+  { name: "Profile_Content/MyRecipes",   options: { headerShown: false } },
+  { name: "Profile_Content/Favorites",   options: { headerShown: false } },
   { name: "not-found",                          options: { title: "Page Not Found" } },
 ];
 

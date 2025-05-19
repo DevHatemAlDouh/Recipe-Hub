@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 
-const Featured_Recipes = () => {
+const MyRecipes = () => {
     const router = useRouter();
     
     const recipes = [
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Featured_Recipes;
+export default MyRecipes;
