@@ -51,7 +51,7 @@ namespace API.Data
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reports)
                 .HasForeignKey(r => r.FromUserID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure relationships for Recipe
             modelBuilder.Entity<Recipe>()

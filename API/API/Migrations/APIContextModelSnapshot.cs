@@ -773,7 +773,7 @@ namespace API.Migrations
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Reports")
                         .HasForeignKey("FromUserID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

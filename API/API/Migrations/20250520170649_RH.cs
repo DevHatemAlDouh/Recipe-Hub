@@ -200,7 +200,7 @@ namespace API.Migrations
                         column: x => x.FromUserID,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

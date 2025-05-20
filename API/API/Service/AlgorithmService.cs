@@ -48,7 +48,7 @@ namespace API.Service
 
                 foreach (var favorite in favorites)
                 {
-                    if (favorite.Type == "Nag")
+                    if (favorite.Type == "notPreferred")
                     {
                         Nag_ingredients.Add(ingredients.FirstOrDefault(i => i.Id == favorite.IngredientID));
                     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20250423091134_RH")]
+    [Migration("20250520170649_RH")]
     partial class RH
     {
         /// <inheritdoc />
@@ -776,7 +776,7 @@ namespace API.Migrations
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Reports")
                         .HasForeignKey("FromUserID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
