@@ -3515,13 +3515,6 @@
           "recipe": {
             "$ref": "#/components/schemas/RecipeInfo"
           },
-          "steps": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StepInfo"
-            },
-            "nullable": true
-          },
           "commenters": {
             "type": "array",
             "items": {
@@ -3529,24 +3522,10 @@
             },
             "nullable": true
           },
-          "categories": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CategoryInfo"
-            },
-            "nullable": true
-          },
           "ingredients": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IngredientInfo"
-            },
-            "nullable": true
-          },
-          "suggestions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SuggestionInfo"
             },
             "nullable": true
           }

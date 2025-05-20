@@ -30,14 +30,11 @@ namespace API.Service
 
             List<Algorithm> algorithm = new List<Algorithm>();
 
-            if (users.Where(u => u.Id == userid).Any())
+            if (users.Any(u => u.Id == userid))
             {
                 List<IngredientInfo> Nag_ingredients = new List<IngredientInfo>();
                 List<IngredientInfo> Recipe_ingredients = new List<IngredientInfo>();
-                List<CategoryInfo> Recipe_categories = new List<CategoryInfo>();
-                List<SuggestionInfo> Recipe_suggestions = new List<SuggestionInfo>();
                 List<Commenters> commenters = new List<Commenters>();
-                List<StepInfo> Recipe_Steps = new List<StepInfo>();
 
                 var ingredients = await _context.Ingredients.Select(i => new IngredientInfo
                 {
@@ -96,27 +93,33 @@ namespace API.Service
 
                 foreach (var recipe in recipes.Where(r => r.Id != userid))
                 {
-                    foreach (var comment in comments.Where(c => c.RecipeID == recipe.Id))
-                    {
-                        commenters.Add(new Commenters
-                        {
-                            Comment = comment,
-                            User = users.FirstOrDefault(u => u.Id == comment.UserID)
-                        });
-                    }
+                    List<IngredientInfo> recipeIngredients = new List<IngredientInfo>();
 
                     foreach (var ingredient in Recipes_Ingredients.Where(ri => ri.RecipeID == recipe.Id))
                     {
-                        Recipe_ingredients.Add(ingredients.FirstOrDefault(i => i.Id == ingredient.IngredientID));
+                        recipeIngredients.Add(ingredients.FirstOrDefault(i => i.Id == ingredient.IngredientID));
                     }
 
-                    algorithm.Add(new Algorithm
+                    // Check if any Nag_ingredient is in Recipe_ingredients
+                    if (!recipeIngredients.Any(ri => Nag_ingredients.Any(ni => ni.Id == ri.Id)))
                     {
-                        User = users.FirstOrDefault(u => u.Id == recipe.UserID),
-                        Recipe = recipe,
-                        Commenters = commenters,
-                        ingredients = ingredients,
-                    });
+                        foreach (var comment in comments.Where(c => c.RecipeID == recipe.Id))
+                        {
+                            commenters.Add(new Commenters
+                            {
+                                Comment = comment,
+                                User = users.FirstOrDefault(u => u.Id == comment.UserID)
+                            });
+                        }
+
+                        algorithm.Add(new Algorithm
+                        {
+                            User = users.FirstOrDefault(u => u.Id == recipe.UserID),
+                            Recipe = recipe,
+                            Commenters = commenters,
+                            ingredients = recipeIngredients,
+                        });
+                    }
                 }
             }
 

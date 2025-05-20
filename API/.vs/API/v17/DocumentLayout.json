@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\algorithmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\algorithmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -18,11 +22,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "RecipesController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\RecipesController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeToolTip": "API\\Controllers\\RecipesController.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAUwHUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-20T10:44:15.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Algorithm.cs",
               "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\Algorithm.cs",
               "RelativeDocumentMoniker": "API\\Models\\Algorithm.cs",
@@ -35,13 +52,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AlgorithmService.cs",
               "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\AlgorithmService.cs",
               "RelativeDocumentMoniker": "API\\Service\\AlgorithmService.cs",
               "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\AlgorithmService.cs",
               "RelativeToolTip": "API\\Service\\AlgorithmService.cs",
-              "ViewState": "AgIAAFAAAAAAAAAAAAAQwEEAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAkwHoAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-19T02:15:27.007Z",
               "EditorCaption": ""
