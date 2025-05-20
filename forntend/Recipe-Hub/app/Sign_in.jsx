@@ -155,12 +155,6 @@ const SignIn = () => {
     >
       <View style={globalStyles.overlay} />
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
-        <TouchableOpacity
-          onPress={() => router.replace("/")}
-          style={globalStyles.backButton}
-        >
-          <Icon name="arrow-left" size={24} color="white" />
-        </TouchableOpacity>
         <View style={globalStyles.content}>
           <Text style={[globalStyles.title, globalStyles.sign_In_Up_title]}>
             Sign in
