@@ -11,22 +11,54 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const EditProfile = () => {
-  const [name, setName] = useState(""); // اسم المستخدم من البيانات
-  const [profileImage, setProfileImage] = useState(null); // صورة المستخدم من البيانات
+  const [name, setName] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({
+    phoneNumber: "",
+    countryCode: "",
+    email: "",
+  });
 
-  // تحميل بيانات المستخدم من AsyncStorage
+  // تحميل بيانات المستخدم من AsyncStorage و API
   useEffect(() => {
     const loadUserData = async () => {
       try {
         const data = await AsyncStorage.getItem("userData");
         if (data) {
           const user = JSON.parse(data);
+          if (!user.id) {
+            Alert.alert(
+              "خطأ",
+              "تعذر تحديد المستخدم. يرجى تسجيل الدخول مرة أخرى."
+            );
+            router.replace("/Sign_in");
+            return;
+          }
           setName(user.name || "");
           setProfileImage(
             user.userImage ? `data:image/jpeg;base64,${user.userImage}` : null
           );
+          setUserId(user.id);
+
+          // جلب بيانات المستخدم الكاملة من الـ API
+          const apiRes = await axios.get(
+            `http://recipe-hub.runasp.net/api/users/GetById/${user.id}`
+          );
+          const apiUser = apiRes.data;
+          setUserData({
+            phoneNumber: apiUser.phoneNumber || "",
+            countryCode: apiUser.countryCode || "",
+            email: apiUser.email || "",
+            password: apiUser.password || "",
+            createdAt: apiUser.createdAt,
+          });
+        } else {
+          Alert.alert("خطأ", "تعذر تحميل بيانات المستخدم. يرجى تسجيل الدخول.");
+          router.replace("/Sign_in");
         }
       } catch (error) {
         console.error("Failed to load user data:", error);
@@ -49,25 +81,46 @@ const EditProfile = () => {
     });
 
     if (!result.canceled) {
-      // حفظ الصورة كـ base64
       setProfileImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
     }
   };
 
   const handleSubmit = async () => {
-    // حفظ البيانات في AsyncStorage
     try {
-      const userData = {
-        name,
+      // Prepare updated user data for API
+      const updatedUser = {
+        id: userId,
+        userName: name,
+        phoneNumber: userData.phoneNumber || "",
+        countryCode: userData.countryCode || "",
+        email: userData.email || "",
+        password: userData.password || "",
         userImage: profileImage
           ? profileImage.replace(/^data:image\/jpeg;base64,/, "")
-          : null,
+          : "",
       };
-      await AsyncStorage.setItem("userData", JSON.stringify(userData));
-      Alert.alert("Profile Updated", `Name: ${name}`);
+
+      // Call the API to update user
+      await axios.put(
+        `http://recipe-hub.runasp.net/api/users/Update/${userId}`,
+        updatedUser
+      );
+
+      // Save updated data locally (update all fields)
+      await AsyncStorage.setItem(
+        "userData",
+        JSON.stringify({
+          id: userId,
+          email: updatedUser.email,
+          name: updatedUser.userName,
+          userImage: updatedUser.userImage,
+        })
+      );
+      Alert.alert("تم التحديث", "تم تحديث الملف الشخصي بنجاح.");
       router.back();
     } catch (error) {
-      Alert.alert("Error", "Failed to save profile data.");
+      Alert.alert("خطأ", "فشل في حفظ بيانات الملف الشخصي.");
+      console.error(error);
     }
   };
 

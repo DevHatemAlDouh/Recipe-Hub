@@ -15,9 +15,9 @@ import { BackHandler } from "react-native";
 import { useFocusEffect, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
+import { Appbar } from "react-native-paper";
 
 const RecipeDetails = () => {
-  // نفس منطق الحالة والوظائف السابق
   const params = useLocalSearchParams();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -206,6 +206,19 @@ const RecipeDetails = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      {/* AppBar with recipe title */}
+      <Appbar.Header style={{ backgroundColor: "#fff", elevation: 0 }}>
+        <Appbar.BackAction onPress={() => router.back()} />
+        <Appbar.Content
+          title={recipe.title}
+          titleStyle={{
+            color: "#e17055",
+            fontWeight: "bold",
+            fontSize: 20,
+            textAlign: "right",
+          }}
+        />
+      </Appbar.Header>
       <ScrollView contentContainerStyle={styles.container}>
         {/* قسم الصورة مع التدرج اللوني */}
         <View style={styles.header}>

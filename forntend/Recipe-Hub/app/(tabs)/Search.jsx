@@ -7,15 +7,17 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  SafeAreaView, // <-- Add this import
+  SafeAreaView,
+  Image,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const RecipeSearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [allRecipes, setAllRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [authors, setAuthors] = useState({}); // { userId: userName }
+  const [authors, setAuthors] = useState({});
 
   // Fetch all recipes from API
   useEffect(() => {
@@ -37,7 +39,7 @@ const RecipeSearchScreen = () => {
                 `http://recipe-hub.runasp.net/api/users/GetById/${uid}`
               );
               const userData = await userRes.json();
-              authorMap[uid] = userData?.userName || "Unknown"; // <-- use userName
+              authorMap[uid] = userData?.userName || "Unknown";
             } catch {
               authorMap[uid] = "Unknown";
             }
@@ -77,41 +79,72 @@ const RecipeSearchScreen = () => {
   };
 
   const renderRecipeItem = ({ item }) => (
-    <TouchableOpacity style={styles.recipeCard}>
-      {/* <Image
-        source={{ uri: item.backgroundImage }}
-        style={styles.recipeImage}
-      /> */}
+    <TouchableOpacity style={styles.recipeCard} activeOpacity={0.92}>
+      <View style={styles.recipeImageContainer}>
+        {item.backgroundImage ? (
+          <Image
+            source={{
+              uri: `data:image/jpeg;base64,${item.backgroundImage}`,
+            }}
+            style={styles.recipeImage}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.imagePlaceholder}>
+            <Ionicons name="restaurant-outline" size={38} color="#D1D5DB" />
+          </View>
+        )}
+      </View>
       <View style={styles.recipeInfo}>
-        <Text style={styles.recipeTitle}>{item.title}</Text>
-        <Text style={styles.recipeMeta}>
-          Author: {authors[item.userID] || "Loading..."}
+        <Text style={styles.recipeTitle} numberOfLines={1}>
+          {item.title}
         </Text>
+        <Text style={styles.recipeMeta}>
+          <Ionicons name="person" size={14} color="#6B5B95" />{" "}
+          {authors[item.userID] || "Loading..."}
+        </Text>
+        <View style={styles.metaRow}>
+          <View style={styles.metaItem}>
+            <Ionicons name="people-outline" size={16} color="#FF6B6B" />
+            <Text style={styles.metaText}>{item.persons || 0}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Ionicons name="heart-outline" size={16} color="#FF6B6B" />
+            <Text style={styles.metaText}>{item.rate || 0}</Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
       <View style={styles.container}>
         <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={22}
+            color="#B0B0B0"
+            style={{ marginRight: 8 }}
+          />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search for recipes..."
+            placeholder="ابحث عن وصفة..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
             returnKeyType="search"
+            placeholderTextColor="#B0B0B0"
           />
           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>Search</Text>
+            <Ionicons name="arrow-forward-circle" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
 
         {isLoading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#ff8c00" />
-            <Text>Loading recipes...</Text>
+            <ActivityIndicator size="large" color="#FF6B6B" />
+            <Text style={styles.loadingText}>جاري تحميل الوصفات...</Text>
           </View>
         ) : filteredRecipes.length > 0 ? (
           <FlatList
@@ -119,10 +152,12 @@ const RecipeSearchScreen = () => {
             renderItem={renderRecipeItem}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.recipesList}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <View style={styles.noResultsContainer}>
-            <Text>No recipes found matching your search</Text>
+            <Ionicons name="alert-circle-outline" size={38} color="#FF6B6B" />
+            <Text style={styles.noResultsText}>لا توجد وصفات مطابقة</Text>
           </View>
         )}
       </View>
@@ -133,76 +168,136 @@ const RecipeSearchScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f8f8f8",
     padding: 15,
   },
   searchContainer: {
     flexDirection: "row",
-    marginBottom: 20,
-    paddingTop: 20,
+    alignItems: "center",
+    marginBottom: 18,
+    marginTop: 18,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
   },
   searchInput: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginRight: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    fontSize: 16,
+    color: "#333",
   },
   searchButton: {
-    backgroundColor: "#ff8c00",
+    backgroundColor: "#FF6B6B",
     borderRadius: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     justifyContent: "center",
     alignItems: "center",
-  },
-  searchButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    marginLeft: 6,
   },
   recipesList: {
     paddingBottom: 20,
   },
   recipeCard: {
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderRadius: 14,
     marginBottom: 15,
     overflow: "hidden",
     flexDirection: "row",
     alignItems: "center",
     elevation: 2,
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+  },
+  recipeImageContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "#FFF5F0",
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   recipeImage: {
     width: 80,
     height: 80,
-    borderRadius: 8,
-    margin: 10,
+    borderRadius: 10,
+  },
+  imagePlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
   },
   recipeInfo: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 10,
+    paddingRight: 0,
+    paddingLeft: 0,
+    justifyContent: "center",
   },
   recipeTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 2,
+    color: "#6B5B95",
   },
   recipeMeta: {
-    color: "#666",
-    fontSize: 14,
+    color: "#888",
+    fontSize: 13,
+    marginBottom: 4,
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  metaItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#FF6B6B",
+    marginLeft: 2,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 40,
+  },
+  loadingText: {
+    marginTop: 10,
+    color: "#6B5B95",
+    fontSize: 15,
   },
   noResultsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 40,
+  },
+  noResultsText: {
+    marginTop: 8,
+    color: "#FF6B6B",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

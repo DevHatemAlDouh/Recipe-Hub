@@ -68,6 +68,7 @@ const Profile = () => {
           },
         })
       }
+      activeOpacity={0.92}
     >
       <Image source={{ uri: backgroundImage }} style={styles.recipeImage} />
       <LinearGradient
@@ -75,16 +76,18 @@ const Profile = () => {
         style={styles.recipeOverlay}
       />
       <View style={styles.recipeDetails}>
-        <Text style={styles.recipeName}>{title}</Text>
+        <Text style={styles.recipeName} numberOfLines={1}>
+          {title}
+        </Text>
         <View style={styles.recipeInfoContainer}>
           <View style={styles.ratingContainer}>
-            <Icon name="star" size={14} color="#FFD700" solid />
+            <Icon name="heart" size={14} color="#FF6B6B" solid />
             <Text style={styles.ratingText}>{rate}</Text>
           </View>
           {persons ? (
             <View style={styles.timeContainer}>
               <Icon name="users" size={12} color="#fff" />
-              <Text style={styles.timeText}>{persons} persons</Text>
+              <Text style={styles.timeText}>{persons} أشخاص</Text>
             </View>
           ) : null}
         </View>
@@ -108,14 +111,22 @@ const Profile = () => {
         style={styles.headerGradient}
       >
         <View style={styles.profileHeader}>
-          <Image
-            source={{
-              uri: userData?.userImage
-                ? `data:image/jpeg;base64,${userData.userImage}`
-                : "https://randomuser.me/api/portraits/men/32.jpg",
-            }}
-            style={styles.profileImage}
-          />
+          <View style={styles.profileImageWrapper}>
+            <Image
+              source={{
+                uri: userData?.userImage
+                  ? `data:image/jpeg;base64,${userData.userImage}`
+                  : "https://randomuser.me/api/portraits/men/32.jpg",
+              }}
+              style={styles.profileImage}
+            />
+            <TouchableOpacity
+              style={styles.editAvatarButton}
+              onPress={() => router.push("Profile_Content/Edeit_Profile")}
+            >
+              <Icon name="camera" size={16} color="#fff" />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.userName}>{userData?.name || "Chef John"}</Text>
           <Text style={styles.userBio}>
             {userData?.bio || "Home Chef | Italian Cuisine Lover"}
@@ -127,13 +138,9 @@ const Profile = () => {
         <StatItem
           icon="utensils"
           value={myRecipes.length.toString()}
-          label="My Recipes"
+          label="وصفاتي"
         />
-        <StatItem
-          icon="eye"
-          value={totalViews.toString()}
-          label="Total Views"
-        />
+        <StatItem icon="eye" value={totalViews.toString()} label="المشاهدات" />
       </View>
 
       <View style={styles.actionButtons}>
@@ -142,14 +149,14 @@ const Profile = () => {
           onPress={() => router.push("Profile_Content/Edeit_Profile")}
         >
           <Icon name="user-edit" size={18} color="#fff" />
-          <Text style={styles.buttonText}>Edit Profile</Text>
+          <Text style={styles.buttonText}>تعديل الملف</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.secondaryButton}
           onPress={() => router.push("/Profile_Content/Favorites")}
         >
           <Icon name="heart" size={18} color="#6B5B95" solid />
-          <Text style={styles.secondaryButtonText}>Favorites</Text>
+          <Text style={styles.secondaryButtonText}>المفضلة</Text>
         </TouchableOpacity>
       </View>
 
@@ -159,14 +166,14 @@ const Profile = () => {
           <View style={styles.sectionIconContainer}>
             <Icon name="book" size={22} color="#FF6B6B" solid />
           </View>
-          <Text style={styles.sectionTitle}>My Recipes</Text>
+          <Text style={styles.sectionTitle}>وصفاتي</Text>
           {myRecipes.length > 2 && (
             <TouchableOpacity
               style={styles.viewAllButton}
-              onPress={() => router.push("/Profile_Content/Favorites")}
+              onPress={() => router.push("/Profile_Content/MyRecipes")}
             >
-              <Text style={styles.viewAllText}>View All</Text>
-              <Icon name="chevron-right" size={14} color="#6B5B95" />
+              <Text style={styles.viewAllText}>عرض الكل</Text>
+              <Icon name="chevron-left" size={14} color="#6B5B95" />
             </TouchableOpacity>
           )}
         </View>
@@ -174,12 +181,12 @@ const Profile = () => {
         {myRecipes.length === 0 ? (
           <View style={styles.emptyFavorites}>
             <Icon name="book-dead" size={40} color="#FF6B6B" />
-            <Text style={styles.emptyText}>No recipes yet</Text>
+            <Text style={styles.emptyText}>لا توجد وصفات بعد</Text>
             <TouchableOpacity
               style={styles.discoverButton}
-              onPress={() => router.push("/Explore")}
+              onPress={() => router.push("/Add_Reciepe")}
             >
-              <Text style={styles.discoverButtonText}>Discover Recipes</Text>
+              <Text style={styles.discoverButtonText}>أضف وصفة جديدة</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -202,27 +209,9 @@ const Profile = () => {
         )}
       </View>
 
-      {/* Reviews Section */}
-      <View style={styles.reviewsSection}>
-        <View style={styles.sectionHeader}>
-          <View style={styles.sectionIconContainer}>
-            <Icon name="comments" size={20} color="#4CAF50" />
-          </View>
-          <Text style={styles.sectionTitle}>Recent Reviews</Text>
-        </View>
-
-        <ReviewItem
-          reviewer="Sarah Johnson"
-          avatar="https://randomuser.me/api/portraits/women/44.jpg"
-          comment="Your carbonara recipe changed my life! So delicious and easy to make."
-          rating={5.0}
-          date="2 days ago"
-        />
-      </View>
-
       {/* Log Out Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>Log Out</Text>
+        <Text style={styles.logoutButtonText}>تسجيل الخروج</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -272,18 +261,32 @@ const styles = StyleSheet.create({
   profileHeader: {
     alignItems: "center",
   },
+  profileImageWrapper: {
+    position: "relative",
+    marginBottom: 15,
+  },
   profileImage: {
     width: 120,
     height: 120,
     borderRadius: 60,
     borderWidth: 4,
     borderColor: "#fff",
-    marginBottom: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 8,
+  },
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 8,
+    right: 8,
+    backgroundColor: "#6B5B95",
+    borderRadius: 16,
+    padding: 6,
+    borderWidth: 2,
+    borderColor: "#fff",
+    elevation: 2,
   },
   userName: {
     fontSize: 24,
@@ -437,42 +440,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 20,
   },
-  discoverButton: {
-    backgroundColor: "#FF6B6B",
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-  },
-  discoverButtonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  favoriteRecipesList: {
-    paddingLeft: 5,
-  },
-  recipeCard: {
-    width: width * 0.5,
-    marginRight: 15,
-    borderRadius: 12,
-    overflow: "hidden",
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-  },
-  recipeImage: {
-    width: "100%",
-    height: 160,
-    resizeMode: "cover",
-  },
-  recipeOverlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: "50%",
-  },
   recipeDetails: {
     position: "absolute",
     bottom: 10,
@@ -567,7 +534,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 40,
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 50,
     shadowColor: "#FF6B6B",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,

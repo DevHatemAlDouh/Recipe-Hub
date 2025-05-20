@@ -223,7 +223,7 @@ const Home = () => {
     }
   };
 
-  const toggleFavorite = (recipeId) => {
+  const toggleFavorite = async (recipeId) => {
     setFavorites((prevFavorites) => {
       const isLiked = prevFavorites[recipeId] === "heart";
       const newIcon = isLiked ? "heart-outline" : "heart";
@@ -238,6 +238,16 @@ const Home = () => {
         [recipeId]: newIcon,
       };
     });
+
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      await axios.put("http://recipe-hub.runasp.net/api/Recipes/UpdateRate", {
+        userid: userData.id,
+        subjectid: recipeId,
+      });
+    } catch (error) {
+      console.error("Failed to update recipe rate", error);
+    }
   };
 
   const renderRecipeCard = ({ item }) => {
@@ -307,7 +317,8 @@ const Home = () => {
   );
 };
 
-function formatTime(dateString) {
+function formatTime(recipe) {
+  const dateString = recipe.createdAt || recipe.updatedAt;
   const date = new Date(dateString);
   const now = new Date();
   const diffMinutes = Math.floor((now - date) / (1000 * 60));
@@ -329,54 +340,130 @@ const RecipeCard = ({
   const [showDialog, setShowDialog] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const handleReport = () => {
-    console.log("Reported recipe:", item.id);
-    setShowDialog(false);
-    setMenuVisible(false);
+  const handleReport = async () => {
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      await axios.post("http://recipe-hub.runasp.net/api/users/AddReport", {
+        id: 0,
+        fromUserID: userData.id,
+        atUserID: item.userID,
+        type: "recipe",
+        description: `الإبلاغ عن وصفة: ${item.title}`,
+        solved: false,
+      });
+      setShowDialog(false);
+      setMenuVisible(false);
+      Alert.alert("تم الإبلاغ", "تم إرسال الإبلاغ بنجاح.");
+    } catch (error) {
+      setShowDialog(false);
+      setMenuVisible(false);
+      Alert.alert("خطأ", "حدث خطأ أثناء إرسال الإبلاغ.");
+      console.error("Report error:", error);
+    }
   };
 
   return (
     <Card style={styles.card}>
-      <Card.Title
-        title={item.author}
-        subtitle={item.time}
-        left={(props) => (
-          <Avatar.Image {...props} source={{ uri: item.avatar }} />
-        )}
-        right={(props) => (
-          <View style={styles.menuContainer}>
-            <IconButton
-              {...props}
-              icon="dots-vertical"
-              onPress={() => setMenuVisible(true)}
-              style={styles.menuButton}
+      <TouchableOpacity
+        onPress={async () => {
+          try {
+            await axios.put(
+              `http://recipe-hub.runasp.net/api/Recipes/UpdateView/${item.id}`
+            );
+          } catch (e) {
+            console.error("Failed to update view count", e);
+          }
+          router.push(`/Components/Recipe/RecipeDetails?id=${item.id}`);
+        }}
+        activeOpacity={0.93}
+      >
+        <View style={styles.imageContainer}>
+          <Card.Cover
+            source={{
+              uri: imageError
+                ? "https://source.unsplash.com/400x300/?food"
+                : item.image,
+            }}
+            style={styles.coverImage}
+            onError={() => setImageError(true)}
+          />
+          {/* Remove overlayTop user info here */}
+        </View>
+      </TouchableOpacity>
+
+      <Card.Content style={styles.recipeContent}>
+        <View style={styles.titleRow}>
+          <Text style={styles.recipeTitle} numberOfLines={1}>
+            {item.title}
+          </Text>
+          <View style={styles.userInfoRow}>
+            <Text style={styles.authorNameSmall}>{item.author}</Text>
+            <Avatar.Image
+              size={28}
+              source={{ uri: item.avatar }}
+              style={styles.avatarSmall}
             />
-            <Menu
-              visible={menuVisible}
-              onDismiss={() => setMenuVisible(false)}
-              anchor={
-                <IconButton
-                  icon="dots-vertical"
-                  onPress={() => setMenuVisible(true)}
-                  style={{ opacity: 0 }}
-                />
-              }
-              anchorPosition="bottom"
-              contentStyle={styles.menuContent}
-            >
-              <Menu.Item
-                leadingIcon={() => <Icon source="flag" color="red" size={24} />}
-                titleStyle={styles.menuItemText}
-                onPress={() => {
-                  setMenuVisible(false);
-                  setShowDialog(true);
-                }}
-                title="الإبلاغ"
-              />
-            </Menu>
           </View>
-        )}
-      />
+        </View>
+        <Text style={styles.recipeDescription} numberOfLines={2}>
+          {item.description}
+        </Text>
+        <View style={styles.recipeMetaRow}>
+          <View style={styles.metaItem}>
+            <IconButton icon="account-group" size={18} color="#6B5B95" />
+            <Text style={styles.metaText}>{item.persons} أشخاص</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <IconButton icon="eye" size={18} color="#6B5B95" />
+            <Text style={styles.metaText}>{item.view || 0}</Text>
+          </View>
+        </View>
+      </Card.Content>
+
+      <Card.Actions style={styles.actionsRow}>
+        <View style={styles.actionContainer}>
+          <IconButton
+            icon={isFavorite ? "heart" : "heart-outline"}
+            iconColor="#FF6B6B"
+            onPress={onFavoritePress}
+          />
+          <Text style={styles.countText}>{likesCount}</Text>
+        </View>
+        <View style={styles.actionContainer}>
+          <IconButton icon="comment-outline" onPress={onCommentPress} />
+          <Text style={styles.countText}>{commentsCount}</Text>
+        </View>
+        <View style={styles.actionContainer}>
+          <IconButton
+            icon="dots-vertical"
+            onPress={() => setMenuVisible(true)}
+            style={styles.menuButton}
+          />
+          <Menu
+            visible={menuVisible}
+            onDismiss={() => setMenuVisible(false)}
+            anchor={
+              <IconButton
+                icon="dots-vertical"
+                onPress={() => setMenuVisible(true)}
+                style={{ opacity: 0 }}
+              />
+            }
+            anchorPosition="bottom"
+            contentStyle={styles.menuContent}
+          >
+            <Menu.Item
+              leadingIcon={() => <Icon source="flag" color="red" size={24} />}
+              titleStyle={styles.menuItemText}
+              onPress={() => {
+                setMenuVisible(false);
+                setShowDialog(true);
+              }}
+              title="الإبلاغ"
+            />
+          </Menu>
+        </View>
+      </Card.Actions>
 
       <Portal>
         <Dialog
@@ -411,57 +498,6 @@ const RecipeCard = ({
           </View>
         </Dialog>
       </Portal>
-
-      <TouchableOpacity
-        onPress={async () => {
-          try {
-            await axios.post(
-              `http://recipe-hub.runasp.net/api/Recipes/UpdateView/${item.id}`
-            );
-          } catch (e) {
-            // Optionally handle error, or ignore
-            console.error("Failed to update view count", e);
-          }
-          router.push(`/Components/Recipe/RecipeDetails?id=${item.id}`);
-        }}
-      >
-        <Card.Cover
-          source={{
-            uri: imageError
-              ? "https://source.unsplash.com/400x300/?food"
-              : item.image,
-          }}
-          style={styles.coverImage}
-          onError={() => setImageError(true)}
-        />
-      </TouchableOpacity>
-
-      <Card.Content>
-        <Text variant="titleMedium" style={styles.recipeTitle}>
-          {item.title}
-        </Text>
-        <Text variant="bodyMedium" style={styles.recipeDescription}>
-          {item.description}
-        </Text>
-        <Text style={styles.updateTime}>
-          تم التحديث: {item.lastUpdated.toLocaleTimeString()}
-        </Text>
-      </Card.Content>
-      <Card.Actions>
-        <View style={styles.actionContainer}>
-          <IconButton
-            icon={isFavorite ? "heart" : "heart-outline"}
-            iconColor="red"
-            onPress={onFavoritePress}
-          />
-          <Text style={styles.countText}>{likesCount}</Text>
-        </View>
-
-        <View style={styles.actionContainer}>
-          <IconButton icon="comment-outline" onPress={onCommentPress} />
-          <Text style={styles.countText}>{commentsCount}</Text>
-        </View>
-      </Card.Actions>
     </Card>
   );
 };
@@ -561,21 +597,69 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 10,
+    borderRadius: 18,
+    elevation: 4,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+  },
+  imageContainer: {
     position: "relative",
-    overflow: "visible",
-    borderRadius: 12,
-    elevation: 3,
+    width: "100%",
+    height: 200,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    overflow: "hidden",
   },
   coverImage: {
+    width: "100%",
     height: 200,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
     resizeMode: "cover",
   },
-  recipeTitle: {
-    fontSize: 18,
+  overlayTop: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.85)",
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    elevation: 2,
+  },
+  avatar: {
+    marginRight: 8,
+    backgroundColor: "#fff",
+  },
+  authorInfo: {
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  authorName: {
     fontWeight: "bold",
-    marginBottom: 8,
+    fontSize: 14,
+    color: "#6B5B95",
+  },
+  recipeTime: {
+    fontSize: 11,
+    color: "#888",
+  },
+  recipeContent: {
+    paddingTop: 10,
+    paddingBottom: 0,
+    paddingHorizontal: 4,
+  },
+  recipeTitle: {
+    fontSize: 19,
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: "#FF6B6B",
     textAlign: "right",
   },
   recipeDescription: {
@@ -584,54 +668,52 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginBottom: 8,
   },
-  menuContainer: {
-    position: "relative",
-    zIndex: 9999,
-  },
-  menuButton: {
-    margin: 0,
-    padding: 0,
-  },
-  menuContent: {
-    marginLeft: 0,
-    marginTop: 0,
-  },
-  menuItemText: {
-    color: "red",
-    marginLeft: 8,
-    position: "relative",
-    top: 2,
-  },
-  dialogContainer: {
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dialogContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 8,
-    width: "90%",
-  },
-  dialogText: {
-    fontSize: 16,
-    marginBottom: 20,
-    textAlign: "right",
-  },
-  dialogActions: {
+  recipeMetaRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginTop: 10,
+    alignItems: "center",
+    marginBottom: 4,
+    gap: 8,
   },
-  cancelButton: {
-    borderColor: "#999",
-    marginRight: 10,
+  metaItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 8,
   },
-  confirmButton: {
-    backgroundColor: "#ff4444",
+  metaText: {
+    fontSize: 13,
+    color: "#6B5B95",
+    marginLeft: 2,
   },
-  buttonLabel: {
-    color: "white",
+  actionsRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    paddingBottom: 4,
+    paddingTop: 0,
+  },
+  actionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 4,
+  },
+  countText: {
+    fontSize: 15,
+    marginLeft: 2,
+    color: "#666",
+  },
+  lastUpdateText: {
+    textAlign: "center",
+    color: "#666",
+    paddingVertical: 8,
+    fontSize: 12,
+  },
+  updateTime: {
+    fontSize: 12,
+    color: "#999",
+    marginTop: 4,
+    textAlign: "right",
   },
   contentContainer: {
     flex: 1,
@@ -709,27 +791,81 @@ const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
   },
-  actionContainer: {
+  menuContainer: {
+    position: "relative",
+    zIndex: 9999,
+  },
+  menuButton: {
+    margin: 0,
+    padding: 0,
+  },
+  menuContent: {
+    marginLeft: 0,
+    marginTop: 0,
+  },
+  menuItemText: {
+    color: "red",
+    marginLeft: 8,
+    position: "relative",
+    top: 2,
+  },
+  dialogContainer: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dialogContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    width: "90%",
+  },
+  dialogText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "right",
+  },
+  dialogActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
+  cancelButton: {
+    borderColor: "#999",
+    marginRight: 10,
+  },
+  confirmButton: {
+    backgroundColor: "#ff4444",
+  },
+  buttonLabel: {
+    color: "white",
+  },
+  titleRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 4,
+    justifyContent: "space-between",
+    marginBottom: 2,
+    gap: 8,
   },
-  countText: {
-    fontSize: 16,
+  userInfoRow: {
+    flexDirection: "row-reverse", // avatar left, name right (RTL)
+    alignItems: "center",
+    gap: 4,
+    marginLeft: 8,
+  },
+  avatarSmall: {
+    width: 28,
+    height: 28,
     marginLeft: 4,
-    color: "#666",
+    backgroundColor: "#fff",
   },
-  lastUpdateText: {
-    textAlign: "center",
-    color: "#666",
-    paddingVertical: 8,
-    fontSize: 12,
-  },
-  updateTime: {
-    fontSize: 12,
-    color: "#999",
-    marginTop: 4,
-    textAlign: "right",
+  authorNameSmall: {
+    fontSize: 13,
+    color: "#6B5B95",
+    fontWeight: "bold",
+    maxWidth: 80,
+    marginLeft: 4,
+    textAlign: "left",
   },
 });
 
