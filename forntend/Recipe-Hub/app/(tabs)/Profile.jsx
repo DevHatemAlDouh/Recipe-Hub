@@ -171,13 +171,15 @@ const Profile = () => {
           )}
         </View>
 
+          {/* Explore is not exsiste */}
+
         {myRecipes.length === 0 ? (
           <View style={styles.emptyFavorites}>
             <Icon name="book-dead" size={40} color="#FF6B6B" />
             <Text style={styles.emptyText}>No recipes yet</Text>
             <TouchableOpacity
               style={styles.discoverButton}
-              onPress={() => router.push("/Explore")}
+              onPress={() => router.push("/(tabs)/Add_Reciepe")}
             >
               <Text style={styles.discoverButtonText}>Discover Recipes</Text>
             </TouchableOpacity>
