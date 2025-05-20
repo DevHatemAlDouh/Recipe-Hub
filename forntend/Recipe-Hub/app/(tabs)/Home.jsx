@@ -413,7 +413,17 @@ const RecipeCard = ({
       </Portal>
 
       <TouchableOpacity
-        onPress={() => router.push(`/RecipeDetails?id=${item.id}`)}
+        onPress={async () => {
+          try {
+            await axios.post(
+              `http://recipe-hub.runasp.net/api/Recipes/UpdateView/${item.id}`
+            );
+          } catch (e) {
+            // Optionally handle error, or ignore
+            console.error("Failed to update view count", e);
+          }
+          router.push(`/Components/Recipe/RecipeDetails?id=${item.id}`);
+        }}
       >
         <Card.Cover
           source={{
