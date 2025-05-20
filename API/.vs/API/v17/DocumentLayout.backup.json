@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\commentrateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\commentrateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\algorithmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\algorithmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\models\\algorithm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\models\\algorithm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\api\\api\\service\\reciperateandviwsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A4C0A7-B7BC-4009-A90F-DCD42423F2CF}|API\\API.csproj|solutionrelative:api\\service\\reciperateandviwsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,39 +31,54 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "RecipesController.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
-              "RelativeDocumentMoniker": "API\\Controllers\\RecipesController.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
-              "RelativeToolTip": "API\\Controllers\\RecipesController.cs",
-              "ViewState": "AgIAAGcAAAAAAAAAAAAUwHUAAAAIAAAAAAAAAA==",
+              "Title": "CommentsController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\CommentsController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\CommentsController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\CommentsController.cs",
+              "RelativeToolTip": "API\\Controllers\\CommentsController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAFYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-20T10:44:15.615Z",
+              "WhenOpened": "2025-05-20T14:08:28.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CommentRateService.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\CommentRateService.cs",
+              "RelativeDocumentMoniker": "API\\Service\\CommentRateService.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\CommentRateService.cs",
+              "RelativeToolTip": "API\\Service\\CommentRateService.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAQwH8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-20T14:05:43.488Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RecipeRateandViwsService.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\RecipeRateandViwsService.cs",
+              "RelativeDocumentMoniker": "API\\Service\\RecipeRateandViwsService.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\RecipeRateandViwsService.cs",
+              "RelativeToolTip": "API\\Service\\RecipeRateandViwsService.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAQwGwAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-20T13:55:01.01Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Algorithm.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\Algorithm.cs",
-              "RelativeDocumentMoniker": "API\\Models\\Algorithm.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Models\\Algorithm.cs",
-              "RelativeToolTip": "API\\Models\\Algorithm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAuAAAAAAAAAA==",
+              "Title": "RecipesController.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\RecipesController.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Controllers\\RecipesController.cs",
+              "RelativeToolTip": "API\\Controllers\\RecipesController.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAUwJ0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T07:04:45.689Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AlgorithmService.cs",
-              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\AlgorithmService.cs",
-              "RelativeDocumentMoniker": "API\\Service\\AlgorithmService.cs",
-              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\API\\API\\Service\\AlgorithmService.cs",
-              "RelativeToolTip": "API\\Service\\AlgorithmService.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAkwHoAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T02:15:27.007Z"
+              "WhenOpened": "2025-05-20T10:44:15.615Z",
+              "EditorCaption": ""
             }
           ]
         }

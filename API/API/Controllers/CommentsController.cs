@@ -54,11 +54,11 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateRate/{commentId}")]
-        public async Task<IActionResult> PutCommentRate(int commentId)
+        [HttpPut("UpdateRate")]
+        public async Task<IActionResult> PutCommentRate(Rate rate)
         {
 
-            await _commentRateService.Update(commentId);
+            await _commentRateService.Update(rate);
             return NoContent();
         }
 
@@ -68,13 +68,6 @@ namespace API.Controllers
         public async Task<ActionResult<CommentInfo>> PostComment(CommentInfo commentInfo)
         {
             await _commentService.Add(commentInfo);
-            return NoContent();
-        }
-
-        [HttpPost("AddRate")]
-        public async Task<ActionResult<CommentRateInfo>> PostCommentRate(CommentRateInfo commentRateInfo)
-        {
-            await _commentRateService.Add(commentRateInfo);
             return NoContent();
         }
 
@@ -90,19 +83,6 @@ namespace API.Controllers
 
             await _commentService.Delete(id);
             await _commentRateService.Delete(id);
-            return NoContent();
-        }
-
-        [HttpDelete("DeleteRate/{commentId}")]
-        public async Task<IActionResult> DeleteCommentRate(int commentId)
-        {
-            var Rate = await _commentRateService.GetById(commentId);
-            if (Rate == null)
-            {
-                return NotFound();
-            }
-
-            await _commentRateService.Delete(commentId);
             return NoContent();
         }
     }

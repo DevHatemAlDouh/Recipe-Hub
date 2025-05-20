@@ -80,12 +80,38 @@ namespace API.Service
             }
         }
 
-        public async Task UpdateRate(int recipeID)
+        public async Task UpdateRate(Rate Rate)
         {
-            var recipeRates = await _context.RecipeRates.Where(rr => rr.RecipeID == recipeID).ToListAsync();
-            var Count = recipeRates.Count;
-            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeID);
-            recipe.Rate = Count;
+            // Check if the recipe exists
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == Rate.subjectid);
+
+            if (recipe == null)
+            {
+                // Handle case where recipe does not exist
+                throw new Exception("Recipe not found.");
+            }
+
+            // Check if there's already a RecipeRate for this user and recipe
+            var existingRate = await _context.RecipeRates
+                .FirstOrDefaultAsync(rr => rr.RecipeID == Rate.subjectid && rr.UserID == Rate.userid);
+
+            if (existingRate == null)
+            {
+                // Create a new RecipeRateInfo entity
+                var newRateInfo = new RecipeRateInfo
+                {
+                    UserID = Rate.userid,
+                    RecipeID = Rate.subjectid
+                };
+
+                // Use the Add method to add the new rate
+                await Add(newRateInfo);
+            }
+
+            // Update the recipe's rate count
+            var recipeRates = await _context.RecipeRates.Where(rr => rr.RecipeID == Rate.subjectid).ToListAsync();
+            recipe.Rate = recipeRates.Count;
+
             _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
         }

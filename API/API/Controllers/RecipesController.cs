@@ -105,11 +105,11 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateRate/{recipeId}")]
-        public async Task<IActionResult> PutRecipeRate(int recipeId)
+        [HttpPut("UpdateRate")]
+        public async Task<IActionResult> PutRecipeRate(Rate rate)
         {
             
-            await _recipeRateService.UpdateRate(recipeId);
+            await _recipeRateService.UpdateRate(rate);
             return NoContent();
         }
 
@@ -156,14 +156,6 @@ namespace API.Controllers
             return CreatedAtRoute(new { recipeId = recipeInfo.Id }, recipeInfo);
         }
 
-        [HttpPost("AddRate")]
-        public async Task<ActionResult<RecipeRateInfo>> PostRecipeRate(RecipeRateInfo recipeRateInfo)
-        {
-            await _recipeRateService.Add(recipeRateInfo);
-            return NoContent();
-        }
-
-        // POST: api/Steps
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Ingredient/Add")]
         public async Task<ActionResult<RecipeIngredientinfo>> PostRecipeIngredientInfo(RecipeIngredientinfo recipIngredientInfo)

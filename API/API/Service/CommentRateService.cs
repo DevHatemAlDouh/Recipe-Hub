@@ -80,22 +80,51 @@ namespace API.Service
             }
         }
 
-        public async Task Update(int commentID)
+        public async Task Update(Rate rate)
         {
-            var commentRate = await _context.CommentRates.Where(rr => rr.CommentID == commentID).ToListAsync();
-            var Count = commentRate.Count;
-            var comment = await _context.Comments.FirstOrDefaultAsync(r => r.Id == commentID);
-            comment.Rate = Count;
-            if(comment.CreatedAt != null)
+            // Check if the comment exists
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == rate.subjectid);
+
+            if (comment == null)
             {
-                comment.CreatedAt = DateTime.Now;
+                // Handle case where comment does not exist
+                throw new Exception("Comment not found.");
+            }
+
+            // Check if there's already a CommentRate for this user and comment
+            var existingRate = await _context.CommentRates
+                .FirstOrDefaultAsync(cr => cr.CommentID == rate.subjectid && cr.UserID == rate.userid);
+
+            if (existingRate == null)
+            {
+                // Create a new CommentRateInfo entity
+                var newRateInfo = new CommentRateInfo
+                {
+                    UserID = rate.userid,
+                    CommentID = rate.subjectid
+                };
+
+                // Use the Add method to add the new rate
+                await Add(newRateInfo);
+            }
+
+            // Update the comment's rate count
+            var commentRates = await _context.CommentRates.Where(cr => cr.CommentID == rate.subjectid).ToListAsync();
+            comment.Rate = commentRates.Count;
+
+            // Update timestamps
+            if (comment.CreatedAt != null)
+            {
+                comment.UpdatedAt = DateTime.Now; // Update UpdatedAt if CreatedAt exists
             }
             else
             {
-                comment.UpdatedAt = DateTime.Now;
+                comment.CreatedAt = DateTime.Now; // Set CreatedAt if it was null
             }
-            await _context.SaveChangesAsync();
+
+            // Save changes
             _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
         }
     }
 }

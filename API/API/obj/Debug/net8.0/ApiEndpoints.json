@@ -188,32 +188,6 @@
   },
   {
     "ContainingType": "API.Controllers.CommentsController",
-    "Method": "PostCommentRate",
-    "RelativePath": "api/Comments/AddRate",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "commentRateInfo",
-        "Type": "API.Models.CommentRateInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "API.Models.CommentRateInfo",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.CommentsController",
     "Method": "DeleteComment",
     "RelativePath": "api/Comments/Delete/{id}",
     "HttpMethod": "DELETE",
@@ -222,22 +196,6 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.CommentsController",
-    "Method": "DeleteCommentRate",
-    "RelativePath": "api/Comments/DeleteRate/{commentId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "commentId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -314,14 +272,14 @@
   {
     "ContainingType": "API.Controllers.CommentsController",
     "Method": "PutCommentRate",
-    "RelativePath": "api/Comments/UpdateRate/{commentId}",
+    "RelativePath": "api/Comments/UpdateRate",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "commentId",
-        "Type": "System.Int32",
+        "Name": "rate",
+        "Type": "API.Models.Rate",
         "IsRequired": true
       }
     ],
@@ -802,32 +760,6 @@
   },
   {
     "ContainingType": "API.Controllers.RecipesController",
-    "Method": "PostRecipeRate",
-    "RelativePath": "api/Recipes/AddRate",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recipeRateInfo",
-        "Type": "API.Models.RecipeRateInfo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "API.Models.RecipeRateInfo",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.RecipesController",
     "Method": "PostRecipeCategoryInfo",
     "RelativePath": "api/Recipes/Category/Add",
     "HttpMethod": "POST",
@@ -1168,14 +1100,14 @@
   {
     "ContainingType": "API.Controllers.RecipesController",
     "Method": "PutRecipeRate",
-    "RelativePath": "api/Recipes/UpdateRate/{recipeId}",
+    "RelativePath": "api/Recipes/UpdateRate",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "recipeId",
-        "Type": "System.Int32",
+        "Name": "rate",
+        "Type": "API.Models.Rate",
         "IsRequired": true
       }
     ],
