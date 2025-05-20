@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  Image, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
   SafeAreaView,
   ActivityIndicator,
-  TextInput,
-  Alert,
-  Dimensions
 } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
-import { BackHandler } from 'react-native';
-import { useFocusEffect, router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const { width } = Dimensions.get('window');
+import { BackHandler } from "react-native";
+import { useFocusEffect, router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 
 const RecipeDetails = () => {
   // نفس منطق الحالة والوظائف السابق
@@ -29,30 +23,201 @@ const RecipeDetails = () => {
   const [loading, setLoading] = useState(true);
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [user, setUser] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
   const [error, setError] = useState(null);
 
-  // ... نفس دوال جلب البيانات السابقة ...
+  const fetchRecipeData = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://recipe-hub.runasp.net/api/Recipes/GetById/${id}`
+      );
+      return response.data;
+    } catch (err) {
+      console.error("Error fetching recipe:", err);
+      throw new Error("Failed to load recipe");
+    }
+  };
+
+  const fetchAdditionalData = async (id) => {
+    try {
+      const [ingredientsRes, stepsRes, categoriesRes] = await Promise.all([
+        axios.get(
+          `http://recipe-hub.runasp.net/api/Recipes/GetAllIngredient?recipeid=${id}`
+        ),
+        axios.get(
+          `http://recipe-hub.runasp.net/api/Recipes/GetAllSteps?recipeid=${id}`
+        ),
+        axios.get(
+          `http://recipe-hub.runasp.net/api/Recipes/GetAllCategories?recipeId=${id}`
+        ),
+      ]);
+
+      // Fetch ingredient names in parallel
+      const ingredientsWithNames = await Promise.all(
+        (ingredientsRes.data || []).map(async (ingredient) => {
+          try {
+            const nameRes = await axios.get(
+              `http://recipe-hub.runasp.net/api/Ingredients/GetById/${ingredient.ingredientID}`
+            );
+            return {
+              ...ingredient,
+              name: nameRes.data?.name || "مكون غير معروف",
+            };
+          } catch {
+            return {
+              ...ingredient,
+              name: "مكون غير معروف",
+            };
+          }
+        })
+      );
+
+      // Fetch category names in parallel
+      const categoriesWithNames = await Promise.all(
+        (categoriesRes.data || []).map(async (cat) => {
+          try {
+            const catRes = await axios.get(
+              `http://recipe-hub.runasp.net/api/Categories/GetById/${cat.categoryID}`
+            );
+            return {
+              ...cat,
+              name: catRes.data?.name || "تصنيف غير معروف",
+            };
+          } catch {
+            return {
+              ...cat,
+              name: "تصنيف غير معروف",
+            };
+          }
+        })
+      );
+
+      return {
+        ingredients: ingredientsWithNames,
+        steps: stepsRes.data || [],
+        categories: categoriesWithNames,
+      };
+    } catch (err) {
+      console.error("Error fetching additional data:", err);
+      return {
+        ingredients: [],
+        steps: [],
+        categories: [],
+      };
+    }
+  };
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://recipe-hub.runasp.net/api/users/GetById/${userId}`
+      );
+      return response.data;
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      return {
+        userName: "مستخدم مجهول",
+        userImage: "https://randomuser.me/api/portraits/men/1.jpg",
+      };
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        let recipeData;
+
+        if (params.recipe) {
+          recipeData = JSON.parse(params.recipe);
+        } else if (params.id) {
+          recipeData = await fetchRecipeData(params.id);
+        } else {
+          throw new Error("No recipe identifier provided");
+        }
+
+        setRecipe(recipeData);
+
+        if (recipeData.id) {
+          const additionalData = await fetchAdditionalData(recipeData.id);
+          setIngredients(additionalData.ingredients);
+          setSteps(additionalData.steps);
+          setCategories(additionalData.categories);
+
+          if (recipeData.userID) {
+            const userData = await fetchUserData(recipeData.userID);
+            setUser(userData);
+          }
+        }
+      } catch (err) {
+        console.error("Error loading recipe:", err);
+        setError(err.message || "حدث خطأ أثناء تحميل الوصفة");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [params.id, params.recipe]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        router.back();
+        return true;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [])
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#e17055" />
+        <Text style={styles.loadingText}>جاري تحميل الوصفة...</Text>
+      </View>
+    );
+  }
+
+  if (error || !recipe) {
+    return (
+      <View style={styles.errorContainer}>
+        <Ionicons name="sad-outline" size={48} color="#888" />
+        <Text style={styles.errorText}>تعذر تحميل الوصفة</Text>
+        <Text style={styles.errorSubText}>{error || "الوصفة غير موجودة"}</Text>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => {
+            setLoading(true);
+            setError(null);
+          }}
+        >
+          <Text style={styles.retryButtonText}>إعادة المحاولة</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
         {/* قسم الصورة مع التدرج اللوني */}
         <View style={styles.header}>
-          {recipe?.backgroundImage ? (
-            <View style={styles.imageContainer}>
-              <Image 
-                source={{ uri: `data:image/jpeg;base64,${recipe.backgroundImage}` }} 
-                style={styles.recipeImage}
-                resizeMode="cover"
-              />
-              <LinearGradient
-                colors={['rgba(0,0,0,0.7)', 'transparent']}
-                style={styles.imageGradient}
-              />
-            </View>
+          {recipe.backgroundImage ? (
+            <Image
+              source={{
+                uri: `data:image/jpeg;base64,${recipe.backgroundImage}`,
+              }}
+              style={styles.image}
+              resizeMode="cover"
+              onError={() => console.log("Failed to load image")}
+            />
           ) : (
             <View style={styles.imagePlaceholder}>
               <Ionicons name="restaurant-outline" size={50} color="#D1D5DB" />
@@ -61,118 +226,101 @@ const RecipeDetails = () => {
           )}
         </View>
 
-        {/* بطاقات المعلومات */}
-        <View style={styles.metaContainer}>
-          <View style={[styles.metaCard, { backgroundColor: '#EF4444' }]}>
-            <Ionicons name="people" size={22} color="#FFF" />
-            <Text style={styles.metaValue}>{recipe?.persons || 4}</Text>
+        {/* معلومات الوصفة */}
+        <View style={styles.recipeMeta}>
+          <View style={styles.metaItem}>
+            <Ionicons name="people-outline" size={24} color="#e17055" />
+            <Text style={styles.metaValue}>{recipe.persons || 0}</Text>
             <Text style={styles.metaLabel}>أفراد</Text>
           </View>
 
-          <View style={[styles.metaCard, { backgroundColor: '#F59E0B' }]}>
-            <Ionicons name="star" size={22} color="#FFF" />
-            <Text style={styles.metaValue}>{recipe?.rate || 0}</Text>
-            <Text style={styles.metaLabel}>التقييم</Text>
-          </View>
-
-          <View style={[styles.metaCard, { backgroundColor: '#10B981' }]}>
-            <Ionicons name="time" size={22} color="#FFF" />
-            <Text style={styles.metaValue}>30</Text>
-            <Text style={styles.metaLabel}>دقيقة</Text>
+          <View style={styles.metaItem}>
+            <Ionicons name="heart-outline" size={24} color="#e17055" />
+            <Text style={styles.metaValue}>{recipe.rate || 0}</Text>
+            <Text style={styles.metaLabel}>الاعجابات</Text>
           </View>
         </View>
 
         {/* محتوى الوصفة */}
         <View style={styles.content}>
-          <Text style={styles.title}>{recipe?.title}</Text>
+          <Text style={styles.title}>{recipe.title}</Text>
 
-          {/* مؤلف الوصفة */}
-          <TouchableOpacity style={styles.authorContainer}>
-            <Image 
-              source={{ uri: user?.userImage || 'https://randomuser.me/api/portraits/men/1.jpg' }} 
-              style={styles.authorImage}
+          <View style={styles.authorContainer}>
+            <Image
+              source={{
+                uri: user?.userImage
+                  ? `data:image/jpeg;base64,${user.userImage}`
+                  : "https://randomuser.me/api/portraits/men/32.jpg",
+              }}
+              style={styles.authorAvatar}
             />
-            <View style={styles.authorInfo}>
-              <Text style={styles.postedBy}>نشرت بواسطة</Text>
-              <Text style={styles.authorName}>{user?.userName || 'مستخدم مجهول'}</Text>
-            </View>
-          </TouchableOpacity>
+            <Text style={styles.authorText}>
+              {user?.userName || "مستخدم مجهول"}
+            </Text>
+          </View>
+
+          <Text style={styles.description}>{recipe.description}</Text>
 
           {/* المكونات */}
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="cart" size={24} color="#3B82F6" />
-              <Text style={styles.sectionTitle}>المكونات</Text>
-            </View>
-            {ingredients.map((item, index) => (
-              <View key={index} style={styles.ingredientItem}>
-                <View style={styles.bulletPoint} />
-                <Text style={styles.ingredientText}>{item.name}</Text>
-                {item.quantity && (
-                  <View style={styles.quantityBadge}>
-                    <Text style={styles.quantityText}>{item.quantity}</Text>
+            <Text style={styles.sectionTitle}>المكونات</Text>
+            {ingredients.length > 0 ? (
+              <View style={styles.ingredientsList}>
+                {ingredients.map((ingredient, index) => (
+                  <View
+                    key={`ingredient-${index}`}
+                    style={styles.ingredientItem}
+                  >
+                    <View style={styles.bulletPoint} />
+                    <Text style={styles.ingredientText}>
+                      {ingredient.name}
+                      {ingredient.quantity
+                        ? ` - ${ingredient.quantity} ${ingredient.unit || ""}`
+                        : ""}
+                    </Text>
                   </View>
-                )}
+                ))}
               </View>
-            ))}
+            ) : (
+              <Text style={styles.noItemsText}>لا توجد مكونات متاحة</Text>
+            )}
           </View>
 
           {/* خطوات التحضير */}
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="list" size={24} color="#3B82F6" />
-              <Text style={styles.sectionTitle}>طريقة التحضير</Text>
-            </View>
-            {steps.sort((a, b) => a.stepNumber - b.stepNumber).map((step, index) => (
-              <View key={index} style={styles.stepItem}>
-                <View style={styles.stepNumber}>
-                  <Text style={styles.stepNumberText}>{step.stepNumber}</Text>
-                </View>
-                <Text style={styles.stepText}>{step.description}</Text>
-              </View>
-            ))}
+            <Text style={styles.sectionTitle}>طريقة التحضير</Text>
+            {steps.length > 0 ? (
+              steps
+                .sort((a, b) => a.stepNumber - b.stepNumber)
+                .map((step, index) => (
+                  <View key={`step-${index}`} style={styles.stepItem}>
+                    <View style={styles.stepNumber}>
+                      <Text style={styles.stepNumberText}>
+                        {step.stepNumber}
+                      </Text>
+                    </View>
+                    <Text style={styles.stepText}>{step.description}</Text>
+                  </View>
+                ))
+            ) : (
+              <Text style={styles.noItemsText}>لا توجد خطوات متاحة</Text>
+            )}
           </View>
 
-          {/* التعليقات */}
+          {/* التصنيفات */}
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="chatbubbles" size={24} color="#3B82F6" />
-              <Text style={styles.sectionTitle}>التعليقات ({comments.length})</Text>
-            </View>
-
-            <View style={styles.commentInputContainer}>
-              <TextInput
-                style={styles.commentInput}
-                placeholder="اكتب تعليقك هنا..."
-                placeholderTextColor="#94A3B8"
-                value={newComment}
-                onChangeText={setNewComment}
-                multiline
-              />
-              <TouchableOpacity
-                style={styles.commentButton}
-                onPress={handleAddComment}
-                disabled={!newComment.trim()}
-              >
-                <Ionicons name="send" size={20} color="#FFF" />
-              </TouchableOpacity>
-            </View>
-
-            {comments.map((comment) => (
-              <View key={comment.id} style={styles.commentCard}>
-                <Image
-                  source={{ uri: comment.user?.userImage || 'https://randomuser.me/api/portraits/men/1.jpg' }}
-                  style={styles.commentAvatar}
-                />
-                <View style={styles.commentContent}>
-                  <View style={styles.commentHeader}>
-                    <Text style={styles.commentAuthor}>{comment.user?.userName}</Text>
-                    <Text style={styles.commentTime}>{comment.timestamp}</Text>
+            <Text style={styles.sectionTitle}>التصنيفات</Text>
+            {categories.length > 0 ? (
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                {categories.map((cat, idx) => (
+                  <View key={`cat-${idx}`} style={styles.categoryBadge}>
+                    <Text style={styles.categoryText}>{cat.name}</Text>
                   </View>
-                  <Text style={styles.commentText}>{comment.text}</Text>
-                </View>
+                ))}
               </View>
-            ))}
+            ) : (
+              <Text style={styles.noItemsText}>لا توجد تصنيفات متاحة</Text>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -191,81 +339,109 @@ const RecipeDetails = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: "#fff",
   },
-  container: {
-    paddingBottom: 40,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: "#666",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    backgroundColor: "#fff",
+  },
+  errorText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 16,
+  },
+  errorSubText: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 8,
+    textAlign: "center",
+  },
+  retryButton: {
+    marginTop: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: "#e17055",
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   header: {
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 24,
   },
-  imageContainer: {
-    height: 320,
-    justifyContent: 'flex-end',
+  image: {
+    width: "100%",
+    height: 250,
   },
-  recipeImage: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+  imagePlaceholder: {
+    width: "100%",
+    height: 250,
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  imageGradient: {
-    height: '60%',
-    width: '100%',
-    position: 'absolute',
-    top: 0,
+  placeholderText: {
+    color: "#999",
+    fontSize: 16,
+    marginTop: 8,
   },
-  metaContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: -24,
-    marginBottom: 24,
-    paddingHorizontal: 16,
+  recipeMeta: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 16,
   },
-  metaCard: {
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 16,
-    width: width * 0.28,
-    marginHorizontal: 6,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
+  metaItem: {
+    alignItems: "center",
+    padding: 8,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    width: 100,
+    elevation: 2,
   },
   metaValue: {
-    fontSize: 20,
-    fontFamily: 'NotoNaskhArabic-Bold',
-    color: '#FFF',
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
     marginVertical: 4,
   },
   metaLabel: {
     fontSize: 14,
-    fontFamily: 'NotoNaskhArabic',
-    color: '#FFF',
+    color: "#666",
   },
   content: {
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 28,
-    fontFamily: 'NotoNaskhArabic-Bold',
-    color: '#1E293B',
-    textAlign: 'right',
-    lineHeight: 38,
-    marginBottom: 16,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+    textAlign: "right",
   },
   authorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 24,
-    elevation: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
   },
   authorImage: {
     width: 48,
@@ -273,132 +449,145 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginLeft: 12,
   },
-  authorInfo: {
-    flex: 1,
-  },
-  postedBy: {
-    fontSize: 14,
-    color: '#64748B',
-    fontFamily: 'NotoNaskhArabic',
-  },
-  authorName: {
+  authorText: {
     fontSize: 16,
-    color: '#1E293B',
-    fontFamily: 'NotoNaskhArabic-Bold',
+    color: "#333",
+  },
+  description: {
+    fontSize: 16,
+    color: "#555",
+    lineHeight: 24,
+    marginBottom: 24,
+    textAlign: "right",
   },
   section: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 16,
     padding: 20,
     marginBottom: 20,
     elevation: 2,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 20,
-    fontFamily: 'NotoNaskhArabic-Bold',
-    color: '#1E293B',
-    marginRight: 8,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 16,
+    textAlign: "right",
+    borderBottomWidth: 2,
+    borderBottomColor: "#e17055",
+    paddingBottom: 8,
+  },
+  ingredientsList: {
+    marginBottom: 16,
   },
   ingredientItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+    padding: 12,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
   },
   bulletPoint: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#3B82F6',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#e17055",
     marginHorizontal: 8,
   },
   ingredientText: {
     flex: 1,
     fontSize: 16,
-    color: '#334155',
-    fontFamily: 'NotoNaskhArabic',
-    textAlign: 'right',
+    color: "#333",
+    textAlign: "right",
   },
   quantityBadge: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: "#EFF6FF",
     borderRadius: 8,
     paddingVertical: 4,
     paddingHorizontal: 8,
     marginLeft: 8,
   },
   quantityText: {
-    color: '#3B82F6',
+    color: "#3B82F6",
     fontSize: 14,
-    fontFamily: 'NotoNaskhArabic-Bold',
+    fontFamily: "NotoNaskhArabic-Bold",
   },
   stepItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
     marginBottom: 16,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 16,
+    elevation: 1,
   },
   stepNumber: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#3B82F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 12,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "#e17055",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 8,
   },
   stepNumberText: {
-    color: '#FFF',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
-    fontFamily: 'NotoNaskhArabic-Bold',
+    fontFamily: "NotoNaskhArabic-Bold",
   },
   stepText: {
     flex: 1,
     fontSize: 16,
-    color: '#334155',
-    fontFamily: 'NotoNaskhArabic',
-    lineHeight: 26,
-    textAlign: 'right',
+    color: "#333",
+    lineHeight: 24,
+    textAlign: "right",
   },
   commentInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
   },
   commentInput: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: "#ddd",
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#1E293B',
-    fontFamily: 'NotoNaskhArabic',
-    textAlignVertical: 'top',
+    color: "#1E293B",
+    fontFamily: "NotoNaskhArabic",
+    textAlignVertical: "top",
     maxHeight: 120,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+    backgroundColor: "#f9f9f9",
+    textAlign: "right",
   },
   commentButton: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#3B82F6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#e17055",
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: 8,
     elevation: 2,
   },
-  commentCard: {
-    flexDirection: 'row',
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
+  commentItem: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
     padding: 16,
     marginBottom: 12,
+  },
+  commentHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
   },
   commentAvatar: {
     width: 40,
@@ -410,38 +599,51 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   commentHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 8,
   },
   commentAuthor: {
-    fontSize: 14,
-    color: '#1E293B',
-    fontFamily: 'NotoNaskhArabic-Bold',
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   },
   commentTime: {
     fontSize: 12,
-    color: '#94A3B8',
-    fontFamily: 'NotoNaskhArabic',
+    color: "#999",
   },
   commentText: {
-    fontSize: 14,
-    color: '#475569',
-    fontFamily: 'NotoNaskhArabic',
-    lineHeight: 22,
-    textAlign: 'right',
+    fontSize: 16,
+    color: "#333",
+    lineHeight: 24,
+    textAlign: "right",
   },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
+  noCommentsText: {
+    fontSize: 16,
+    color: "#999",
+    textAlign: "center",
+    marginVertical: 16,
   },
   loadingText: {
     marginTop: 16,
     fontSize: 16,
-    color: '#3B82F6',
-    fontFamily: 'NotoNaskhArabic',
+    color: "#999",
+    textAlign: "center",
+    marginVertical: 16,
+    fontStyle: "italic",
+  },
+  categoryBadge: {
+    backgroundColor: "#e17055",
+    borderRadius: 16,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  categoryText: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "bold",
   },
 });
 

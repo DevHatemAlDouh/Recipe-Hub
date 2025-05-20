@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
-
-// Components
-import FavoriteRecipesSection from '@/app/Components/Profile/FavoriteRecipesSection';
-import MyRecipesSection from '@/app/Components/Profile/MyRecipesSection';
-import StatItem from '@/app/Components/Profile/StatItem';
-import ReviewItem from '@/app/Components/Profile/ReviewItem';
-
-const Profile = () => {
-  const [favoriteRecipes] = useState([
-=======
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -34,72 +18,29 @@ const { width } = Dimensions.get("window");
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
-  const [favoriteRecipes, setFavoriteRecipes] = useState([
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
-      title: "Pasta Carbonara",
-      rating: 4.9,
-      prepTime: "20 mins",
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641",
-      title: "Greek Salad",
-      rating: 4.7,
-<<<<<<< HEAD
-      prepTime: '15 mins'
-    },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641',
-      title: 'Greek Salad',
-      rating: 4.7,
-      prepTime: '15 mins'
-    }
-  ]);
-
-  const [userRecipesList] = useState([
-    // {
-    //   id: 1,
-    //   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c',
-    //   title: 'Avocado Toast',
-    //   rating: 4.5,
-    //   prepTime: '10 mins'
-    // },
-    // {
-    //   id: 2,
-    //   image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
-    //   title: 'Pancakes',
-    //   rating: 4.8,
-    //   prepTime: '25 mins'
-    // },
-    // {
-    //   id: 3,
-    //   image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
-    //   title: 'Pancakes',
-    //   rating: 4.8,
-    //   prepTime: '25 mins'
-    // }
-  ]);
-=======
-      prepTime: "15 mins",
-    },
-  ]);
+  const [myRecipes, setMyRecipes] = useState([]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserDataAndRecipes = async () => {
       try {
         const data = await AsyncStorage.getItem("userData");
+        let user = null;
         if (data) {
-          setUserData(JSON.parse(data));
+          user = JSON.parse(data);
+          setUserData(user);
+        }
+        if (user?.id) {
+          const res = await fetch(
+            `http://recipe-hub.runasp.net/api/users/GetAllMyRecipes?userId=${user.id}`
+          );
+          const recipes = await res.json();
+          setMyRecipes(Array.isArray(recipes) ? recipes : []);
         }
       } catch (error) {
-        console.error("Failed to load user data:", error);
+        console.error("Failed to load user data or recipes:", error);
       }
     };
-    fetchUserData();
+    fetchUserDataAndRecipes();
   }, []);
 
   const handleLogout = async () => {
@@ -112,23 +53,23 @@ const Profile = () => {
     }
   };
 
-  const RecipeCard = ({ id, image, title, rating, prepTime }) => (
+  const RecipeCard = ({ id, backgroundImage, title, rate, persons }) => (
     <TouchableOpacity
       style={styles.recipeCard}
       onPress={() =>
         router.push({
           pathname: "/RecipeDetails",
           params: {
-            recipeId: id,
-            recipeTitle: title,
-            recipeImage: image,
-            recipeRating: rating,
-            recipePrepTime: prepTime,
+            id,
+            title,
+            image: backgroundImage,
+            rating: rate,
+            prepTime: persons ? `${persons} persons` : "",
           },
         })
       }
     >
-      <Image source={{ uri: image }} style={styles.recipeImage} />
+      <Image source={{ uri: backgroundImage }} style={styles.recipeImage} />
       <LinearGradient
         colors={["transparent", "rgba(0,0,0,0.7)"]}
         style={styles.recipeOverlay}
@@ -138,32 +79,32 @@ const Profile = () => {
         <View style={styles.recipeInfoContainer}>
           <View style={styles.ratingContainer}>
             <Icon name="star" size={14} color="#FFD700" solid />
-            <Text style={styles.ratingText}>{rating}</Text>
+            <Text style={styles.ratingText}>{rate}</Text>
           </View>
-          {prepTime && (
+          {persons ? (
             <View style={styles.timeContainer}>
-              <Icon name="clock" size={12} color="#fff" />
-              <Text style={styles.timeText}>{prepTime}</Text>
+              <Icon name="users" size={12} color="#fff" />
+              <Text style={styles.timeText}>{persons} persons</Text>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
     </TouchableOpacity>
   );
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
+
+  // Calculate total views for all recipes
+  const totalViews = myRecipes.reduce(
+    (sum, recipe) => sum + (recipe.view || 0),
+    0
+  );
 
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}
     >
-<<<<<<< HEAD
-      <LinearGradient 
-        colors={['#FF6B6B', '#FFA07A']} 
-=======
       <LinearGradient
         colors={["#FF6B6B", "#FFA07A"]}
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
         style={styles.headerGradient}
       >
         <View style={styles.profileHeader}>
@@ -183,48 +124,43 @@ const Profile = () => {
       </LinearGradient>
 
       <View style={styles.statsContainer}>
-<<<<<<< HEAD
-        <StatItem icon="utensils" value={favoriteRecipes.length} label="Favorites" />
-=======
         <StatItem
           icon="utensils"
-          value={favoriteRecipes.length.toString()}
-          label="Favorites"
+          value={myRecipes.length.toString()}
+          label="My Recipes"
         />
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
-        <StatItem icon="star" value="4.8" label="Rating" />
+        <StatItem
+          icon="eye"
+          value={totalViews.toString()}
+          label="Total Views"
+        />
       </View>
 
       <View style={styles.actionButtons}>
-<<<<<<< HEAD
-        <TouchableOpacity 
-          style={styles.primaryButton} 
-          onPress={() => router.push('/Profile_Content/Edit_Profile')}
-=======
         <TouchableOpacity
           style={styles.primaryButton}
           onPress={() => router.push("Profile_Content/Edeit_Profile")}
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
         >
           <Icon name="user-edit" size={18} color="#fff" />
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => router.push("/Profile_Content/Favorites")}
+        >
+          <Icon name="heart" size={18} color="#6B5B95" solid />
+          <Text style={styles.secondaryButtonText}>Favorites</Text>
+        </TouchableOpacity>
       </View>
 
-<<<<<<< HEAD
-      <FavoriteRecipesSection favoriteRecipes={favoriteRecipes} />
-      <MyRecipesSection myRecipes={userRecipesList} />
-      {/* <MyRecipesSection featuredRecipes={featuredRecipes} /> */}
-
-=======
-      {/* Favorite Recipes Section */}
+      {/* My Recipes Section */}
       <View style={styles.favoriteSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
-            <Icon name="heart" size={22} color="#FF6B6B" solid />
+            <Icon name="book" size={22} color="#FF6B6B" solid />
           </View>
-          <Text style={styles.sectionTitle}>My Favorite Recipes</Text>
-          {favoriteRecipes.length > 2 && (
+          <Text style={styles.sectionTitle}>My Recipes</Text>
+          {myRecipes.length > 2 && (
             <TouchableOpacity
               style={styles.viewAllButton}
               onPress={() => router.push("/Profile_Content/Favorites")}
@@ -235,10 +171,10 @@ const Profile = () => {
           )}
         </View>
 
-        {favoriteRecipes.length === 0 ? (
+        {myRecipes.length === 0 ? (
           <View style={styles.emptyFavorites}>
-            <Icon name="heart-broken" size={40} color="#FF6B6B" />
-            <Text style={styles.emptyText}>No favorites yet</Text>
+            <Icon name="book-dead" size={40} color="#FF6B6B" />
+            <Text style={styles.emptyText}>No recipes yet</Text>
             <TouchableOpacity
               style={styles.discoverButton}
               onPress={() => router.push("/Explore")}
@@ -252,60 +188,21 @@ const Profile = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.favoriteRecipesList}
           >
-            {favoriteRecipes.map((recipe) => (
+            {myRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe.id}
                 id={recipe.id}
-                image={recipe.image}
+                backgroundImage={recipe.backgroundImage}
                 title={recipe.title}
-                rating={recipe.rating}
-                prepTime={recipe.prepTime}
+                rate={recipe.rate}
+                persons={recipe.persons}
               />
             ))}
           </ScrollView>
         )}
       </View>
 
-      {/* Featured Recipes Section */}
-      <View style={styles.featuredSection}>
-        <View style={styles.sectionHeader}>
-          <View style={styles.sectionIconContainer}>
-            <Icon name="star" size={20} color="#FFD700" />
-          </View>
-          <Text style={styles.sectionTitle}>Featured Recipes</Text>
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={() => router.push("/Profile_Content/Featured_Recipes")}
-          >
-            <Text style={styles.viewAllText}>View All</Text>
-            <Icon name="chevron-right" size={14} color="#6B5B95" />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.recipesList}
-        >
-          <RecipeCard
-            id="featured1"
-            image="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
-            title="Avocado Toast"
-            rating={4.5}
-            prepTime="10 mins"
-          />
-          <RecipeCard
-            id="featured2"
-            image="https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
-            title="Pancakes"
-            rating={4.8}
-            prepTime="25 mins"
-          />
-        </ScrollView>
-      </View>
-
       {/* Reviews Section */}
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
       <View style={styles.reviewsSection}>
         <View style={styles.sectionHeader}>
           <View style={styles.sectionIconContainer}>
@@ -331,8 +228,6 @@ const Profile = () => {
   );
 };
 
-<<<<<<< HEAD
-=======
 const StatItem = ({ icon, value, label }) => (
   <View style={styles.statItem}>
     <Icon name={icon} size={24} color="#6B5B95" />
@@ -360,7 +255,6 @@ const ReviewItem = ({ avatar, reviewer, comment, rating, date }) => (
   </View>
 );
 
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -417,8 +311,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginBottom: 20,
   },
-<<<<<<< HEAD
-=======
   statItem: {
     alignItems: "center",
     minWidth: 80,
@@ -434,7 +326,6 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 4,
   },
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
   actionButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -457,8 +348,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-<<<<<<< HEAD
-=======
   secondaryButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -471,15 +360,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
   },
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
   buttonText: {
     color: "#fff",
     fontSize: 16,
     marginLeft: 10,
     fontWeight: "600",
   },
-<<<<<<< HEAD
-=======
   secondaryButtonText: {
     color: "#6B5B95",
     fontSize: 16,
@@ -528,7 +414,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  featuredSection: {
+  reviewsSection: {
     backgroundColor: "#fff",
     marginHorizontal: 20,
     borderRadius: 15,
@@ -562,9 +448,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   favoriteRecipesList: {
-    paddingLeft: 5,
-  },
-  recipesList: {
     paddingLeft: 5,
   },
   recipeCard: {
@@ -634,40 +517,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
   },
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
-  reviewsSection: {
-    backgroundColor: "#fff",
-    marginHorizontal: 20,
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-<<<<<<< HEAD
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  sectionIconContainer: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#333',
-    flex: 1,
-=======
   reviewItem: {
     flexDirection: "row",
     marginBottom: 20,
@@ -706,7 +555,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     lineHeight: 20,
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2
   },
   logoutButton: {
     backgroundColor: "#fff",

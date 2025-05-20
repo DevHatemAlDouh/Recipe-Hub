@@ -9,37 +9,8 @@ import {
   Image,
 } from "react-native";
 
-<<<<<<< HEAD:forntend/Recipe-Hub/app/Profile_Content/MyRecipes.jsx
 const MyRecipes = () => {
-    const router = useRouter();
-    
-    const recipes = [
-        { 
-            id: '1', 
-            title: 'Spaghetti Carbonara', 
-            cookTime: '25 mins',
-            difficulty: 'Medium',
-            image: 'https://images.unsplash.com/photo-1588013273468-315fd88ea34c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-        },
-        { 
-            id: '2', 
-            title: 'Chicken Tikka Masala', 
-            cookTime: '40 mins',
-            difficulty: 'Hard',
-            image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-        },
-        { 
-            id: '3', 
-            title: 'Beef Stroganoff', 
-            cookTime: '35 mins',
-            difficulty: 'Medium',
-            image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-        },
-    ];
-=======
-const Featured_Recipes = () => {
   const router = useRouter();
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2:forntend/Recipe-Hub/app/Profile_Content/Featured_Recipes.jsx
 
   const recipes = [
     {
@@ -107,7 +78,7 @@ const Featured_Recipes = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Featured Recipes</Text>
+      <Text style={styles.header}>وصفاتي</Text>
       <FlatList
         data={recipes}
         renderItem={renderItem}
@@ -181,8 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-<<<<<<< HEAD:forntend/Recipe-Hub/app/Profile_Content/MyRecipes.jsx
 export default MyRecipes;
-=======
-export default Featured_Recipes;
->>>>>>> b504ce4515062c4b6bf4845fd2cc46951e8d13e2:forntend/Recipe-Hub/app/Profile_Content/Featured_Recipes.jsx
