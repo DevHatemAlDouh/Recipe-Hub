@@ -68,12 +68,7 @@ const Open = () => {
       <View style={styles.container}>
         <Text style={[styles.title, { fontSize: width < 400 ? 24 : 28 }]}>Recipe Hub</Text>
         <ActivityIndicator size="large" color="#00f" style={styles.loader} />
-        <Text style={styles.subtitle}>
-          {userData ? `مرحبًا ${userData.name}!` : 'لم يتم تسجيل الدخول.'}
-        </Text>
-        <Text style={styles.subtitle}>
-          {lastLoginTime ? `آخر دخول: ${new Date(lastLoginTime).toLocaleString()}` : 'لا يوجد سجل دخول.'}
-        </Text>
+        
       </View>
     </ImageBackground>
   );
