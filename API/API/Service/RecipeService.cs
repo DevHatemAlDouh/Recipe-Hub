@@ -1,6 +1,8 @@
 ﻿using API.Data;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace API.Service
 {
@@ -13,13 +15,26 @@ namespace API.Service
             _context = context;
         }
 
+        private byte[] ConvertPngToWebp(byte[] pngBytes)
+        {
+            using (var inputStream = new MemoryStream(pngBytes))
+            using (var image = Image.Load(inputStream))
+            using (var outputStream = new MemoryStream())
+            {
+                image.Save(outputStream, new WebpEncoder());
+                return outputStream.ToArray();
+            }
+        }
+
         public async Task Add(RecipeInfo entity)
         {
+            byte[] webpImage = ConvertPngToWebp(entity.BackgroundImage);
+
             var recipe = new Recipe
             {
                 UserID = entity.UserID,
                 Description = entity.Description,
-                BackgroundImage = entity.BackgroundImage,
+                BackgroundImage = webpImage, // Save the WEBP image
                 Title = entity.Title,
                 persons = entity.persons,
                 Rate = 0,
@@ -30,8 +45,8 @@ namespace API.Service
                 Steps = new List<Step>(),
                 Suggestions = new List<Suggestion>(),
                 RecipeIngredients = new List<RecipeIngredient>(),
-                
             };
+
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
             entity.Id = recipe.Id; // Update the entity with the generated Id
@@ -105,7 +120,10 @@ namespace API.Service
             {
                 recipe.Title = entity.Title;
                 recipe.Description = entity.Description;
-                recipe.BackgroundImage = entity.BackgroundImage;
+
+                // Convert the BackgroundImage to WEBP before saving
+                recipe.BackgroundImage = ConvertPngToWebp(entity.BackgroundImage);
+
                 recipe.persons = entity.persons;
                 recipe.UpdatedAt = DateTime.Now;
 

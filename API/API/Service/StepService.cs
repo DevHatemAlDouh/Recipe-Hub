@@ -1,7 +1,8 @@
-﻿
-using API.Data;
+﻿using API.Data;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace API.Service
 {
@@ -14,16 +15,28 @@ namespace API.Service
             _context = context;
         }
 
+        private byte[] ConvertPngToWebp(byte[] pngBytes)
+        {
+            using (var inputStream = new MemoryStream(pngBytes))
+            using (var image = Image.Load(inputStream))
+            using (var outputStream = new MemoryStream())
+            {
+                image.Save(outputStream, new WebpEncoder());
+                return outputStream.ToArray();
+            }
+        }
+
         public async Task Add(StepInfo entity)
         {
+            byte[] webpImage = ConvertPngToWebp(entity.BackgroundImage); // Convert to WEBP
+
             var step = new Step
             {
                 Description = entity.Description,
                 RecipeID = entity.RecipeID,
                 StepNumber = entity.StepNumber,
-                BackgroundImage = entity.BackgroundImage,
+                BackgroundImage = webpImage, // Save the WEBP image
                 CreatedAt = DateTime.Now,
-                
             };
 
             await _context.Steps.AddAsync(step);
@@ -33,15 +46,10 @@ namespace API.Service
 
         public async Task Delete(int id)
         {
-            // Start by retrieving the user directly from the context
             var step = await _context.Steps.FirstOrDefaultAsync(u => u.Id == id);
-
-            // Check if the user exists
             if (step != null)
             {
-                // Remove the user from the context
                 _context.Steps.Remove(step);
-                // Save changes to the database
                 await _context.SaveChangesAsync();
             }
         }
@@ -59,12 +67,7 @@ namespace API.Service
                 UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
-            if (!steps.Any())
-            {
-                return new List<StepInfo>();
-            }
-
-            return steps;
+            return steps.Any() ? steps : new List<StepInfo>();
         }
 
         public async Task<StepInfo> GetById(int id)
@@ -92,7 +95,9 @@ namespace API.Service
                 step.Description = entity.Description;
                 step.RecipeID = entity.RecipeID;
                 step.StepNumber = entity.StepNumber;
-                step.BackgroundImage = entity.BackgroundImage;
+
+                // Convert BackgroundImage to WEBP before saving
+                step.BackgroundImage = ConvertPngToWebp(entity.BackgroundImage);
                 step.UpdatedAt = DateTime.Now;
 
                 _context.Steps.Update(step);

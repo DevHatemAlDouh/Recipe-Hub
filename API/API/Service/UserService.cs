@@ -1,6 +1,8 @@
 ﻿using API.Data;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace API.Service
 {
@@ -13,8 +15,21 @@ namespace API.Service
             _context = context;
         }
 
+        private byte[] ConvertPngToWebp(byte[] pngBytes)
+        {
+            using (var inputStream = new MemoryStream(pngBytes))
+            using (var image = Image.Load(inputStream))
+            using (var outputStream = new MemoryStream())
+            {
+                image.Save(outputStream, new WebpEncoder());
+                return outputStream.ToArray();
+            }
+        }
+
         public async Task Add(UserInfo entity)
         {
+            byte[] webpImage = ConvertPngToWebp(entity.UserImage); // Convert to WEBP
+
             var user = new User
             {
                 UserName = entity.UserName,
@@ -22,10 +37,8 @@ namespace API.Service
                 CountryCode = entity.CountryCode,
                 Email = entity.Email,
                 Password = entity.Password,
-                UserImage = entity.UserImage,
+                UserImage = webpImage, // Save the WEBP image
                 CreatedAt = DateTime.Now,
-
-                // Initialize collections if necessary
                 Recipes = new List<Recipe>(),
                 Comments = new List<Comment>(),
                 CommentRates = new List<CommentRate>(),
@@ -40,15 +53,10 @@ namespace API.Service
 
         public async Task Delete(int id)
         {
-            // Start by retrieving the user directly from the context
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-            // Check if the user exists
             if (user != null)
             {
-                // Remove the user from the context
                 _context.Users.Remove(user);
-                // Save changes to the database
                 await _context.SaveChangesAsync();
             }
         }
@@ -68,12 +76,7 @@ namespace API.Service
                 UpdatedAt = u.UpdatedAt
             }).ToListAsync();
 
-            if (!users.Any())
-            {
-                return new List<UserInfo>();
-            }
-
-            return users;
+            return users.Any() ? users : new List<UserInfo>();
         }
 
         public async Task<UserInfo> GetById(int id)
@@ -105,13 +108,14 @@ namespace API.Service
                 user.CountryCode = entity.CountryCode;
                 user.Email = entity.Email;
                 user.Password = entity.Password;
-                user.UserImage = entity.UserImage;
+
+                // Convert UserImage to WEBP before saving
+                user.UserImage = ConvertPngToWebp(entity.UserImage);
                 user.UpdatedAt = DateTime.Now;
 
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
             }
         }
-
     }
 }

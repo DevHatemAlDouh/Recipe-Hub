@@ -69,6 +69,7 @@ C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\Pu
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\NuGet.ProjectModel.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\NuGet.Protocol.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\NuGet.Versioning.dll
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\SixLabors.ImageSharp.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

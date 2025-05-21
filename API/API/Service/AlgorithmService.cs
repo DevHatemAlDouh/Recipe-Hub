@@ -91,34 +91,38 @@ namespace API.Service
                     UpdatedAt = r.UpdatedAt,
                 }).ToListAsync();
 
-                foreach (var recipe in recipes.Where(r => r.Id != userid))
+                foreach (var recipe in recipes)
                 {
-                    List<IngredientInfo> recipeIngredients = new List<IngredientInfo>();
-
-                    foreach (var ingredient in Recipes_Ingredients.Where(ri => ri.RecipeID == recipe.Id))
+                    // Check that the recipe user ID is not the same as the input user ID
+                    if (recipe.UserID != userid)
                     {
-                        recipeIngredients.Add(ingredients.FirstOrDefault(i => i.Id == ingredient.IngredientID));
-                    }
+                        List<IngredientInfo> recipeIngredients = new List<IngredientInfo>();
 
-                    // Check if any Nag_ingredient is in Recipe_ingredients
-                    if (!recipeIngredients.Any(ri => Nag_ingredients.Any(ni => ni.Id == ri.Id)))
-                    {
-                        foreach (var comment in comments.Where(c => c.RecipeID == recipe.Id))
+                        foreach (var ingredient in Recipes_Ingredients.Where(ri => ri.RecipeID == recipe.Id))
                         {
-                            commenters.Add(new Commenters
-                            {
-                                Comment = comment,
-                                User = users.FirstOrDefault(u => u.Id == comment.UserID)
-                            });
+                            recipeIngredients.Add(ingredients.FirstOrDefault(i => i.Id == ingredient.IngredientID));
                         }
 
-                        algorithm.Add(new Algorithm
+                        // Check if any Nag_ingredient is in Recipe_ingredients
+                        if (!recipeIngredients.Any(ri => Nag_ingredients.Any(ni => ni.Id == ri.Id)))
                         {
-                            User = users.FirstOrDefault(u => u.Id == recipe.UserID),
-                            Recipe = recipe,
-                            Commenters = commenters,
-                            ingredients = recipeIngredients,
-                        });
+                            foreach (var comment in comments.Where(c => c.RecipeID == recipe.Id))
+                            {
+                                commenters.Add(new Commenters
+                                {
+                                    Comment = comment,
+                                    User = users.FirstOrDefault(u => u.Id == comment.UserID)
+                                });
+                            }
+
+                            algorithm.Add(new Algorithm
+                            {
+                                User = users.FirstOrDefault(u => u.Id == recipe.UserID),
+                                Recipe = recipe,
+                                Commenters = commenters,
+                                ingredients = recipeIngredients,
+                            });
+                        }
                     }
                 }
             }

@@ -278,3 +278,4 @@ C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\win-x86\tr
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\win-x86\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\win-x86\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\win-x86\API.staticwebassets.runtime.json
+C:\Users\HMD-8134\Desktop\Repos\Recipe-Hub\API\API\bin\Release\net8.0\win-x86\SixLabors.ImageSharp.dll
