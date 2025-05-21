@@ -31,20 +31,15 @@ const IngredientsSection = () => {
 
   useEffect(() => {
     const initializeRecipeData = async () => {
-      // Get from navigation params first
       if (params.recipeId) {
         setRecipeId(params.recipeId);
         if (params.title) setRecipeTitle(params.title);
         return;
       }
-
-      // Fallback to AsyncStorage
       try {
         const storedRecipe = await AsyncStorage.getItem("lastAddedRecipeId");
         if (storedRecipe) {
           const { id, timestamp } = JSON.parse(storedRecipe);
-
-          // Check if data is recent (within 1 hour)
           const isRecent = new Date().getTime() - timestamp < 3600000;
           if (isRecent) {
             setRecipeId(id);
@@ -66,10 +61,7 @@ const IngredientsSection = () => {
         setIngredientsList(response.data);
       } catch (error) {
         console.error("Error fetching ingredients:", error);
-        Alert.alert(
-          "Error",
-          "Failed to load ingredients. Please try again later."
-        );
+        Alert.alert("خطأ", "تعذر تحميل المكونات. حاول مرة أخرى لاحقًا.");
       } finally {
         setIsLoadingIngredients(false);
       }
@@ -79,9 +71,10 @@ const IngredientsSection = () => {
     fetchIngredients();
   }, []);
 
-  const filteredIngredients = ingredientsList.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredIngredients = ingredientsList.filter((ingredient) => {
+    const ingName = ingredient.name || "";
+    return ingName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   const toggleIngredient = (ingredient) => {
     setSelectedIngredients((prev) => {
@@ -123,10 +116,7 @@ const IngredientsSection = () => {
 
   const submitIngredients = async () => {
     if (!recipeId) {
-      Alert.alert(
-        "Error",
-        "No recipe selected. Please create or select a recipe first."
-      );
+      Alert.alert("خطأ", "لا يوجد وصفة محددة. يرجى إنشاء أو تحديد وصفة أولاً.");
       return;
     }
 
@@ -134,10 +124,7 @@ const IngredientsSection = () => {
       (item) => !item.quantity
     );
     if (hasEmptyQuantities) {
-      Alert.alert(
-        "Validation Error",
-        "Please enter quantity for all selected ingredients"
-      );
+      Alert.alert("تنبيه", "يرجى إدخال الكمية لكل مكون محدد");
       return;
     }
 
@@ -162,7 +149,7 @@ const IngredientsSection = () => {
               unit: item.unit,
             },
             {
-              timeout: 10000, // 10 seconds timeout
+              timeout: 5000,
             }
           );
 
@@ -176,10 +163,6 @@ const IngredientsSection = () => {
             throw new Error(`Unexpected status code: ${response.status}`);
           }
         } catch (error) {
-          console.error(
-            `Error adding ingredient ${item.ingredient.name}:`,
-            error
-          );
           results.push({
             success: false,
             name: item.ingredient.name,
@@ -191,13 +174,13 @@ const IngredientsSection = () => {
 
       const failedIngredients = results.filter((r) => !r.success);
       if (failedIngredients.length === 0) {
-        Alert.alert("Success", "All ingredients were added successfully!", [
+        Alert.alert("تم", "تمت إضافة جميع المكونات بنجاح!", [
           {
-            text: "OK",
+            text: "التالي",
             onPress: () => {
               setSelectedIngredients([]);
               router.push({
-                pathname: "/Components/Recipe/StepsSection",
+                pathname: "/Components/Recipe/CategoriesSection",
                 params: {
                   recipeId: recipeId,
                   title: recipeTitle,
@@ -208,17 +191,19 @@ const IngredientsSection = () => {
         ]);
       } else {
         Alert.alert(
-          "Partial Success",
-          `Successfully added ${
-            results.filter((r) => r.success).length
-          } out of ${selectedIngredients.length} ingredients.\n\n` +
-            `Failed to add: ${failedIngredients.map((i) => i.name).join(", ")}`,
+          "تم جزئياً",
+          `تمت إضافة ${results.filter((r) => r.success).length} من أصل ${
+            selectedIngredients.length
+          } مكون.\n\n` +
+            `فشل في الإضافة: ${failedIngredients
+              .map((i) => i.name)
+              .join(", ")}`,
           [
             {
-              text: "Continue Anyway",
+              text: "متابعة",
               onPress: () => {
                 router.push({
-                  pathname: "/(tabs)/StepsSection",
+                  pathname: "/Components/Recipe/CategoriesSection",
                   params: {
                     recipeId: recipeId,
                     title: recipeTitle,
@@ -230,38 +215,40 @@ const IngredientsSection = () => {
         );
       }
     } catch (error) {
-      console.error("Unexpected error during submission:", error);
-      Alert.alert(
-        "Error",
-        error.message || "An unexpected error occurred during submission"
-      );
+      Alert.alert("خطأ", error.message || "حدث خطأ غير متوقع أثناء الإرسال");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Recipe Ingredients</Text>
+    <View style={styles.outerContainer}>
+      <Text style={styles.title}>إضافة مكونات الوصفة</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="S ingredients..."
+        placeholder="ابحث عن مكون..."
         value={searchQuery}
         onChangeText={setSearchQuery}
         editable={!isSubmitting}
+        placeholderTextColor="#B0B0B0"
       />
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Available Ingredients</Text>
+        <Text style={styles.sectionTitle}>المكونات المتاحة</Text>
         {isLoadingIngredients ? (
-          <ActivityIndicator size="small" color="#3498db" />
+          <ActivityIndicator
+            size="small"
+            color="#6B5B95"
+            style={{ marginTop: 20 }}
+          />
         ) : (
-          <View style={styles.ingredientsScrollContainer}>
-            <ScrollView
-              style={styles.ingredientsList}
-              nestedScrollEnabled={true}
-            >
+          <ScrollView
+            style={styles.ingredientsList}
+            nestedScrollEnabled={true}
+            contentContainerStyle={{ paddingBottom: 10 }}
+          >
+            <View style={styles.grid}>
               {filteredIngredients.map((item) => (
                 <TouchableOpacity
                   key={item.id.toString()}
@@ -273,24 +260,32 @@ const IngredientsSection = () => {
                   ]}
                   onPress={() => !isSubmitting && toggleIngredient(item)}
                   disabled={isSubmitting}
+                  activeOpacity={0.85}
                 >
                   <Text style={styles.ingredientName}>{item.name}</Text>
+                  {selectedIngredients.some(
+                    (ing) => ing.ingredient.id === item.id
+                  ) && (
+                    <View style={styles.checkCircle}>
+                      <Text style={styles.checkMark}>✓</Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
               ))}
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
         )}
       </View>
 
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>
-          Selected Ingredients ({selectedIngredients.length})
+          المكونات المختارة ({selectedIngredients.length})
         </Text>
 
         {isSubmitting && (
           <View style={styles.progressContainer}>
             <Text style={styles.progressText}>
-              Processing: {submitProgress.success + submitProgress.failed}/
+              جاري المعالجة: {submitProgress.success + submitProgress.failed}/
               {submitProgress.total}
             </Text>
             <View style={styles.progressBar}>
@@ -310,8 +305,7 @@ const IngredientsSection = () => {
               />
             </View>
             <Text style={styles.progressDetail}>
-              Success: {submitProgress.success} | Failed:{" "}
-              {submitProgress.failed}
+              نجاح: {submitProgress.success} | فشل: {submitProgress.failed}
             </Text>
           </View>
         )}
@@ -329,21 +323,22 @@ const IngredientsSection = () => {
 
                 <View style={styles.quantitySection}>
                   <View style={styles.quantityInputContainer}>
-                    <Text style={styles.inputLabel}>Quantity:</Text>
+                    <Text style={styles.inputLabel}>الكمية:</Text>
                     <TextInput
                       style={styles.quantityInput}
-                      placeholder="Enter quantity"
+                      placeholder="أدخل الكمية"
                       value={quantity}
                       onChangeText={(text) =>
                         updateIngredientQuantity(ingredient.id, text)
                       }
                       keyboardType="numeric"
                       editable={!isSubmitting}
+                      placeholderTextColor="#B0B0B0"
                     />
                   </View>
 
                   <View style={styles.unitPickerContainer}>
-                    <Text style={styles.inputLabel}>Unit:</Text>
+                    <Text style={styles.inputLabel}>الوحدة:</Text>
                     <View style={styles.pickerWrapper}>
                       <Picker
                         selectedValue={unit}
@@ -354,14 +349,14 @@ const IngredientsSection = () => {
                         }
                         enabled={!isSubmitting}
                       >
-                        <Picker.Item label="Gram (g)" value="g" />
-                        <Picker.Item label="Kilogram (kg)" value="kg" />
-                        <Picker.Item label="Teaspoon (tsp)" value="tsp" />
-                        <Picker.Item label="Tablespoon (tbsp)" value="tbsp" />
-                        <Picker.Item label="Cup (cup)" value="cup" />
-                        <Picker.Item label="Milliliter (ml)" value="ml" />
-                        <Picker.Item label="Liter (l)" value="l" />
-                        <Picker.Item label="Piece (p)" value="p" />
+                        <Picker.Item label="جرام (g)" value="g" />
+                        <Picker.Item label="كيلوجرام (kg)" value="kg" />
+                        <Picker.Item label="ملعقة صغيرة (tsp)" value="tsp" />
+                        <Picker.Item label="ملعقة كبيرة (tbsp)" value="tbsp" />
+                        <Picker.Item label="كوب (cup)" value="cup" />
+                        <Picker.Item label="ملليلتر (ml)" value="ml" />
+                        <Picker.Item label="لتر (l)" value="l" />
+                        <Picker.Item label="قطعة (p)" value="p" />
                       </Picker>
                     </View>
                   </View>
@@ -370,7 +365,7 @@ const IngredientsSection = () => {
             ))}
           </View>
         ) : (
-          <Text style={styles.noIngredientsText}>No ingredients selected</Text>
+          <Text style={styles.noIngredientsText}>لم يتم اختيار أي مكون</Text>
         )}
       </View>
 
@@ -390,70 +385,116 @@ const IngredientsSection = () => {
               <Text style={styles.submitButtonText}>
                 {submitProgress.success + submitProgress.failed ===
                 submitProgress.total
-                  ? "Finalizing..."
-                  : "Sending..."}
+                  ? "جاري إنهاء العملية..."
+                  : "جاري الإرسال..."}
               </Text>
             </View>
           ) : (
-            <Text style={styles.submitButtonText}>Save Ingredients</Text>
+            <Text style={styles.submitButtonText}>حفظ المكونات</Text>
           )}
         </TouchableOpacity>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
+  outerContainer: {
+    flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f8f8f8",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 16,
     textAlign: "center",
-    color: "#333",
+    color: "#6B5B95",
+    letterSpacing: 0.5,
   },
   input: {
     backgroundColor: "#fff",
-    padding: 15,
+    padding: 14,
     borderRadius: 10,
     marginBottom: 15,
     fontSize: 16,
     borderWidth: 1,
     borderColor: "#ddd",
+    width: "100%",
+    textAlign: "right",
   },
   sectionContainer: {
-    marginBottom: 20,
+    marginBottom: 18,
+    width: "100%",
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
     color: "#444",
-  },
-  ingredientsScrollContainer: {
-    maxHeight: 250,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
+    textAlign: "right",
   },
   ingredientsList: {
     backgroundColor: "#fff",
-    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    maxHeight: 220,
+    marginBottom: 8,
+    paddingHorizontal: 6,
+    width: "100%",
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    justifyContent: "flex-start",
   },
   ingredientItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    minWidth: 110,
+    maxWidth: "45%",
+    margin: 6,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    backgroundColor: "#f3e6fa",
+    borderWidth: 1.5,
+    borderColor: "#FFD6D6",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
   selectedIngredientItem: {
-    backgroundColor: "#e3f2fd",
+    backgroundColor: "#FF6B6B",
+    borderColor: "#FF6B6B",
+    elevation: 3,
   },
   ingredientName: {
     fontSize: 16,
+    color: "#6B5B95",
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  checkCircle: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "#FF6B6B",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 2,
+  },
+  checkMark: {
+    color: "#FF6B6B",
+    fontWeight: "bold",
+    fontSize: 14,
+    marginTop: -1,
   },
   progressContainer: {
     marginBottom: 15,
@@ -465,17 +506,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#2c3e50",
     marginBottom: 5,
+    textAlign: "center",
   },
   progressDetail: {
     fontSize: 12,
     color: "#7f8c8d",
     marginTop: 5,
+    textAlign: "center",
   },
   progressBar: {
     height: 10,
     backgroundColor: "#bdc3c7",
     borderRadius: 5,
     overflow: "hidden",
+    marginVertical: 6,
   },
   progressFill: {
     height: "100%",
@@ -497,29 +541,32 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   selectedIngredientText: {
-    color: "#333",
+    color: "#6B5B95",
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
+    textAlign: "right",
   },
   quantitySection: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 5,
+    gap: 8,
   },
   quantityInputContainer: {
     flex: 1,
-    marginRight: 10,
+    marginLeft: 10,
   },
   unitPickerContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginRight: 10,
   },
   inputLabel: {
     marginBottom: 5,
     color: "#555",
     fontSize: 14,
+    textAlign: "right",
   },
   quantityInput: {
     backgroundColor: "#f9f9f9",
@@ -529,7 +576,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     textAlign: "center",
     fontSize: 15,
-    height: 60,
+    height: 50,
   },
   pickerWrapper: {
     borderWidth: 1,
@@ -539,7 +586,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   unitPicker: {
-    height: 60,
+    height: 50,
     width: "100%",
   },
   noIngredientsText: {
@@ -557,19 +604,21 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   submitButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#6B5B95",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,
     flexDirection: "row",
     justifyContent: "center",
+    width: "100%",
   },
   submitButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 8,
+    letterSpacing: 0.5,
   },
 });
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
@@ -10,227 +9,237 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
-const CategoriesSection = () => {
-  const [categoriesList, setCategoriesList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+const CategorySelect = () => {
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const { recipeId, title } = params;
+  const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
-  const [categoryDetails, setCategoryDetails] = useState({});
-  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      setIsLoadingCategories(true);
+      setIsLoading(true);
       try {
         const response = await axios.get(
           "http://recipe-hub.runasp.net/api/Categories/GetAll"
         );
-        setCategoriesList(response.data);
+        setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
-        Alert.alert(
-          "Error",
-          "Failed to load categories. Please try again later."
-        );
+        Alert.alert("خطأ", "تعذر تحميل التصنيفات.");
       } finally {
-        setIsLoadingCategories(false);
+        setIsLoading(false);
       }
     };
-
     fetchCategories();
   }, []);
 
-  const filteredCategories = categoriesList.filter((category) =>
-    category.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const toggleCategory = async (category) => {
-    const alreadySelected = selectedCategories.some(
-      (item) => item.id === category.id
+  const toggleCategory = (categoryId) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
     );
-    if (alreadySelected) {
-      setSelectedCategories((prev) =>
-        prev.filter((item) => item.id !== category.id)
+  };
+
+  const handleSubmit = async () => {
+    if (selectedCategories.length === 0) {
+      Alert.alert("تنبيه", "يرجى اختيار تصنيف واحد على الأقل.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await Promise.all(
+        selectedCategories.map((catId) =>
+          axios.post("http://recipe-hub.runasp.net/api/Recipes/Category/Add", {
+            id: 0,
+            recipeID: Number(recipeId),
+            categoryID: catId,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          })
+        )
       );
-      setCategoryDetails((prev) => {
-        const newDetails = { ...prev };
-        delete newDetails[category.id];
-        return newDetails;
+      router.push({
+        pathname: "/Components/Recipe/StepsSection",
+        params: {
+          recipeId,
+          title,
+        },
       });
-    } else {
-      setSelectedCategories((prev) => [...prev, category]);
-      setIsLoadingDetails(true);
-      try {
-        const response = await axios.get(
-          `http://recipe-hub.runasp.net/api/Categories/GetById/${category.id}`
-        );
-        setCategoryDetails((prev) => ({
-          ...prev,
-          [category.id]: response.data,
-        }));
-      } catch (error) {
-        Alert.alert("Error", "Failed to fetch category details.");
-      } finally {
-        setIsLoadingDetails(false);
-      }
+    } catch (error) {
+      Alert.alert("خطأ", "تعذر حفظ التصنيفات.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Recipe Categories</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Search categories..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        editable={!isLoadingCategories}
-      />
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Available Categories</Text>
-        {isLoadingCategories ? (
-          <ActivityIndicator size="small" color="#6B5B95" />
-        ) : (
-          <View style={styles.categoriesScrollContainer}>
-            <ScrollView
-              style={styles.categoriesList}
-              nestedScrollEnabled={true}
-            >
-              {filteredCategories.map((item) => (
-                <TouchableOpacity
-                  key={item.id.toString()}
+    <View style={styles.outerContainer}>
+      <Text style={styles.title}>اختر تصنيفات الوصفة</Text>
+      {isLoading ? (
+        <ActivityIndicator
+          size="large"
+          color="#6B5B95"
+          style={{ marginTop: 40 }}
+        />
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.grid}>
+            {categories.map((cat) => (
+              <TouchableOpacity
+                key={cat.id}
+                style={[
+                  styles.categoryItem,
+                  selectedCategories.includes(cat.id) &&
+                    styles.selectedCategory,
+                ]}
+                onPress={() => toggleCategory(cat.id)}
+                disabled={isSubmitting}
+                activeOpacity={0.85}
+              >
+                <Text
                   style={[
-                    styles.categoryItem,
-                    selectedCategories.some((cat) => cat.id === item.id) &&
-                      styles.selectedCategoryItem,
+                    styles.categoryText,
+                    selectedCategories.includes(cat.id) &&
+                      styles.selectedCategoryText,
                   ]}
-                  onPress={() => toggleCategory(item)}
-                  disabled={isLoadingDetails}
+                  numberOfLines={1}
                 >
-                  <Text style={styles.categoryName}>{item.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        )}
-      </View>
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>
-          Selected Categories ({selectedCategories.length})
-        </Text>
-        {isLoadingDetails && <ActivityIndicator size="small" color="#FF6B6B" />}
-        {selectedCategories.length > 0 ? (
-          <View style={styles.selectedCategoriesContainer}>
-            {selectedCategories.map((cat) => (
-              <View key={cat.id} style={styles.selectedCategoryContainer}>
-                <Text style={styles.selectedCategoryText}>{cat.name}</Text>
-                {categoryDetails[cat.id] && (
-                  <Text style={styles.categoryDetailText}>
-                    {categoryDetails[cat.id].description || "No description"}
-                  </Text>
+                  {cat.name}
+                </Text>
+                {selectedCategories.includes(cat.id) && (
+                  <View style={styles.checkCircle}>
+                    <Text style={styles.checkMark}>✓</Text>
+                  </View>
                 )}
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
+        </ScrollView>
+      )}
+
+      <TouchableOpacity
+        style={[
+          styles.submitButton,
+          (isSubmitting || selectedCategories.length === 0) && { opacity: 0.6 },
+        ]}
+        onPress={handleSubmit}
+        disabled={isSubmitting || selectedCategories.length === 0}
+      >
+        {isSubmitting ? (
+          <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={styles.noCategoriesText}>No categories selected</Text>
+          <Text style={styles.submitButtonText}>التالي</Text>
         )}
-      </View>
-    </ScrollView>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 20,
+  outerContainer: {
+    flex: 1,
+    padding: 24,
     backgroundColor: "#f8f8f8",
+    alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-    color: "#6B5B95", // Accent color from Profile.jsx
-  },
-  input: {
-    backgroundColor: "#FFF5F0",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#FFD6D6",
-    color: "#333",
-  },
-  sectionContainer: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "#FF6B6B", // Main color from Profile.jsx
-  },
-  categoriesScrollContainer: {
-    maxHeight: 250,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-  },
-  categoriesList: {
-    backgroundColor: "#fff",
-    padding: 10,
-  },
-  categoryItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-  },
-  selectedCategoryItem: {
-    backgroundColor: "#e3f2fd",
-  },
-  categoryName: {
-    fontSize: 16,
+    marginBottom: 18,
     color: "#6B5B95",
+    textAlign: "center",
+    letterSpacing: 0.5,
   },
-  selectedCategoriesContainer: {
+  listContainer: {
+    paddingBottom: 30,
+    alignItems: "center",
     width: "100%",
   },
-  selectedCategoryContainer: {
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 12,
+  },
+  categoryItem: {
+    minWidth: 120,
+    maxWidth: "45%",
+    margin: 6,
+    paddingVertical: 18,
+    paddingHorizontal: 12,
+    borderRadius: 14,
     backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: "#FFD6D6",
-    shadowColor: "#6B5B95",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    alignItems: "center",
+    justifyContent: "center",
     elevation: 2,
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    position: "relative",
+  },
+  selectedCategory: {
+    backgroundColor: "#FF6B6B",
+    borderColor: "#FF6B6B",
+    elevation: 4,
+    shadowOpacity: 0.13,
+  },
+  categoryText: {
+    fontSize: 17,
+    color: "#6B5B95",
+    fontWeight: "600",
+    textAlign: "center",
   },
   selectedCategoryText: {
-    color: "#FF6B6B",
-    fontSize: 16,
+    color: "#fff",
     fontWeight: "bold",
-    marginBottom: 6,
   },
-  categoryDetailText: {
-    color: "#333",
-    fontSize: 14,
-    fontStyle: "italic",
+  checkCircle: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "#FF6B6B",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 2,
   },
-  noCategoriesText: {
-    fontStyle: "italic",
-    color: "#999",
-    textAlign: "center",
-    padding: 10,
+  checkMark: {
+    color: "#FF6B6B",
+    fontWeight: "bold",
+    fontSize: 16,
+    marginTop: -1,
+  },
+  submitButton: {
+    backgroundColor: "#6B5B95",
+    paddingVertical: 14,
+    paddingHorizontal: 40,
+    borderRadius: 25,
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 30,
+    width: "100%",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
 });
 
-export default CategoriesSection;
+export default CategorySelect;

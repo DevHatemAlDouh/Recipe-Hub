@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,37 +7,38 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const MyRecipes = () => {
   const router = useRouter();
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const recipes = [
-    {
-      id: "1",
-      title: "Spaghetti Carbonara",
-      cookTime: "25 mins",
-      difficulty: "Medium",
-      image:
-        "https://images.unsplash.com/photo-1588013273468-315fd88ea34c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    },
-    {
-      id: "2",
-      title: "Chicken Tikka Masala",
-      cookTime: "40 mins",
-      difficulty: "Hard",
-      image:
-        "https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    },
-    {
-      id: "3",
-      title: "Beef Stroganoff",
-      cookTime: "35 mins",
-      difficulty: "Medium",
-      image:
-        "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    },
-  ];
+  useEffect(() => {
+    const fetchMyRecipes = async () => {
+      try {
+        const userData = await AsyncStorage.getItem("userData");
+        const user = userData ? JSON.parse(userData) : null;
+        if (!user?.id) {
+          setRecipes([]);
+          setLoading(false);
+          return;
+        }
+        const res = await axios.get(
+          `http://recipe-hub.runasp.net/api/users/GetAllMyRecipes?userId=${user.id}`
+        );
+        setRecipes(res.data || []);
+      } catch (error) {
+        setRecipes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMyRecipes();
+  }, []);
 
   const handleRecipePress = (item) => {
     router.push({
@@ -45,12 +46,11 @@ const MyRecipes = () => {
       params: {
         id: item.id,
         title: item.title,
-        cookTime: item.cookTime,
-        difficulty: item.difficulty,
-        image: item.image,
+        cookTime: item.cookTime || "",
+        difficulty: item.difficulty || "",
+        image: item.backgroundImage,
       },
     });
-    console.log(`Recipe ${item.id} pressed`);
   };
 
   const renderItem = ({ item }) => (
@@ -59,22 +59,41 @@ const MyRecipes = () => {
       onPress={() => handleRecipePress(item)}
       activeOpacity={0.8}
     >
-      <Image source={{ uri: item.image }} style={styles.recipeImage} />
+      <Image
+        source={{
+          uri: item.backgroundImage
+            ? item.backgroundImage
+            : "https://source.unsplash.com/400x300/?food",
+        }}
+        style={styles.recipeImage}
+      />
       <View style={styles.recipeInfo}>
         <Text style={styles.recipeTitle}>{item.title}</Text>
         <View style={styles.recipeMeta}>
           <View style={styles.metaItem}>
-            <Text style={styles.metaIcon}>⏱️</Text>
-            <Text style={styles.recipeMetaText}>{item.cookTime}</Text>
+            <Text style={styles.metaIcon}>👥</Text>
+            <Text style={styles.recipeMetaText}>{item.persons} أشخاص</Text>
           </View>
           <View style={styles.metaItem}>
-            <Text style={styles.metaIcon}>⚡</Text>
-            <Text style={styles.recipeMetaText}>{item.difficulty}</Text>
+            <Text style={styles.metaIcon}>⭐</Text>
+            <Text style={styles.recipeMetaText}>{item.rate}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Text style={styles.metaIcon}>👁️</Text>
+            <Text style={styles.recipeMetaText}>{item.view}</Text>
           </View>
         </View>
       </View>
     </TouchableOpacity>
   );
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#6B5B95" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -82,10 +101,15 @@ const MyRecipes = () => {
       <FlatList
         data={recipes}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ListEmptyComponent={
+          <Text style={{ textAlign: "center", color: "#888", marginTop: 40 }}>
+            لا توجد وصفات بعد
+          </Text>
+        }
       />
     </View>
   );
@@ -134,10 +158,12 @@ const styles = StyleSheet.create({
   recipeMeta: {
     flexDirection: "row",
     justifyContent: "space-between",
+    flexWrap: "wrap",
   },
   metaItem: {
     flexDirection: "row",
     alignItems: "center",
+    marginRight: 10,
   },
   metaIcon: {
     marginRight: 6,

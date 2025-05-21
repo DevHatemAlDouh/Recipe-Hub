@@ -24,6 +24,7 @@ const AddRecipe = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [backgroundImageBase64, setBackgroundImageBase64] = useState("");
   const [loading, setLoading] = useState(false);
+  const [persons, setPersons] = useState("");
   const router = useRouter();
 
   const convertImageToBase64 = async (uri) => {
@@ -41,14 +42,17 @@ const AddRecipe = () => {
 
   const pickRecipeImage = async () => {
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
+      const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.7,
+        base64: true,
+        selectionLimit: 1, // Add this line for SDK 49+
       });
 
-      if (!result.canceled) {
+      // For SDK 49+, result.assets is always an array
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         setBackgroundImage(result.assets[0].uri);
         const base64 = await convertImageToBase64(result.assets[0].uri);
         setBackgroundImageBase64(base64);
@@ -92,7 +96,7 @@ const AddRecipe = () => {
           title: title.trim(),
           backgroundImage: backgroundImageBase64,
           description: description.trim(),
-          persons: 0,
+          persons: Number(persons) || 0, // use the new field
         }
       );
 
@@ -162,6 +166,17 @@ const AddRecipe = () => {
             onChangeText={setDescription}
             multiline
             maxLength={500}
+            placeholderTextColor="#B0B0B0"
+          />
+
+          <Text style={styles.label}>عدد الأشخاص</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="مثال: 4"
+            value={persons}
+            onChangeText={setPersons}
+            keyboardType="numeric"
+            maxLength={3}
             placeholderTextColor="#B0B0B0"
           />
 

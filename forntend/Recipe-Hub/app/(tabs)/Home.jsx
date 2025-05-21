@@ -30,6 +30,18 @@ import { router } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+function getRelativeTime(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = Math.floor((now - date) / 1000); // seconds
+
+  if (diff < 60) return "ثواني";
+  if (diff < 3600) return `${Math.floor(diff / 60)} دقيقة`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} ساعة`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} يوم`;
+  return date.toLocaleDateString("ar-EG");
+}
+
 const Home = () => {
   const bottomSheetRef = useRef(null);
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
@@ -89,7 +101,7 @@ const Home = () => {
         commentsByRecipe[recipeId] = (item.commenters || []).map((c) => ({
           id: c.comment.id.toString(),
           text: c.comment.description,
-          timestamp: new Date(c.comment.createdAt).toLocaleString(),
+          timestamp: getRelativeTime(c.comment.createdAt), // <-- update here
           user: {
             userName: c.user.userName,
             userImage: c.user.userImage
@@ -158,7 +170,7 @@ const Home = () => {
             return {
               id: comment.id.toString(),
               text: comment.description,
-              timestamp: new Date(comment.createdAt).toLocaleString(),
+              timestamp: getRelativeTime(comment.createdAt), // <-- update here
               user: user || {
                 userName: "مستخدم مجهول",
                 userImage: "https://randomuser.me/api/portraits/men/1.jpg",
@@ -201,7 +213,7 @@ const Home = () => {
           const newComment = {
             id: Date.now().toString(),
             text: commentText,
-            timestamp: new Date().toLocaleString(),
+            timestamp: getRelativeTime(new Date()), // <-- update here
             user: {
               id: userData.id,
               userName: userData.userName,
@@ -373,7 +385,7 @@ const RecipeCard = ({
           } catch (e) {
             console.error("Failed to update view count", e);
           }
-          router.push(`/Components/Recipe/RecipeDetails?id=${item.id}`);
+          router.replace(`/Components/Recipe/RecipeDetails?id=${item.id}`);
         }}
         activeOpacity={0.93}
       >
@@ -527,57 +539,71 @@ const Comment = ({
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      snapPoints={["50%", "60%"]}
+      snapPoints={["50%", "70%"]}
       enablePanDownToClose={true}
       enableContentPanningGesture={false}
       enableHandlePanningGesture={true}
       onChange={handleSheetChanges}
+      backgroundStyle={{ borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
     >
-      <BottomSheetView style={styles.contentContainer}>
+      <BottomSheetView style={styles.commentSheetContainer}>
+        <Text style={styles.commentSheetTitle}>التعليقات</Text>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardAvoidingView}
         >
-          <View style={styles.inputContainer}>
+          <View style={styles.commentInputRow}>
             <TextInput
-              style={styles.input}
+              style={styles.commentInput}
               placeholder="اكتب تعليقك..."
               value={comment}
               onChangeText={setComment}
               multiline
               textAlignVertical="top"
               maxLength={500}
-              minHeight={80}
-              maxHeight={150}
+              minHeight={48}
+              maxHeight={120}
+              placeholderTextColor="#B0B0B0"
             />
-            <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+            <TouchableOpacity
+              style={[
+                styles.sendButton,
+                { backgroundColor: comment.trim() ? "#6B5B95" : "#ccc" },
+              ]}
+              onPress={handleSend}
+              disabled={!comment.trim()}
+            >
               <IconButton icon="send" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.scrollView}>
-            {comments.map((item) => (
-              <View key={item.id} style={styles.commentBubble}>
-                <View style={styles.commentHeader}>
-                  <Image
-                    source={{
-                      uri:
-                        item.user?.userImage ||
-                        "https://randomuser.me/api/portraits/men/1.jpg",
-                    }}
-                    style={styles.commentAvatar}
-                    onError={() => console.log("Error loading avatar")}
-                  />
-                  <Text style={styles.commentAuthor}>
-                    {item.user?.userName || "مستخدم مجهول"}
-                  </Text>
-                </View>
-                <Text style={styles.commentText}>{item.text}</Text>
-                <Text style={styles.timestamp}>{item.timestamp}</Text>
-              </View>
-            ))}
+          <ScrollView style={styles.commentsScroll}>
             {comments.length === 0 && (
               <Text style={styles.noCommentsText}>لا توجد تعليقات بعد</Text>
             )}
+            {comments.map((item) => (
+              <View key={item.id} style={styles.commentBubbleNew}>
+                <Image
+                  source={{
+                    uri:
+                      item.user?.userImage ||
+                      "https://randomuser.me/api/portraits/men/1.jpg",
+                  }}
+                  style={styles.commentAvatarNew}
+                  onError={() => console.log("Error loading avatar")}
+                />
+                <View style={styles.commentContent}>
+                  <View style={styles.commentHeaderRow}>
+                    <Text style={styles.commentAuthorNew}>
+                      {item.user?.userName || "مستخدم مجهول"}
+                    </Text>
+                    <Text style={styles.commentTimestampNew}>
+                      {item.timestamp}
+                    </Text>
+                  </View>
+                  <Text style={styles.commentTextNew}>{item.text}</Text>
+                </View>
+              </View>
+            ))}
           </ScrollView>
         </KeyboardAvoidingView>
       </BottomSheetView>
@@ -866,6 +892,100 @@ const styles = StyleSheet.create({
     maxWidth: 80,
     marginLeft: 4,
     textAlign: "left",
+  },
+  commentSheetContainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  commentSheetTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#6B5B95",
+    marginBottom: 10,
+    textAlign: "center",
+    letterSpacing: 0.5,
+  },
+  commentInputRow: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    marginBottom: 18,
+    gap: 8,
+  },
+  commentInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#eee",
+    borderRadius: 18,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: "#f9f9f9",
+    textAlign: "right",
+    minHeight: 48,
+    maxHeight: 120,
+  },
+  sendButton: {
+    borderRadius: 18,
+    padding: 8,
+    width: 44,
+    height: 44,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 4,
+  },
+  commentsScroll: {
+    flex: 1,
+    marginTop: 4,
+  },
+  commentBubbleNew: {
+    flexDirection: "row-reverse",
+    alignItems: "flex-start",
+    backgroundColor: "#f3e6fa",
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 12,
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  commentAvatarNew: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    marginLeft: 10,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#eee",
+  },
+  commentContent: {
+    flex: 1,
+  },
+  commentHeaderRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 2,
+  },
+  commentAuthorNew: {
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "#6B5B95",
+    marginLeft: 8,
+  },
+  commentTimestampNew: {
+    fontSize: 12,
+    color: "#aaa",
+    marginRight: 8,
+  },
+  commentTextNew: {
+    fontSize: 15,
+    color: "#333",
+    textAlign: "right",
+    marginTop: 2,
   },
 });
 

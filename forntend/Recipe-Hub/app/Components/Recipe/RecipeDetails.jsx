@@ -15,7 +15,6 @@ import { BackHandler } from "react-native";
 import { useFocusEffect, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import { Appbar } from "react-native-paper";
 
 const RecipeDetails = () => {
   const params = useLocalSearchParams();
@@ -166,7 +165,7 @@ const RecipeDetails = () => {
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        router.back();
+        router.replace("/(tabs)/Home");
         return true;
       };
 
@@ -206,21 +205,21 @@ const RecipeDetails = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* AppBar with recipe title */}
-      <Appbar.Header style={{ backgroundColor: "#fff", elevation: 0 }}>
-        <Appbar.BackAction onPress={() => router.back()} />
-        <Appbar.Content
-          title={recipe.title}
-          titleStyle={{
-            color: "#e17055",
-            fontWeight: "bold",
-            fontSize: 20,
-            textAlign: "right",
-          }}
-        />
-      </Appbar.Header>
+      {/* Custom AppBar */}
+      <View style={styles.customAppBar}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.replace("/(tabs)/Home")}
+        >
+          <Ionicons name="arrow-back" size={26} color="#e17055" />
+        </TouchableOpacity>
+        <Text style={styles.appBarTitle} numberOfLines={1}>
+          {recipe.title}
+        </Text>
+      </View>
+
       <ScrollView contentContainerStyle={styles.container}>
-        {/* قسم الصورة مع التدرج اللوني */}
+        {/* صورة الوصفة */}
         <View style={styles.header}>
           {recipe.backgroundImage ? (
             <Image
@@ -246,7 +245,6 @@ const RecipeDetails = () => {
             <Text style={styles.metaValue}>{recipe.persons || 0}</Text>
             <Text style={styles.metaLabel}>أفراد</Text>
           </View>
-
           <View style={styles.metaItem}>
             <Ionicons name="heart-outline" size={24} color="#e17055" />
             <Text style={styles.metaValue}>{recipe.rate || 0}</Text>
@@ -395,6 +393,30 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  customAppBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingTop: 12,
+    paddingBottom: 8,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f3e6fa",
+    elevation: 2,
+    zIndex: 10,
+  },
+  backButton: {
+    padding: 6,
+    marginRight: 8,
+  },
+  appBarTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#e17055",
+    flex: 1,
+    textAlign: "right",
+    marginRight: 12,
   },
   header: {
     borderBottomLeftRadius: 32,

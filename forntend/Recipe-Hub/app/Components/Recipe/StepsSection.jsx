@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -26,35 +26,13 @@ const StepsSection = () => {
       error: null,
     },
   ]);
-
   const [overallLoading, setOverallLoading] = useState(false);
   const [shouldStopSubmission, setShouldStopSubmission] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [categoryLoading, setCategoryLoading] = useState(false);
   const router = useRouter();
 
   const params = useLocalSearchParams();
   const recipeId = params.recipeId;
   const title = params.title;
-
-  // Fetch categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setCategoryLoading(true);
-      try {
-        const res = await axios.get(
-          "http://recipe-hub.runasp.net/api/Categories/GetAll"
-        );
-        setCategories(res.data);
-      } catch (error) {
-        Alert.alert("Error", "Failed to load categories.");
-      } finally {
-        setCategoryLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const convertImageToBase64 = async (uri) => {
     try {
@@ -71,13 +49,14 @@ const StepsSection = () => {
   const pickStepImage = async (index) => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: [ImagePicker.MediaType.IMAGE],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.7,
+        base64: true,
+        selectionLimit: 1,
       });
-
-      if (!result.canceled) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         const uri = result.assets[0].uri;
         const base64Image = await convertImageToBase64(uri);
 
@@ -93,7 +72,7 @@ const StepsSection = () => {
     } catch (error) {
       console.error("Error picking image:", error);
       const updatedSteps = [...steps];
-      updatedSteps[index].error = "Failed to pick image";
+      updatedSteps[index].error = "فشل في اختيار الصورة";
       setSteps(updatedSteps);
     }
   };
@@ -126,7 +105,7 @@ const StepsSection = () => {
       const updatedSteps = steps.filter((_, i) => i !== index);
       setSteps(updatedSteps);
     } else {
-      Alert.alert("Error", "You must have at least one step");
+      Alert.alert("خطأ", "يجب أن تحتوي الوصفة على خطوة واحدة على الأقل");
     }
   };
 
@@ -135,17 +114,13 @@ const StepsSection = () => {
     if (hasEmptySteps) {
       const updatedSteps = steps.map((step) => ({
         ...step,
-        error: !step.text.trim() ? "Step description is required" : null,
+        error: !step.text.trim() ? "يرجى كتابة وصف الخطوة" : null,
       }));
       setSteps(updatedSteps);
-      Alert.alert("Error", "Please fill all step descriptions");
+      Alert.alert("خطأ", "يرجى كتابة وصف لكل خطوة");
       return;
     }
 
-    if (!selectedCategoryId) {
-      Alert.alert("Error", "Please select a category for this recipe.");
-      return;
-    }
     setOverallLoading(true);
     setShouldStopSubmission(false);
 
@@ -164,16 +139,16 @@ const StepsSection = () => {
               if (retries === 0) {
                 setShouldStopSubmission(true);
                 Alert.alert(
-                  "Submission Failed",
-                  `Failed to add step ${i + 1} after 3 attempts.`,
+                  "فشل الإرسال",
+                  `فشل في إضافة الخطوة ${i + 1} بعد 3 محاولات.`,
                   [
                     {
-                      text: "Continue Anyway",
+                      text: "متابعة",
                       onPress: () => setShouldStopSubmission(false),
                       style: "cancel",
                     },
                     {
-                      text: "Stop Submission",
+                      text: "إيقاف الإرسال",
                       onPress: () => {},
                       style: "destructive",
                     },
@@ -183,7 +158,7 @@ const StepsSection = () => {
             }
           } catch (error) {
             console.error(
-              `Attempt ${4 - retries} failed for step ${i + 1}:`,
+              `المحاولة ${4 - retries} فشلت للخطوة ${i + 1}:`,
               error
             );
             retries--;
@@ -195,23 +170,9 @@ const StepsSection = () => {
       }
 
       if (!shouldStopSubmission) {
-        try {
-          await axios.post(
-            "http://recipe-hub.runasp.net/api/Categories/AddRecipeToCategory",
-            {
-              recipeId: recipeId,
-              categoryId: selectedCategoryId,
-            }
-          );
-        } catch (error) {
-          Alert.alert(
-            "Warning",
-            "Steps added, but failed to connect category."
-          );
-        }
-        Alert.alert("Success", "All steps added successfully!", [
+        Alert.alert("تم", "تمت إضافة جميع الخطوات بنجاح!", [
           {
-            text: "OK",
+            text: "العودة للرئيسية",
             onPress: () => {
               setSteps([
                 {
@@ -222,14 +183,14 @@ const StepsSection = () => {
                   error: null,
                 },
               ]);
-              router.push("/(tabs)/Home");
+              router.replace("/(tabs)/Home");
             },
           },
         ]);
       }
     } catch (error) {
-      console.error("Overall submission error:", error);
-      Alert.alert("Error", "An unexpected error occurred. Please try again.");
+      console.error("خطأ أثناء الإرسال:", error);
+      Alert.alert("خطأ", "حدث خطأ غير متوقع. حاول مرة أخرى.");
     } finally {
       setOverallLoading(false);
     }
@@ -243,7 +204,7 @@ const StepsSection = () => {
         (state) => state.isConnected
       );
       if (!isConnected) {
-        throw new Error("No internet connection");
+        throw new Error("لا يوجد اتصال بالإنترنت");
       }
 
       updatedSteps[index] = {
@@ -273,7 +234,7 @@ const StepsSection = () => {
       );
 
       if (response.status !== 204) {
-        throw new Error(`Server returned status ${response.status}`);
+        throw new Error(`رمز الاستجابة من الخادم: ${response.status}`);
       }
 
       updatedSteps[index] = {
@@ -285,14 +246,14 @@ const StepsSection = () => {
 
       return true;
     } catch (error) {
-      console.error(`Error submitting step ${index + 1}:`, error);
+      console.error(`خطأ في إرسال الخطوة ${index + 1}:`, error);
 
-      let errorMessage = "Failed to add step. Please try again.";
+      let errorMessage = "فشل في إضافة الخطوة. حاول مرة أخرى.";
       if (
         error.message === "Network Error" ||
-        error.message === "No internet connection"
+        error.message === "لا يوجد اتصال بالإنترنت"
       ) {
-        errorMessage = "Network error. Please check your internet connection.";
+        errorMessage = "خطأ في الشبكة. تحقق من اتصالك بالإنترنت.";
       } else if (error.response?.data?.errors) {
         errorMessage = Object.values(error.response.data.errors).join(", ");
       } else if (error.response?.data?.message) {
@@ -314,56 +275,19 @@ const StepsSection = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Add Steps to Recipe: {title}</Text>
-
-      {/* Category Picker */}
-      <View style={styles.categorySection}>
-        <Text style={styles.label}>Select Category</Text>
-        {categoryLoading ? (
-          <ActivityIndicator color="#6B5B95" />
-        ) : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginBottom: 15 }}
-          >
-            {categories.map((cat) => (
-              <TouchableOpacity
-                key={cat.id}
-                style={[
-                  styles.categoryButton,
-                  selectedCategoryId === cat.id &&
-                    styles.selectedCategoryButton,
-                ]}
-                onPress={() => setSelectedCategoryId(cat.id)}
-                disabled={overallLoading}
-              >
-                <Text
-                  style={[
-                    styles.categoryButtonText,
-                    selectedCategoryId === cat.id &&
-                      styles.selectedCategoryButtonText,
-                  ]}
-                >
-                  {cat.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
-      </View>
+      <Text style={styles.title}>أضف خطوات الوصفة: {title}</Text>
 
       {steps.map((step, index) => (
         <View key={index} style={styles.stepContainer}>
           <View style={styles.stepHeader}>
-            <Text style={styles.stepNumber}>Step {index + 1}</Text>
+            <Text style={styles.stepNumber}>الخطوة {index + 1}</Text>
             {steps.length > 1 && (
               <TouchableOpacity
                 style={styles.deleteStepButton}
                 onPress={() => deleteStep(index)}
                 disabled={step.isSubmitting || overallLoading}
               >
-                <Text style={styles.deleteStepButtonText}>Delete</Text>
+                <Text style={styles.deleteStepButtonText}>حذف</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -374,11 +298,12 @@ const StepsSection = () => {
               styles.multilineInput,
               step.error && !step.text.trim() && styles.errorInput,
             ]}
-            placeholder={`Step ${index + 1} description`}
+            placeholder={`وصف الخطوة ${index + 1}`}
             value={step.text}
             onChangeText={(text) => updateStepText(index, text)}
             multiline
             editable={!step.isSubmitting && !overallLoading}
+            placeholderTextColor="#B0B0B0"
           />
 
           {step.error && !step.text.trim() && (
@@ -394,7 +319,7 @@ const StepsSection = () => {
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.imagePickerText}>
-                {step.image ? "Change Step Image" : "Add Step Image (Optional)"}
+                {step.image ? "تغيير صورة الخطوة" : "إضافة صورة (اختياري)"}
               </Text>
             )}
           </TouchableOpacity>
@@ -414,7 +339,7 @@ const StepsSection = () => {
         onPress={addStep}
         disabled={overallLoading}
       >
-        <Text style={styles.addStepButtonText}>Add New Step</Text>
+        <Text style={styles.addStepButtonText}>إضافة خطوة جديدة</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -426,15 +351,15 @@ const StepsSection = () => {
           <ActivityIndicator color="#fff" />
         ) : (
           <Text style={styles.submitButtonText}>
-            Submit All Steps ({steps.length})
+            حفظ جميع الخطوات ({steps.length})
           </Text>
         )}
       </TouchableOpacity>
 
       {shouldStopSubmission && (
         <Text style={styles.stopAlertText}>
-          Submission stopped due to errors. Please check failed steps and try
-          again.
+          تم إيقاف الإرسال بسبب وجود أخطاء. يرجى مراجعة الخطوات الفاشلة
+          والمحاولة مرة أخرى.
         </Text>
       )}
     </ScrollView>
@@ -452,7 +377,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
-    color: "#333",
+    color: "#6B5B95",
   },
   input: {
     backgroundColor: "#fff",
@@ -474,6 +399,7 @@ const styles = StyleSheet.create({
     color: "#dc3545",
     marginBottom: 10,
     fontSize: 14,
+    textAlign: "right",
   },
   stepContainer: {
     marginBottom: 20,
@@ -482,6 +408,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ddd",
+    shadowColor: "#6B5B95",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
   },
   stepHeader: {
     flexDirection: "row",
@@ -492,7 +423,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "#6B5B95",
   },
   deleteStepButton: {
     backgroundColor: "#dc3545",
@@ -504,7 +435,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   imagePickerButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#6B5B95",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -553,38 +484,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     fontWeight: "500",
-  },
-  categorySection: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    color: "#FF6B6B",
-    fontWeight: "bold",
-    marginBottom: 8,
-    marginTop: 10,
-    letterSpacing: 0.5,
-  },
-  categoryButton: {
-    backgroundColor: "#FFF5F0",
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 18,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: "#FFD6D6",
-  },
-  selectedCategoryButton: {
-    backgroundColor: "#FF6B6B",
-    borderColor: "#FF6B6B",
-  },
-  categoryButtonText: {
-    color: "#6B5B95",
-    fontWeight: "bold",
-    fontSize: 15,
-  },
-  selectedCategoryButtonText: {
-    color: "#fff",
   },
 });
 
