@@ -246,7 +246,7 @@ const IngredientsSection = () => {
           <ScrollView
             style={styles.ingredientsList}
             nestedScrollEnabled={true}
-            contentContainerStyle={{ paddingBottom: 10 }}
+            contentContainerStyle={{ paddingBottom: 60 }}
           >
             <View style={styles.grid}>
               {filteredIngredients.map((item) => (
@@ -352,7 +352,7 @@ const IngredientsSection = () => {
                         <Picker.Item label="جرام (g)" value="g" />
                         <Picker.Item label="كيلوجرام (kg)" value="kg" />
                         <Picker.Item label="ملعقة صغيرة (tsp)" value="tsp" />
-                        <Picker.Item label="ملعقة كبيرة (tbsp)" value="tbsp" />
+                        <Picker.Item label="ملعقة كبيرة (tbsp)" value="tb" />
                         <Picker.Item label="كوب (cup)" value="cup" />
                         <Picker.Item label="ملليلتر (ml)" value="ml" />
                         <Picker.Item label="لتر (l)" value="l" />

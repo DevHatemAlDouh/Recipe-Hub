@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const RecipeSearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,6 +19,7 @@ const RecipeSearchScreen = () => {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [authors, setAuthors] = useState({});
+  const router = useRouter();
 
   // Fetch all recipes from API
   useEffect(() => {
@@ -151,7 +153,7 @@ const RecipeSearchScreen = () => {
             data={filteredRecipes}
             renderItem={renderRecipeItem}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.recipesList}
+            contentContainerStyle={[styles.recipesList, { paddingBottom: 60 }]}
             showsVerticalScrollIndicator={false}
           />
         ) : (

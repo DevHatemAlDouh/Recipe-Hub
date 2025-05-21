@@ -218,7 +218,9 @@ const RecipeDetails = () => {
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        contentContainerStyle={[styles.container, { paddingBottom: 60 }]}
+      >
         {/* صورة الوصفة */}
         <View style={styles.header}>
           {recipe.backgroundImage ? (

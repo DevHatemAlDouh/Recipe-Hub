@@ -53,6 +53,10 @@ const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showCommentReportDialog, setShowCommentReportDialog] = useState(false);
+  const [reportingComment, setReportingComment] = useState(null);
+  const [replyTo, setReplyTo] = useState(null);
+  const [commentLikes, setCommentLikes] = useState({});
 
   const fetchData = async () => {
     try {
@@ -101,19 +105,21 @@ const Home = () => {
         commentsByRecipe[recipeId] = (item.commenters || []).map((c) => ({
           id: c.comment.id.toString(),
           text: c.comment.description,
-          timestamp: getRelativeTime(c.comment.createdAt), // <-- update here
+          timestamp: getRelativeTime(c.comment.createdAt),
           user: {
             userName: c.user.userName,
             userImage: c.user.userImage
               ? `data:image/jpeg;base64,${c.user.userImage}`
               : "https://randomuser.me/api/portraits/men/1.jpg",
           },
+          recipeID: c.comment.recipeID,
+          supCommentID: c.comment.supCommentID, // <-- Add this
         }));
       });
+      setComments(commentsByRecipe);
 
       setRecipes(recipesData);
       setUsers(usersMap);
-      setComments(commentsByRecipe);
       setLastUpdated(new Date());
 
       setLikesCount(
@@ -206,24 +212,32 @@ const Home = () => {
             userID: userData.id,
             description: commentText,
             rate: 0,
+            supCommentID: replyTo, // Make sure to send this!
           }
         );
 
         if (response.status === 200) {
-          const newComment = {
-            id: Date.now().toString(),
-            text: commentText,
-            timestamp: getRelativeTime(new Date()), // <-- update here
+          // Refresh comments from the server
+          const commentsResponse = await axios.get(
+            `http://recipe-hub.runasp.net/api/Recipes/GetAllComments?recipeId=${selectedRecipeId}`
+          );
+          const commentsData = commentsResponse.data.map((c) => ({
+            id: c.id.toString(),
+            text: c.description,
+            timestamp: getRelativeTime(c.createdAt),
             user: {
-              id: userData.id,
-              userName: userData.userName,
-              userImage: userData.userImage,
+              userName: c.user?.userName || "مستخدم مجهول",
+              userImage: c.user?.userImage
+                ? `data:image/jpeg;base64,${c.user.userImage}`
+                : "https://randomuser.me/api/portraits/men/1.jpg",
             },
-          };
+            recipeID: c.recipeID,
+            supCommentID: c.supCommentID,
+          }));
 
           setComments((prev) => ({
             ...prev,
-            [selectedRecipeId]: [...(prev[selectedRecipeId] || []), newComment],
+            [selectedRecipeId]: commentsData,
           }));
         }
       } catch (error) {
@@ -259,6 +273,26 @@ const Home = () => {
       });
     } catch (error) {
       console.error("Failed to update recipe rate", error);
+    }
+  };
+
+  const toggleCommentLike = async (commentId) => {
+    setCommentLikes((prev) => {
+      const isLiked = prev[commentId] === "heart";
+      return {
+        ...prev,
+        [commentId]: isLiked ? "heart-outline" : "heart",
+      };
+    });
+
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      await axios.put("http://recipe-hub.runasp.net/api/Comments/UpdateRate", {
+        userid: userData.id,
+        commentid: commentId,
+      });
+    } catch (error) {
+      console.error("Failed to update comment like", error);
     }
   };
 
@@ -318,13 +352,79 @@ const Home = () => {
             آخر تحديث: {lastUpdated.toLocaleTimeString()}
           </Text>
         }
+        contentContainerStyle={{ paddingBottom: 60 }}
       />
       <Comment
         bottomSheetRef={bottomSheetRef}
         selectedRecipeId={selectedRecipeId}
         comments={comments[selectedRecipeId] || []}
         onSendComment={handleSendComment}
+        onReportComment={(comment) => {
+          setReportingComment(comment);
+          setShowCommentReportDialog(true);
+        }}
+        commentLikes={commentLikes}
+        onToggleCommentLike={toggleCommentLike}
+        replyTo={replyTo}
+        setReplyTo={setReplyTo}
       />
+
+      <Portal>
+        <Dialog
+          visible={showCommentReportDialog}
+          onDismiss={() => setShowCommentReportDialog(false)}
+          style={styles.dialogContainer}
+        >
+          <View style={styles.dialogContent}>
+            <Dialog.Title>تأكيد الإبلاغ عن التعليق</Dialog.Title>
+            <Dialog.Content>
+              <Text style={styles.dialogText}>
+                هل أنت متأكد أنك تريد الإبلاغ عن هذا التعليق؟
+              </Text>
+            </Dialog.Content>
+            <Dialog.Actions style={styles.dialogActions}>
+              <Button
+                mode="outlined"
+                onPress={() => setShowCommentReportDialog(false)}
+                style={styles.cancelButton}
+              >
+                إلغاء
+              </Button>
+              <Button
+                mode="contained"
+                onPress={async () => {
+                  try {
+                    const userData = JSON.parse(
+                      await AsyncStorage.getItem("userData")
+                    );
+                    await axios.post(
+                      "http://recipe-hub.runasp.net/api/users/AddReport",
+                      {
+                        id: 0,
+                        fromUserID: userData.id,
+                        atUserID: reportingComment?.user?.id || 0,
+                        type: "comment",
+                        description: `الإبلاغ عن تعليق: ${reportingComment?.text}`,
+                        solved: false,
+                      }
+                    );
+                    setShowCommentReportDialog(false);
+                    Alert.alert("تم الإبلاغ", "تم إرسال الإبلاغ بنجاح.");
+                  } catch (error) {
+                    setShowCommentReportDialog(false);
+                    Alert.alert("خطأ", "حدث خطأ أثناء إرسال الإبلاغ.");
+                    console.error("Report error:", error);
+                  }
+                }}
+                style={styles.confirmButton}
+                labelStyle={styles.buttonLabel}
+              >
+                تأكيد
+              </Button>
+            </Dialog.Actions>
+          </View>
+        </Dialog>
+      </Portal>
     </GestureHandlerRootView>
   );
 };
@@ -348,9 +448,13 @@ const RecipeCard = ({
   likesCount,
   commentsCount,
 }) => {
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState({});
   const [showDialog, setShowDialog] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  const openMenu = (id) => setMenuVisible((prev) => ({ ...prev, [id]: true }));
+  const closeMenu = (id) =>
+    setMenuVisible((prev) => ({ ...prev, [id]: false }));
 
   const handleReport = async () => {
     try {
@@ -405,9 +509,6 @@ const RecipeCard = ({
 
       <Card.Content style={styles.recipeContent}>
         <View style={styles.titleRow}>
-          <Text style={styles.recipeTitle} numberOfLines={1}>
-            {item.title}
-          </Text>
           <View style={styles.userInfoRow}>
             <Text style={styles.authorNameSmall}>{item.author}</Text>
             <Avatar.Image
@@ -416,6 +517,9 @@ const RecipeCard = ({
               style={styles.avatarSmall}
             />
           </View>
+          <Text style={styles.recipeTitle} numberOfLines={1}>
+            {item.title}
+          </Text>
         </View>
         <Text style={styles.recipeDescription} numberOfLines={2}>
           {item.description}
@@ -448,30 +552,29 @@ const RecipeCard = ({
         <View style={styles.actionContainer}>
           <IconButton
             icon="dots-vertical"
-            onPress={() => setMenuVisible(true)}
+            onPress={() => openMenu(item.id)}
             style={styles.menuButton}
           />
           <Menu
-            visible={menuVisible}
-            onDismiss={() => setMenuVisible(false)}
+            visible={menuVisible[item.id] || false}
+            onDismiss={() => closeMenu(item.id)}
             anchor={
               <IconButton
                 icon="dots-vertical"
-                onPress={() => setMenuVisible(true)}
-                style={{ opacity: 0 }}
+                size={20}
+                onPress={() => openMenu(item.id)}
               />
             }
-            anchorPosition="bottom"
-            contentStyle={styles.menuContent}
+            contentStyle={{ minWidth: 120 }}
           >
             <Menu.Item
-              leadingIcon={() => <Icon source="flag" color="red" size={24} />}
-              titleStyle={styles.menuItemText}
-              onPress={() => {
-                setMenuVisible(false);
-                setShowDialog(true);
-              }}
+              leadingIcon={() => <Icon source="flag" color="red" size={20} />}
               title="الإبلاغ"
+              titleStyle={{ color: "#FF6B6B", fontWeight: "bold" }}
+              onPress={() => {
+                closeMenu(item.id);
+                onReportComment(item);
+              }}
             />
           </Menu>
         </View>
@@ -519,6 +622,11 @@ const Comment = ({
   selectedRecipeId,
   comments,
   onSendComment,
+  onReportComment,
+  commentLikes,
+  onToggleCommentLike,
+  replyTo,
+  setReplyTo,
 }) => {
   const [comment, setComment] = useState("");
 
@@ -530,9 +638,66 @@ const Comment = ({
 
   const handleSend = () => {
     if (comment.trim()) {
-      onSendComment(comment);
+      onSendComment(comment, replyTo);
       setComment("");
+      setReplyTo(null);
     }
+  };
+
+  // Helper to render replies recursively
+  const renderReplies = (parentId, allComments, onReportComment, level = 1) => {
+    return allComments
+      .filter((c) => c.supCommentID === parentId)
+      .map((reply) => (
+        <View
+          key={reply.id}
+          style={[
+            styles.commentBubbleNew,
+            { marginRight: level * 20, backgroundColor: "#f8f4fa" },
+          ]}
+        >
+          <Image
+            source={{
+              uri:
+                reply.user?.userImage ||
+                "https://randomuser.me/api/portraits/men/1.jpg",
+            }}
+            style={styles.commentAvatarNew}
+          />
+          <View style={styles.commentContent}>
+            <View style={styles.commentHeaderRow}>
+              <Text style={styles.commentAuthorNew}>
+                {reply.user?.userName || "مستخدم مجهول"}
+              </Text>
+              <Text style={styles.commentTimestampNew}>{reply.timestamp}</Text>
+              <IconButton
+                icon={
+                  commentLikes[reply.id] === "heart" ? "heart" : "heart-outline"
+                }
+                iconColor="#FF6B6B"
+                size={20}
+                onPress={() => onToggleCommentLike(reply.id)}
+                style={{ marginRight: 4 }}
+              />
+              <TouchableOpacity
+                onPress={() => setReplyTo(reply.id)}
+                style={{ marginRight: 8 }}
+              >
+                <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>رد</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onReportComment(reply)}
+                style={{ marginRight: 8 }}
+              >
+                <IconButton icon="flag" size={20} color="#FF6B6B" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.commentTextNew}>{reply.text}</Text>
+            {/* Render nested replies */}
+            {renderReplies(reply.id, allComments, onReportComment, level + 1)}
+          </View>
+        </View>
+      ));
   };
 
   return (
@@ -552,6 +717,22 @@ const Comment = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardAvoidingView}
         >
+          {replyTo && (
+            <View
+              style={{
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                marginBottom: 6,
+              }}
+            >
+              <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>
+                ترد على تعليق رقم {replyTo}
+              </Text>
+              <TouchableOpacity onPress={() => setReplyTo(null)}>
+                <Text style={{ color: "red", marginRight: 8 }}>إلغاء</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.commentInputRow}>
             <TextInput
               style={styles.commentInput}
@@ -580,30 +761,59 @@ const Comment = ({
             {comments.length === 0 && (
               <Text style={styles.noCommentsText}>لا توجد تعليقات بعد</Text>
             )}
-            {comments.map((item) => (
-              <View key={item.id} style={styles.commentBubbleNew}>
-                <Image
-                  source={{
-                    uri:
-                      item.user?.userImage ||
-                      "https://randomuser.me/api/portraits/men/1.jpg",
-                  }}
-                  style={styles.commentAvatarNew}
-                  onError={() => console.log("Error loading avatar")}
-                />
-                <View style={styles.commentContent}>
-                  <View style={styles.commentHeaderRow}>
-                    <Text style={styles.commentAuthorNew}>
-                      {item.user?.userName || "مستخدم مجهول"}
-                    </Text>
-                    <Text style={styles.commentTimestampNew}>
-                      {item.timestamp}
-                    </Text>
+            {/* Render only super comments (supCommentID == null) */}
+            {comments
+              .filter((comment) => comment.supCommentID == null)
+              .map((item) => (
+                <View key={item.id} style={styles.commentBubbleNew}>
+                  <Image
+                    source={{
+                      uri:
+                        item.user?.userImage ||
+                        "https://randomuser.me/api/portraits/men/1.jpg",
+                    }}
+                    style={styles.commentAvatarNew}
+                  />
+                  <View style={styles.commentContent}>
+                    <View style={styles.commentHeaderRow}>
+                      <Text style={styles.commentAuthorNew}>
+                        {item.user?.userName || "مستخدم مجهول"}
+                      </Text>
+                      <Text style={styles.commentTimestampNew}>
+                        {item.timestamp}
+                      </Text>
+                      <IconButton
+                        icon={
+                          commentLikes[item.id] === "heart"
+                            ? "heart"
+                            : "heart-outline"
+                        }
+                        iconColor="#FF6B6B"
+                        size={20}
+                        onPress={() => onToggleCommentLike(item.id)}
+                        style={{ marginRight: 4 }}
+                      />
+                      <TouchableOpacity
+                        onPress={() => setReplyTo(item.id)} // <-- Set reply target
+                        style={{ marginRight: 8 }}
+                      >
+                        <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>
+                          رد
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => onReportComment(item)}
+                        style={{ marginRight: 8 }}
+                      >
+                        <IconButton icon="flag" size={20} color="#FF6B6B" />
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={styles.commentTextNew}>{item.text}</Text>
+                    {/* Render replies */}
+                    {renderReplies(item.id, comments, onReportComment)}
                   </View>
-                  <Text style={styles.commentTextNew}>{item.text}</Text>
                 </View>
-              </View>
-            ))}
+              ))}
           </ScrollView>
         </KeyboardAvoidingView>
       </BottomSheetView>

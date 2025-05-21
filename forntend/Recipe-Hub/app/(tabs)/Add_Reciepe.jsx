@@ -140,7 +140,7 @@ const AddRecipe = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, { paddingBottom: 60 }]}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.headerContainer}>

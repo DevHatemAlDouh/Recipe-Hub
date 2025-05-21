@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: "#f8f8f8",
     alignItems: "center",
+    paddingBottom: 60, // <-- Add this line
   },
   title: {
     fontSize: 22,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   listContainer: {
-    paddingBottom: 30,
+    paddingBottom: 60,
     alignItems: "center",
     width: "100%",
   },

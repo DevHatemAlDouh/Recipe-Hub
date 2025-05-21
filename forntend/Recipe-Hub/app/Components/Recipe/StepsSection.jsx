@@ -274,7 +274,9 @@ const StepsSection = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingBottom: 60 }]}
+    >
       <Text style={styles.title}>أضف خطوات الوصفة: {title}</Text>
 
       {steps.map((step, index) => (
