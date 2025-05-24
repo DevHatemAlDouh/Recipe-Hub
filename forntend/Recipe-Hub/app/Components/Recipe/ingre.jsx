@@ -61,7 +61,7 @@ const IngredientsSection = () => {
         setIngredientsList(response.data);
       } catch (error) {
         console.error("Error fetching ingredients:", error);
-        Alert.alert("خطأ", "تعذر تحميل المكونات. حاول مرة أخرى لاحقًا.");
+        Alert.alert("Error", "Failed to load components. Please try again later.");
       } finally {
         setIsLoadingIngredients(false);
       }
@@ -116,7 +116,7 @@ const IngredientsSection = () => {
 
   const submitIngredients = async () => {
     if (!recipeId) {
-      Alert.alert("خطأ", "لا يوجد وصفة محددة. يرجى إنشاء أو تحديد وصفة أولاً.");
+      Alert.alert("Error", "There is no specific recipe. Please create or select a recipe first.");
       return;
     }
 
@@ -124,7 +124,7 @@ const IngredientsSection = () => {
       (item) => !item.quantity
     );
     if (hasEmptyQuantities) {
-      Alert.alert("تنبيه", "يرجى إدخال الكمية لكل مكون محدد");
+      Alert.alert("Warning", "Please enter the quantity for each specified component.");
       return;
     }
 
@@ -174,9 +174,9 @@ const IngredientsSection = () => {
 
       const failedIngredients = results.filter((r) => !r.success);
       if (failedIngredients.length === 0) {
-        Alert.alert("تم", "تمت إضافة جميع المكونات بنجاح!", [
+        Alert.alert("Done", "All components have been added successfully.!", [
           {
-            text: "التالي",
+            text: "Next",
             onPress: () => {
               setSelectedIngredients([]);
               router.push({
@@ -191,16 +191,16 @@ const IngredientsSection = () => {
         ]);
       } else {
         Alert.alert(
-          "تم جزئياً",
-          `تمت إضافة ${results.filter((r) => r.success).length} من أصل ${
+          "Partially done",
+          `Added ${results.filter((r) => r.success).length} Of origin ${
             selectedIngredients.length
-          } مكون.\n\n` +
-            `فشل في الإضافة: ${failedIngredients
+          } Component.\n\n` +
+            `Failed to add: ${failedIngredients
               .map((i) => i.name)
               .join(", ")}`,
           [
             {
-              text: "متابعة",
+              text: "Follow-up",
               onPress: () => {
                 router.push({
                   pathname: "/Components/Recipe/CategoriesSection",
@@ -215,7 +215,7 @@ const IngredientsSection = () => {
         );
       }
     } catch (error) {
-      Alert.alert("خطأ", error.message || "حدث خطأ غير متوقع أثناء الإرسال");
+      Alert.alert("Error", error.message || "An unexpected error occurred during transmission.");
     } finally {
       setIsSubmitting(false);
     }
@@ -223,11 +223,11 @@ const IngredientsSection = () => {
 
   return (
     <View style={styles.outerContainer}>
-      <Text style={styles.title}>إضافة مكونات الوصفة</Text>
+      <Text style={styles.title}>Adding recipe ingredients</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="ابحث عن مكون..."
+        placeholder="Search for an ingredient..."
         value={searchQuery}
         onChangeText={setSearchQuery}
         editable={!isSubmitting}
@@ -235,7 +235,7 @@ const IngredientsSection = () => {
       />
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>المكونات المتاحة</Text>
+        <Text style={styles.sectionTitle}>Available ingredients</Text>
         {isLoadingIngredients ? (
           <ActivityIndicator
             size="small"
@@ -279,13 +279,13 @@ const IngredientsSection = () => {
 
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>
-          المكونات المختارة ({selectedIngredients.length})
+          The selected ingredients ({selectedIngredients.length})
         </Text>
 
         {isSubmitting && (
           <View style={styles.progressContainer}>
             <Text style={styles.progressText}>
-              جاري المعالجة: {submitProgress.success + submitProgress.failed}/
+              Processing in progress: {submitProgress.success + submitProgress.failed}/
               {submitProgress.total}
             </Text>
             <View style={styles.progressBar}>
@@ -305,7 +305,7 @@ const IngredientsSection = () => {
               />
             </View>
             <Text style={styles.progressDetail}>
-              نجاح: {submitProgress.success} | فشل: {submitProgress.failed}
+              Success: {submitProgress.success} | Failure: {submitProgress.failed}
             </Text>
           </View>
         )}
@@ -323,10 +323,10 @@ const IngredientsSection = () => {
 
                 <View style={styles.quantitySection}>
                   <View style={styles.quantityInputContainer}>
-                    <Text style={styles.inputLabel}>الكمية:</Text>
+                    <Text style={styles.inputLabel}>Quantity:</Text>
                     <TextInput
                       style={styles.quantityInput}
-                      placeholder="أدخل الكمية"
+                      placeholder="Enter the quantity"
                       value={quantity}
                       onChangeText={(text) =>
                         updateIngredientQuantity(ingredient.id, text)
@@ -338,7 +338,7 @@ const IngredientsSection = () => {
                   </View>
 
                   <View style={styles.unitPickerContainer}>
-                    <Text style={styles.inputLabel}>الوحدة:</Text>
+                    <Text style={styles.inputLabel}>Unity:</Text>
                     <View style={styles.pickerWrapper}>
                       <Picker
                         selectedValue={unit}
@@ -349,14 +349,14 @@ const IngredientsSection = () => {
                         }
                         enabled={!isSubmitting}
                       >
-                        <Picker.Item label="جرام (g)" value="g" />
-                        <Picker.Item label="كيلوجرام (kg)" value="kg" />
-                        <Picker.Item label="ملعقة صغيرة (tsp)" value="tsp" />
-                        <Picker.Item label="ملعقة كبيرة (tbsp)" value="tb" />
-                        <Picker.Item label="كوب (cup)" value="cup" />
-                        <Picker.Item label="ملليلتر (ml)" value="ml" />
-                        <Picker.Item label="لتر (l)" value="l" />
-                        <Picker.Item label="قطعة (p)" value="p" />
+                        <Picker.Item label="Gram (g)" value="g" />
+                        <Picker.Item label="Kilogram (kg)" value="kg" />
+                        <Picker.Item label="teaspoon (tsp)" value="tsp" />
+                        <Picker.Item label="Tablespoon (tbsp)" value="tb" />
+                        <Picker.Item label="Cup (cup)" value="cup" />
+                        <Picker.Item label="Milliliter (ml)" value="ml" />
+                        <Picker.Item label="liter (l)" value="l" />
+                        <Picker.Item label=" Piece (p)" value="p" />
                       </Picker>
                     </View>
                   </View>
@@ -365,7 +365,7 @@ const IngredientsSection = () => {
             ))}
           </View>
         ) : (
-          <Text style={styles.noIngredientsText}>لم يتم اختيار أي مكون</Text>
+          <Text style={styles.noIngredientsText}>No component has been selected.</Text>
         )}
       </View>
 
@@ -385,12 +385,12 @@ const IngredientsSection = () => {
               <Text style={styles.submitButtonText}>
                 {submitProgress.success + submitProgress.failed ===
                 submitProgress.total
-                  ? "جاري إنهاء العملية..."
-                  : "جاري الإرسال..."}
+                  ? "The process is currently being completed..."
+                  : "Sending in progress..."}
               </Text>
             </View>
           ) : (
-            <Text style={styles.submitButtonText}>حفظ المكونات</Text>
+            <Text style={styles.submitButtonText}>Preserving the ingredients</Text>
           )}
         </TouchableOpacity>
       )}

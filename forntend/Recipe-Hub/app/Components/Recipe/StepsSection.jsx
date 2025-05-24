@@ -72,7 +72,7 @@ const StepsSection = () => {
     } catch (error) {
       console.error("Error picking image:", error);
       const updatedSteps = [...steps];
-      updatedSteps[index].error = "فشل في اختيار الصورة";
+      updatedSteps[index].error = "Failed to choose the image";
       setSteps(updatedSteps);
     }
   };
@@ -105,7 +105,7 @@ const StepsSection = () => {
       const updatedSteps = steps.filter((_, i) => i !== index);
       setSteps(updatedSteps);
     } else {
-      Alert.alert("خطأ", "يجب أن تحتوي الوصفة على خطوة واحدة على الأقل");
+      Alert.alert("Error", "The recipe must contain at least one step.");
     }
   };
 
@@ -114,10 +114,10 @@ const StepsSection = () => {
     if (hasEmptySteps) {
       const updatedSteps = steps.map((step) => ({
         ...step,
-        error: !step.text.trim() ? "يرجى كتابة وصف الخطوة" : null,
+        error: !step.text.trim() ? "Please write a step description." : null,
       }));
       setSteps(updatedSteps);
-      Alert.alert("خطأ", "يرجى كتابة وصف لكل خطوة");
+      Alert.alert("Error", "Please write a description for each step.");
       return;
     }
 
@@ -139,16 +139,16 @@ const StepsSection = () => {
               if (retries === 0) {
                 setShouldStopSubmission(true);
                 Alert.alert(
-                  "فشل الإرسال",
-                  `فشل في إضافة الخطوة ${i + 1} بعد 3 محاولات.`,
+                  "Transmission failure",
+                  `Failed to add the step${i + 1} After 3 attempts.`,
                   [
                     {
-                      text: "متابعة",
+                      text: "Follow-up",
                       onPress: () => setShouldStopSubmission(false),
                       style: "cancel",
                     },
                     {
-                      text: "إيقاف الإرسال",
+                      text: "Stop sending",
                       onPress: () => {},
                       style: "destructive",
                     },
@@ -158,7 +158,7 @@ const StepsSection = () => {
             }
           } catch (error) {
             console.error(
-              `المحاولة ${4 - retries} فشلت للخطوة ${i + 1}:`,
+              `The attempt ${4 - retries} I failed at the step. ${i + 1}:`,
               error
             );
             retries--;
@@ -170,9 +170,9 @@ const StepsSection = () => {
       }
 
       if (!shouldStopSubmission) {
-        Alert.alert("تم", "تمت إضافة جميع الخطوات بنجاح!", [
+        Alert.alert("Done", "All steps have been successfully added!", [
           {
-            text: "العودة للرئيسية",
+            text: "Return to main page",
             onPress: () => {
               setSteps([
                 {
@@ -189,8 +189,8 @@ const StepsSection = () => {
         ]);
       }
     } catch (error) {
-      console.error("خطأ أثناء الإرسال:", error);
-      Alert.alert("خطأ", "حدث خطأ غير متوقع. حاول مرة أخرى.");
+      console.error("Error during sending:", error);
+      Alert.alert("Error", "An unexpected error occurred. Please try again.");
     } finally {
       setOverallLoading(false);
     }
@@ -204,7 +204,7 @@ const StepsSection = () => {
         (state) => state.isConnected
       );
       if (!isConnected) {
-        throw new Error("لا يوجد اتصال بالإنترنت");
+        throw new Error("There is no internet connection.");
       }
 
       updatedSteps[index] = {
@@ -234,7 +234,7 @@ const StepsSection = () => {
       );
 
       if (response.status !== 204) {
-        throw new Error(`رمز الاستجابة من الخادم: ${response.status}`);
+        throw new Error(`Response code from the server: ${response.status}`);
       }
 
       updatedSteps[index] = {
@@ -246,14 +246,13 @@ const StepsSection = () => {
 
       return true;
     } catch (error) {
-      console.error(`خطأ في إرسال الخطوة ${index + 1}:`, error);
+      console.error(`Error in sending the step${index + 1}:`, error);
 
-      let errorMessage = "فشل في إضافة الخطوة. حاول مرة أخرى.";
+      let errorMessage = "Failed to add the step. Please try again..";
       if (
-        error.message === "Network Error" ||
-        error.message === "لا يوجد اتصال بالإنترنت"
+        error.message === "Network Error" 
       ) {
-        errorMessage = "خطأ في الشبكة. تحقق من اتصالك بالإنترنت.";
+        errorMessage = "Network error. Check your internet connection.";
       } else if (error.response?.data?.errors) {
         errorMessage = Object.values(error.response.data.errors).join(", ");
       } else if (error.response?.data?.message) {
@@ -277,19 +276,19 @@ const StepsSection = () => {
     <ScrollView
       contentContainerStyle={[styles.container, { paddingBottom: 60 }]}
     >
-      <Text style={styles.title}>أضف خطوات الوصفة: {title}</Text>
+      <Text style={styles.title}>Add the recipe steps: {title}</Text>
 
       {steps.map((step, index) => (
         <View key={index} style={styles.stepContainer}>
           <View style={styles.stepHeader}>
-            <Text style={styles.stepNumber}>الخطوة {index + 1}</Text>
+            <Text style={styles.stepNumber}>Step {index + 1}</Text>
             {steps.length > 1 && (
               <TouchableOpacity
                 style={styles.deleteStepButton}
                 onPress={() => deleteStep(index)}
                 disabled={step.isSubmitting || overallLoading}
               >
-                <Text style={styles.deleteStepButtonText}>حذف</Text>
+                <Text style={styles.deleteStepButtonText}>Delete</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -300,7 +299,7 @@ const StepsSection = () => {
               styles.multilineInput,
               step.error && !step.text.trim() && styles.errorInput,
             ]}
-            placeholder={`وصف الخطوة ${index + 1}`}
+            placeholder={`Description of the step ${index + 1}`}
             value={step.text}
             onChangeText={(text) => updateStepText(index, text)}
             multiline
@@ -321,7 +320,7 @@ const StepsSection = () => {
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.imagePickerText}>
-                {step.image ? "تغيير صورة الخطوة" : "إضافة صورة (اختياري)"}
+                {step.image ? "Change step image" : "Add a picture (optional)"}
               </Text>
             )}
           </TouchableOpacity>
@@ -341,7 +340,7 @@ const StepsSection = () => {
         onPress={addStep}
         disabled={overallLoading}
       >
-        <Text style={styles.addStepButtonText}>إضافة خطوة جديدة</Text>
+        <Text style={styles.addStepButtonText}>Add a new step</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -353,15 +352,14 @@ const StepsSection = () => {
           <ActivityIndicator color="#fff" />
         ) : (
           <Text style={styles.submitButtonText}>
-            حفظ جميع الخطوات ({steps.length})
+            Save all steps ({steps.length})
           </Text>
         )}
       </TouchableOpacity>
 
       {shouldStopSubmission && (
         <Text style={styles.stopAlertText}>
-          تم إيقاف الإرسال بسبب وجود أخطاء. يرجى مراجعة الخطوات الفاشلة
-          والمحاولة مرة أخرى.
+          The transmission has been stopped due to errors. Please review the failed steps and try again.
         </Text>
       )}
     </ScrollView>

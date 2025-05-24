@@ -35,10 +35,10 @@ function getRelativeTime(dateString) {
   const now = new Date();
   const diff = Math.floor((now - date) / 1000); // seconds
 
-  if (diff < 60) return "ثواني";
-  if (diff < 3600) return `${Math.floor(diff / 60)} دقيقة`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)} ساعة`;
-  if (diff < 604800) return `${Math.floor(diff / 86400)} يوم`;
+  if (diff < 60) return "Seconds";
+  if (diff < 3600) return `${Math.floor(diff / 60)} Minute`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} Hour`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} Day`;
   return date.toLocaleDateString("ar-EG");
 }
 
@@ -167,7 +167,7 @@ const Home = () => {
               } catch (error) {
                 console.error("Error fetching user for comment:", error);
                 user = {
-                  userName: "مستخدم مجهول",
+                  userName: "Anonymous user",
                   userImage: "https://randomuser.me/api/portraits/men/1.jpg",
                 };
               }
@@ -178,7 +178,7 @@ const Home = () => {
               text: comment.description,
               timestamp: getRelativeTime(comment.createdAt), // <-- update here
               user: user || {
-                userName: "مستخدم مجهول",
+                userName: "Anonymous user",
                 userImage: "https://randomuser.me/api/portraits/men/1.jpg",
               },
             };
@@ -226,7 +226,7 @@ const Home = () => {
             text: c.description,
             timestamp: getRelativeTime(c.createdAt),
             user: {
-              userName: c.user?.userName || "مستخدم مجهول",
+              userName: c.user?.userName || "Anonymous user",
               userImage: c.user?.userImage
                 ? `data:image/jpeg;base64,${c.user.userImage}`
                 : "https://randomuser.me/api/portraits/men/1.jpg",
@@ -301,7 +301,7 @@ const Home = () => {
 
     const recipeItem = {
       id: item.id.toString(),
-      author: user.userName || "مستخدم مجهول",
+      author: user.userName || "Anonymous user",
       avatar: user.userImage || "https://randomuser.me/api/portraits/men/1.jpg",
       image: item.backgroundImage,
       title: item.title,
@@ -309,7 +309,7 @@ const Home = () => {
       time: formatTime(item.createdAt),
       initialLikes: item.rate || 0,
       serves: item.persons,
-      difficulty: "متوسط",
+      difficulty: "Average",
       ...item,
     };
 
@@ -349,7 +349,7 @@ const Home = () => {
         }
         ListHeaderComponent={
           <Text style={styles.lastUpdateText}>
-            آخر تحديث: {lastUpdated.toLocaleTimeString()}
+            Last updated: {lastUpdated.toLocaleTimeString()}
           </Text>
         }
         contentContainerStyle={{ paddingBottom: 60 }}
@@ -376,10 +376,10 @@ const Home = () => {
           style={styles.dialogContainer}
         >
           <View style={styles.dialogContent}>
-            <Dialog.Title>تأكيد الإبلاغ عن التعليق</Dialog.Title>
+            <Dialog.Title>Confirmation of the report regarding the comment</Dialog.Title>
             <Dialog.Content>
               <Text style={styles.dialogText}>
-                هل أنت متأكد أنك تريد الإبلاغ عن هذا التعليق؟
+                Are you sure you want to report this comment?
               </Text>
             </Dialog.Content>
             <Dialog.Actions style={styles.dialogActions}>
@@ -388,7 +388,7 @@ const Home = () => {
                 onPress={() => setShowCommentReportDialog(false)}
                 style={styles.cancelButton}
               >
-                إلغاء
+                Cancellation
               </Button>
               <Button
                 mode="contained"
@@ -404,22 +404,22 @@ const Home = () => {
                         fromUserID: userData.id,
                         atUserID: reportingComment?.user?.id || 0,
                         type: "comment",
-                        description: `الإبلاغ عن تعليق: ${reportingComment?.text}`,
+                        description: `Report a comment: ${reportingComment?.text}`,
                         solved: false,
                       }
                     );
                     setShowCommentReportDialog(false);
-                    Alert.alert("تم الإبلاغ", "تم إرسال الإبلاغ بنجاح.");
+                    Alert.alert("Reported", "The report has been successfully sent..");
                   } catch (error) {
                     setShowCommentReportDialog(false);
-                    Alert.alert("خطأ", "حدث خطأ أثناء إرسال الإبلاغ.");
+                    Alert.alert("Error", "An error occurred while sending the report.");
                     console.error("Report error:", error);
                   }
                 }}
                 style={styles.confirmButton}
                 labelStyle={styles.buttonLabel}
               >
-                تأكيد
+                Confirmation
               </Button>
             </Dialog.Actions>
           </View>
@@ -435,9 +435,9 @@ function formatTime(recipe) {
   const now = new Date();
   const diffMinutes = Math.floor((now - date) / (1000 * 60));
 
-  if (diffMinutes < 60) return `${diffMinutes} دقيقة مضت`;
-  if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)} ساعة مضت`;
-  return `${Math.floor(diffMinutes / 1440)} يوم مضى`;
+  if (diffMinutes < 60) return `${diffMinutes} A minute ago`;
+  if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)} An hour ago`;
+  return `${Math.floor(diffMinutes / 1440)} A day has passed`;
 }
 
 const RecipeCard = ({
@@ -464,16 +464,16 @@ const RecipeCard = ({
         fromUserID: userData.id,
         atUserID: item.userID,
         type: "recipe",
-        description: `الإبلاغ عن وصفة: ${item.title}`,
+        description: `Reporting a prescription: ${item.title}`,
         solved: false,
       });
       setShowDialog(false);
       setMenuVisible(false);
-      Alert.alert("تم الإبلاغ", "تم إرسال الإبلاغ بنجاح.");
+      Alert.alert("Reported", "he report has been successfully sent.");
     } catch (error) {
       setShowDialog(false);
       setMenuVisible(false);
-      Alert.alert("خطأ", "حدث خطأ أثناء إرسال الإبلاغ.");
+      Alert.alert("Error", "An error occurred while sending the report..");
       console.error("Report error:", error);
     }
   };
@@ -527,7 +527,7 @@ const RecipeCard = ({
         <View style={styles.recipeMetaRow}>
           <View style={styles.metaItem}>
             <IconButton icon="account-group" size={18} color="#6B5B95" />
-            <Text style={styles.metaText}>{item.persons} أشخاص</Text>
+            <Text style={styles.metaText}>{item.persons} People</Text>
           </View>
           <View style={styles.metaItem}>
             <IconButton icon="eye" size={18} color="#6B5B95" />
@@ -569,7 +569,7 @@ const RecipeCard = ({
           >
             <Menu.Item
               leadingIcon={() => <Icon source="flag" color="red" size={20} />}
-              title="الإبلاغ"
+              title="Reporting"
               titleStyle={{ color: "#FF6B6B", fontWeight: "bold" }}
               onPress={() => {
                 closeMenu(item.id);
@@ -587,10 +587,10 @@ const RecipeCard = ({
           style={styles.dialogContainer}
         >
           <View style={styles.dialogContent}>
-            <Dialog.Title>تأكيد الإبلاغ</Dialog.Title>
+            <Dialog.Title>Confirmation of reporting</Dialog.Title>
             <Dialog.Content>
               <Text style={styles.dialogText}>
-                هل أنت متأكد أنك تريد الإبلاغ عن هذه الوصفة؟
+                Are you sure you want to report this recipe?
               </Text>
             </Dialog.Content>
             <Dialog.Actions style={styles.dialogActions}>
@@ -599,7 +599,7 @@ const RecipeCard = ({
                 onPress={() => setShowDialog(false)}
                 style={styles.cancelButton}
               >
-                إلغاء
+                Cancellation
               </Button>
               <Button
                 mode="contained"
@@ -607,7 +607,7 @@ const RecipeCard = ({
                 style={styles.confirmButton}
                 labelStyle={styles.buttonLabel}
               >
-                تأكيد
+                Confirmation
               </Button>
             </Dialog.Actions>
           </View>
@@ -667,7 +667,7 @@ const Comment = ({
           <View style={styles.commentContent}>
             <View style={styles.commentHeaderRow}>
               <Text style={styles.commentAuthorNew}>
-                {reply.user?.userName || "مستخدم مجهول"}
+                {reply.user?.userName || "Anonymous user"}
               </Text>
               <Text style={styles.commentTimestampNew}>{reply.timestamp}</Text>
               <IconButton
@@ -683,7 +683,7 @@ const Comment = ({
                 onPress={() => setReplyTo(reply.id)}
                 style={{ marginRight: 8 }}
               >
-                <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>رد</Text>
+                <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>Reply</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => onReportComment(reply)}
@@ -712,7 +712,7 @@ const Comment = ({
       backgroundStyle={{ borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
     >
       <BottomSheetView style={styles.commentSheetContainer}>
-        <Text style={styles.commentSheetTitle}>التعليقات</Text>
+        <Text style={styles.commentSheetTitle}>Comments</Text>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardAvoidingView}
@@ -726,17 +726,17 @@ const Comment = ({
               }}
             >
               <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>
-                ترد على تعليق رقم {replyTo}
+                Respond to comment number {replyTo}
               </Text>
               <TouchableOpacity onPress={() => setReplyTo(null)}>
-                <Text style={{ color: "red", marginRight: 8 }}>إلغاء</Text>
+                <Text style={{ color: "red", marginRight: 8 }}>Cancellation</Text>
               </TouchableOpacity>
             </View>
           )}
           <View style={styles.commentInputRow}>
             <TextInput
               style={styles.commentInput}
-              placeholder="اكتب تعليقك..."
+              placeholder="Write your comment..."
               value={comment}
               onChangeText={setComment}
               multiline
@@ -759,7 +759,7 @@ const Comment = ({
           </View>
           <ScrollView style={styles.commentsScroll}>
             {comments.length === 0 && (
-              <Text style={styles.noCommentsText}>لا توجد تعليقات بعد</Text>
+              <Text style={styles.noCommentsText}>There are no comments yet.</Text>
             )}
             {/* Render only super comments (supCommentID == null) */}
             {comments
@@ -777,7 +777,7 @@ const Comment = ({
                   <View style={styles.commentContent}>
                     <View style={styles.commentHeaderRow}>
                       <Text style={styles.commentAuthorNew}>
-                        {item.user?.userName || "مستخدم مجهول"}
+                        {item.user?.userName || "Anonymous user"}
                       </Text>
                       <Text style={styles.commentTimestampNew}>
                         {item.timestamp}
@@ -798,7 +798,7 @@ const Comment = ({
                         style={{ marginRight: 8 }}
                       >
                         <Text style={{ color: "#6B5B95", fontWeight: "bold" }}>
-                          رد
+                          Reply
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity

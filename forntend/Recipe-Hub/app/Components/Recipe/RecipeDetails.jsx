@@ -245,12 +245,12 @@ const RecipeDetails = () => {
           <View style={styles.metaItem}>
             <Ionicons name="people-outline" size={24} color="#e17055" />
             <Text style={styles.metaValue}>{recipe.persons || 0}</Text>
-            <Text style={styles.metaLabel}>أفراد</Text>
+            <Text style={styles.metaLabel}>Individuals</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="heart-outline" size={24} color="#e17055" />
             <Text style={styles.metaValue}>{recipe.rate || 0}</Text>
-            <Text style={styles.metaLabel}>الاعجابات</Text>
+            <Text style={styles.metaLabel}>Likes</Text>
           </View>
         </View>
 

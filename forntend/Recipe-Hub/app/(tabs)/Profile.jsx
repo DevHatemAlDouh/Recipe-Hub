@@ -47,7 +47,7 @@ const Profile = () => {
     try {
       await AsyncStorage.removeItem("userData");
       Alert.alert("Logged Out", "You have been logged out.");
-      router.replace("/Login");
+      router.replace("/Sign_in");
     } catch (error) {
       Alert.alert("Error", "Failed to log out.");
     }
@@ -87,7 +87,7 @@ const Profile = () => {
           {persons ? (
             <View style={styles.timeContainer}>
               <Icon name="users" size={12} color="#fff" />
-              <Text style={styles.timeText}>{persons} أشخاص</Text>
+              <Text style={styles.timeText}>{persons} People</Text>
             </View>
           ) : null}
         </View>
@@ -138,9 +138,9 @@ const Profile = () => {
         <StatItem
           icon="utensils"
           value={myRecipes.length.toString()}
-          label="وصفاتي"
+          label="My descriptions"
         />
-        <StatItem icon="eye" value={totalViews.toString()} label="المشاهدات" />
+        <StatItem icon="eye" value={totalViews.toString()} label="The views" />
       </View>
 
       <View style={styles.actionButtons}>
@@ -149,14 +149,14 @@ const Profile = () => {
           onPress={() => router.push("Profile_Content/Edeit_Profile")}
         >
           <Icon name="user-edit" size={18} color="#fff" />
-          <Text style={styles.buttonText}>تعديل الملف</Text>
+          <Text style={styles.buttonText}>Edit the file</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.secondaryButton}
           onPress={() => router.push("/Profile_Content/Favorites")}
         >
           <Icon name="heart" size={18} color="#6B5B95" solid />
-          <Text style={styles.secondaryButtonText}>المفضلة</Text>
+          <Text style={styles.secondaryButtonText}>The favorite</Text>
         </TouchableOpacity>
       </View>
 
@@ -166,13 +166,13 @@ const Profile = () => {
           <View style={styles.sectionIconContainer}>
             <Icon name="book" size={22} color="#FF6B6B" solid />
           </View>
-          <Text style={styles.sectionTitle}>وصفاتي</Text>
+          <Text style={styles.sectionTitle}>My descriptions</Text>
           {myRecipes.length > 2 && (
             <TouchableOpacity
               style={styles.viewAllButton}
               onPress={() => router.push("/Profile_Content/MyRecipes")}
             >
-              <Text style={styles.viewAllText}>عرض الكل</Text>
+              <Text style={styles.viewAllText}>View all</Text>
               <Icon name="chevron-left" size={14} color="#6B5B95" />
             </TouchableOpacity>
           )}
@@ -181,12 +181,12 @@ const Profile = () => {
         {myRecipes.length === 0 ? (
           <View style={styles.emptyFavorites}>
             <Icon name="book-dead" size={40} color="#FF6B6B" />
-            <Text style={styles.emptyText}>لا توجد وصفات بعد</Text>
+            <Text style={styles.emptyText}>There are no recipes yet.</Text>
             <TouchableOpacity
               style={styles.discoverButton}
               onPress={() => router.push("/Add_Reciepe")}
             >
-              <Text style={styles.discoverButtonText}>أضف وصفة جديدة</Text>
+              <Text style={styles.discoverButtonText}>Add a new recipe</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -211,7 +211,7 @@ const Profile = () => {
 
       {/* Log Out Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>تسجيل الخروج</Text>
+        <Text style={styles.logoutButtonText}>Log out</Text>
       </TouchableOpacity>
     </ScrollView>
   );

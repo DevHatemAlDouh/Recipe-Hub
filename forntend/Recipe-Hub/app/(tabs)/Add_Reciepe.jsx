@@ -169,10 +169,10 @@ const AddRecipe = () => {
             placeholderTextColor="#B0B0B0"
           />
 
-          <Text style={styles.label}>عدد الأشخاص</Text>
+          <Text style={styles.label}>Number of people</Text>
           <TextInput
             style={styles.input}
-            placeholder="مثال: 4"
+            placeholder="Example: 4"
             value={persons}
             onChangeText={setPersons}
             keyboardType="numeric"

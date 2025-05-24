@@ -131,7 +131,7 @@ const RecipeSearchScreen = () => {
           />
           <TextInput
             style={styles.searchInput}
-            placeholder="ابحث عن وصفة..."
+            placeholder="Search for a recipe..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
@@ -146,7 +146,7 @@ const RecipeSearchScreen = () => {
         {isLoading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#FF6B6B" />
-            <Text style={styles.loadingText}>جاري تحميل الوصفات...</Text>
+            <Text style={styles.loadingText}>Loading recipes...</Text>
           </View>
         ) : filteredRecipes.length > 0 ? (
           <FlatList
@@ -159,7 +159,7 @@ const RecipeSearchScreen = () => {
         ) : (
           <View style={styles.noResultsContainer}>
             <Ionicons name="alert-circle-outline" size={38} color="#FF6B6B" />
-            <Text style={styles.noResultsText}>لا توجد وصفات مطابقة</Text>
+            <Text style={styles.noResultsText}>No matching recipes found.</Text>
           </View>
         )}
       </View>
