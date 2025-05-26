@@ -50,12 +50,12 @@ const Open = () => {
         // توجيه المستخدم إلى الصفحة الرئيسية بعد 15 ثانية إذا كان مسجل دخول
         setTimeout(() => {
           if (storedUserData) {
-            router.replace('/Components/Edit/Edit_Step'); // الانتقال إلى الصفحة الرئيسية إذا كان مسجل دخول
+            router.replace('/(tabs)/Home'); // الانتقال إلى الصفحة الرئيسية إذا كان مسجل دخول
           } else {
             router.replace('/Sign_in'); // الانتقال إلى صفحة تسجيل الدخول إذا لم يكن مسجل دخول
           }
         }, 500);
-      } catch (error) {
+      } catch (error) {   
         console.error('Error checking last login time:', error);
       }
     };

@@ -36,7 +36,7 @@ useEffect(() => {
     const fetchSteps = async () => {
         try {
             const response = await axios.get(
-                `http://recipe-hub.runasp.net/api/Recipes/GetAllSteps?recipeId=${16}`
+                `http://recipe-hub.runasp.net/api/Recipes/GetAllSteps?recipeId=${recipeId}`
             );
             const fetchedSteps = response.data.map((step) => ({
                 id: step.id,
