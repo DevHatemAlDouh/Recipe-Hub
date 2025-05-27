@@ -96,7 +96,7 @@ const AddRecipe = () => {
           title: title.trim(),
           backgroundImage: backgroundImageBase64,
           description: description.trim(),
-          persons: Number(persons) || 0, // use the new field
+          persons: Number(persons) || 1, // use the new field
         }
       );
 

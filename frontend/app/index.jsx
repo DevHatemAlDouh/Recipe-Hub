@@ -37,7 +37,7 @@ const Open = () => {
               // مسح بيانات المستخدم وتوجيهه إلى صفحة تسجيل الدخول
               await AsyncStorage.removeItem('userData');
               await AsyncStorage.removeItem('lastLoginTime');
-              router.replace('/SignIn');
+              router.replace('/Sign_in');
               return;
             }
           }

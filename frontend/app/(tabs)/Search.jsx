@@ -80,8 +80,26 @@ const RecipeSearchScreen = () => {
     setFilteredRecipes(filtered);
   };
 
+  const handleRecipePress = async (recipeId) => {
+    try {
+      // تحديث عدد المشاهدات عند النقر على الوصفة
+      await fetch(
+        `http://recipe-hub.runasp.net/api/Recipes/UpdateView/${recipeId}`,
+        { method: 'PUT' }
+      );
+    } catch (error) {
+      console.error("Error updating view count:", error);
+    }
+    // الانتقال إلى صفحة التفاصيل
+    router.push(`/Components/Recipe/RecipeDetails?id=${recipeId}`);
+  };
+
   const renderRecipeItem = ({ item }) => (
-    <TouchableOpacity style={styles.recipeCard} activeOpacity={0.92}>
+    <TouchableOpacity 
+      style={styles.recipeCard} 
+      activeOpacity={0.92}
+      onPress={() => handleRecipePress(item.id)}
+    >
       <View style={styles.recipeImageContainer}>
         {item.backgroundImage ? (
           <Image

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -34,6 +34,19 @@ const StepsSection = () => {
   const recipeId = params.recipeId;
   const title = params.title;
 
+  // طلب إذن الوصول إلى المعرض
+  useEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "تحذير",
+          "يجب منح الإذن للوصول إلى الصور لإضافة الخطوات"
+        );
+      }
+    })();
+  }, []);
+
   const convertImageToBase64 = async (uri) => {
     try {
       const base64 = await FileSystem.readAsStringAsync(uri, {
@@ -49,13 +62,14 @@ const StepsSection = () => {
   const pickStepImage = async (index) => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: [ImagePicker.MediaType.IMAGE],
+        mediaTypes: ImagePicker.MediaTypeOptions.Images, // التصحيح هنا
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.7,
         base64: true,
         selectionLimit: 1,
       });
+
       if (!result.canceled && result.assets && result.assets.length > 0) {
         const uri = result.assets[0].uri;
         const base64Image = await convertImageToBase64(uri);

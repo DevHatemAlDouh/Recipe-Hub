@@ -222,7 +222,8 @@ const IngredientsSection = () => {
   };
 
   return (
-    <View style={styles.outerContainer}>
+    <ScrollView>
+      <View style={styles.outerContainer}>
       <Text style={styles.title}>إضافة مكونات الوصفة</Text>
 
       <TextInput
@@ -395,6 +396,8 @@ const IngredientsSection = () => {
         </TouchableOpacity>
       )}
     </View>
+    </ScrollView>
+    
   );
 };
 

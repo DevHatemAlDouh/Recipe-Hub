@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   BackHandler,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import icen_img from "@/assets/images/erwan-nonon-D5vE6tDzB80-unsplash.jpg";
 import { Link } from "expo-router";
@@ -135,17 +134,17 @@ const SignIn = () => {
     }
   };
 
-  useEffect(() => {
-    const backAction = () => {
-      router.replace("/open");
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => backHandler.remove();
-  }, []);
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     router.replace("/open");
+  //     return true;
+  //   };
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
 
   return (
     <ImageBackground

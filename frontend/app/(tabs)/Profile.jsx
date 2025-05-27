@@ -47,7 +47,7 @@ const Profile = () => {
     try {
       await AsyncStorage.removeItem("userData");
       Alert.alert("Logged Out", "You have been logged out.");
-      router.replace("/Login");
+      router.replace("/Sign_in");
     } catch (error) {
       Alert.alert("Error", "Failed to log out.");
     }
