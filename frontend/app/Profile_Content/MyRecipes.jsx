@@ -16,27 +16,40 @@ const MyRecipes = () => {
   const router = useRouter();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageErrors, setImageErrors] = useState({});
 
   useEffect(() => {
     const fetchMyRecipes = async () => {
       try {
         const userData = await AsyncStorage.getItem("userData");
         const user = userData ? JSON.parse(userData) : null;
+        
         if (!user?.id) {
           setRecipes([]);
           setLoading(false);
           return;
         }
+
         const res = await axios.get(
           `http://recipe-hub.runasp.net/api/users/GetAllMyRecipes?userId=${user.id}`
         );
-        setRecipes(res.data || []);
+
+        const validatedRecipes = res.data.map(recipe => ({
+          ...recipe,
+          backgroundImage: recipe.backgroundImage 
+            ? `data:image/jpeg;base64,${recipe.backgroundImage}`
+            : null
+        }));
+
+        setRecipes(validatedRecipes);
       } catch (error) {
+        console.error("Fetch error:", error);
         setRecipes([]);
       } finally {
         setLoading(false);
       }
     };
+    
     fetchMyRecipes();
   }, []);
 
@@ -53,39 +66,48 @@ const MyRecipes = () => {
     });
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.recipeCard}
-      onPress={() => handleRecipePress(item)}
-      activeOpacity={0.8}
-    >
-      <Image
-        source={{
-          uri: item.backgroundImage
-            ? item.backgroundImage
-            : "https://source.unsplash.com/400x300/?food",
-        }}
-        style={styles.recipeImage}
-      />
-      <View style={styles.recipeInfo}>
-        <Text style={styles.recipeTitle}>{item.title}</Text>
-        <View style={styles.recipeMeta}>
-          <View style={styles.metaItem}>
-            <Text style={styles.metaIcon}>👥</Text>
-            <Text style={styles.recipeMetaText}>{item.persons} أشخاص</Text>
-          </View>
-          <View style={styles.metaItem}>
-            <Text style={styles.metaIcon}>⭐</Text>
-            <Text style={styles.recipeMetaText}>{item.rate}</Text>
-          </View>
-          <View style={styles.metaItem}>
-            <Text style={styles.metaIcon}>👁️</Text>
-            <Text style={styles.recipeMetaText}>{item.view}</Text>
+  const handleImageError = (itemId) => {
+    setImageErrors(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const renderItem = ({ item }) => {
+    const imageUri = imageErrors[item.id] 
+      ? "https://source.unsplash.com/400x300/?food"
+      : item.backgroundImage || "https://source.unsplash.com/400x300/?food";
+
+    return (
+      <TouchableOpacity
+        style={styles.recipeCard}
+        onPress={() => handleRecipePress(item)}
+        activeOpacity={0.8}
+      >
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.recipeImage}
+          onError={() => handleImageError(item.id)}
+          resizeMode="cover"
+          progressiveRenderingEnabled
+        />
+        <View style={styles.recipeInfo}>
+          <Text style={styles.recipeTitle}>{item.title}</Text>
+          <View style={styles.recipeMeta}>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaIcon}>👥</Text>
+              <Text style={styles.recipeMetaText}>{item.persons} أشخاص</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaIcon}>⭐</Text>
+              <Text style={styles.recipeMetaText}>{item.rate}</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaIcon}>👁️</Text>
+              <Text style={styles.recipeMetaText}>{item.view}</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   if (loading) {
     return (
@@ -115,6 +137,7 @@ const MyRecipes = () => {
   );
 };
 
+// الأنماط تبقى كما هي بدون تغيير
 const styles = StyleSheet.create({
   container: {
     flex: 1,
