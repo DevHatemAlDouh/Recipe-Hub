@@ -1,0 +1,36 @@
+﻿@model User_Permission_form
+
+@{
+    ViewBag.Title = "Grant Permission to User";
+}
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Grant Permission to @(Model.user != null ? Model.user.UserName : "Unknown User")</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="GrantPermission" method="post">
+                <input type="hidden" asp-for="user_permission.UserID" value="@Model.user?.Id" />
+
+                <div class="form-group">
+                    <label asp-for="user_permission.PermissionID">Select Permission</label>
+                    <select asp-for="user_permission.PermissionID" class="form-control" required>
+                        <option value="">-- Select Permission --</option>
+                        @foreach (var permission in Model.permissions)
+                        {
+                            <option value="@permission.Id">@permission.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Grant Permission</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model User_Revoke_Permission
+
+@{
+    ViewBag.Title = "Remove Permission";
+}
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Delete User</h4>
+        </div>
+        <div class="card-body">
+            <h3 class="text-danger">Are you sure you want to Remove this Permission?</h3>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.user_permission.Id</dd>
+                <dt class="col-sm-3">User</dt>
+                <dd class="col-sm-9">@Model.user.UserName</dd>
+                <dt class="col-sm-3">Permission</dt>
+                <dd class="col-sm-9">@Model.permission.Title</dd>
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.user_permission.CreatedAt</dd>
+                <dt class="col-sm-3">Updated At</dt>
+                <dd class="col-sm-9">@Model.user_permission.UpdatedAt</dd>
+            </dl>
+
+            <form asp-action="RevokePermission" method="post">
+                <input type="hidden" asp-for="@Model.user_permission.Id" />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

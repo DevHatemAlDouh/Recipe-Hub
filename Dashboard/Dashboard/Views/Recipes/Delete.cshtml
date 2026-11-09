@@ -1,0 +1,41 @@
+﻿@model Recipe
+
+@{
+    ViewBag.Title = "Delete Recipe";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Delete Recipe</h4>
+        </div>
+        <div class="card-body">
+            <h3 class="text-danger">Are you sure you want to delete this recipe?</h3>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model.title</dd>
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.description</dd>
+                <dt class="col-sm-3">Persons</dt>
+                <dd class="col-sm-9">@Model.persons</dd>
+                <dt class="col-sm-3">User ID</dt>
+                <dd class="col-sm-9">@Model.UserId</dd>
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.CreatedAt</dd>
+                <dt class="col-sm-3">Updated At</dt>
+                <dd class="col-sm-9">@Model.UpdatedAt</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

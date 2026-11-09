@@ -1,0 +1,43 @@
+﻿@model User
+
+@{
+    ViewBag.Title = "User Ditails";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>User Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Username</dt>
+                <dd class="col-sm-9">@Model.UserName</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+                <dt class="col-sm-3">Country Code</dt>
+                <dd class="col-sm-9">@Model.CountryCode</dd>
+
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.CreatedAt</dd>
+
+                <dt class="col-sm-3">User Image</dt>
+                <dd class="col-sm-9">
+                    <img src="data:image/jpeg;base64,@Model.UserImage" alt="User Image" class="img-fluid rounded-circle" style="width: 250px; height: 250px; border: 2px solid #007bff; padding: 5px;" />
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Create Category";
+}
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Create Category</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" class="form-control" asp-for="Name" required />
+                </div>
+
+                <br />
+
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

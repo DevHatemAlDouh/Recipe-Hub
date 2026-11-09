@@ -1,0 +1,27 @@
+﻿@model Ingredient
+
+@{
+    ViewBag.Title = "Ingredient Details";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Ingredient Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+            </dl>
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

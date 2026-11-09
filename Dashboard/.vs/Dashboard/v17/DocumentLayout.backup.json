@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|c:\\users\\hmd-8134\\desktop\\repos\\recipe-hub\\dashboard\\dashboard\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE3C41E5-B055-417C-A750-6D911C846069}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 165,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Models\\Comment.cs",
+              "RelativeDocumentMoniker": "Dashboard\\Models\\Comment.cs",
+              "ToolTip": "C:\\Users\\HMD-8134\\Desktop\\Repos\\Recipe-Hub\\Dashboard\\Dashboard\\Models\\Comment.cs",
+              "RelativeToolTip": "Dashboard\\Models\\Comment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T02:57:08.907Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

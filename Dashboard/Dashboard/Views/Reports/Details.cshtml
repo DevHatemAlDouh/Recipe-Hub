@@ -1,0 +1,29 @@
+﻿@model Report_Details
+
+@{
+    ViewBag.Title = "Report Details";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Report Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Report.Id</dd>
+
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Report.description</dd>
+
+                <dt class="col-sm-3">The User || Report</dt>
+                <dd class="col-sm-9">@Model.Reporter.UserName || @Model.Reported.UserName</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-right">
+            <a asp-action="Update" asp-route-id="@Model.Report.Id" class="btn btn-primary">Solved</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

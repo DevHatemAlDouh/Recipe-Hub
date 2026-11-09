@@ -1,0 +1,124 @@
+﻿@model Recipe_details
+
+@{
+    ViewBag.Title = "Recipe Details";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Recipe Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Id</dt>
+                <dd class="col-sm-9">@Model.Recipe.Id</dd>
+
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model.Recipe.title</dd>
+
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Recipe.description</dd>
+
+                <dt class="col-sm-3">Persons</dt>
+                <dd class="col-sm-9">@Model.Recipe.persons</dd>
+
+                <dt class="col-sm-3">Number Of Views</dt>
+                <dd class="col-sm-9">@Model.Recipe.View</dd>
+
+                <dt class="col-sm-3">Number Of Rates</dt>
+                <dd class="col-sm-9">@Model.Recipe.Rate</dd>
+
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.Recipe.CreatedAt?.ToString("g")</dd>
+
+                <dt class="col-sm-3">Background Image</dt>
+                <dd class="col-sm-9">
+                    <img src="data:image/jpeg;base64,@Model.Recipe.backgroundImage"
+                         alt="Recipe Image" style="width: 250px; height: 250px;" />
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-header">
+            <h4>Recipe Categories</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach (var recipeCategory in Model.recipeCategories)
+                {
+                    var category = Model.categories.FirstOrDefault(c => c.Id == recipeCategory.CategoryID);
+                    if (category != null)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-3">Category Name</dt>
+                            <dd class="col-sm-9">@category.Name</dd>
+                        </dl>
+                    }
+                }
+            }
+        </div>
+
+        <div class="card-header">
+            <h4>Recipe Steps</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach (var step in Model.steps.OrderBy(s => s.StepNumber).ToList())
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">Step Number</dt>
+                        <dd class="col-sm-9">@step.StepNumber</dd>
+
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@step.description</dd>
+
+                        <dt class="col-sm-3">Created At</dt>
+                        <dd class="col-sm-9">@step.CreatedAt?.ToString("g")</dd>
+
+                        <dt class="col-sm-3">Background Image</dt>
+                        <dd class="col-sm-9">
+                            <img src="data:image/jpeg;base64,@step.backgroundImage"
+                                 alt="Step Image" style="width: 250px; height: 250px;" />
+                        </dd>
+                    </dl>
+                    <br />
+                }
+            }
+        </div>
+
+        <div class="card-header">
+            <h4>Recipe Ingredients</h4>
+        </div>
+        <div class="card-body">
+            @{
+                foreach (var recipeIngredient in Model.recipeIngredients)
+                {
+                    var ingredient = Model.ingredients.FirstOrDefault(i => i.Id == recipeIngredient.IngredientID);
+                    if (ingredient != null)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-3">Name</dt>
+                            <dd class="col-sm-9">@ingredient.Name</dd>
+
+                            <dt class="col-sm-3">Unit</dt>
+                            <dd class="col-sm-9">@recipeIngredient.unit</dd>
+
+                            <dt class="col-sm-3">Quantity</dt>
+                            <dd class="col-sm-9">@recipeIngredient.quantity</dd>
+
+                            <dt class="col-sm-3">Created At</dt>
+                            <dd class="col-sm-9">@recipeIngredient.CreatedAt?.ToString("g")</dd>
+                        </dl>
+                        <br />
+                    }
+                }
+            }
+        </div>
+
+        <div class="card-footer text-right">
+            <a asp-action="Edit" asp-route-id="@Model.Recipe.Id" class="btn btn-primary">Edit Recipe</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

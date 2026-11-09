@@ -1,0 +1,38 @@
+﻿@using System.Data
+@model DataTable
+
+@{
+    ViewBag.Title = "Penalties";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Penalties</h2>
+
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary">Create New Penalty</a>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.Rows)
+            {
+                <tr>
+                    <td>@row["Id"]</td>
+                    <td>@row["Description"]</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@row["Id"]" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Edit" asp-route-id="@row["Id"]" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@row["Id"]" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this ingredient?');">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

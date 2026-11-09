@@ -1,0 +1,30 @@
+﻿@model Ingredient
+
+@{
+    ViewBag.Title = "Edit Ingredient";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Edit Ingredient</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" class="form-control" asp-for="Name" required />
+                </div>
+
+                <br />
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
