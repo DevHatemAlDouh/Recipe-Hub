@@ -1,0 +1,93 @@
+﻿using API.Data;
+using API.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Service
+{
+    public class IngredientService : ICRUDService<IngredientInfo>
+    {
+        private readonly APIContext _context;
+
+        public IngredientService(APIContext context)
+        {
+            _context = context;
+        }
+
+        public async Task Add(IngredientInfo entity)
+        {
+            var ingredient = new Ingredient
+            {
+                Name = entity.Name,
+                CreatedAt = DateTime.Now,
+
+                RecipeIngredients = new List<RecipeIngredient>(),
+                Favorites = new List<Favorite>()
+            };
+
+            await _context.Ingredients.AddAsync(ingredient);
+            await _context.SaveChangesAsync();
+            entity.Id = ingredient.Id; // Update the entity with the generated Id
+        }
+
+        public async Task Delete(int id)
+        {
+            // Start by retrieving the user directly from the context
+            var ingredient = await _context.Ingredients.FirstOrDefaultAsync(u => u.Id == id);
+
+            // Check if the user exists
+            if (ingredient != null)
+            {
+                // Remove the user from the context
+                _context.Ingredients.Remove(ingredient);
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<IngredientInfo>> GetAll()
+        {
+            var ingredients = await _context.Ingredients.Select(u => new IngredientInfo
+            {
+                Id = u.Id,
+                Name = u.Name,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
+            }).ToListAsync();
+
+            if (!ingredients.Any())
+            {
+                return new List<IngredientInfo>();
+            }
+
+            return ingredients;
+        }
+
+
+        public async Task<IngredientInfo> GetById(int id)
+        {
+            var ingredient = await _context.Ingredients.FirstOrDefaultAsync(p => p.Id == id);
+            if (ingredient == null) return null;
+
+            return new IngredientInfo
+            {
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                CreatedAt = ingredient.CreatedAt,
+                UpdatedAt = ingredient.UpdatedAt
+            };
+        }
+
+        public async Task Update(IngredientInfo entity)
+        {
+            var ingredient = await _context.Ingredients.FirstOrDefaultAsync(u => u.Id == entity.Id);
+            if (ingredient != null)
+            {
+                ingredient.Name = entity.Name;
+                ingredient.UpdatedAt = DateTime.Now;
+
+                _context.Ingredients.Update(ingredient);
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
+}
